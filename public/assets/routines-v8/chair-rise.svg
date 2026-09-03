@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" role="img" aria-labelledby="title desc">
+  <title id="title">의자에서 천천히 일어나는 모습</title>
+  <desc id="desc">앉은 자세에서 몸을 조금 앞으로 기울여 천천히 일어나는 두 단계</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff4df"/><stop offset="1" stop-color="#e7f1ed"/></linearGradient>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="8" refY="5.5" orient="auto"><path d="M0 0L11 5.5L0 11Z" fill="#e86f3c"/></marker>
+  </defs>
+  <rect width="960" height="640" rx="42" fill="url(#bg)"/>
+  <g opacity=".55">
+    <rect x="124" y="379" width="230" height="38" rx="16" fill="#6f7c74"/>
+    <path d="M160 415v138M320 415v138" stroke="#6f7c74" stroke-width="26" stroke-linecap="round"/>
+    <circle cx="315" cy="181" r="46" fill="#f2cfad" stroke="#203b34" stroke-width="7"/>
+    <path d="M272 170q25-52 80-24l10 40q-34-18-70 4z" fill="#33483f"/>
+    <path d="M279 237q46-23 88 2l12 157H239z" fill="#6b8d6f" stroke="#203b34" stroke-width="8"/>
+    <path d="M284 390L435 442l88 84M245 390l-12 137" stroke="#33483f" stroke-width="40" stroke-linecap="round"/>
+  </g>
+  <path d="M449 345c55-69 100-93 155-98" fill="none" stroke="#e86f3c" stroke-width="12" stroke-linecap="round" marker-end="url(#arrow)"/>
+  <g>
+    <circle cx="686" cy="126" r="48" fill="#f2cfad" stroke="#203b34" stroke-width="8"/>
+    <path d="M641 116q26-55 84-25l11 42q-34-19-73 4z" fill="#33483f"/>
+    <path d="M643 190q48-24 92 1l-6 184H624z" fill="#6b8d6f" stroke="#203b34" stroke-width="9"/>
+    <path d="M650 372l-29 178M710 372l38 178" stroke="#33483f" stroke-width="44" stroke-linecap="round"/>
+    <path d="M621 550h-72M748 550h76" stroke="#244d42" stroke-width="28" stroke-linecap="round"/>
+    <path d="M644 241l-60 115M730 240l65 104" stroke="#f2cfad" stroke-width="30" stroke-linecap="round"/>
+  </g>
+  <circle cx="106" cy="105" r="55" fill="#f1bd5b" opacity=".36"/>
+</svg>

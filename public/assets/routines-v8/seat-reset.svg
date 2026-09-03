@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" role="img" aria-labelledby="title desc">
+  <title id="title">의자에서 일어나 앉는 압박을 끊는 모습</title>
+  <desc id="desc">의자 옆에 서서 45초 쉬고 다시 좌우 앉는 부위로 고르게 앉는 흐름</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff4df"/><stop offset="1" stop-color="#e7f1ed"/></linearGradient>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="8" refY="5.5" orient="auto"><path d="M0 0L11 5.5L0 11Z" fill="#e86f3c"/></marker>
+  </defs>
+  <rect width="960" height="640" rx="42" fill="url(#bg)"/>
+  <rect x="510" y="344" width="260" height="46" rx="19" fill="#6f7c74"/>
+  <rect x="708" y="176" width="50" height="190" rx="20" fill="#6f7c74"/>
+  <path d="M548 388v170M732 388v170" stroke="#6f7c74" stroke-width="28" stroke-linecap="round"/>
+  <circle cx="355" cy="135" r="52" fill="#f2cfad" stroke="#203b34" stroke-width="8"/>
+  <path d="M307 125q26-58 88-27l12 45q-38-20-78 4z" fill="#33483f"/>
+  <path d="M312 204q52-26 101 0l20 210H282z" fill="#6b8d6f" stroke="#203b34" stroke-width="9"/>
+  <path d="M313 410l-17 147M398 410l28 147" stroke="#33483f" stroke-width="46" stroke-linecap="round"/>
+  <path d="M296 557h-74M426 557h74" stroke="#244d42" stroke-width="29" stroke-linecap="round"/>
+  <path d="M314 254l-52 122M407 253l61 119" stroke="#f2cfad" stroke-width="31" stroke-linecap="round"/>
+  <path d="M581 316c-35-69-98-102-154-109" fill="none" stroke="#e86f3c" stroke-width="11" stroke-linecap="round" marker-end="url(#arrow)"/>
+  <circle cx="649" cy="277" r="66" fill="#fffdf8" stroke="#2f5d50" stroke-width="8"/>
+  <path d="M649 235v49l32 19" fill="none" stroke="#2f5d50" stroke-width="11" stroke-linecap="round"/>
+  <circle cx="604" cy="378" r="16" fill="#f1bd5b"/>
+  <circle cx="677" cy="378" r="16" fill="#f1bd5b"/>
+  <circle cx="118" cy="108" r="58" fill="#f1bd5b" opacity=".36"/>
+</svg>

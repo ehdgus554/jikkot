@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" role="img" aria-labelledby="title desc">
+  <title id="title">전완을 책상에 받치는 모습</title>
+  <desc id="desc">의자에 앉아 마우스를 가까이 두고 양쪽 전완을 책상에 올린 자세</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff4df"/><stop offset="1" stop-color="#e8f1ed"/></linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="7" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#e86f3c"/></marker>
+  </defs>
+  <rect width="960" height="640" rx="42" fill="url(#bg)"/>
+  <circle cx="120" cy="110" r="66" fill="#f3c765" opacity=".38"/>
+  <rect x="525" y="256" width="330" height="30" rx="15" fill="#244d42"/>
+  <rect x="760" y="284" width="28" height="250" rx="14" fill="#345f53"/>
+  <rect x="610" y="207" width="138" height="30" rx="15" fill="#d8e7e1" stroke="#244d42" stroke-width="8"/>
+  <rect x="270" y="330" width="220" height="42" rx="18" fill="#6c7a71"/>
+  <rect x="300" y="368" width="28" height="166" rx="14" fill="#6c7a71"/>
+  <circle cx="430" cy="160" r="53" fill="#f2cfad" stroke="#203b34" stroke-width="8"/>
+  <path d="M385 139q44-55 100 3v-32q-23-46-79-29-28 9-40 38z" fill="#33483f"/>
+  <path d="M386 221q49-29 98 0l44 184H342z" fill="#6b8d6f" stroke="#203b34" stroke-width="9"/>
+  <path d="M390 262L526 323l126-6" fill="none" stroke="#f2cfad" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M481 264L585 323l123-4" fill="none" stroke="#f2cfad" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M514 323h188" stroke="#f1bd5b" stroke-width="20" stroke-linecap="round" opacity=".95"/>
+  <path d="M455 427l48 102M390 427l-8 106" stroke="#33483f" stroke-width="34" stroke-linecap="round"/>
+  <path d="M560 180v92" stroke="#e86f3c" stroke-width="9" stroke-linecap="round" marker-end="url(#arrow)"/>
+  <path d="M685 177v92" stroke="#e86f3c" stroke-width="9" stroke-linecap="round" marker-end="url(#arrow)"/>
+  <rect x="570" y="94" width="210" height="54" rx="27" fill="#fffdf8" stroke="#d8cdbd" stroke-width="3"/>
+  <path d="M610 121h130" stroke="#2f5d50" stroke-width="10" stroke-linecap="round"/>
+</svg>

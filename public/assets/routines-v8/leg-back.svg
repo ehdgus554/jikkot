@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" role="img" aria-labelledby="title desc">
+  <title id="title">의자를 잡고 한쪽 다리를 뒤로 보내는 모습</title>
+  <desc id="desc">허리를 젖히지 않고 선 자세에서 한쪽 다리를 작은 범위로 뒤로 움직이는 자세</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff4df"/><stop offset="1" stop-color="#e7f1ed"/></linearGradient>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="8" refY="5.5" orient="auto"><path d="M0 0L11 5.5L0 11Z" fill="#e86f3c"/></marker>
+  </defs>
+  <rect width="960" height="640" rx="42" fill="url(#bg)"/>
+  <rect x="655" y="310" width="190" height="35" rx="15" fill="#6f7c74"/>
+  <path d="M690 342v208M816 342v208" stroke="#6f7c74" stroke-width="27" stroke-linecap="round"/>
+  <circle cx="486" cy="134" r="51" fill="#f2cfad" stroke="#203b34" stroke-width="8"/>
+  <path d="M439 125q25-58 86-27l12 45q-37-20-76 4z" fill="#33483f"/>
+  <path d="M444 203q50-26 99 0l25 208H414z" fill="#6b8d6f" stroke="#203b34" stroke-width="9"/>
+  <path d="M532 253l151 70" stroke="#f2cfad" stroke-width="32" stroke-linecap="round"/>
+  <path d="M445 410l-2 145M534 409l169 126" stroke="#33483f" stroke-width="46" stroke-linecap="round"/>
+  <path d="M443 555h-72M703 535l75 30" stroke="#244d42" stroke-width="29" stroke-linecap="round"/>
+  <path d="M620 500c-72-63-134-75-190-54" fill="none" stroke="#e86f3c" stroke-width="11" stroke-linecap="round" marker-end="url(#arrow)"/>
+  <path d="M490 218v170" stroke="#f1bd5b" stroke-width="12" stroke-linecap="round" opacity=".9"/>
+  <circle cx="120" cy="108" r="58" fill="#f1bd5b" opacity=".36"/>
+</svg>

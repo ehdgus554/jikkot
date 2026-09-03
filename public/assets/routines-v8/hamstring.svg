@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" role="img" aria-labelledby="title desc">
+  <title id="title">의자에 앉아 뒤허벅지를 늘리는 모습</title>
+  <desc id="desc">한쪽 발꿈치를 앞으로 두고 골반에서 몸통을 조금 숙이는 자세</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff5e5"/><stop offset="1" stop-color="#e8f1ed"/></linearGradient>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="8" refY="5.5" orient="auto"><path d="M0 0L11 5.5L0 11Z" fill="#e86f3c"/></marker>
+  </defs>
+  <rect width="960" height="640" rx="42" fill="url(#bg)"/>
+  <rect x="250" y="360" width="250" height="42" rx="18" fill="#6f7c74"/>
+  <path d="M288 398v154M458 398v154" stroke="#6f7c74" stroke-width="28" stroke-linecap="round"/>
+  <circle cx="432" cy="156" r="52" fill="#f2cfad" stroke="#203b34" stroke-width="8"/>
+  <path d="M384 145q24-61 92-33l10 45q-31-22-78 3z" fill="#33483f"/>
+  <path d="M391 219q48-26 90 6l-14 171H333z" fill="#6b8d6f" stroke="#203b34" stroke-width="9"/>
+  <path d="M400 390L600 438" stroke="#d0a07d" stroke-width="43" stroke-linecap="round"/>
+  <path d="M600 438L800 503" stroke="#33483f" stroke-width="45" stroke-linecap="round"/>
+  <path d="M798 503l83 4" stroke="#244d42" stroke-width="30" stroke-linecap="round"/>
+  <path d="M354 391l-26 145" stroke="#33483f" stroke-width="45" stroke-linecap="round"/>
+  <path d="M328 536l-75 1" stroke="#244d42" stroke-width="30" stroke-linecap="round"/>
+  <path d="M364 262L520 397" stroke="#f2cfad" stroke-width="30" stroke-linecap="round"/>
+  <path d="M445 231c63 35 94 74 112 125" fill="none" stroke="#e86f3c" stroke-width="10" stroke-linecap="round" marker-end="url(#arrow)"/>
+  <path d="M618 462l164 52" stroke="#f1bd5b" stroke-width="18" stroke-linecap="round" opacity=".9"/>
+  <circle cx="122" cy="105" r="58" fill="#f1bd5b" opacity=".35"/>
+</svg>
