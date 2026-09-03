@@ -1,6 +1,6 @@
 {
   "name": "jikkot-ver9",
-  "version": "9.0.0",
+  "version": "9.1.0",
   "private": true,
   "engines": {
     "node": ">=22.13.0"

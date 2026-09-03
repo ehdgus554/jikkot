@@ -116,3 +116,22 @@ test("keeps recent actions and habits short and specific to each area", async ()
     }
   }
 });
+
+test("keeps Korean copy intact and uses the VER9.1 pastel palette", async () => {
+  const [globals, app, packageJson] = await Promise.all([
+    readFile(path.join(root, "app/globals.css"), "utf8"),
+    readFile(path.join(root, "app/jikkot-app.tsx"), "utf8"),
+    readFile(path.join(root, "package.json"), "utf8"),
+  ]);
+
+  assert.match(globals, /word-break:\s*keep-all/);
+  assert.match(globals, /text-wrap:\s*pretty/);
+  assert.match(globals, /#ecebff/);
+  assert.match(globals, /#ffb9a8/);
+  assert.match(app, /VER9\.1 PROTOTYPE/);
+  assert.equal(JSON.parse(packageJson).version, "9.1.0");
+
+  const legacyGreen = /#(?:123b32|0d2a24|286a58|1a5043|edf5f1|dcebe5)/i;
+  assert.doesNotMatch(globals, legacyGreen);
+  assert.doesNotMatch(app, legacyGreen);
+});

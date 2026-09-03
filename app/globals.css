@@ -19,38 +19,38 @@
 }
 
 :root {
-  --background: #f7f5ef;
-  --foreground: #18201d;
-  --card: #fffefb;
-  --card-foreground: #18201d;
-  --popover: #fffefb;
-  --popover-foreground: #18201d;
-  --primary: #123b32;
+  --background: #fff9f7;
+  --foreground: #303247;
+  --card: #ffffff;
+  --card-foreground: #303247;
+  --popover: #ffffff;
+  --popover-foreground: #303247;
+  --primary: #656abd;
   --primary-foreground: #ffffff;
-  --secondary: #edf5f1;
-  --secondary-foreground: #123b32;
-  --muted: #edf1ef;
-  --muted-foreground: #66716c;
-  --accent: #f5e9c8;
-  --accent-foreground: #5e4814;
-  --destructive: #b74b3d;
-  --border: #dfe5e1;
-  --input: #ccd5d0;
-  --ring: #d1a94c;
-  --chart-1: #286a58;
-  --chart-2: #d1a94c;
-  --chart-3: #1a5043;
-  --chart-4: #7faf9e;
-  --chart-5: #b98d2e;
+  --secondary: #f0f1ff;
+  --secondary-foreground: #4f548f;
+  --muted: #f5f3f8;
+  --muted-foreground: #6f7183;
+  --accent: #ffe7dc;
+  --accent-foreground: #704b43;
+  --destructive: #c65f6f;
+  --border: #e6e2ec;
+  --input: #d8d4e2;
+  --ring: #8c91d8;
+  --chart-1: #6268ba;
+  --chart-2: #ffb9a8;
+  --chart-3: #a9d9ef;
+  --chart-4: #d5b6e8;
+  --chart-5: #e7a36f;
   --radius: 0.875rem;
-  --sidebar: #edf5f1;
-  --sidebar-foreground: #18201d;
-  --sidebar-primary: #123b32;
+  --sidebar: #f0f1ff;
+  --sidebar-foreground: #303247;
+  --sidebar-primary: #656abd;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f5e9c8;
-  --sidebar-accent-foreground: #5e4814;
-  --sidebar-border: #dfe5e1;
-  --sidebar-ring: #d1a94c;
+  --sidebar-accent: #ffe7dc;
+  --sidebar-accent-foreground: #704b43;
+  --sidebar-border: #e6e2ec;
+  --sidebar-ring: #8c91d8;
 }
 
 @theme inline {
@@ -121,10 +121,39 @@
 body {
   min-width: 320px;
   background:
-    radial-gradient(circle at 14% 6%, rgba(209, 169, 76, 0.18), transparent 28rem),
-    linear-gradient(135deg, #123b32 0%, #0d2a24 70%);
+    radial-gradient(circle at 14% 8%, rgba(255, 185, 168, 0.42), transparent 28rem),
+    radial-gradient(circle at 88% 88%, rgba(169, 217, 239, 0.4), transparent 30rem),
+    linear-gradient(135deg, #ecebff 0%, #fff4ee 54%, #eaf8ff 100%);
   color: var(--foreground);
   font-family: "Nanum Gothic Jikkot", "Noto Sans KR", "Apple SD Gothic Neo", system-ui, sans-serif;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  text-wrap: pretty;
+}
+
+h1,
+h2,
+h3,
+[data-slot="dialog-title"] {
+  text-wrap: balance;
+}
+
+p,
+li,
+strong,
+small,
+label,
+[data-slot="dialog-description"] {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  text-wrap: pretty;
+}
+
+[data-slot="button"],
+[data-slot="badge"],
+input {
+  word-break: normal;
+  text-wrap: nowrap;
 }
 
 button,
