@@ -20,17 +20,17 @@ export const movements = [
   {
     id: "seated" as const,
     label: "앉아서",
-    description: "앉기만",
+    description: "",
   },
   {
     id: "standing" as const,
-    label: "서서도",
-    description: "서기까지",
+    label: "일어서기",
+    description: "",
   },
   {
     id: "lying" as const,
-    label: "누워서도",
-    description: "눕기까지",
+    label: "눕기",
+    description: "",
   },
 ];
 
