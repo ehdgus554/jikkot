@@ -468,7 +468,7 @@ export default function JikkotApp() {
 
           {step === "movement" ? (
             <section>
-              <ScreenHeading eyebrow="1 / 4" title="지금 가능한 움직임은?" description="현재 있는 공간에서 편하게 할 수 있는 범위를 골라주세요." />
+              <ScreenHeading eyebrow="1 / 4" title="지금 가능한 자세는?" description="할 수 있는 자세를 골라주세요." />
               <div className="grid auto-rows-fr items-stretch gap-3 sm:grid-cols-3">
                 {movements.map((item, index) => {
                   const Icon = [Armchair, Footprints, BedDouble][index];
