@@ -1,5 +1,7 @@
 # 실제 실행 검증 (2026-10-07)
 
+이후 Cloudflare 설치 실패 로그를 재현한 수정 검증은 [Cloudflare 배포 수정 안내](cloudflare-build-fix-ko.md)에 있습니다. Node 24.18.0/npm 10.9.2 clean install, Firebase 미연결 준비 화면 dry-run과 실제 local workerd를 추가 검증했습니다. 서비스 단위 검사는 배포 설정 2개가 추가되어 총 7개입니다.
+
 대상은 `ehdgus554/jikkot`, 작업 브랜치는 `feat/service-flow-firebase`입니다. `jikkot-ver9`는 읽기 전용 참고로만 사용했습니다. 첨부 구현 지시서 558줄을 끝까지 읽고, 포함된 서비스 플로우 원문이 별도 첨부 플로우와 일치함을 확인했습니다.
 
 환경: Node 22.23.3, Java 21, npm 11.9.0, Firebase CLI 14.22.0, Firestore emulator 1.19.8, 시스템 Chromium, Wrangler 4.92.0. 실제 사용자/운영 데이터 대신 `demo-jikkot` Auth·Firestore·Functions 에뮬레이터를 사용했습니다.

@@ -53,6 +53,7 @@ import {
 } from "@/components/ui/dialog";
 
 import { consentPolicy } from "@/lib/service/policy";
+import { ServicePreparation } from "@/components/service-preparation";
 type Member = { uid: string; username: string | null; nickname: string };
 type Me = {
   member: Member | null;
@@ -117,6 +118,14 @@ function Action({
   );
 }
 export default function JikkotApp() {
+  return __JIKKOT_PREPARATION__ ? (
+    <ServicePreparation />
+  ) : (
+    <ConnectedJikkotApp />
+  );
+}
+
+function ConnectedJikkotApp() {
   const [entry, setEntry] = useState<Entry>(configured ? "splash" : "choice"),
     [p, setP] = useState<Progress | null>(null),
     [member, setMember] = useState<Member | null>(null),

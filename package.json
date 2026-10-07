@@ -8,10 +8,12 @@
   "scripts": {
     "dev": "vite",
     "build": "vinext build",
+    "build:preparation": "JIKKOT_PREPARATION=true vinext build",
     "start": "vinext start",
     "test": "npm run content:check && npm run build && node --test tests/ui-components.test.mjs && npm run test:service",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "deploy": "tsx scripts/check-deploy.ts && npm run content:check && npm run build && tsx scripts/check-worker-target.ts jikkot-ver9 && wrangler deploy",
+    "deploy:preparation": "JIKKOT_PREPARATION=true npm run deploy",
     "typecheck": "tsc --noEmit --incremental false && npm --prefix functions run build",
     "content:check": "tsx scripts/validate-content.ts",
     "test:service": "tsx --test tests/service/*.test.ts",
@@ -20,6 +22,7 @@
     "test:integration": "tsx --test tests/integration/*.test.ts",
     "test:browser": "playwright test",
     "test:worker": "node scripts/worker-smoke.mjs",
+    "test:preparation": "node scripts/preparation-smoke.mjs",
     "deploy:preview": "tsx scripts/check-deploy.ts && npm run content:check && CLOUDFLARE_ENV=preview npm run build && tsx scripts/check-worker-target.ts jikkot-review && wrangler deploy",
     "build:local-worker": "JIKKOT_LOCAL_WORKER=true vinext build"
   },

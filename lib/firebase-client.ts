@@ -1,11 +1,18 @@
 import { initializeApp, getApps } from "firebase/app";
 import { getAuth, connectAuthEmulator, type Auth } from "firebase/auth";
-const config = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
-};
+const config = __JIKKOT_PREPARATION__
+  ? {
+      apiKey: undefined,
+      authDomain: undefined,
+      projectId: undefined,
+      appId: undefined,
+    }
+  : {
+      apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+      authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+      projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+      appId: import.meta.env.VITE_FIREBASE_APP_ID,
+    };
 export const configured = Boolean(config.apiKey && config.projectId);
 export const useEmulator =
   (import.meta.env.DEV || __JIKKOT_LOCAL_WORKER__) &&
@@ -26,7 +33,9 @@ export function firebaseAuth() {
   }
   return auth;
 }
-export const apiBase = import.meta.env.VITE_API_URL;
+export const apiBase = __JIKKOT_PREPARATION__
+  ? undefined
+  : import.meta.env.VITE_API_URL;
 export async function api<T = Record<string, unknown>>(
   path: string,
   body?: unknown,
