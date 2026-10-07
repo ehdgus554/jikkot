@@ -50,7 +50,9 @@ test("emits the catalog's animation and scrolling utilities", async () => {
 
 test("forwards progress semantics to the primitive", async () => {
   const { Progress } = await vite.ssrLoadModule("/components/ui/progress.tsx");
-  const html = renderToStaticMarkup(React.createElement(Progress, { value: 37 }));
+  const html = renderToStaticMarkup(
+    React.createElement(Progress, { value: 37 }),
+  );
 
   assert.match(html, /aria-valuenow="37"/);
   assert.match(html, /aria-valuetext="37%"/);
@@ -134,4 +136,46 @@ test("keeps Korean copy intact and uses the VER9.1 pastel palette", async () => 
   const legacyGreen = /#(?:123b32|0d2a24|286a58|1a5043|edf5f1|dcebe5)/i;
   assert.doesNotMatch(globals, legacyGreen);
   assert.doesNotMatch(app, legacyGreen);
+});
+
+test("production client omits the Auth emulator endpoint and test bypass", async () => {
+  const readScripts = async (directory) => {
+    const entries = await readdir(directory, { withFileTypes: true });
+    const scripts = await Promise.all(
+      entries.map(async (entry) => {
+        const location = path.join(directory, entry.name);
+        return entry.isDirectory()
+          ? readScripts(location)
+          : entry.name.endsWith(".js")
+            ? readFile(location, "utf8")
+            : "";
+      }),
+    );
+    return scripts.join("\n");
+  };
+  const client = await readScripts(path.join(root, "dist/client"));
+  assert.equal(
+    client.includes("http://127.0.0.1:9099"),
+    false,
+    "production has no application Auth emulator connection",
+  );
+  assert.equal(
+    client.includes("emulator-only"),
+    false,
+    "test proof is not shipped",
+  );
+  // Firebase's library contains this setting internally for its exported emulator API.
+  // Check that our application never enables the setting independently of that API.
+  const application = await readFile(
+    path.join(root, "app/jikkot-app.tsx"),
+    "utf8",
+  );
+  const firebaseClient = await readFile(
+    path.join(root, "lib/firebase-client.ts"),
+    "utf8",
+  );
+  assert.doesNotMatch(
+    application + firebaseClient,
+    /appVerificationDisabledForTesting\s*=/,
+  );
 });
