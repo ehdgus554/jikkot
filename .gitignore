@@ -39,3 +39,16 @@ next-env.d.ts
 /.wrangler/
 /outputs/
 /work/
+
+# Firebase local runtime and build artifacts
+/functions/lib/
+/functions/node_modules/
+/firebase-debug.log
+/firestore-debug.log
+/ui-debug.log
+/.firebase/
+/playwright-report/
+/test-results/
+*.tsbuildinfo
+!.env.example
+!functions/.env.example

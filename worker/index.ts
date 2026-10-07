@@ -1,47 +1,32 @@
-/** Cloudflare Worker entry point for the vinext-starter template. */
-import { handleImageOptimization, DEFAULT_DEVICE_SIZES, DEFAULT_IMAGE_SIZES } from "vinext/server/image-optimization";
+/** Web serving and same-domain Firebase Auth helper only. Data APIs stay in Functions. */
 import handler from "vinext/server/app-router-entry";
-
 interface Env {
-  ASSETS: Fetcher;
-  DB: D1Database;
-  IMAGES: {
-    input(stream: ReadableStream): {
-      transform(options: Record<string, unknown>): {
-        output(options: { format: string; quality: number }): Promise<{ response(): Response }>;
-      };
-    };
-  };
+  ASSETS: { fetch(request: Request): Promise<Response> };
+  FIREBASE_AUTH_HELPER_HOST?: string;
 }
-
 interface ExecutionContext {
   waitUntil(promise: Promise<unknown>): void;
   passThroughOnException(): void;
 }
-
-// Image security config. SVG sources with .svg extension auto-skip the
-// optimization endpoint on the client side (served directly, no proxy).
-// To route SVGs through the optimizer (with security headers), set
-// dangerouslyAllowSVG: true in next.config.js and uncomment below:
-// const imageConfig: ImageConfig = { dangerouslyAllowSVG: true };
-
 const worker = {
-  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+  async fetch(request: Request, env: Env, ctx: ExecutionContext) {
     const url = new URL(request.url);
-
-    if (url.pathname === "/_vinext/image") {
-      const allowedWidths = [...DEFAULT_DEVICE_SIZES, ...DEFAULT_IMAGE_SIZES];
-      return handleImageOptimization(request, {
-        fetchAsset: (path) => env.ASSETS.fetch(new Request(new URL(path, request.url))),
-        transformImage: async (body, { width, format, quality }) => {
-          const result = await env.IMAGES.input(body).transform(width > 0 ? { width } : {}).output({ format, quality });
-          return result.response();
-        },
-      }, allowedWidths);
+    if (url.pathname.startsWith("/__/auth/")) {
+      // Firebase's documented same-domain reverse proxy for mobile redirect/storage restrictions.
+      const host = env.FIREBASE_AUTH_HELPER_HOST;
+      if (!host || !/^[a-z0-9-]+\.firebaseapp\.com$/.test(host))
+        return new Response("Authentication helper is not configured.", {
+          status: 503,
+        });
+      if (!["GET", "HEAD", "POST"].includes(request.method))
+        return new Response("Method not allowed.", { status: 405 });
+      const target = new URL(url.pathname + url.search, `https://${host}`);
+      const forwarded = new Request(target, request);
+      forwarded.headers.delete("authorization");
+      forwarded.headers.delete("cookie");
+      return fetch(forwarded);
     }
-
     return handler.fetch(request, env, ctx);
   },
 };
-
 export default worker;

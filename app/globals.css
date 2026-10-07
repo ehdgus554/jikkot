@@ -89,9 +89,12 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --font-sans: "Nanum Gothic Jikkot", "Noto Sans KR", "Apple SD Gothic Neo", system-ui, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
+  --font-sans:
+    "Nanum Gothic Jikkot", "Noto Sans KR", "Apple SD Gothic Neo", system-ui,
+    sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
 }
 
 @font-face {
@@ -121,11 +124,21 @@
 body {
   min-width: 320px;
   background:
-    radial-gradient(circle at 14% 8%, rgba(255, 185, 168, 0.42), transparent 28rem),
-    radial-gradient(circle at 88% 88%, rgba(169, 217, 239, 0.4), transparent 30rem),
+    radial-gradient(
+      circle at 14% 8%,
+      rgba(255, 185, 168, 0.42),
+      transparent 28rem
+    ),
+    radial-gradient(
+      circle at 88% 88%,
+      rgba(169, 217, 239, 0.4),
+      transparent 30rem
+    ),
     linear-gradient(135deg, #ecebff 0%, #fff4ee 54%, #eaf8ff 100%);
   color: var(--foreground);
-  font-family: "Nanum Gothic Jikkot", "Noto Sans KR", "Apple SD Gothic Neo", system-ui, sans-serif;
+  font-family:
+    "Nanum Gothic Jikkot", "Noto Sans KR", "Apple SD Gothic Neo", system-ui,
+    sans-serif;
   word-break: keep-all;
   overflow-wrap: break-word;
   text-wrap: pretty;
@@ -164,6 +177,16 @@ input {
 button:focus-visible,
 input:focus-visible {
   outline-offset: 3px;
+}
+
+.service-surface h1 {
+  font-size: clamp(1.35rem, 4vw, 1.8rem);
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.service-surface form label {
+  display: block;
 }
 
 @media (prefers-reduced-motion: reduce) {

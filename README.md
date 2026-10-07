@@ -1,49 +1,59 @@
-# 직꼿 VER9.1
+# 직꼿 서비스 플로우 시제품
 
-직장인이 현재 가능한 움직임, 큰 불편 부위, 최근 행동과 생활습관을 선택하면 사진 루틴 3개를 제안하는 서버형 시제품입니다.
+자세 → 불편 부위 → 생활 습관 → 최근 상태를 선택하고 동작 하나를 수행한 뒤 피드백을 남깁니다. Firebase Auth/Firestore/Functions가 인증과 데이터를 담당하고 Cloudflare Vinext Worker가 웹을 제공합니다. 기존 추천 콘텐츠는 검수 전 MVP이며 조건부 질문·관련 부위/악화 재추천표·GIF는 아직 확정되지 않았습니다. 회원 기능은 무료이고 스트레칭/쇼핑은 준비 중입니다.
 
-## 브라우저에서 Cloudflare에 배포
+## 로컬 실행
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/ehdgus554/jikkot)
-
-위 버튼을 누르면 Cloudflare가 다음 항목을 자동으로 준비합니다.
-
-- 직꼿 VER9.1 Worker와 정적 이미지
-- 회원정보를 저장할 D1 데이터베이스
-- 회원·세션·비회원 일일 이용 기록 테이블
-- GitHub 저장소와 이후 자동 배포 연결
-
-자세한 화면별 순서는 [`CLOUDFLARE_배포_가이드.md`](./CLOUDFLARE_배포_가이드.md)를 확인하세요.
-
-## 주요 기능
-
-- 가능한 움직임 → 큰 불편 부위 → 부위별 최근 행동 → 부위별 생활습관 → 루틴 추천
-- 머리·목·어깨·허리·골반·엉덩이 동작 후보 30개
-- 아이디·비밀번호 회원가입과 로그인
-- 비밀번호 PBKDF2 해시·솔트 저장
-- 회원 등급 필드: `member`, `lifetime`, `admin`
-- 로그인 회원은 시제품 후보 30개 전체 열람
-- 비회원은 한국 시간 기준 하루 1개 루틴 상세 열람
-- Cloudflare D1 기반 회원·세션·이용 기록 저장
-
-## 현재 범위
-
-- 모든 사진, 동작과 추천 연결은 검수 전 시제품 콘텐츠입니다.
-- 비회원이 쿠키를 삭제하거나 다른 브라우저·기기를 사용하면 새 방문자로 인식될 수 있습니다.
-- 카카오·네이버 로그인과 휴대전화 인증은 포함하지 않았습니다.
-- 로그인 시도 제한, 계정 복구, 회원 탈퇴·파기 흐름은 실서비스 전에 추가해야 합니다.
-- 이 추천은 질환 진단이나 치료를 대신하지 않습니다.
-
-## 로컬 개발
+Node 22.13 이상(권장 22), Java 21 이상이 필요합니다.
 
 ```bash
 npm ci
-npm run dev
+npm --prefix functions ci
+cp .env.example .env.local
+# .env.local에 다음 로컬 값 입력:
+# VITE_FIREBASE_API_KEY=demo-key
+# VITE_FIREBASE_AUTH_DOMAIN=demo-jikkot.firebaseapp.com
+# VITE_FIREBASE_PROJECT_ID=demo-jikkot
+# VITE_FIREBASE_APP_ID=demo-jikkot-app
+# VITE_API_URL=http://127.0.0.1:5001/demo-jikkot/asia-northeast3/api
+# VITE_USE_FIREBASE_EMULATORS=true
+npm run emulators
 ```
 
-## 검증
+다른 터미널에서 `npm run dev -- --port 5173 --strictPort`를 실행합니다. 에뮬레이터의 전화 인증 코드는 에뮬레이터 터미널/공식 테스트 API에서 확인합니다. 실제 SMS나 실사용 데이터는 사용하지 않습니다. Firebase 연결이 없으면 앱은 연결 준비 상태를 안내하며 가짜 회원/기록으로 대체하지 않습니다.
 
 ```bash
-npm test
+npm test                 # 콘텐츠 검사 + 빌드 + UI/추천/복원 회귀
+npm run typecheck
 npm run lint
+npm run test:emulators   # 에뮬레이터를 새로 시작해 실제 Auth/Firestore/Functions/rules 검증
+# 이미 에뮬레이터가 실행 중이면 npm run test:integration
+# Vite와 에뮬레이터 실행 상태에서:
+npx playwright install chromium
+npm run test:browser
+# 시스템 Chromium을 쓰는 환경: CHROMIUM_PATH=/usr/bin/chromium npm run test:browser
 ```
+
+`npm run build:local-worker`는 로컬 Worker 에뮬레이터 검증 전용 개발 빌드입니다. 운영/검토 배포는 별도 Firebase 환경변수를 설정하고 `npm run deploy:preview`/`npm run deploy`를 사용합니다. 배포 guard가 demo 프로젝트와 emulator/HTTP 설정을 거절합니다. 운영에 개발 빌드를 올리지 마세요.
+
+로컬 Worker 자체 검증(에뮬레이터 실행 상태):
+
+```bash
+npm run build:local-worker
+XDG_CONFIG_HOME=/tmp/jikkot-wrangler WRANGLER_SEND_METRICS=false npx wrangler dev --config dist/server/wrangler.json --port 8787 --local
+# 다른 터미널:
+CHROMIUM_PATH=/usr/bin/chromium npm run test:worker
+# Wrangler 종료 후 배포용 번들 복원:
+npm run build
+```
+
+## 문서
+
+- [서비스 플로우 원문](docs/service-flow.md), [구현 지시서](docs/implementation-request.md)
+- [요구사항별 구현·검증](docs/implementation-checklist.md)
+- [콘텐츠 대기·추천 어댑터](docs/content-gaps.md)
+- [인증·한도·저장 설계](docs/auth-design.md)
+- [Firebase·소셜·SMS·Cloudflare·도메인 연결](docs/deployment-guide-ko.md)
+- [실행 검증 결과](docs/validation.md)
+
+D1 의존성은 새 앱에서 제거했지만 기존 Cloudflare 자원·실데이터는 삭제하지 않았습니다. 가입 동의 문안과 운영 보관 정책은 개발 초안이며 출시 전에 확정해야 합니다.

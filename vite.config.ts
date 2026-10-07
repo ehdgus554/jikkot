@@ -12,6 +12,11 @@ export default defineConfig(async () => {
   const { cloudflare } = await import("@cloudflare/vite-plugin");
 
   return {
+    define: {
+      __JIKKOT_LOCAL_WORKER__: JSON.stringify(
+        process.env.JIKKOT_LOCAL_WORKER === "true",
+      ),
+    },
     server: {
       host: "0.0.0.0",
     },
