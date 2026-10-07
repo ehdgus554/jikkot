@@ -8,8 +8,8 @@ const connected = {
   VITE_FIREBASE_APP_ID: "public-app-id",
   VITE_API_URL: "https://example.cloudfunctions.net/api",
 };
-test("empty Firebase configuration deploys the preparation page; partial configuration cannot pretend to be live", () => {
-  assert.equal(deploymentMode({}), "preparation");
+test("empty Firebase configuration opens a public preview; partial configuration cannot pretend to be live", () => {
+  assert.equal(deploymentMode({}), "preview");
   assert.throws(
     () => deploymentMode({ VITE_FIREBASE_PROJECT_ID: "example" }),
     /누락/,

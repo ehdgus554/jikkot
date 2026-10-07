@@ -20,12 +20,16 @@
     "test:service": "tsx --test tests/service/*.test.ts",
     "emulators": "node scripts/firebase-local.mjs start",
     "test:emulators": "node scripts/firebase-local.mjs exec",
-    "test:integration": "tsx --test tests/integration/*.test.ts",
+    "test:integration": "npm run test:spark",
     "test:browser": "playwright test",
     "test:worker": "node scripts/worker-smoke.mjs",
     "test:preparation": "node scripts/preparation-smoke.mjs",
     "deploy:preview": "tsx scripts/check-deploy.ts && npm run content:check && CLOUDFLARE_ENV=preview npm run build && tsx scripts/check-worker-target.ts jikkot-review && wrangler deploy",
-    "build:local-worker": "JIKKOT_LOCAL_WORKER=true vinext build"
+    "build:local-worker": "JIKKOT_LOCAL_WORKER=true vinext build",
+    "dev:api": "tsx scripts/spark-local.ts",
+    "test:spark": "tsx --test tests/spark/*.test.ts",
+    "test:legacy-functions": "tsx --test tests/integration/*.test.ts",
+    "test:public-preview": "node scripts/public-preview-smoke.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
@@ -38,6 +42,7 @@
     "embla-carousel-react": "^8.6.0",
     "firebase": "^12.19.0",
     "input-otp": "^1.4.2",
+    "jose": "^6.2.12",
     "jsonc-parser": "^3.3.1",
     "lucide-react": "^1.31.0",
     "next": "16.2.6",

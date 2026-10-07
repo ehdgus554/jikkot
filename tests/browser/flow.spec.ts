@@ -132,30 +132,16 @@ test("guest login resets all answers, member history saves each feedback and log
 }) => {
   const authURL =
     "http://127.0.0.1:9099/identitytoolkit.googleapis.com/v1/accounts:";
-  const apiURL = "http://127.0.0.1:5001/demo-jikkot/asia-northeast3/api";
-  const suffix = crypto.randomUUID().slice(0, 8),
-    phoneNumber =
-      "+1650555" + String(Math.floor(Math.random() * 10000)).padStart(4, "0");
-  const sent = await (
-    await request.post(authURL + "sendVerificationCode?key=demo-key", {
-      data: { phoneNumber, recaptchaToken: "emulator-only" },
-    })
-  ).json();
-  const codes = await (
-    await request.get(
-      "http://127.0.0.1:9099/emulator/v1/projects/demo-jikkot/verificationCodes",
-    )
-  ).json();
-  const code = codes.verificationCodes.find(
-    (q: { sessionInfo: string }) => q.sessionInfo === sent.sessionInfo,
-  ).code;
-  const user = await (
-    await request.post(authURL + "signInWithPhoneNumber?key=demo-key", {
-      data: { sessionInfo: sent.sessionInfo, code },
-    })
-  ).json();
+  const apiURL = "http://127.0.0.1:5002/api";
+  const suffix = crypto.randomUUID().slice(0, 8);
   const username = "web_" + suffix,
-    password = crypto.randomUUID();
+    password = crypto.randomUUID(),
+    email = `web-${suffix}@example.test`;
+  const user = await (
+    await request.post(authURL + "signUp?key=demo-key", {
+      data: { email, password, returnSecureToken: true },
+    })
+  ).json();
   const signup = await request.post(apiURL + "/signup", {
     headers: { Authorization: `Bearer ${user.idToken}` },
     data: {
@@ -175,7 +161,7 @@ test("guest login resets all answers, member history saves each feedback and log
   await page.getByRole("button", { name: "기록 확인", exact: true }).click();
   await page.getByRole("button", { name: "로그인하기", exact: true }).click();
   async function login() {
-    await page.getByLabel("아이디", { exact: true }).fill(username);
+    await page.getByLabel("이메일", { exact: true }).fill(email);
     await page.getByLabel("비밀번호", { exact: true }).fill(password);
     await page.getByRole("button", { name: "로그인", exact: true }).click();
     await expect(
@@ -276,55 +262,34 @@ test("lost recommendation response and feedback save failure preserve fixed IDs 
     ),
   ).toBe(recommendationId);
 });
-test("SMS signup UI and phone recovery use real emulator proof with consent gate", async ({
+test("email signup and email password recovery work without SMS and require both consents", async ({
   page,
   request,
 }) => {
   const suffix = crypto.randomUUID().slice(0, 8),
-    username = "sms_" + suffix,
-    password = crypto.randomUUID(),
-    phoneNumber =
-      "+1650555" + String(Math.floor(Math.random() * 10000)).padStart(4, "0");
+    username = "email_" + suffix,
+    email = `email-${suffix}@example.test`;
   await page.goto("/");
   await page.getByRole("button", { name: "로그인하기", exact: true }).click();
   await page
     .getByRole("button", { name: "직접 회원가입", exact: true })
     .click();
+  await expect(page.getByLabel("휴대폰 번호")).toHaveCount(0);
   await page.getByLabel("아이디 (영문 소문자·숫자·밑줄 4~20자)").fill(username);
   await page.getByRole("button", { name: "아이디 중복 확인" }).click();
-  await page.getByLabel("비밀번호 (8~72자)").fill(password);
-  await page
-    .getByLabel("이메일 (가입 정보)")
-    .fill(`sms-${suffix}@example.test`);
+  await page.getByLabel("비밀번호 (8~72자)").fill(crypto.randomUUID());
+  await page.getByLabel("이메일 (로그인에 사용)").fill(email);
   await page.getByLabel("닉네임 (한글·영문·숫자·밑줄 2~20자)").fill(username);
   await page.getByRole("button", { name: "닉네임 중복 확인" }).click();
-  async function verify() {
-    await page.getByLabel("휴대폰 번호").fill(phoneNumber);
-    await page.getByRole("button", { name: "인증 문자 받기" }).click();
-    await expect(
-      page.getByRole("button", { name: "인증 확인", exact: true }),
-    ).toBeEnabled();
-    const data = await (
-      await request.get(
-        "http://127.0.0.1:9099/emulator/v1/projects/demo-jikkot/verificationCodes",
-      )
-    ).json();
-    const code = data.verificationCodes
-      .filter((q: { phoneNumber: string }) => q.phoneNumber === phoneNumber)
-      .at(-1).code;
-    await page.getByLabel("문자 인증 코드").fill(code);
-    await page.getByRole("button", { name: "인증 확인", exact: true }).click();
-    await expect(
-      page.getByRole("button", { name: "휴대폰 확인 완료" }),
-    ).toBeVisible();
-  }
-  await verify();
   await expect(
     page.getByRole("button", { name: "가입하고 시작하기" }),
   ).toBeDisabled();
   await page
     .getByRole("checkbox", { name: "개인정보 수집·이용 동의 (필수)" })
     .check();
+  await expect(
+    page.getByRole("button", { name: "가입하고 시작하기" }),
+  ).toBeDisabled();
   await page
     .getByRole("checkbox", { name: /진단·치료를 제공하는 의료 서비스/ })
     .check();
@@ -334,12 +299,23 @@ test("SMS signup UI and phone recovery use real emulator proof with consent gate
   ).toBeVisible();
   await page.getByRole("button", { name: "로그아웃", exact: true }).click();
   await page.getByRole("button", { name: "로그인하기", exact: true }).click();
+  await page.getByRole("button", { name: "이메일로 비밀번호 재설정" }).click();
+  await page.getByLabel("가입한 이메일").fill(email);
   await page
-    .getByRole("button", { name: "아이디 찾기 · 비밀번호 재설정" })
+    .getByRole("button", { name: "비밀번호 재설정 메일 보내기" })
     .click();
-  await verify();
-  await page.getByRole("button", { name: "계정 복구하기" }).click();
-  await expect(page.getByRole("status")).toContainText(username);
+  await expect(page.getByRole("status")).toContainText("안내가 발송");
+  const codes = await (
+    await request.get(
+      "http://127.0.0.1:9099/emulator/v1/projects/demo-jikkot/oobCodes",
+    )
+  ).json();
+  expect(
+    codes.oobCodes.some(
+      (code: { email: string; requestType: string }) =>
+        code.email === email && code.requestType === "PASSWORD_RESET",
+    ),
+  ).toBe(true);
 });
 test("social cancellation stays at login and unconfigured providers explain the connection status", async ({
   page,

@@ -3,8 +3,8 @@ service cloud.firestore {
   match /databases/{database}/documents {
     function member(uid) {
       return request.auth != null && request.auth.uid == uid &&
-        request.auth.token.firebase.sign_in_provider != 'google.com' &&
         exists(/databases/$(database)/documents/profiles/$(uid)) &&
+        get(/databases/$(database)/documents/profiles/$(uid)).data.authProvider == request.auth.token.firebase.sign_in_provider &&
         get(/databases/$(database)/documents/profiles/$(uid)).data.active == true;
     }
     match /profiles/{uid} {

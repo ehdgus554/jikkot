@@ -9,9 +9,9 @@ import {
   signInWithPopup,
   signInWithRedirect,
   getRedirectResult,
-  RecaptchaVerifier,
-  signInWithPhoneNumber,
-  type ConfirmationResult,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { api, apiBase, configured, firebaseAuth } from "@/lib/firebase-client";
 import {
@@ -54,6 +54,7 @@ import {
 
 import { consentPolicy } from "@/lib/service/policy";
 import { ServicePreparation } from "@/components/service-preparation";
+import { previewRecommendation } from "@/lib/service/public-preview";
 type Member = { uid: string; username: string | null; nickname: string };
 type Me = {
   member: Member | null;
@@ -66,7 +67,7 @@ type Rec = {
   snapshot: {
     answers: Answers;
     pattern: string;
-    routine: Routine;
+    routine: Pick<Routine, "id" | "name" | "image" | "cue" | "dose" | "comfort">;
     area: { id: AreaCode; label: string };
     habits: { id: string; label: string }[];
     recent: { id: string; label: string }[];
@@ -126,6 +127,7 @@ export default function JikkotApp() {
 }
 
 function ConnectedJikkotApp() {
+  const preview = !configured;
   const [entry, setEntry] = useState<Entry>(configured ? "splash" : "choice"),
     [p, setP] = useState<Progress | null>(null),
     [member, setMember] = useState<Member | null>(null),
@@ -146,20 +148,11 @@ function ConnectedJikkotApp() {
   const [username, setUsername] = useState(""),
     [password, setPassword] = useState(""),
     [email, setEmail] = useState(""),
-    [nickname, setNickname] = useState(""),
-    [phone, setPhone] = useState(""),
-    [sms, setSms] = useState("");
+    [nickname, setNickname] = useState("");
   const [confirmed, setConfirmed] = useState({ username: "", nickname: "" }),
-    [hasConfirmation, setHasConfirmation] = useState(false),
-    [phoneVerified, setPhoneVerified] = useState(false),
     [consents, setConsents] = useState({ privacy: false, nonMedical: false }),
-    [recoveryAction, setRecoveryAction] = useState<"username" | "password">(
-      "username",
-    ),
     [foundUsername, setFoundUsername] = useState("");
-  const confirmation = useRef<ConfirmationResult | null>(null),
-    captcha = useRef<RecaptchaVerifier | null>(null),
-    authAction = useRef(false),
+  const authAction = useRef(false),
     pRef = useRef<Progress | null>(null);
   useEffect(() => {
     pRef.current = p;
@@ -185,6 +178,7 @@ function ConnectedJikkotApp() {
     }
   };
   const clearLocal = () => {
+    setMember(null);
     localStorage.removeItem(PROGRESS_KEY);
     Object.keys(sessionStorage)
       .filter((key) => key.startsWith("jikkot."))
@@ -197,14 +191,9 @@ function ConnectedJikkotApp() {
     setUsername("");
     setEmail("");
     setNickname("");
-    setPhone("");
     setFoundUsername("");
     setConfirmed({ username: "", nickname: "" });
     setConsents({ privacy: false, nonMedical: false });
-    setSms("");
-    setPhoneVerified(false);
-    confirmation.current = null;
-    setHasConfirmation(false);
   };
   const run = async (fn: () => Promise<void>) => {
     if (busy) return;
@@ -221,8 +210,11 @@ function ConnectedJikkotApp() {
             "로그인이 취소되었습니다. 원하는 방법으로 다시 시도해주세요.",
           "auth/cancelled-popup-request": "로그인이 취소되었습니다.",
           "auth/operation-not-allowed": "이 인증 방법은 연결 준비 중입니다.",
-          "auth/invalid-verification-code": "문자 인증 코드를 확인해주세요.",
-          "auth/code-expired": "문자 인증이 만료되었습니다. 다시 받아주세요.",
+          "auth/invalid-credential": "이메일 또는 비밀번호를 확인해주세요.",
+          "auth/email-already-in-use":
+            "이미 가입한 이메일입니다. 로그인하거나 비밀번호를 재설정해주세요.",
+          "auth/invalid-email": "이메일 주소를 확인해주세요.",
+          "auth/weak-password": "비밀번호는 8자 이상으로 입력해주세요.",
           "auth/too-many-requests":
             "요청이 많습니다. 잠시 후 다시 시도해주세요.",
         };
@@ -241,34 +233,19 @@ function ConnectedJikkotApp() {
       setRecords([]);
       setRecordCursor(null);
     }
-    let user = firebaseAuth().currentUser;
+    const user = firebaseAuth().currentUser;
     if (!user) {
       setMember(null);
       setP(null);
       setEntry("choice");
       return;
     }
-    const claims = await user.getIdTokenResult();
-    if (
-      (claims.claims.firebase as { sign_in_provider?: string })
-        ?.sign_in_provider === "google.com"
-    ) {
-      const wasAuthenticating = authAction.current;
-      authAction.current = true;
-      try {
-        const proof = await api<{ customToken: string }>("/social/google", {});
-        await signInWithCustomToken(firebaseAuth(), proof.customToken);
-        user = firebaseAuth().currentUser!;
-      } finally {
-        authAction.current = wasAuthenticating;
-      }
-    }
     const me = await api<Me>("/me");
     setMember(me.member);
     if (me.kind === "pending") {
       setP(null);
       setEntry(
-        user.providerData.some((q) => q.providerId === "phone")
+        user.providerData.some((q) => q.providerId === "password")
           ? "signup"
           : "social-consent",
       );
@@ -379,7 +356,7 @@ function ConnectedJikkotApp() {
     };
   }, [establish]);
   useEffect(() => {
-    if (p && !entry) {
+    if (p && !entry && configured) {
       try {
         localStorage.setItem(PROGRESS_KEY, JSON.stringify(p));
       } catch {
@@ -410,15 +387,11 @@ function ConnectedJikkotApp() {
       };
     }
   }, [entry, p?.screen]);
-  useEffect(() => {
-    if (entry === "signup" || entry === "recover") {
-      return () => {
-        captcha.current?.clear();
-        captcha.current = null;
-      };
-    }
-  }, [entry]);
   const authenticate = async (fn: () => Promise<void>) => {
+    if (preview)
+      throw new Error(
+        "미리보기에서는 로그인·가입이 제공되지 않습니다. Firebase 연결 후 이용할 수 있어요.",
+      );
     authAction.current = true;
     try {
       await fn();
@@ -433,7 +406,6 @@ function ConnectedJikkotApp() {
     setEntry("login");
     setError("");
     setConsents({ privacy: false, nonMedical: false });
-    setPhoneVerified(false);
   };
   const requireMember = (screen: Screen) => {
     if (!member) setModal("login");
@@ -456,6 +428,12 @@ function ConnectedJikkotApp() {
     });
   const beginGuest = () =>
     run(async () => {
+      if (preview) {
+        setP(fresh({ kind: "guest", id: "public-preview" }, true));
+        setRec(null);
+        setEntry(null);
+        return;
+      }
       authAction.current = true;
       try {
         if (
@@ -478,6 +456,11 @@ function ConnectedJikkotApp() {
     });
   const start = () =>
     run(async () => {
+      if (preview) {
+        setRec(null);
+        setP({ ...fresh(p!.owner, true), screen: "posture" });
+        return;
+      }
       const result = await api<{ allowed: boolean }>("/eligibility");
       if (!result.allowed) {
         setModal("limit");
@@ -491,6 +474,16 @@ function ConnectedJikkotApp() {
       if (!p?.answers.recent?.length)
         throw new Error("최근 상태를 하나 이상 선택해주세요.");
       const rid = p.recommendationId ?? crypto.randomUUID();
+      if (preview) {
+        const result = previewRecommendation(p.answers, rid);
+        setRec(result);
+        update({
+          recommendationId: rid,
+          routineId: result.snapshot.routine.id,
+          screen: "routine",
+        });
+        return;
+      }
       const pending = {
         ...p,
         screen: "analysis" as const,
@@ -510,6 +503,10 @@ function ConnectedJikkotApp() {
     run(async () => {
       if (!p?.feedback || !p.recommendationId)
         throw new Error("피드백을 선택해주세요.");
+      if (preview) {
+        update({ screen: "complete", submitState: "idle" });
+        return;
+      }
       const sid = p.submissionId ?? crypto.randomUUID();
       const pending = {
         ...p,
@@ -562,42 +559,8 @@ function ConnectedJikkotApp() {
       });
     }
   };
-  const sendPhone = () =>
-    run(async () => {
-      if (!/^\+[1-9]\d{7,14}$/.test(phone))
-        throw new Error("국가번호를 포함해 입력해주세요. 예: +821012345678");
-      authAction.current = true;
-      try {
-        captcha.current?.clear();
-        captcha.current = new RecaptchaVerifier(firebaseAuth(), "recaptcha", {
-          size: "normal",
-        });
-        confirmation.current = await signInWithPhoneNumber(
-          firebaseAuth(),
-          phone,
-          captcha.current,
-        );
-        setHasConfirmation(true);
-        setPhoneVerified(false);
-      } finally {
-        authAction.current = false;
-      }
-    });
-  const verifyPhone = () =>
-    run(async () => {
-      if (!confirmation.current)
-        throw new Error("인증 문자를 먼저 받아주세요.");
-      authAction.current = true;
-      try {
-        await confirmation.current.confirm(sms);
-        setSms("");
-        setPhoneVerified(true);
-      } finally {
-        authAction.current = false;
-      }
-    });
   useEffect(() => {
-    if (entry !== "login") return;
+    if (entry !== "login" || !configured) return;
     let active = true;
     void api<{ google: boolean; kakao: boolean; naver: boolean }>(
       "/providers",
@@ -650,7 +613,7 @@ function ConnectedJikkotApp() {
     });
   const abandon = () =>
     run(async () => {
-      if (firebaseAuth().currentUser && !member) await signOut(firebaseAuth());
+      if (configured && firebaseAuth().currentUser && !member) await signOut(firebaseAuth());
       clearLocal();
       setEntry("choice");
       setError("");
@@ -713,8 +676,17 @@ function ConnectedJikkotApp() {
             VER9.1 PROTOTYPE · 무료 서비스
           </p>
         </div>
-        <span className="text-sm">{member?.nickname ?? "비회원"}</span>
+        <span className="text-sm">
+          {preview ? "미리보기" : (member?.nickname ?? "비회원")}
+        </span>
       </header>
+      {preview && (
+        <p role="status" className="mb-5 rounded-xl bg-[#ecebff] p-4 text-sm">
+          미리보기 · 문진과 추천 화면을 확인할 수 있어요. 로그인·가입·기록
+          저장은 Firebase 연결 후 이용할 수 있으며, 입력한 답변과 피드백은
+          서버에 저장되지 않습니다.
+        </p>
+      )}
       <section
         className="space-y-5 rounded-3xl border bg-white p-5 shadow-sm sm:p-8"
         aria-busy={busy}
@@ -762,7 +734,6 @@ function ConnectedJikkotApp() {
                 busy={busy}
               />
             }
-            {!configured && <p>서비스 연결을 준비 중입니다.</p>}
           </>
         )}
         {entry === "guest-consent" && (
@@ -770,8 +741,10 @@ function ConnectedJikkotApp() {
             <h1>시작 전 확인해주세요</h1>
             <p>
               직꼿은 질환을 진단하거나 치료하는 의료 서비스가 아닙니다. 추천은
-              검수 전 시제품 콘텐츠입니다. 체험 답변·동작·피드백은 서비스 개선용
-              운영 데이터로 저장되며 개인 기록은 제공하지 않습니다.
+              검수 전 시제품 콘텐츠입니다.
+              {preview
+                ? "현재 미리보기에서는 답변과 피드백을 서버에 저장하지 않습니다."
+                : "체험 답변·동작·피드백은 서비스 개선용 운영 데이터로 저장되며 개인 기록은 제공하지 않습니다."}
             </p>
             {
               <Action
@@ -819,22 +792,22 @@ function ConnectedJikkotApp() {
                 e.preventDefault();
                 void run(() =>
                   authenticate(async () => {
-                    const r = await api<{ customToken: string }>(
-                      "/login",
-                      { username, password },
-                      false,
+                    await signInWithEmailAndPassword(
+                      firebaseAuth(),
+                      email,
+                      password,
                     );
-                    await signInWithCustomToken(firebaseAuth(), r.customToken);
                   }),
                 );
               }}
             >
               <label>
-                아이디
+                이메일
                 <Input
-                  autoComplete="username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  type="email"
+                  autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </label>
               <label>
@@ -846,7 +819,7 @@ function ConnectedJikkotApp() {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </label>
-              <Button className="w-full min-h-12" disabled={busy}>
+              <Button className="w-full min-h-12" disabled={busy || preview}>
                 로그인
               </Button>
             </form>
@@ -856,7 +829,7 @@ function ConnectedJikkotApp() {
                   key={provider}
                   variant="outline"
                   className="min-h-12"
-                  disabled={busy}
+                  disabled={busy || preview}
                   onClick={() => social(provider)}
                 >
                   {["구글", "카카오", "네이버"][i]}
@@ -877,11 +850,10 @@ function ConnectedJikkotApp() {
             }
             {
               <Action
-                key={"아이디 찾기 · 비밀번호 재설정"}
-                label={"아이디 찾기 · 비밀번호 재설정"}
+                key={"이메일로 비밀번호 재설정"}
+                label={"이메일로 비밀번호 재설정"}
                 onClick={() => {
                   setEntry("recover");
-                  setPhoneVerified(false);
                   setFoundUsername("");
                 }}
                 busy={busy}
@@ -900,7 +872,9 @@ function ConnectedJikkotApp() {
         {(entry === "signup" || entry === "recover") && (
           <>
             <h1>
-              {entry === "signup" ? "직접 회원가입" : "휴대폰으로 계정 복구"}
+              {entry === "signup"
+                ? "직접 회원가입"
+                : "이메일로 비밀번호 재설정"}
             </h1>
             {entry === "signup" && (
               <>
@@ -932,7 +906,7 @@ function ConnectedJikkotApp() {
                         const r = await api<{ available: boolean }>(
                           "/availability",
                           { kind: "username", value: username },
-                          false,
+                          true,
                         );
                         if (!r.available)
                           throw new Error("이미 사용 중인 아이디입니다.");
@@ -952,7 +926,7 @@ function ConnectedJikkotApp() {
                   />
                 </label>
                 <label>
-                  이메일 (가입 정보)
+                  이메일 (로그인에 사용)
                   <Input
                     type="email"
                     autoComplete="email"
@@ -987,7 +961,7 @@ function ConnectedJikkotApp() {
                         const r = await api<{ available: boolean }>(
                           "/availability",
                           { kind: "nickname", value: nickname },
-                          false,
+                          true,
                         );
                         if (!r.available)
                           throw new Error("이미 사용 중인 닉네임입니다.");
@@ -999,61 +973,9 @@ function ConnectedJikkotApp() {
                 }
               </>
             )}
-            <label>
-              휴대폰 번호
-              <Input
-                type="tel"
-                autoComplete="tel"
-                placeholder="+821012345678"
-                value={phone}
-                onChange={(e) => {
-                  setPhone(e.target.value);
-                  setPhoneVerified(false);
-                  confirmation.current = null;
-                  setHasConfirmation(false);
-                }}
-              />
-            </label>
-            <div id="recaptcha" />
-            {
-              <Action
-                key={"인증 문자 받기"}
-                label={"인증 문자 받기"}
-                onClick={sendPhone}
-                busy={busy}
-                disabled={
-                  entry === "signup" &&
-                  (confirmed.username !== username ||
-                    confirmed.nickname !== nickname ||
-                    !username ||
-                    !nickname)
-                }
-              />
-            }
-            <label>
-              문자 인증 코드
-              <Input
-                inputMode="numeric"
-                autoComplete="one-time-code"
-                value={sms}
-                onChange={(e) => setSms(e.target.value)}
-              />
-            </label>
-            {
-              <Action
-                key={phoneVerified ? "휴대폰 확인 완료" : "인증 확인"}
-                label={phoneVerified ? "휴대폰 확인 완료" : "인증 확인"}
-                onClick={verifyPhone}
-                busy={busy}
-                disabled={!hasConfirmation}
-              />
-            }
-            <p className="text-xs">
-              휴대폰 번호 확인이며 법적 본인확인 인증은 아닙니다.
-            </p>
             {entry === "signup" && (
               <>
-                {phoneVerified && consentInputs}
+                {consentInputs}
                 {
                   <Action
                     key={"가입하고 시작하기"}
@@ -1061,29 +983,35 @@ function ConnectedJikkotApp() {
                     onClick={() =>
                       run(() =>
                         authenticate(async () => {
-                          const r = await api<{ customToken: string }>(
-                            "/signup",
-                            {
-                              username,
-                              nickname,
+                          if (password.length < 8 || password.length > 72)
+                            throw new Error(
+                              "비밀번호는 8~72자로 입력해주세요.",
+                            );
+                          const current = firebaseAuth().currentUser;
+                          if (
+                            !current ||
+                            !current.providerData.some(
+                              (provider) => provider.providerId === "password",
+                            ) ||
+                            current.email !== email
+                          ) {
+                            await createUserWithEmailAndPassword(
+                              firebaseAuth(),
                               email,
                               password,
-                              consents: {
-                                ...consents,
-                                version: consentVersion,
-                              },
-                            },
-                          );
-                          await signInWithCustomToken(
-                            firebaseAuth(),
-                            r.customToken,
-                          );
+                            );
+                          }
+                          await api("/signup", {
+                            username,
+                            nickname,
+                            consents: { ...consents, version: consentVersion },
+                          });
                         }),
                       )
                     }
                     busy={busy}
                     disabled={
-                      !phoneVerified ||
+                      preview ||
                       !consents.privacy ||
                       !consents.nonMedical ||
                       confirmed.username !== username ||
@@ -1096,63 +1024,27 @@ function ConnectedJikkotApp() {
             {entry === "recover" && (
               <>
                 <label>
-                  복구할 항목
-                  <select
-                    className="block w-full rounded-xl border p-3"
-                    value={recoveryAction}
-                    onChange={(e) =>
-                      setRecoveryAction(
-                        e.target.value as "username" | "password",
-                      )
-                    }
-                  >
-                    <option value="username">아이디 찾기</option>
-                    <option value="password">비밀번호 재설정</option>
-                  </select>
-                </label>
-                {recoveryAction === "password" && (
-                  <label>
-                    새 비밀번호
-                    <Input
-                      type="password"
-                      autoComplete="new-password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </label>
-                )}
-                {
-                  <Action
-                    key={"계정 복구하기"}
-                    label={"계정 복구하기"}
-                    onClick={() =>
-                      run(async () => {
-                        const r = await api<{ username?: string }>(
-                          "/recovery",
-                          {
-                            action: recoveryAction,
-                            ...(recoveryAction === "password"
-                              ? { password }
-                              : {}),
-                          },
-                        );
-                        setFoundUsername(
-                          r.username ??
-                            "비밀번호를 변경했습니다. 다시 로그인해주세요.",
-                        );
-                        authAction.current = true;
-                        try {
-                          await signOut(firebaseAuth());
-                        } finally {
-                          authAction.current = false;
-                        }
-                        setPhoneVerified(false);
-                      })
-                    }
-                    busy={busy}
-                    disabled={!phoneVerified}
+                  가입한 이메일
+                  <Input
+                    type="email"
+                    autoComplete="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
-                }
+                </label>
+                <Action
+                  label="비밀번호 재설정 메일 보내기"
+                  busy={busy}
+                  disabled={preview}
+                  onClick={() =>
+                    run(async () => {
+                      await sendPasswordResetEmail(firebaseAuth(), email);
+                      setFoundUsername(
+                        "가입한 이메일이라면 재설정 안내가 발송됩니다. 받은 편지함과 스팸함을 확인해주세요.",
+                      );
+                    })
+                  }
+                />
                 {foundUsername && <p role="status">{foundUsername}</p>}
               </>
             )}
@@ -1169,6 +1061,13 @@ function ConnectedJikkotApp() {
         {entry === "social-consent" && (
           <>
             <h1>직꼿 가입을 완료해주세요</h1>
+            <label>
+              닉네임 (한글·영문·숫자·밑줄 2~20자)
+              <Input
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
+              />
+            </label>
             {consentInputs}
             {
               <Action
@@ -1177,6 +1076,7 @@ function ConnectedJikkotApp() {
                 onClick={() =>
                   run(async () => {
                     await api("/social/activate", {
+                      nickname,
                       consents: { ...consents, version: consentVersion },
                     });
                     clearLocal();
@@ -1421,21 +1321,27 @@ function ConnectedJikkotApp() {
                 {
                   <Action
                     key={
-                      p.submitState === "pending"
-                        ? "피드백 저장 재시도"
-                        : "피드백 저장"
+                      preview
+                        ? "완료 화면 미리보기"
+                        : p.submitState === "pending"
+                          ? "피드백 저장 재시도"
+                          : "피드백 저장"
                     }
                     label={
-                      p.submitState === "pending"
-                        ? "피드백 저장 재시도"
-                        : "피드백 저장"
+                      preview
+                        ? "완료 화면 미리보기"
+                        : p.submitState === "pending"
+                          ? "피드백 저장 재시도"
+                          : "피드백 저장"
                     }
                     onClick={feedback}
                     busy={busy}
                   />
                 }
                 <p className="text-xs">
-                  저장이 완료된 뒤 다음 화면으로 이동합니다.
+                  {preview
+                    ? "미리보기에서는 피드백을 저장하지 않고 완료 화면만 확인합니다."
+                    : "저장이 완료된 뒤 다음 화면으로 이동합니다."}
                 </p>
               </>
             )}

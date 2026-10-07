@@ -44,17 +44,14 @@ try {
     JSON.stringify({
       runtime: "Cloudflare local workerd",
       auth: "anonymous demo Auth",
-      functions: "recommendation and feedback saved",
+      api: "Spark local recommendation and feedback saved",
       media,
       pageErrors: errors,
     }),
   );
-  const helper = await page.request.get(
-    "http://127.0.0.1:8787/__/auth/handler",
-  );
-  if (helper.status() !== 503)
-    throw new Error("Unconfigured auth helper guard failed");
-  console.log("PASS: missing auth helper fails closed (503)");
+  const guard = await page.request.get("http://127.0.0.1:8787/api/health");
+  if (guard.status() !== 503) throw new Error("Missing server credential guard failed");
+  console.log("PASS: Worker data API without server credential fails closed (503)");
 } finally {
   await browser.close();
 }

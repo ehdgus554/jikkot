@@ -1,3 +1,5 @@
+> 아래는 이전 Functions/SMS 구현 검증 기록입니다. 현재 Spark 구성 검증은 [Spark 검증 결과](spark-validation.md)를 확인하세요. Blaze/SMS 설정은 더 이상 필요하지 않습니다.
+
 # 실제 실행 검증 (2026-10-07)
 
 이후 Cloudflare 설치 실패 로그를 재현한 수정 검증은 [Cloudflare 배포 수정 안내](cloudflare-build-fix-ko.md)에 있습니다. Node 24.18.0/npm 10.9.2 clean install, Firebase 미연결 준비 화면 dry-run과 실제 local workerd를 추가 검증했습니다. 서비스 단위 검사는 배포 설정 2개가 추가되어 총 7개입니다.

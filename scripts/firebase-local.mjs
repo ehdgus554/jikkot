@@ -1,10 +1,6 @@
-import { spawn, spawnSync } from "node:child_process";
+import { spawn } from "node:child_process";
 import path from "node:path";
 const root = process.cwd();
-const build = spawnSync("npm", ["--prefix", "functions", "run", "build"], {
-  stdio: "inherit",
-});
-if (build.status !== 0) process.exit(build.status ?? 1);
 const command = process.argv[2] ?? "start";
 if (!["start", "exec"].includes(command))
   throw new Error("Expected start or exec");
@@ -19,9 +15,9 @@ const args = [
   "--project",
   "demo-jikkot",
   "--only",
-  "auth,firestore,functions",
+  "auth,firestore",
 ];
-if (command === "exec") args.push("npm run test:integration");
+if (command === "exec") args.push("npm run test:spark");
 const child = spawn(process.execPath, args, { stdio: "inherit", env });
 for (const signal of ["SIGINT", "SIGTERM"])
   process.on(signal, () => child.kill(signal));

@@ -1,55 +1,51 @@
-# Firebase 연결을 위한 최소 계정 작업
+# Firebase Spark 무료 연결
 
-지금 웹은 준비 화면이며 실제 Firebase 프로젝트에 연결되지 않았습니다. 채팅에서 작업 권한을 허용하는 것과 Google 계정 로그인은 별개입니다. 현재 Codex에는 Firebase/Cloudflare CLI 로그인 계정이 없어 실제 프로젝트 생성·결제 계정 연결·서버 배포를 실행할 수 없습니다. 비밀번호, 인증 코드, 서비스 계정 비밀키를 채팅에 붙이지 마세요.
+현재 대상은 Firebase 프로젝트 `jikkot`, 사이트 `https://jikkot.ehdgus554.workers.dev`입니다. **Blaze나 카드 등록 없이 Spark로 진행합니다.** Firebase Functions와 실제 SMS를 배포·사용하지 않습니다. 서버 API는 기존 Cloudflare Worker가 처리합니다. 무료 제공 한도를 초과하면 서비스가 제한될 수 있습니다.
 
-## 1. 무료 접속 주소
+## 1. 본인 Firebase 계정에서 할 설정
 
-Cloudflare Worker `jikkot` → Settings → Domains & Routes에서 `workers.dev` 주소를 확인합니다. 저장소에 `workers_dev: true`, `preview_urls: true`를 명시했습니다. 별도 도메인 구매는 필요 없습니다. 계정의 workers.dev subdomain을 아직 등록하지 않았다면 Cloudflare의 계정 설정에서 무료 subdomain을 한 번 등록해야 합니다. 실제 표시된 `https://jikkot.<계정-subdomain>.workers.dev` 주소를 사용하며 임의로 주소를 추측하지 않습니다.
+[jikkot 콘솔](https://console.firebase.google.com/project/jikkot/overview?hl=ko)에서 다음을 설정합니다.
 
-## 2. 프로젝트 소유자가 할 최초 설정
+1. Authentication 시작 → Email/Password, Google, Anonymous 활성화. Google 지원 이메일 선택. Phone은 필요 없습니다.
+2. Authentication → Settings → 승인된 도메인에 `jikkot.ehdgus554.workers.dev` 추가.
+3. Firestore Database 생성 → 위치 선택(서울 등), 보안 모드로 생성. 아래 도구가 서버 전용 쓰기 규칙을 배포합니다.
+4. Google 모바일 redirect를 위해 [Google Cloud 사용자 인증 정보](https://console.cloud.google.com/apis/credentials?project=jikkot)의 Firebase용 웹 OAuth 클라이언트에 승인된 리디렉션 URI `https://jikkot.ehdgus554.workers.dev/__/auth/handler` 추가. 기존 Firebase URI는 보존합니다.
 
-이번 프로젝트는 이미 생성한 [jikkot](https://console.firebase.google.com/project/jikkot/overview?hl=ko)을 사용합니다. 새 프로젝트를 만들 필요가 없습니다.
+프로젝트는 이미 있으므로 새 프로젝트를 만들지 않습니다. Codex에는 Google/Cloudflare 로그인 세션이 없어 소유자의 콘솔 작업을 대신 실행할 수 없습니다. 채팅의 권한 허용만으로 계정 로그인이 제공되지는 않습니다.
 
-실제 Functions와 SMS를 사용하려면 Blaze 결제 계정 연결이 필요합니다. 실제 비용과 카드 등록은 소유자가 콘솔에서 확인하고 진행합니다. 예산 알림을 설정하세요. 프로젝트 생성만으로 과금 서비스가 자동 연결되는 것은 아닙니다.
+## 2. Cloud Shell에서 연결 준비
 
-Authentication 시작 → Email/Password·Anonymous·Google·Phone 활성화 → Phone 허용 국가에 한국 등록 → 승인된 도메인에 실제 Worker hostname 추가 순서입니다. Firestore도 콘솔에서 생성하고 위치를 선택합니다(Functions는 서울 `asia-northeast3`). 소셜 신규 가입은 서비스 내 두 동의를 별도로 요구합니다.
-
-## 3. 연결 도구
-
-Google 계정에 로그인한 [Cloud Shell에서 저장소 열기](https://shell.cloud.google.com/cloudshell/open?git_repo=https://github.com/ehdgus554/jikkot)를 사용하거나 아래처럼 저장소를 받습니다. 프로젝트 ID와 주소는 실제 값을 사용합니다. 로그인 인증 코드는 해당 터미널에만 입력하며 채팅으로 전달하지 않습니다.
+[Cloud Shell에서 저장소 열기](https://shell.cloud.google.com/cloudshell/open?git_repo=https://github.com/ehdgus554/jikkot)를 누릅니다. 저장소 디렉터리에서 실행하세요. 예전에 받은 저장소라면 먼저 `git pull --ff-only`로 갱신합니다.
 
 ```bash
-git clone https://github.com/ehdgus554/jikkot.git
-cd jikkot
 npm ci
 npx firebase login --no-localhost
-npm run firebase:connect -- --project jikkot --site https://jikkot.ehdgus554.workers.dev --deploy
+npm run firebase:connect -- --project jikkot --site https://jikkot.ehdgus554.workers.dev --deploy --prepare-worker-key
 cat outputs/firebase-public-settings.json
 ```
 
-도구는 프로젝트의 기존 웹 앱을 사용하거나 없으면 웹 앱 하나를 등록하고 공식 SDK config를 조회합니다. 웹 앱이 여러 개면 `--app <앱ID>`를 지정합니다. 다음을 준비합니다.
+Firebase 로그인은 본인 계정으로 해당 터미널에서 진행합니다. 인증 코드·로그인 토큰은 채팅에 보내지 않습니다.
 
-- `.env.production.local`: 실제 Firebase 웹 연결값, production emulator false.
-- `functions/.env.<프로젝트ID>`: 웹 API key, 정확한 CORS origin, 서울 Functions API URL. 관련 없는 기존 설정은 보존합니다.
-- `wrangler.jsonc`의 `FIREBASE_AUTH_HELPER_HOST`: Google 모바일 redirect의 같은 도메인 helper 대상.
-- `outputs/firebase-cloudflare.env`: Cloudflare의 빌드 변수에 등록할 공개 설정 6개.
-- `outputs/firebase-public-settings.json`: 공개 웹 설정만 있는 파일. 실제 서버 배포를 확인한 뒤 이 내용을 `config/firebase-web.json`으로 저장해 Git에 반영하면 Cloudflare 계정의 빌드 변수를 따로 입력하지 않아도 표준 production 빌드에서 사용합니다. 명시한 환경변수가 있으면 그 값이 우선이고 dev/test에서는 이 공개 production 설정을 사용하지 않습니다. Admin 비밀키는 이 파일에 넣지 않습니다.
-- `--deploy`가 있으면 Cloud Shell의 로그인 계정으로 프로젝트 안에 전용 `jikkot-api` 런타임 서비스 계정을 준비합니다. Auth 관리·Firestore 데이터 접근·자기 토큰 서명 권한과 배포자의 해당 계정 사용 권한만 지정하고, Functions 의존성 설치 후 rules/indexes/Functions를 배포합니다. 결제 계정이나 IAM 권한이 없으면 실제 오류로 중단하며 성공으로 표시하지 않습니다.
+도구는 웹 앱 등록/공개 SDK 설정 조회, Cloudflare 공개 연결값 준비, Firestore rules/indexes 배포를 처리합니다. `--deploy`는 **Functions를 배포하지 않습니다.** 전용 서비스 계정 `jikkot-api`에 `roles/datastore.user`만 부여합니다. Auth Admin·토큰 서명 권한을 새로 부여하지 않습니다.
 
-SDK config는 공개 브라우저 설정입니다. Admin/서비스 계정 키는 사용하거나 출력하지 않습니다. 프로젝트/HTTPS origin 검증 전에 파일을 작성하지 않으며 테스트용 demo 프로젝트, 서로 다른 project/authDomain, 환경변수 줄바꿈 주입을 거절합니다. 도구가 수정한 `wrangler.jsonc`의 공개 helper 설정은 검토 후 Git에 반영합니다. 개인 `.env` 파일과 `outputs`는 Git에서 제외됩니다.
+`--prepare-worker-key`는 Worker가 Firestore 서버 API를 호출하는 키를 `outputs/firebase-worker-service-account.json`에 생성합니다. 기존 파일을 덮어쓰지 않고 파일 권한은 600으로 제한합니다. `.env*`와 `outputs`는 Git에서 제외됩니다. 키 생성이 조직 정책으로 금지되어 있으면 그 오류를 해결해야 하며, 권한 제한을 우회하지 않습니다. 과거 Functions 설정이 프로젝트에 존재해도 자동 삭제하지 않습니다.
 
-서버 배포가 성공하면 마지막 명령에서 출력한 공개 JSON만 Codex에 전달할 수 있습니다. Codex가 실제 API 응답을 확인하고 공개 production 설정을 저장소에 반영해 Cloudflare 자동배포를 진행합니다. 로그인 인증 코드나 서비스 계정 JSON은 전달하지 않습니다.
+## 3. Cloudflare에 서버 키 한 번 등록
 
-## 4. Cloudflare 활성화
+[Cloudflare 대시보드](https://dash.cloudflare.com/) → Workers & Pages → **jikkot** → Settings → Variables and Secrets → Add:
 
-Worker → Settings → Builds → Variables에 `outputs/firebase-cloudflare.env`의 공개 설정을 등록합니다. 빌드 명령은 **`npm run build`**입니다. `npm run build:preparation`을 유지하면 키를 연결해도 준비 화면이 유지됩니다. 배포 명령은 `npx wrangler deploy --config dist/server/wrangler.json`입니다.
+- 이름: `FIREBASE_SERVICE_ACCOUNT`
+- 종류: **Secret**
+- 값: Cloud Shell의 `outputs/firebase-worker-service-account.json` 전체 내용
 
-Google 로그인의 모바일 redirect에는 같은 도메인 `/__/auth/*` proxy 외에 Google OAuth client의 Authorized redirect URIs에 `https://<실제-Worker-hostname>/__/auth/handler`도 등록합니다. Firebase 승인 도메인·서버 CORS·web authDomain·helper가 같은 사이트에 맞아야 합니다.
+이 파일은 **채팅·Git·브라우저 빌드 변수에 넣지 않습니다.** Cloud Shell의 에디터에서 열어 Cloudflare의 Secret 입력칸으로 직접 복사하세요. Firebase 공개 웹 API key와 서버 private key는 서로 다릅니다. 서버 키는 런타임 Secret에만 사용합니다.
 
-Kakao/Naver는 client ID가 설정되지 않으면 Secret Manager 선언과 배포 바인딩에서 제외됩니다. 처음 Email/Password·Google·Phone을 연결할 때 Kakao/Naver 비밀키를 먼저 만들 필요가 없습니다. 두 공급자는 별도 등록/검수/키 설정 후 추가합니다.
+마지막 명령에서 출력한 **`outputs/firebase-public-settings.json`의 공개 JSON**은 Codex에 전달할 수 있습니다. Codex가 `config/firebase-web.json`과 필요한 공개 Worker 설정을 저장소에 반영하고 Cloudflare 자동배포를 확인합니다. 브라우저 public config가 모두 없으면 문진·추천 미리보기가 공개되며 로그인·서버 저장은 비활성입니다. 운영 환경변수가 있으면 그것이 우선하며 dev에서는 공개 production 파일을 사용하지 않습니다.
 
-## 5. 완료 확인
+직접 설정할 경우 Cloudflare Builds Variables에 `outputs/firebase-cloudflare.env`의 공개 값 6개를 입력합니다. 빌드 명령은 `npm run build`, 배포 명령은 `npx wrangler deploy --config dist/server/wrangler.json`입니다. `build:preparation`은 연결 이후에는 사용하지 않습니다.
 
-실제 API `/health`, 가입 SMS, 직접 로그인, Google 로그인, 추천·피드백 저장, UID별 기록, 로그아웃을 확인합니다. 그 전에는 연결 완료라고 보고하지 않습니다. 이번 로컬 검증은 연결 설정 검사·컴파일·에뮬레이터 범위이며 실제 Google 계정/Blaze/SMS 연동은 아직 실행되지 않았습니다.
+## 4. 완료 확인
 
-이 작업에서 확인한 프로젝트 ID는 `jikkot`, 사이트는 `https://jikkot.ehdgus554.workers.dev`입니다. 계정 인증은 실제 본인 계정에서 필요하며 Codex에 로그인된 Google 계정이 있다고 가정하지 않습니다.
+`https://jikkot.ehdgus554.workers.dev/api/health`, 이메일 가입·로그인, Google 신규 동의, 이메일 재설정, 추천·피드백 저장, 계정별 기록·로그아웃을 실제 사이트에서 확인합니다. 로컬 에뮬레이터 검증과 실제 계정 연결 성공은 구분합니다. 키나 공급자 설정이 빠진 상태를 연결 완료라고 보고하지 않습니다.
+
+이메일/Google의 이메일 문자열이 같더라도 서비스가 기록을 자동 병합하지 않습니다. 처음 가입한 로그인 방법과 다른 인증으로 같은 Firebase UID에 접속하면 안내 후 차단합니다. 신규 회원은 두 필수 동의와 고유 닉네임을 저장해야 이용할 수 있습니다. Kakao/Naver는 이번 Spark 구성이 지원하지 않아 준비 중으로 표시합니다.

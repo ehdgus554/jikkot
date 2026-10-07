@@ -7,7 +7,7 @@ const config = {
   appId: "public-app-id",
   authDomain: "example-project.firebaseapp.com",
 };
-test("connection aligns browser auth domain, server CORS, Seoul API and same-domain helper", () => {
+test("connection aligns browser auth domain, server CORS, Worker API and same-domain helper", () => {
   const settings = firebaseConnection(
     config,
     "https://jikkot.example.workers.dev",
@@ -21,6 +21,11 @@ test("connection aligns browser auth domain, server CORS, Seoul API and same-dom
     "https://jikkot.example.workers.dev",
   );
   assert.equal(settings.server.PUBLIC_API_URL, settings.browser.VITE_API_URL);
+  assert.equal(
+    settings.browser.VITE_API_URL,
+    "https://jikkot.example.workers.dev/api",
+  );
+  assert.equal(settings.server.FIREBASE_PROJECT_ID, config.projectId);
   assert.equal(settings.helperHost, config.authDomain);
   assert.equal(
     settings.server.API_SERVICE_ACCOUNT,

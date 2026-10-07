@@ -15,7 +15,7 @@ const project = option("--project"),
   site = option("--site");
 if (!project || !site)
   throw new Error(
-    "사용법: npm run firebase:connect -- --project <프로젝트ID> --site https://<실제사이트주소> [--deploy]",
+    "사용법: npm run firebase:connect -- --project <프로젝트ID> --site https://<실제사이트주소> [--deploy] [--prepare-worker-key]",
   );
 if (
   !/^[a-z][a-z0-9-]{4,28}[a-z0-9]$/.test(project) ||
@@ -70,22 +70,19 @@ function gcloud(command: string[]) {
       "Google Cloud 권한 준비에 실패했습니다. 본인 계정의 Cloud Shell과 프로젝트 권한을 확인해주세요.",
     );
 }
-if (args.includes("--deploy")) {
+if (args.includes("--deploy") || args.includes("--prepare-worker-key")) {
   const account = spawnSync(
     "gcloud",
     ["auth", "list", "--filter=status:ACTIVE", "--format=value(account)"],
     { encoding: "utf8" },
   );
-  const email = account.stdout?.trim();
-  if (account.status !== 0 || !email || !/^[^\s@]+@[^\s@]+$/.test(email))
-    throw new Error(
-      "--deploy는 Google 계정에 로그인한 Cloud Shell에서 실행해주세요.",
-    );
+  if (account.status !== 0 || !account.stdout?.trim())
+    throw new Error("Google 계정에 로그인한 Cloud Shell에서 실행해주세요.");
   gcloud([
     "services",
     "enable",
     "iam.googleapis.com",
-    "iamcredentials.googleapis.com",
+    "firestore.googleapis.com",
   ]);
   const runtime = connection.server.API_SERVICE_ACCOUNT;
   const existing = spawnSync(
@@ -95,45 +92,24 @@ if (args.includes("--deploy")) {
   );
   if (existing.status !== 0) {
     if (!/NOT_FOUND|not found|does not exist/i.test(existing.stderr ?? ""))
-      throw new Error("런타임 서비스 계정 접근 권한을 확인해주세요.");
+      throw new Error("서버 서비스 계정 접근 권한을 확인해주세요.");
     gcloud([
       "iam",
       "service-accounts",
       "create",
       "jikkot-api",
-      "--display-name=Jikkot API runtime",
+      "--display-name=Jikkot Worker Firestore access",
     ]);
   }
-  for (const role of ["roles/firebaseauth.admin", "roles/datastore.user"])
-    gcloud([
-      "projects",
-      "add-iam-policy-binding",
-      project!,
-      "--member",
-      `serviceAccount:${runtime}`,
-      "--role",
-      role,
-      "--condition=None",
-    ]);
   gcloud([
-    "iam",
-    "service-accounts",
+    "projects",
     "add-iam-policy-binding",
-    runtime,
+    project,
     "--member",
     `serviceAccount:${runtime}`,
     "--role",
-    "roles/iam.serviceAccountTokenCreator",
-  ]);
-  gcloud([
-    "iam",
-    "service-accounts",
-    "add-iam-policy-binding",
-    runtime,
-    "--member",
-    `${email.endsWith(".gserviceaccount.com") ? "serviceAccount" : "user"}:${email}`,
-    "--role",
-    "roles/iam.serviceAccountUser",
+    "roles/datastore.user",
+    "--condition=None",
   ]);
 }
 async function updateEnv(filename: string, values: Record<string, string>) {
@@ -169,10 +145,12 @@ if (configErrors.length)
 worker.vars = {
   ...worker.vars,
   FIREBASE_AUTH_HELPER_HOST: connection.helperHost,
+  FIREBASE_PROJECT_ID: connection.server.FIREBASE_PROJECT_ID,
+  FIREBASE_WEB_API_KEY: connection.server.FIREBASE_WEB_API_KEY,
+  ALLOWED_ORIGINS: connection.server.ALLOWED_ORIGINS,
 };
 // Produce every file only after authenticated config and origin validation succeeds.
 await updateEnv(".env.production.local", connection.browser);
-await updateEnv(`functions/.env.${project}`, connection.server);
 await writeFile("wrangler.jsonc", JSON.stringify(worker, null, 2) + "\n");
 await mkdir("outputs", { recursive: true });
 await writeFile(
@@ -187,24 +165,46 @@ await writeFile(
   JSON.stringify(connection.browser, null, 2) + "\n",
   { mode: 0o600 },
 );
-console.log(
-  "Firebase 웹 설정, Functions 공개 설정, Cloudflare Auth helper 설정 생성 완료.",
-);
+console.log("Firebase Spark 웹 설정과 Cloudflare Worker 공개 설정 생성 완료.");
 console.log(
   "Cloudflare 빌드 변수에 outputs/firebase-cloudflare.env의 공개 설정을 등록하고 빌드 명령은 npm run build를 사용하세요.",
 );
+if (args.includes("--prepare-worker-key")) {
+  const keyFile = path.resolve("outputs/firebase-worker-service-account.json");
+  const { existsSync, chmodSync } = await import("node:fs");
+  if (!existsSync(keyFile)) {
+    gcloud([
+      "iam",
+      "service-accounts",
+      "keys",
+      "create",
+      keyFile,
+      "--iam-account",
+      connection.server.API_SERVICE_ACCOUNT,
+    ]);
+  }
+  chmodSync(keyFile, 0o600);
+  const account = JSON.parse(await readFile(keyFile, "utf8"));
+  if (
+    account.type !== "service_account" ||
+    account.project_id !== project ||
+    account.client_email !== connection.server.API_SERVICE_ACCOUNT
+  )
+    throw new Error(
+      "기존 서버 키가 지정한 프로젝트/계정과 다릅니다. Cloudflare에 등록하지 말고 파일을 확인해주세요.",
+    );
+  console.log(
+    "서버 키는 outputs/firebase-worker-service-account.json에 저장했습니다. 채팅이나 Git에 넣지 말고 Cloudflare Worker의 FIREBASE_SERVICE_ACCOUNT 암호화 secret에만 등록하세요.",
+  );
+}
 if (args.includes("--deploy")) {
-  const installed = spawnSync("npm", ["--prefix", "functions", "ci"], {
-    stdio: "inherit",
-  });
-  if (installed.status !== 0) process.exit(installed.status ?? 1);
   const deploy = spawnSync(
     process.execPath,
     [
       cli,
       "deploy",
       "--only",
-      "firestore:rules,firestore:indexes,functions",
+      "firestore:rules,firestore:indexes",
       "--project",
       project,
       "--non-interactive",
@@ -214,5 +214,5 @@ if (args.includes("--deploy")) {
   process.exitCode = deploy.status ?? 1;
 } else
   console.log(
-    `권한 준비 및 서버 배포: 같은 연결 명령에 --deploy를 추가해 본인 계정의 Cloud Shell에서 실행하세요 (프로젝트 ${project}).`,
+    "Spark 설정 생성 완료. rules/indexes 배포에는 --deploy, Cloudflare용 서버 키 생성에는 --prepare-worker-key를 추가하세요. Firebase Functions와 SMS는 사용하지 않습니다.",
   );

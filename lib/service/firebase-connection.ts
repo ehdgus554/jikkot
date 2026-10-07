@@ -18,7 +18,7 @@ export function firebaseConnection(config: WebConfig, site: string) {
   if (config.authDomain !== `${config.projectId}.firebaseapp.com`)
     throw new Error("웹 앱과 프로젝트의 authDomain이 일치하지 않습니다.");
   const url = firebaseSiteOrigin(site);
-  const api = `https://asia-northeast3-${config.projectId}.cloudfunctions.net/api`;
+  const api = `${url.origin}/api`;
   return {
     browser: {
       VITE_FIREBASE_API_KEY: config.apiKey,
@@ -29,6 +29,7 @@ export function firebaseConnection(config: WebConfig, site: string) {
       VITE_USE_FIREBASE_EMULATORS: "false",
     },
     server: {
+      FIREBASE_PROJECT_ID: config.projectId,
       FIREBASE_WEB_API_KEY: config.apiKey,
       ALLOWED_ORIGINS: url.origin,
       PUBLIC_API_URL: api,

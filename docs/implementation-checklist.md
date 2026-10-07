@@ -1,3 +1,5 @@
+> 현재 운영 기본 구성은 Firebase Spark + Cloudflare Workers입니다. 사용자 요청으로 직접 로그인은 이메일/비밀번호, 계정 복구는 이메일, Google은 Firebase UID와 가입 공급자 검사로 변경했습니다. SMS·Functions·Kakao/Naver 활성화는 현재 범위에서 제외합니다. 아래 표는 최초 구현 기록이며 최신 연결 절차는 [Spark 안내](firebase-quick-connect-ko.md), 최신 설계는 [인증 설계](auth-design.md)를 따릅니다.
+
 # 구현·검증 체크리스트
 
 복원 기준: 대상 `ehdgus554/jikkot`의 `caf1a37685452576c40e087f02a397e4babcb835`. 작업 브랜치 `feat/service-flow-firebase`. 참고 `ehdgus554/jikkot-ver9/main`의 `aca2be21aabc03d952128ccb1bebb228613d91d5`. 2026-10-07 실제 Git 조회로 확인했습니다. 앱·추천 데이터는 동일했고 package/lockfile/tests/wrangler 설정이 달랐습니다. 참고 저장소는 `/tmp/jikkot-ver9-reference`에서 읽기만 했습니다.

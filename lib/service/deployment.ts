@@ -6,7 +6,7 @@ export const publicFirebaseKeys = [
   "VITE_API_URL",
 ] as const;
 
-/** Empty configuration deploys a waiting page; partial/unsafe live configuration fails. */
+/** Empty configuration opens a clearly labelled local preview; unsafe live configuration fails. */
 export function deploymentMode(
   env: Record<string, string | undefined>,
   preparation = false,
@@ -14,11 +14,11 @@ export function deploymentMode(
   if (preparation) return "preparation" as const;
   const present = publicFirebaseKeys.filter((key) => Boolean(env[key]?.trim()));
   if (present.length === 0 && env.VITE_USE_FIREBASE_EMULATORS !== "true")
-    return "preparation" as const;
+    return "preview" as const;
   const missing = publicFirebaseKeys.filter((key) => !env[key]?.trim());
   if (missing.length)
     throw new Error(
-      `Firebase 설정이 일부만 입력됐습니다. 누락: ${missing.join(", ")}. 준비 화면은 전체 설정을 비우거나 npm run build:preparation으로 빌드하세요.`,
+      `Firebase 설정이 일부만 입력됐습니다. 누락: ${missing.join(", ")}. 미리보기는 전체 설정을 비우세요. 준비 화면은 npm run build:preparation으로 빌드하세요.`,
     );
   let api: URL;
   try {

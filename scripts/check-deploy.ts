@@ -9,5 +9,7 @@ const mode = deploymentMode(
 console.log(
   mode === "preparation"
     ? "PASS: preparation page deployment; sign-in and recommendations remain unavailable until Firebase is connected"
-    : "PASS: deployment uses configured non-emulator Firebase endpoints",
+    : mode === "preview"
+      ? "PASS: public preview; questionnaire and routine browsing only, without accounts or cloud storage"
+      : "PASS: deployment uses configured non-emulator Firebase endpoints",
 );

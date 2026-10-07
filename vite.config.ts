@@ -1,17 +1,11 @@
 import vinext from "vinext";
 import { defineConfig } from "vite";
-import { publicFirebaseKeys } from "./lib/service/deployment";
 import { firebaseBuildEnv } from "./scripts/firebase-build-env";
 
 export default defineConfig(async ({ mode }) => {
   const localWorker = process.env.JIKKOT_LOCAL_WORKER === "true";
   const publicEnv = firebaseBuildEnv(mode);
-  const preparation =
-    process.env.JIKKOT_PREPARATION === "true" ||
-    (mode === "production" &&
-      !localWorker &&
-      publicFirebaseKeys.every((key) => !publicEnv[key]?.trim()) &&
-      publicEnv.VITE_USE_FIREBASE_EMULATORS !== "true");
+  const preparation = process.env.JIKKOT_PREPARATION === "true";
   // Keep Wrangler and Miniflare state project-local. These are non-secret tool
   // settings; application environment belongs in ignored `.env*` files.
   process.env.WRANGLER_WRITE_LOGS ??= "false";
