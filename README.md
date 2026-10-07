@@ -4,6 +4,8 @@ Firebase 미연결 상태에서는 준비 화면을 먼저 배포할 수 있습�
 
 자세 → 불편 부위 → 생활 습관 → 최근 상태를 선택하고 동작 하나를 수행한 뒤 피드백을 남깁니다. Firebase Auth/Firestore/Functions가 인증과 데이터를 담당하고 Cloudflare Vinext Worker가 웹을 제공합니다. 기존 추천 콘텐츠는 검수 전 MVP이며 조건부 질문·관련 부위/악화 재추천표·GIF는 아직 확정되지 않았습니다. 회원 기능은 무료이고 스트레칭/쇼핑은 준비 중입니다.
 
+Firebase 실제 연결을 위해 `npm run firebase:connect -- --project <ID> --site https://<실제사이트주소> --deploy` 도구를 추가했습니다. 먼저 본인 Firebase 계정 로그인·프로젝트·Blaze/인증 설정이 필요합니다. [최소 계정 설정](docs/firebase-quick-connect-ko.md)을 참고하세요.
+
 ## 로컬 실행
 
 Node 22.13 이상(권장 22), Java 21 이상이 필요합니다.

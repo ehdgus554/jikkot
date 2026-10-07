@@ -1,10 +1,11 @@
 import vinext from "vinext";
-import { defineConfig, loadEnv } from "vite";
+import { defineConfig } from "vite";
 import { publicFirebaseKeys } from "./lib/service/deployment";
+import { firebaseBuildEnv } from "./scripts/firebase-build-env";
 
 export default defineConfig(async ({ mode }) => {
   const localWorker = process.env.JIKKOT_LOCAL_WORKER === "true";
-  const publicEnv = loadEnv(mode, process.cwd(), "VITE_");
+  const publicEnv = firebaseBuildEnv(mode);
   const preparation =
     process.env.JIKKOT_PREPARATION === "true" ||
     (mode === "production" &&
@@ -22,6 +23,12 @@ export default defineConfig(async ({ mode }) => {
 
   return {
     define: {
+      ...Object.fromEntries(
+        Object.entries(publicEnv).map(([key, value]) => [
+          `import.meta.env.${key}`,
+          JSON.stringify(value),
+        ]),
+      ),
       __JIKKOT_LOCAL_WORKER__: JSON.stringify(localWorker),
       __JIKKOT_PREPARATION__: JSON.stringify(preparation),
     },

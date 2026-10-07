@@ -25,8 +25,12 @@ const db = getFirestore(),
 const emulator = Boolean(
   process.env.FUNCTIONS_EMULATOR && process.env.FIREBASE_AUTH_EMULATOR_HOST,
 );
-const kakaoSecret = defineSecret("KAKAO_CLIENT_SECRET"),
-  naverSecret = defineSecret("NAVER_CLIENT_SECRET");
+const kakaoSecret = process.env.KAKAO_CLIENT_ID
+    ? defineSecret("KAKAO_CLIENT_SECRET")
+    : undefined,
+  naverSecret = process.env.NAVER_CLIENT_ID
+    ? defineSecret("NAVER_CLIENT_SECRET")
+    : undefined;
 export function createApi(content: ContentExtensions = extensions) {
   const app = express();
   app.disable("x-powered-by");
@@ -36,7 +40,9 @@ export function createApi(content: ContentExtensions = extensions) {
   const origins = () =>
     (
       process.env.ALLOWED_ORIGINS ??
-      (emulator ? "http://localhost:5173,http://127.0.0.1:5173,http://localhost:8787,http://127.0.0.1:8787" : "")
+      (emulator
+        ? "http://localhost:5173,http://127.0.0.1:5173,http://localhost:8787,http://127.0.0.1:8787"
+        : "")
     )
       .split(",")
       .filter(Boolean);
@@ -750,7 +756,7 @@ export function createApi(content: ContentExtensions = extensions) {
     const clientId =
       process.env[provider === "kakao" ? "KAKAO_CLIENT_ID" : "NAVER_CLIENT_ID"];
     const secret =
-      provider === "kakao" ? kakaoSecret.value() : naverSecret.value();
+      provider === "kakao" ? kakaoSecret?.value() : naverSecret?.value();
     const base = process.env.PUBLIC_API_URL;
     if (!clientId || !secret || !base)
       fail(
@@ -934,7 +940,13 @@ export function createApi(content: ContentExtensions = extensions) {
 export const api = onRequest(
   {
     region: "asia-northeast3",
-    secrets: process.env.FUNCTIONS_EMULATOR ? [] : [kakaoSecret, naverSecret],
+    serviceAccount: process.env.API_SERVICE_ACCOUNT || undefined,
+    secrets: process.env.FUNCTIONS_EMULATOR
+      ? []
+      : [
+          ...(kakaoSecret ? [kakaoSecret] : []),
+          ...(naverSecret ? [naverSecret] : []),
+        ],
     maxInstances: 10,
   },
   createApi(),

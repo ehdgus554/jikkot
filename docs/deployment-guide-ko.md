@@ -1,5 +1,7 @@
 # 운영 연결 순서
 
+프로젝트가 아직 없으면 [최소 계정 설정과 Firebase 연결 도구](firebase-quick-connect-ko.md)를 먼저 확인하세요.
+
 Firebase 미연결 **준비 화면**만 먼저 배포하려면 [Cloudflare 설치 오류 수정·준비 화면 배포](cloudflare-build-fix-ko.md)를 따릅니다. 이 경우 웹 배포에 Firebase/Blaze/인증키가 필요하지 않으며 가입·추천 기능은 비활성 상태입니다. 아래 순서는 실제 서비스를 연결할 때 적용합니다.
 
 코드 구현과 로컬 검증은 실제 운영 배포와 다릅니다. 아래 작업은 프로젝트 소유자가 자신의 계정에서 진행합니다. 비밀키는 채팅·Git에 넣지 마세요. 이번 기능은 모두 무료지만 Firebase/Cloudflare 운영 비용은 별도입니다.
@@ -34,7 +36,7 @@ npx firebase deploy --only firestore:rules,firestore:indexes,functions --project
 
 API 서비스 계정에는 Firebase Auth 토큰 서명에 필요한 권한(서비스 계정 token creator/IAM signBlob)과 Auth·Firestore 관리 권한을 설정합니다. 브라우저·Worker에 Admin SDK/서비스 계정 키를 넣지 않습니다. Google Cloud가 제공하는 Functions 기본 인증을 사용합니다. `GET <API URL>/health`와 직접 회원가입·로그인을 점검합니다.
 
-Kakao/Naver를 아직 활성화하지 않는 경우에도 이 API의 `defineSecret` 배포 선언에 두 secret 이름이 있으므로 Secret Manager 요구 사항을 준비해야 합니다. 소셜 연결 완료 전에는 공급자 client ID를 입력하지 않아 준비 중으로 유지합니다. 빈 운영 secret을 실제 로그인용으로 사용하지 마세요.
+Kakao/Naver의 client ID가 없으면 관련 secret 선언과 배포 바인딩도 제외됩니다. 처음 Firebase/Google/전화 인증을 연결할 때 두 공급자의 비밀키가 필수는 아닙니다. 공급자를 활성화할 때 해당 client ID와 Secret Manager 값을 함께 설정합니다.
 
 ## 3. Google·Kakao·Naver 연결
 
