@@ -12,7 +12,7 @@
     "start": "vinext start",
     "test": "npm run content:check && npm run build && node --test tests/ui-components.test.mjs && npm run test:service && npm run test:images",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
-    "deploy": "tsx scripts/check-deploy.ts && npm run content:check && npm run build && tsx scripts/check-worker-target.ts jikkot-ver9 && wrangler deploy",
+    "deploy": "tsx scripts/check-deploy.ts && npm run content:check && npm run build && tsx scripts/check-worker-target.ts jikkot && wrangler deploy",
     "deploy:preparation": "JIKKOT_PREPARATION=true npm run deploy",
     "typecheck": "tsc --noEmit --incremental false && npm --prefix functions run build",
     "content:check": "tsx scripts/validate-content.ts",

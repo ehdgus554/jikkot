@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "jikkot-ver9",
+  "name": "jikkot",
   "workers_dev": true,
   "preview_urls": true,
   "vars": {

@@ -13,7 +13,22 @@
 
 프로젝트는 이미 있으므로 새 프로젝트를 만들지 않습니다. Codex에는 Google/Cloudflare 로그인 세션이 없어 소유자의 콘솔 작업을 대신 실행할 수 없습니다. 채팅의 권한 허용만으로 계정 로그인이 제공되지는 않습니다.
 
-## 2. Cloud Shell에서 연결 준비
+## 2. 이 대화에서 준비한 자동 설정 (권장)
+
+Google 계정이 연결된 [Cloud Shell](https://shell.cloud.google.com/?project=jikkot)을 열고 아래 한 줄을 실행합니다. 계정 접근 승인을 요청하면 승인합니다. 다른 채팅이나 Firebase CLI 재로그인은 필요 없습니다.
+
+```bash
+git clone https://github.com/ehdgus554/jikkot.git jikkot-setup && cd jikkot-setup && python3 scripts/setup-spark-cloudshell.py --apply
+```
+
+이미 `jikkot-setup` 폴더에서 한 번 실행했다면 재실행은 `python3 scripts/setup-spark-cloudshell.py --apply`입니다.
+
+스크립트는 기존 프로젝트/계정 접근을 확인하고 전용 `jikkot-api` 서비스 계정, `roles/datastore.user`, Firestore 기본 DB(없으면 서울), 서버 전용 규칙, JSON 키 파일까지 준비합니다. 기존 DB·지역·데이터·정상 키 파일은 보존합니다. 이전 규칙은 파일로 백업합니다. 결제 연결·Blaze·Functions·Storage·TTL은 활성화하지 않습니다. 현재 복합 인덱스는 없으며 Spark에서 유료 기능인 TTL 필드 설정을 배포하지 않습니다.
+
+완료 후 Cloud Shell 파일 목록의 `jikkot-setup/outputs/firebase-worker-service-account.json`을 본인 컴퓨터로 다운로드합니다. 아래 3번의 Cloudflare Secret에만 등록합니다. 파일 내용은 채팅에 보내지 않습니다. `outputs/firebase-server-setup-receipt.json`은 비밀키를 포함하지 않는 결과 확인용입니다.
+
+### 기존 Firebase CLI 방식
+
 
 [Cloud Shell에서 저장소 열기](https://shell.cloud.google.com/cloudshell/open?git_repo=https://github.com/ehdgus554/jikkot)를 누릅니다. 저장소 디렉터리에서 실행하세요. 예전에 받은 저장소라면 먼저 `git pull --ff-only`로 갱신합니다.
 
@@ -26,7 +41,7 @@ cat outputs/firebase-public-settings.json
 
 Firebase 로그인은 본인 계정으로 해당 터미널에서 진행합니다. 인증 코드·로그인 토큰은 채팅에 보내지 않습니다.
 
-도구는 웹 앱 등록/공개 SDK 설정 조회, Cloudflare 공개 연결값 준비, Firestore rules/indexes 배포를 처리합니다. `--deploy`는 **Functions를 배포하지 않습니다.** 전용 서비스 계정 `jikkot-api`에 `roles/datastore.user`만 부여합니다. Auth Admin·토큰 서명 권한을 새로 부여하지 않습니다.
+도구는 웹 앱 등록/공개 SDK 설정 조회, Cloudflare 공개 연결값 준비, Firestore rules 배포를 처리합니다. `--deploy`는 **Functions를 배포하지 않습니다.** 전용 서비스 계정 `jikkot-api`에 `roles/datastore.user`만 부여합니다. Auth Admin·토큰 서명 권한을 새로 부여하지 않습니다.
 
 `--prepare-worker-key`는 Worker가 Firestore 서버 API를 호출하는 키를 `outputs/firebase-worker-service-account.json`에 생성합니다. 기존 파일을 덮어쓰지 않고 파일 권한은 600으로 제한합니다. `.env*`와 `outputs`는 Git에서 제외됩니다. 키 생성이 조직 정책으로 금지되어 있으면 그 오류를 해결해야 하며, 권한 제한을 우회하지 않습니다. 과거 Functions 설정이 프로젝트에 존재해도 자동 삭제하지 않습니다.
 

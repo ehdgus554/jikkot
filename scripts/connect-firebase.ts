@@ -204,7 +204,7 @@ if (args.includes("--deploy")) {
       cli,
       "deploy",
       "--only",
-      "firestore:rules,firestore:indexes",
+      "firestore:rules",
       "--project",
       project,
       "--non-interactive",
