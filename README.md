@@ -6,6 +6,8 @@ Firebase 미연결 상태에서는 준비 화면을 먼저 배포할 수 있습�
 
 Firebase 실제 연결을 위해 `npm run firebase:connect -- --project jikkot --site https://jikkot.ehdgus554.workers.dev --deploy --prepare-worker-key` 도구를 추가했습니다. 먼저 본인 Firebase 계정 로그인·프로젝트·Spark/인증 설정이 필요합니다. [최소 계정 설정](docs/firebase-quick-connect-ko.md)을 참고하세요.
 
+실제 `jikkot` 웹 앱의 공개 설정은 확보해 `config/firebase-web.pending.json`에 준비했습니다. Authentication 조회가 `CONFIGURATION_NOT_FOUND`로 응답하여 인증·Firestore·서버 Secret 준비 후 활성화합니다. [현재 연결 상태와 남은 설정](docs/firebase-connection-status-ko.md)을 참고하세요.
+
 ## 로컬 실행
 
 Node 22.13 이상(권장 22), Java 21 이상이 필요합니다.
