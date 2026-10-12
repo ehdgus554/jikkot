@@ -1,11 +1,12 @@
-# Firebase 연결 준비 상태
+# Firebase 연결 활성화 상태
 
 기존 프로젝트 `jikkot`에 웹 앱 `1:252288368957:web:3feb53c831a22e60f34554`가 등록됐고, 사용자가 전달한 공개 SDK 설정을 검증했습니다. 새 프로젝트/요금제/도메인은 만들지 않았습니다.
 
-- 브라우저 연결값: `config/firebase-web.pending.json`. 전체 공개 VITE 설정이며 서버 비밀키를 포함하지 않습니다. 현재 운영 로더는 이 준비 파일을 읽지 않습니다.
+- 브라우저 연결값: `config/firebase-web.json`. 전체 공개 VITE 설정이며 서버 비밀키를 포함하지 않습니다. 운영 빌드는 이 파일을 읽어 실제 Firebase 프로젝트를 연결합니다.
 - 기존 Worker의 공개 변수: `wrangler.jsonc`에 project ID, 웹 API key, 기존 사이트 origin을 연결했습니다. 기존 Firebase auth helper와 Worker 대상은 유지합니다.
 - 실제 인증 설정: 초기에는 HTTP 400 `CONFIGURATION_NOT_FOUND`였지만 사용자 설정 후 HTTP 200으로 정상 응답합니다. 기존 사이트 승인 도메인도 확인했습니다. 익명·이메일/비밀번호 공급자는 임시 인증 계정 생성/삭제가 각각 HTTP 200으로 통과했습니다.
-- 현재 공개 사이트는 로그인 없이 다섯 부위 문진/추천을 확인할 수 있습니다. 서버 준비가 끝나기 전에 브라우저 연결을 활성화하면 가입/저장 흐름이 실패하므로 준비 파일은 활성 설정과 분리했습니다.
+- 사용자가 Cloud Shell의 `4/4 서버 키 준비 완료`와 Cloudflare 프로덕션의 `FIREBASE_SERVICE_ACCOUNT` Secret 등록을 확인했습니다. 이에 따라 공개 브라우저 설정을 활성화했습니다. Secret 값은 이 작업 환경이나 저장소에 전달되지 않았습니다.
+- 실제 배포 성공과 운영 로그인·저장 확인은 별도 단계입니다. 설정 파일 활성화만으로 운영 연결 완료를 주장하지 않습니다.
 
 ## 계정에서 필요한 설정
 
@@ -17,8 +18,8 @@ Google 로그인에는 기존 웹 OAuth 클라이언트의 승인 redirect URI `
 
 ## 서버와 최종 활성화
 
-서버는 기존 Firestore 서버 API 설계를 사용합니다. 전용 `jikkot-api@jikkot.iam.gserviceaccount.com`에 `roles/datastore.user`만 부여하고, 서비스 계정 JSON은 Cloudflare **jikkot → Settings → Variables and Secrets → FIREBASE_SERVICE_ACCOUNT → Secret**에 등록해야 합니다. 이 JSON은 채팅이나 Git에 올리지 않습니다. 현재 도구에 Cloudflare 계정 접근이 제공되지 않아 이 Secret을 직접 등록할 수 없습니다.
+서버는 기존 Firestore 서버 API 설계를 사용합니다. 전용 `jikkot-api@jikkot.iam.gserviceaccount.com`에 `roles/datastore.user`만 부여하고, 서비스 계정 JSON은 Cloudflare **jikkot → Settings → Variables and Secrets → FIREBASE_SERVICE_ACCOUNT → Secret**에 등록합니다. 사용자가 등록 완료를 확인했으며 이 JSON은 채팅이나 Git에 전달되지 않았습니다. 현재 도구에 Cloudflare 계정 접근이 제공되지 않아 Secret 내용을 직접 조회하지 않았습니다.
 
 기존 서버 전용 Firestore rules/indexes와 계정 준비 도구는 [Spark 연결 안내](firebase-quick-connect-ko.md)에 있습니다. 로그인한 본인 Cloud Shell에서 `setup-spark-cloudshell.py --apply`가 필요한 IAM/규칙/키를 직접 준비합니다. Firebase CLI 재로그인은 필요 없습니다. Functions 배포와 결제 계정 연결은 하지 않습니다.
 
-인증·Firestore·서버 Secret·Google redirect가 준비된 뒤 `config/firebase-web.pending.json`을 `config/firebase-web.json`으로 활성화하고 빌드/배포합니다. 현재 환경의 설정 조회·접근 제한과 실제 연결 완료는 구분하며, 운영 이메일/Google 가입·로그인·추천·피드백·기록이 확인되기 전에는 연결 완료로 보고하지 않습니다.
+서버 설정과 Secret 등록 완료 확인을 받아 `config/firebase-web.json`을 활성화하고 빌드/배포합니다. Google redirect URI 등록은 실제 Google 로그인에서 별도로 확인해야 합니다. 현재 환경의 설정 조회·접근 제한과 실제 연결 완료는 구분하며, 운영 이메일/Google 가입·로그인·추천·피드백·기록이 확인되기 전에는 연결 완료로 보고하지 않습니다.
