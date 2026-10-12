@@ -9,6 +9,7 @@ import {
   decode,
 } from "../../worker/firestore-rest";
 import { emulatorIdentity } from "../../scripts/spark-emulator-identity";
+import { fiveAreasExamples } from "../fixtures/five-areas-examples";
 const env = {
   FIREBASE_PROJECT_ID: "demo-jikkot",
   FIREBASE_WEB_API_KEY: "demo-key",
@@ -18,7 +19,7 @@ const api = createSparkApi(env, undefined, { db, verify: emulatorIdentity });
 const consents = { privacy: true, nonMedical: true, version: "draft-v1" };
 const answers = {
   mode: "seated",
-  area: "neck_trapezius",
+  area: "neck",
   habits: ["H_SHRUG", "H_SIDE_SCREEN", "H_CARRY"],
   recent: ["R_HEAD_TURN", "R_HOLD_LOAD", "R_COMPUTER_BOTH"],
 };
@@ -58,6 +59,30 @@ test("Firestore REST codecs preserve nested snapshots and timestamps", () => {
   };
   assert.deepEqual(decode(encode(value)), value);
   assert.equal(fields({ empty: [] }).empty.arrayValue?.values?.length, 0);
+});
+test("actual Spark recommendation endpoint returns every supplied five-area example and rejects retired input IDs", async () => {
+  const suffix = randomUUID().slice(0, 8);
+  const user = await identity(`five-${suffix}@example.test`);
+  assert.equal((await call("/signup", user.idToken, {
+    username: "five_" + suffix,
+    nickname: "five_" + suffix,
+    consents,
+  })).status, 200);
+  for (const [area, habits, recent, number] of fiveAreasExamples) {
+    const result = await call("/recommendations", user.idToken, {
+      recommendationId: randomUUID(),
+      answers: { mode: "seated", area, habits, recent },
+    });
+    assert.equal(result.status, 200, `${area}: ${JSON.stringify(result.body)}`);
+    assert.equal(result.body.snapshot.area.id, area);
+    assert.equal(result.body.snapshot.routine.displayNumber, number);
+    assert.equal(result.body.snapshot.contentVersion, "jikkot11-v2-fiveareas");
+  }
+  const retired = await call("/recommendations", user.idToken, {
+    recommendationId: randomUUID(),
+    answers: { ...answers, area: "front_shoulder" },
+  });
+  assert.equal(retired.status, 400);
 });
 test("Spark email signup enforces consent, atomic uniqueness, owner isolation and feedback idempotency", async () => {
   const suffix = randomUUID().slice(0, 8);
@@ -288,7 +313,7 @@ test("new snapshots and alternatives retain approved version/area and atomically
     answers,
   });
   assert.equal(primary.status, 200);
-  assert.equal(primary.body.snapshot.contentVersion, "jikkot11-v1");
+  assert.equal(primary.body.snapshot.contentVersion, "jikkot11-v2-fiveareas");
   assert.equal(primary.body.snapshot.routine.id, "jikkot11-r03");
   assert.deepEqual(primary.body.snapshot.matchedRecentActionIds, [
     "R_HEAD_TURN",
@@ -312,8 +337,8 @@ test("new snapshots and alternatives retain approved version/area and atomically
   const next = await call("/next", user.idToken, payload);
   assert.equal(next.status, 200);
   assert.equal(next.body.recommendation.snapshot.routine.id, "jikkot11-r08");
-  assert.equal(next.body.recommendation.snapshot.area.id, "neck_trapezius");
-  assert.equal(next.body.recommendation.snapshot.contentVersion, "jikkot11-v1");
+  assert.equal(next.body.recommendation.snapshot.area.id, "neck");
+  assert.equal(next.body.recommendation.snapshot.contentVersion, "jikkot11-v2-fiveareas");
   assert.equal(next.body.recommendation.snapshot.routine.steps.length, 2);
   assert.equal(
     (await call("/next", user.idToken, payload)).body.recommendation
@@ -380,7 +405,7 @@ test("new snapshots and alternatives retain approved version/area and atomically
   );
   const lower = {
     mode: "seated",
-    area: "lower_back",
+    area: "lower",
     habits: ["H_UNKNOWN"],
     recent: ["R_NONE"],
   };

@@ -15,10 +15,10 @@ import {
   CONTENT_VERSION,
 } from "../lib/service/recommendation";
 import { decisionTrees, effectiveRules } from "../lib/service/decision-trees";
+import { suppliedSpec, referenceRecommendation } from "./five-areas-reference";
 export function validSubsets(ids: string[], specials: string[]) {
   const normal = ids.filter((id) => !specials.includes(id));
   return [
-    [],
     ...Array.from({ length: 2 ** normal.length - 1 }, (_, index) =>
       normal.filter((_, bit) => (index + 1) & (1 << bit)),
     ),
@@ -32,9 +32,13 @@ export function validateContent() {
   const fallbackRoutines = new Set<number>(),
     specificRoutines = new Set<number>();
   assert.equal(routines.length, 11);
+  assert.deepEqual(areas.map(({ id, label }) => ({ id, label })), suppliedSpec.bodyAreas);
   assert.equal(new Set(routines.map((routine) => routine.id)).size, 11);
   assert.equal(new Set(routines.map((routine) => routine.image)).size, 11);
   for (const area of areas) {
+    assert.deepEqual(habitQuestions(area.id).map(({ id }) => id), [...suppliedSpec.habitProfiles[area.id], "H_UNKNOWN"]);
+    assert.deepEqual(recentQuestions(area.id, []).map(({ id }) => id), [...suppliedSpec.recentProfiles[area.id], "R_NONE", "R_UNKNOWN"]);
+    assert.deepEqual(allowedRoutineNumbers[area.id], suppliedSpec.allowedRoutines[area.id]);
     const habitSets = validSubsets(
       habitQuestions(area.id).map((question) => question.id),
       ["H_UNKNOWN"],
@@ -52,6 +56,11 @@ export function validateContent() {
           recent,
         });
         const result = makeRecommendation(input);
+        const reference = referenceRecommendation(area.id, input.habits, input.recent);
+        assert.equal(result.routine.displayNumber, reference.routineNumber);
+        assert.equal(result.ruleId, reference.ruleId);
+        assert.deepEqual([...result.matchedHabitIds].sort(), [...reference.matchedHabitIds].sort());
+        assert.deepEqual([...result.matchedRecentActionIds].sort(), [...reference.matchedRecentActionIds].sort());
         const effective = effectiveRules(area.tree, {
           habits: new Set(input.habits),
           recent: new Set(input.recent),
@@ -93,8 +102,8 @@ export function validateContent() {
         );
         const permuted = makeRecommendation({
           ...input,
-          habits: [...input.habits].reverse(),
-          recent: [...input.recent].reverse(),
+          habits: [...input.habits, ...input.habits].reverse(),
+          recent: [...input.recent, ...input.recent].reverse(),
         });
         assert.equal(permuted.routineId, result.routineId);
         assert.deepEqual(permuted.matchedHabitIds, result.matchedHabitIds);
@@ -135,6 +144,8 @@ export function validateContent() {
     }
   }
   assert.equal(reached.size, 11);
+  assert.equal(checked, 42544, "Exactly the supplied non-empty, exclusive UI combinations");
+  assert.equal(branches.size, 46);
   return {
     checked,
     branches: branches.size,

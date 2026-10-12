@@ -66,7 +66,6 @@ export function restore(
     if (
       !p ||
       p.schemaVersion !== SCHEMA_VERSION ||
-      p.contentVersion !== CONTENT_VERSION ||
       p.owner?.id !== owner.id ||
       p.owner?.kind !== owner.kind ||
       !screens.includes(p.screen) ||
@@ -78,6 +77,22 @@ export function restore(
       !["idle", "pending", "saved"].includes(p.submitState)
     )
       return null;
+    // Only reset an owned, unfinished v1 questionnaire. Auth and persisted
+    // recommendation/record snapshots remain owned by the existing account.
+    if (p.contentVersion !== CONTENT_VERSION) {
+      if (
+        p.contentVersion === "jikkot11-v1" &&
+        ["area", "habits", "recent", "analysis", "routine", "feedback", "changes"].includes(p.screen) &&
+        (owner.kind === "member" || p.guestConsent === true)
+      ) {
+        return {
+          ...fresh(owner, p.guestConsent === true),
+          screen: "area",
+          answers: { mode: "seated" },
+        };
+      }
+      return null;
+    }
     if (
       owner.kind === "guest" &&
       (!p.guestConsent ||

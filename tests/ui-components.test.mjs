@@ -86,7 +86,7 @@ test("renders sidebar skeletons deterministically", async () => {
   assert.match(first, /--skeleton-width:70%/);
 });
 
-test("keeps recent actions and habits short and specific to each area", async () => {
+test("keeps the approved five-area profiles specific and special options last", async () => {
   const {
     areas,
     habits,
@@ -99,8 +99,8 @@ test("keeps recent actions and habits short and specific to each area", async ()
     const recentIds = recentActionIdsByArea[area];
     const habitIds = habitIdsByArea[area];
 
-    assert.ok(recentIds.length >= 6 && recentIds.length <= 8, `${area} recent action count`);
-    assert.ok(habitIds.length >= 5 && habitIds.length <= 7, `${area} habit count`);
+    assert.ok(recentIds.length >= 6 && recentIds.length <= 10, `${area} recent action count`);
+    assert.ok(habitIds.length >= 5 && habitIds.length <= 8, `${area} habit count`);
     assert.deepEqual(recentIds.slice(-2), ["R_NONE", "R_UNKNOWN"]);
     assert.equal(habitIds.at(-1), "H_UNKNOWN");
     assert.equal(new Set(recentIds).size, recentIds.length);

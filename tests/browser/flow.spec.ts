@@ -10,7 +10,7 @@ async function guest(page: Page) {
 async function questionnaire(page: Page, lostResponse = false) {
   await page.getByRole("button", { name: "루틴 시작하기" }).click();
   await page
-    .getByRole("button", { name: "목·승모근 주변", exact: true })
+    .getByRole("button", { name: "목", exact: true })
     .click();
   await page.getByRole("button", { name: "다음", exact: true }).click();
   await expect(

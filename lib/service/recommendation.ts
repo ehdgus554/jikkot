@@ -19,7 +19,7 @@ import {
   type DecisionRule,
   type MatchedSignals,
 } from "./decision-trees.js";
-export const CONTENT_VERSION = "jikkot11-v1";
+export const CONTENT_VERSION = "jikkot11-v2-fiveareas";
 export const postureLabels: Record<MovementMode, string> = {
   seated: "앉아서만 할 수 있음",
   standing: "서서 할 수 있음",
@@ -178,7 +178,7 @@ export function recommendationReason(
   ]
     .filter(Boolean)
     .slice(0, 2);
-  const areaName = area === "headache" ? "머리" : area === "rounded_shoulder" ? "앞으로 말린 어깨" : areas.find((item) => item.id === area)!.label;
+  const areaName = areas.find((item) => item.id === area)!.label;
   const objectParticle = (areaName.charCodeAt(areaName.length - 1) - 0xac00) % 28 === 0 ? "를" : "을";
   const intro = phrases.length
     ? `${phrases.join("과 ")}을 선택했어요.`

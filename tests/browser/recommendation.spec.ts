@@ -8,7 +8,57 @@ async function guest(page: Page) {
   await expect(
     page.getByRole("heading", { name: "어디가 불편한가요?" }),
   ).toBeVisible();
+  await expect(page.locator("button[aria-pressed]")).toHaveText(["머리", "목", "어깨", "등", "허리"]);
 }
+const representativePaths = [
+  ["어깨", "한쪽 팔을 앞으로 뻗어 마우스나 도구를 써요", "한쪽 손으로 마우스나 도구를 오래 사용했어요", "의자를 이용한 한쪽 가슴 열기", 4],
+  ["어깨", "가슴 운동이나 물건을 미는 일을 자주 해요", "물건을 밀거나 가슴 운동을 했어요", "쇄골 아래 바깥쪽 쓸어내기 마사지", 11],
+  ["어깨", "양팔을 앞에 둔 채 오래 작업해요", "양팔을 앞에 두고 컴퓨터·노트북 작업을 오래 했어요", "앉아서 뒷짐 가슴 열기", 7],
+  ["머리", "잘 모르겠어요 / 해당하는 습관이 없어요", "잘 기억나지 않아요", "관자놀이 누르며 입 열고 닫기", 10],
+  ["목", "잘 모르겠어요 / 해당하는 습관이 없어요", "잘 기억나지 않아요", "견갑거근 대각선 스트레칭", 3],
+  ["등", "잘 모르겠어요 / 해당하는 습관이 없어요", "잘 기억나지 않아요", "팔 꼬아 앞으로 밀며 고개 숙이기", 2],
+  ["허리", "잘 모르겠어요 / 해당하는 습관이 없어요", "잘 기억나지 않아요", "Figure-4 스트레칭 + 허벅지 당기기", 1],
+] as const;
+for (const [area, habit, recent, title, number] of representativePaths) {
+  test(`five-area browser path ${area} -> ${number}`, async ({ page }) => {
+    await guest(page);
+    await page.getByRole("button", { name: area, exact: true }).click();
+    await page.getByRole("button", { name: "다음", exact: true }).click();
+    await expect(page.getByRole("heading", { name: "평소 어떤 습관이 있나요?" })).toBeVisible();
+    await page.getByRole("button", { name: habit, exact: true }).click();
+    await page.getByRole("button", { name: "다음", exact: true }).click();
+    await expect(page.getByRole("heading", { name: "오늘 또는 불편해지기 전에 무엇을 했나요?" })).toBeVisible();
+    await page.getByRole("button", { name: recent, exact: true }).click();
+    await page.getByRole("button", { name: "동작 추천받기", exact: true }).click();
+    await expect(page.getByRole("heading", { name: title, exact: true })).toBeVisible();
+    await expect(page.locator("main img")).toHaveCount(1);
+    await expect.poll(() => page.locator("main img").evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth === 1536)).toBe(true);
+    const progress = await page.evaluate(() => JSON.parse(localStorage.getItem("jikkot.progress.v1")!));
+    expect(progress.contentVersion).toBe("jikkot11-v2-fiveareas");
+    expect(progress.routineId).toBe(`jikkot11-r${String(number).padStart(2, "0")}`);
+  });
+}
+test("previous detailed-area questionnaire restarts at five areas without losing guest identity or consent", async ({ page }) => {
+  await guest(page);
+  const owner = await page.evaluate(() => {
+    const state = JSON.parse(localStorage.getItem("jikkot.progress.v1")!);
+    localStorage.setItem("jikkot.progress.v1", JSON.stringify({
+      ...state,
+      contentVersion: "jikkot11-v1",
+      screen: "recent",
+      answers: { mode: "seated", area: "front_shoulder", habits: ["H_ONE_FORWARD"], recent: ["R_ONE_HAND"] },
+    }));
+    return state.owner;
+  });
+  await page.reload();
+  await expect(page.getByRole("heading", { name: "어디가 불편한가요?" })).toBeVisible();
+  await expect(page.locator("button[aria-pressed]")).toHaveText(["머리", "목", "어깨", "등", "허리"]);
+  const progress = await page.evaluate(() => JSON.parse(localStorage.getItem("jikkot.progress.v1")!));
+  expect(progress.owner).toEqual(owner);
+  expect(progress.guestConsent).toBe(true);
+  expect(progress.answers).toEqual({ mode: "seated" });
+  expect(progress.contentVersion).toBe("jikkot11-v2-fiveareas");
+});
 test("three questions enforce special exclusivity, reset changed profiles and immediately return a single combined-input result", async ({
   page,
 }) => {
@@ -16,7 +66,7 @@ test("three questions enforce special exclusivity, reset changed profiles and im
   await expect(
     page.getByRole("heading", { name: "현재 가능한 자세" }),
   ).toHaveCount(0);
-  await page.getByRole("button", { name: "날개뼈 사이", exact: true }).click();
+  await page.getByRole("button", { name: "등", exact: true }).click();
   await page.getByRole("button", { name: "다음", exact: true }).click();
   const pinch = page.getByRole("button", {
     name: "등을 펴려고 날개뼈를 모으고 힘을 줘요",
@@ -46,8 +96,12 @@ test("three questions enforce special exclusivity, reset changed profiles and im
   await forgotten.click();
   await expect(none).toHaveAttribute("aria-pressed", "false");
   await page.getByRole("button", { name: "이전", exact: true }).click();
+  await page.getByRole("button", { name: "팔을 높이 들거나 멀리 뻗는 일이 많아요", exact: true }).click();
+  await page.getByRole("button", { name: "다음", exact: true }).click();
+  await expect(page.locator('button[aria-pressed="true"]')).toHaveCount(0);
   await page.getByRole("button", { name: "이전", exact: true }).click();
-  await page.getByRole("button", { name: "어깨 앞쪽", exact: true }).click();
+  await page.getByRole("button", { name: "이전", exact: true }).click();
+  await page.getByRole("button", { name: "어깨", exact: true }).click();
   await page.getByRole("button", { name: "다음", exact: true }).click();
   await expect(page.locator('button[aria-pressed="true"]')).toHaveCount(0);
   await page
@@ -76,7 +130,7 @@ test("three questions enforce special exclusivity, reset changed profiles and im
   const progress = await page.evaluate(() =>
     JSON.parse(localStorage.getItem("jikkot.progress.v1")!),
   );
-  expect(progress.contentVersion).toBe("jikkot11-v1");
+  expect(progress.contentVersion).toBe("jikkot11-v2-fiveareas");
   expect(progress.routineId).toBe("jikkot11-r11");
   await expect(page.locator("main > section")).not.toContainText(
     "한쪽 손으로 마우스나 도구를 오래 사용한 행동",
@@ -86,7 +140,7 @@ test("unknown answers produce the approved default with variable-length instruct
   page,
 }) => {
   await guest(page);
-  await page.getByRole("button", { name: "허리 아래쪽", exact: true }).click();
+  await page.getByRole("button", { name: "허리", exact: true }).click();
   await page.getByRole("button", { name: "다음", exact: true }).click();
   await page
     .getByRole("button", { name: "잘 모르겠어요 / 해당하는 습관이 없어요" })
@@ -166,6 +220,18 @@ test("legacy MV snapshots remain visible under their original area and name", as
       recent: [],
     },
   });
+  await db.doc(`profiles/${user.localId}/records/${crypto.randomUUID()}`).set({
+    createdAt: Date.now() + 1,
+    feedback: "same",
+    changes: [],
+    snapshot: {
+      contentVersion: "jikkot11-v1",
+      area: { id: "front_shoulder", label: "어깨 앞쪽" },
+      routine: { id: "jikkot11-r04", name: "의자를 이용한 한쪽 가슴 열기", image: "/assets/routines/routine-04-single-chest.png" },
+      habits: [],
+      recent: [],
+    },
+  });
   await page.goto("/");
   await page.getByRole("button", { name: "로그인하기", exact: true }).click();
   await page.getByLabel("이메일", { exact: true }).fill(email);
@@ -175,10 +241,12 @@ test("legacy MV snapshots remain visible under their original area and name", as
   await expect(
     page.getByRole("heading", { name: "목", exact: true }),
   ).toBeVisible();
-  await expect(page.locator("article")).toContainText(
+  await expect(page.locator("article").filter({ hasText: "어깨 올렸다 힘 빼며 내리기" })).toContainText(
     "어깨 올렸다 힘 빼며 내리기",
   );
-  await expect(page.locator("article")).not.toContainText("견갑거근");
+  await expect(page.locator("article").filter({ hasText: "어깨 올렸다 힘 빼며 내리기" })).not.toContainText("견갑거근");
+  await expect(page.getByRole("heading", { name: "어깨 앞쪽", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "의자를 이용한 한쪽 가슴 열기 · 비슷하다", exact: true })).toBeVisible();
 });
 test("all eleven approved PNG routes return original images without aliases or external URLs", async ({
   request,
@@ -231,7 +299,7 @@ test("member feedback follows approved same-area alternatives without repeated m
   await page.getByRole("button", { name: "로그인", exact: true }).click();
   await page.getByRole("button", { name: "루틴 시작하기" }).click();
   await page
-    .getByRole("button", { name: "목·승모근 주변", exact: true })
+    .getByRole("button", { name: "목", exact: true })
     .click();
   await page.getByRole("button", { name: "다음", exact: true }).click();
   await page

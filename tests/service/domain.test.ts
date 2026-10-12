@@ -14,32 +14,7 @@ import {
 } from "../../lib/service/recommendation";
 import { fresh, restore } from "../../lib/service/progress";
 import { validateContent } from "../../scripts/validate-content";
-const examples = [
-  ["lower_back", ["H_SIT"], ["R_DRIVE"], 1],
-  ["between_scapulae", ["H_PINCH"], ["R_COMPUTER_BOTH"], 2],
-  ["neck_trapezius", ["H_SHRUG", "H_SIDE_SCREEN"], ["R_HEAD_TURN"], 3],
-  ["front_shoulder", ["H_ONE_FORWARD"], ["R_ONE_HAND"], 4],
-  ["between_scapulae", ["H_OVERHEAD"], ["R_OVERHEAD"], 5],
-  ["back_shoulder", ["H_ARMS_CLOSE"], ["R_PHONE"], 6],
-  ["rounded_shoulder", ["H_BOTH_FRONT"], ["R_COMPUTER_BOTH"], 7],
-  ["top_shoulder", ["H_CARRY"], ["R_HOLD_LOAD"], 8],
-  ["headache", ["H_SIDE_SCREEN"], ["R_HEAD_TURN"], 9],
-  ["headache", ["H_CLENCH"], ["R_CLENCH"], 10],
-  ["front_shoulder", ["H_CHEST_PUSH"], ["R_PUSH_CHEST"], 11],
-  ["headache", ["H_SIDE_SCREEN", "H_CLENCH"], ["R_HEAD_TURN", "R_CLENCH"], 10],
-  [
-    "top_shoulder",
-    ["H_CARRY", "H_SIDE_SCREEN"],
-    ["R_HOLD_LOAD", "R_HEAD_TURN"],
-    3,
-  ],
-  [
-    "front_shoulder",
-    ["H_ONE_FORWARD", "H_CHEST_PUSH"],
-    ["R_ONE_HAND", "R_PUSH_CHEST"],
-    11,
-  ],
-] as const;
+import { fiveAreasExamples as examples } from "../fixtures/five-areas-examples";
 test("all supplied single and combined examples select the specified approved move", () => {
   for (const [area, habits, recent, expected] of examples) {
     const answers = validateAnswers({
@@ -56,7 +31,8 @@ test("all supplied single and combined examples select the specified approved mo
 });
 test("every valid subset has one exclusive reachable branch, stable ordering and an allowed move", () => {
   const result = validateContent();
-  assert.ok(result.checked > 30000);
+  assert.equal(result.checked, 42544);
+  assert.equal(result.branches, 46);
   assert.deepEqual(
     result.reachableNumbers,
     [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
@@ -96,25 +72,25 @@ test("special options are exclusive, empty/unknown inputs normalize to defaults,
   }
   assert.throws(() =>
     validateAnswers({
-      area: "headache",
+      area: "head",
       habits: ["H_UNKNOWN", "H_CLENCH"],
       recent: [],
     }),
   );
   assert.throws(() =>
     validateAnswers({
-      area: "headache",
+      area: "head",
       habits: [],
       recent: ["R_NONE", "R_CLENCH"],
     }),
   );
   assert.throws(() =>
-    validateAnswers({ area: "lower_back", habits: ["H_SHRUG"], recent: [] }),
+    validateAnswers({ area: "lower", habits: ["H_SHRUG"], recent: [] }),
   );
 });
 test("reasons cite only inputs that determined the winning branch and snapshot new IDs/version/steps", () => {
   const a = validateAnswers({
-    area: "between_scapulae",
+    area: "back",
     habits: ["H_PINCH", "H_OVERHEAD"],
     recent: ["R_OVERHEAD"],
   });
@@ -123,12 +99,12 @@ test("reasons cite only inputs that determined the winning branch and snapshot n
   assert.deepEqual(rec.matchedRecentActionIds, ["R_OVERHEAD"]);
   assert.doesNotMatch(rec.reasonText, /날개뼈를 모으|힘을 주는 습관/);
   const saved = snapshot(a, rec.routine, rec.pattern);
-  assert.equal(saved.contentVersion, "jikkot11-v1");
+  assert.equal(saved.contentVersion, "jikkot11-v2-fiveareas");
   assert.equal(saved.routine.id, "jikkot11-r05");
   assert.equal(saved.routine.steps.length, 2);
   const head = makeRecommendation(
     validateAnswers({
-      area: "headache",
+      area: "head",
       habits: ["H_SIDE_SCREEN", "H_CLENCH"],
       recent: ["R_HEAD_TURN", "R_CLENCH"],
     }),
@@ -162,6 +138,26 @@ test("KST dates and progress ownership/version are independent of server usage a
   );
   assert.equal(p.contentVersion, CONTENT_VERSION);
 });
+test("unfinished detailed-area progress resets only its questionnaire, retaining owner and consent", () => {
+  const owner = { kind: "member" as const, id: "old-member" };
+  const previous = {
+    ...fresh(owner, true),
+    screen: "routine",
+    contentVersion: "jikkot11-v1",
+    answers: { mode: "seated", area: "front_shoulder", habits: ["H_ONE_FORWARD"], recent: ["R_ONE_HAND"] },
+    recommendationId: crypto.randomUUID(),
+    routineId: "jikkot11-r04",
+  };
+  const resumed = restore(JSON.stringify(previous), owner)!;
+  assert.equal(resumed.screen, "area");
+  assert.deepEqual(resumed.owner, owner);
+  assert.equal(resumed.guestConsent, true);
+  assert.deepEqual(resumed.answers, { mode: "seated" });
+  assert.equal(resumed.recommendationId, undefined);
+  assert.equal(resumed.contentVersion, "jikkot11-v2-fiveareas");
+  assert.equal(restore(JSON.stringify(previous), { ...owner, id: "other" }), null);
+  assert.throws(() => validateAnswers(previous.answers));
+});
 test("alternatives stay within approved area mapping, exclude the current move, and never alias old IDs", () => {
   assert.equal(routines.length, 11);
   for (const area of areas) {
@@ -175,7 +171,7 @@ test("alternatives stay within approved area mapping, exclude the current move, 
         feedback,
         [],
       );
-      if (area.id === "lower_back") assert.equal(next, null);
+      if (area.id === "lower") assert.equal(next, null);
       else {
         assert.notEqual(next?.id, rec.routine.id);
         assert.ok(allowedRoutineNumbers[area.id].includes(next!.displayNumber));
