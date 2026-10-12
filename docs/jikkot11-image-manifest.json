@@ -1,0 +1,101 @@
+[
+  {
+    "number": 1,
+    "title": "Figure-4 스트레칭 + 허벅지 당기기",
+    "source": "Seated figure-four thigh pull guide(1).png",
+    "target": "/assets/routines/routine-01-figure4.png",
+    "sha256": "57506d1e40474b9846fd5cb1989600a77785e00f3fc18c215eed052959967520",
+    "bytes": 2275305,
+    "visually_verified": true
+  },
+  {
+    "number": 2,
+    "title": "팔 꼬아 앞으로 밀며 고개 숙이기",
+    "source": "Seated Arm Reach and Neck Stretch(1).png",
+    "target": "/assets/routines/routine-02-upper-back.png",
+    "sha256": "e343828ef9ee7764930aa9a0dca5233b408c510c5d1ee76b5db4218462b5ff51",
+    "bytes": 2561433,
+    "visually_verified": true
+  },
+  {
+    "number": 3,
+    "title": "견갑거근 대각선 스트레칭",
+    "source": "Two-Step Diagonal Neck Stretch(1).png",
+    "target": "/assets/routines/routine-03-diagonal-neck.png",
+    "sha256": "4956a817752f0ad3d9d339832da2ec912f36a306c9ec9df202ffc7d134663e14",
+    "bytes": 2480979,
+    "visually_verified": true
+  },
+  {
+    "number": 4,
+    "title": "의자를 이용한 한쪽 가슴 열기",
+    "source": "Seated twist with aligned gaze(1).png",
+    "target": "/assets/routines/routine-04-single-chest.png",
+    "sha256": "91c7e778766f41ad669eca8e2ef3ae2e1c177935a498b265b3b4dabbc34b49ac",
+    "bytes": 2549598,
+    "visually_verified": true
+  },
+  {
+    "number": 5,
+    "title": "책상 광배근·날개뼈 스트레칭",
+    "source": "Seated Desk Lat Stretch Guide(1).png",
+    "target": "/assets/routines/routine-05-desk-lat.png",
+    "sha256": "622e61e11d7259c6f4ff8824e780f0255c1a43fd98e2645f3932f06de1d61641",
+    "bytes": 2473742,
+    "visually_verified": true
+  },
+  {
+    "number": 6,
+    "title": "팔꿈치 붙이고 양손 바깥으로 벌리기",
+    "source": "Seated elbow-together outward rotation(1).png",
+    "target": "/assets/routines/routine-06-external-rotation.png",
+    "sha256": "e7379987b19fb5da9456896c0df5865da05976a4c84dc1a3f6196caeec375082",
+    "bytes": 2423986,
+    "visually_verified": true
+  },
+  {
+    "number": 7,
+    "title": "앉아서 뒷짐 가슴 열기",
+    "source": "Seated chest-opening stretch guide(1).png",
+    "target": "/assets/routines/routine-07-seated-chest.png",
+    "sha256": "c1cc2d90a6884a5e3d6325c181493c86499a3d4058b56e197692e870adbf1d97",
+    "bytes": 2401217,
+    "visually_verified": true
+  },
+  {
+    "number": 8,
+    "title": "앉아서 손깍지 끼고 팔 뒤로 뻗기",
+    "source": "08. 앉아서 손깍지 끼고 팔 뒤로 뻗기(1).png",
+    "target": "/assets/routines/routine-08-seated-interlace.png",
+    "sha256": "10bb9bbf25581a12704554b43e2037130234c8ecc6679c1ff969d41e4d84e78b",
+    "bytes": 2422698,
+    "visually_verified": true
+  },
+  {
+    "number": 9,
+    "title": "흉쇄유돌근 마사지",
+    "source": "Gentle seated SCM massage guide(1).png",
+    "target": "/assets/routines/routine-09-scm.png",
+    "sha256": "3787e83b34677987f47e79b345578fffd88c19ea87823288ccc92e465590bc9b",
+    "bytes": 2478725,
+    "visually_verified": true
+  },
+  {
+    "number": 10,
+    "title": "관자놀이 누르며 입 열고 닫기",
+    "source": "Gentle temple press jaw exercise(1).png",
+    "target": "/assets/routines/routine-10-temple-jaw.png",
+    "sha256": "4a0b63027ea5c4afca1195338a032f0af21c04aa7cd701cd8953a65010fa851d",
+    "bytes": 2623749,
+    "visually_verified": true
+  },
+  {
+    "number": 11,
+    "title": "쇄골 아래 바깥쪽 쓸어내기 마사지",
+    "source": "Under-Collarbone Chest Sweep Guide(1).png",
+    "target": "/assets/routines/routine-11-chest-sweep.png",
+    "sha256": "dcbc750bd9073bc4436baab04456f178dad8076937e38cecec83a9827704de5e",
+    "bytes": 2750511,
+    "visually_verified": true
+  }
+]

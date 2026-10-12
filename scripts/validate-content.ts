@@ -1,86 +1,150 @@
 import assert from "node:assert/strict";
-import { areas, routes, getRoutine, type AreaCode } from "../app/jikkot-data";
+import {
+  areas,
+  getRoutine,
+  routines,
+  allowedRoutineNumbers,
+} from "../app/jikkot-data";
 import {
   makeRecommendation,
   habitQuestions,
   recentQuestions,
-  isAllowed,
-  extensions,
-  type Answers,
-  type ContentExtensions,
+  validateAnswers,
+  recommendationReason,
+  nextRecommendation,
+  CONTENT_VERSION,
 } from "../lib/service/recommendation";
-function subsets(ids: string[]) {
-  return Array.from({ length: 2 ** ids.length - 1 }, (_, i) =>
-    ids.filter((_, j) => (i + 1) & (1 << j)),
-  );
+import { decisionTrees, effectiveRules } from "../lib/service/decision-trees";
+export function validSubsets(ids: string[], specials: string[]) {
+  const normal = ids.filter((id) => !specials.includes(id));
+  return [
+    [],
+    ...Array.from({ length: 2 ** normal.length - 1 }, (_, index) =>
+      normal.filter((_, bit) => (index + 1) & (1 << bit)),
+    ),
+    ...specials.map((id) => [id]),
+  ];
 }
-let checked = 0;
-for (const area of areas)
-  for (const mode of ["seated", "standing", "lying"] as const)
-    for (const habits of subsets(habitQuestions(area.id).map((q) => q.id)))
-      for (const recent of subsets(
-        recentQuestions(area.id, habits).map((q) => q.id),
-      )) {
-        const answers: Answers = { area: area.id, mode, recent, habits };
-        const result = makeRecommendation(answers);
-        assert.ok(isAllowed(result.routine, mode));
-        const route = routes[area.id][Number(result.pattern.split(":")[1])];
+export function validateContent() {
+  let checked = 0;
+  const reached = new Set<number>();
+  const branches = new Map<string, number>();
+  const fallbackRoutines = new Set<number>(),
+    specificRoutines = new Set<number>();
+  assert.equal(routines.length, 11);
+  assert.equal(new Set(routines.map((routine) => routine.id)).size, 11);
+  assert.equal(new Set(routines.map((routine) => routine.image)).size, 11);
+  for (const area of areas) {
+    const habitSets = validSubsets(
+      habitQuestions(area.id).map((question) => question.id),
+      ["H_UNKNOWN"],
+    );
+    const recentSets = validSubsets(
+      recentQuestions(area.id, []).map((question) => question.id),
+      ["R_NONE", "R_UNKNOWN"],
+    );
+    for (const habits of habitSets)
+      for (const recent of recentSets) {
+        const input = validateAnswers({
+          mode: "seated",
+          area: area.id,
+          habits,
+          recent,
+        });
+        const result = makeRecommendation(input);
+        const effective = effectiveRules(area.tree, {
+          habits: new Set(input.habits),
+          recent: new Set(input.recent),
+        });
+        assert.equal(
+          effective.length,
+          1,
+          `${area.id}: exactly one mutually exclusive final branch`,
+        );
+        assert.equal(effective[0].id, result.ruleId);
         assert.ok(
-          [...route.relax, ...route.move, ...route.control].includes(
-            result.routine.id,
+          allowedRoutineNumbers[area.id].includes(result.routine.displayNumber),
+        );
+        assert.equal(
+          getRoutine(result.routineId)?.displayNumber,
+          result.routine.displayNumber,
+        );
+        assert.ok(
+          result.routine.name &&
+            result.routine.steps.length >= 2 &&
+            result.routine.image.endsWith(".png"),
+        );
+        assert.equal(result.contentVersion, CONTENT_VERSION);
+        assert.ok(
+          result.matchedHabitIds.every((id) => input.habits.includes(id)),
+        );
+        assert.ok(
+          result.matchedRecentActionIds.every((id) =>
+            input.recent.includes(id),
           ),
+        );
+        assert.equal(
+          result.reasonText.split(/[.!?]/).filter((part) => part.trim()).length,
+          2,
+        );
+        assert.doesNotMatch(
+          result.reasonText,
+          /H_|R_|jikkot11|분기|알고리즘|점수/,
+        );
+        const permuted = makeRecommendation({
+          ...input,
+          habits: [...input.habits].reverse(),
+          recent: [...input.recent].reverse(),
+        });
+        assert.equal(permuted.routineId, result.routineId);
+        assert.deepEqual(permuted.matchedHabitIds, result.matchedHabitIds);
+        assert.deepEqual(
+          permuted.matchedRecentActionIds,
+          result.matchedRecentActionIds,
+        );
+        assert.equal(permuted.reasonText, result.reasonText);
+        reached.add(result.routine.displayNumber);
+        branches.set(result.ruleId, (branches.get(result.ruleId) ?? 0) + 1);
+        (effective[0].isDefault ? fallbackRoutines : specificRoutines).add(
+          result.routine.displayNumber,
         );
         checked++;
       }
-export function validateExtensions(content: ContentExtensions) {
-  for (const condition of content.recentQuestions ?? []) {
-    assert.ok(areas.some((a) => a.id === condition.area));
-    assert.ok(
-      condition.allHabits.every((id) =>
-        habitQuestions(condition.area).some((q) => q.id === id),
-      ),
-    );
-    assert.ok(
-      condition.ids.length &&
-        condition.ids.every((id) =>
-          recentQuestions(condition.area, []).some((q) => q.id === id),
-        ),
-    );
-  }
-  for (const [pattern, links] of Object.entries(content.related ?? {})) {
-    const [area, index] = pattern.split(":");
-    assert.ok(areas.some((a) => a.id === area));
-    assert.ok(routes[area as AreaCode][Number(index)]);
-    for (const link of links) {
-      const r = getRoutine(link.routineId);
-      assert.ok(r && link.area !== area && r.areas.includes(link.area));
-      for (const mode of ["seated", "standing", "lying"] as const)
-        assert.ok(
-          isAllowed(r, mode),
-          `unsupported related posture: ${pattern}/${mode}`,
-        );
-    }
-  }
-  for (const [source, questions] of Object.entries(content.changes ?? {})) {
-    const original = getRoutine(source);
-    assert.ok(original);
-    assert.equal(new Set(questions.map((q) => q.id)).size, questions.length);
-    for (const q of questions) {
-      assert.ok(q.label);
-      if (q.nextRoutineId) {
-        const r = getRoutine(q.nextRoutineId);
-        assert.ok(r);
-        for (const mode of ["seated", "standing", "lying"] as const)
-          if (isAllowed(original, mode))
-            assert.ok(
-              isAllowed(r, mode),
-              `unsupported change posture: ${source}/${mode}`,
-            );
+    for (const rule of decisionTrees[area.tree])
+      assert.ok(branches.get(rule.id), `Unreachable final branch: ${rule.id}`);
+    // Alternative paths keep the same area mapping and never return the current move.
+    const sample = validateAnswers({
+      area: area.id,
+      habits: ["H_UNKNOWN"],
+      recent: ["R_NONE"],
+    });
+    for (const number of allowedRoutineNumbers[area.id]) {
+      const routine = routines.find((item) => item.displayNumber === number)!;
+      for (const feedback of ["same", "worse"] as const) {
+        const next = nextRecommendation(sample, routine.id, "", feedback, []);
+        if (allowedRoutineNumbers[area.id].length === 1)
+          assert.equal(next, null);
+        else {
+          assert.ok(next && next.id !== routine.id);
+          assert.ok(
+            allowedRoutineNumbers[area.id].includes(next!.displayNumber),
+          );
+          assert.ok(recommendationReason(area.id, next!));
+        }
       }
     }
   }
+  assert.equal(reached.size, 11);
+  return {
+    checked,
+    branches: branches.size,
+    reachableNumbers: [...reached].sort((a, b) => a - b),
+    fallbackNumbers: [...fallbackRoutines].sort((a, b) => a - b),
+    specificNumbers: [...specificRoutines].sort((a, b) => a - b),
+  };
 }
-validateExtensions(extensions);
-console.log(
-  `PASS: ${checked} nonempty multiselect/posture/area combinations and extension links. No unrelated fallback.`,
-);
+if (process.argv[1]?.endsWith("validate-content.ts"))
+  console.log(
+    "PASS: approved jikkot11 content",
+    JSON.stringify(validateContent()),
+  );

@@ -1,125 +1,203 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {
-  areas,
-  routes,
-  getRoutine,
-  habits,
-  recentActions,
-} from "../../app/jikkot-data";
+import { routines, areas, allowedRoutineNumbers } from "../../app/jikkot-data";
 import {
   makeRecommendation,
-  isAllowed,
   nextRecommendation,
+  validateAnswers,
   recentQuestions,
   habitQuestions,
+  toggleExclusive,
+  snapshot,
   kstDate,
   CONTENT_VERSION,
-  type Answers,
-  type ContentExtensions,
 } from "../../lib/service/recommendation";
 import { fresh, restore } from "../../lib/service/progress";
-const a: Answers = {
-  mode: "seated",
-  area: "NECK",
-  habits: ["HB04"],
-  recent: ["RA02"],
-};
-test("preserves original route/slot priority and habit ranking for representative MVP inputs", () => {
-  for (const area of areas)
-    for (const q of recentQuestions(area.id, []))
-      for (const h of habitQuestions(area.id))
-        for (const mode of ["seated", "standing", "lying"] as const) {
-          const value = { area: area.id, mode, recent: [q.id], habits: [h.id] };
-          const recentTags = value.recent.map(
-            (id) => recentActions.find((q) => q.id === id)!.tag as string,
-          );
-          const habitTags = value.habits.map(
-            (id) => habits.find((q) => q.id === id)!.tag as string,
-          );
-          const route =
-            routes[area.id].find((r) =>
-              r.tags.some((t) => recentTags.includes(t)),
-            ) ?? routes[area.id].at(-1)!;
-          // Independent extraction of the old algorithm's first nonempty slot. No UI-specific copies.
-          const expected = [route.relax, route.move, route.control]
-            .map(
-              (ids) =>
-                ids
-                  .map(getRoutine)
-                  .filter((r) => r && isAllowed(r, mode))
-                  .map((r, index) => ({
-                    r: r!,
-                    index,
-                    match: r!.clusters.some((t) => habitTags.includes(t))
-                      ? 1
-                      : 0,
-                  }))
-                  .sort((x, y) => y.match - x.match || x.index - y.index)[0]?.r,
-            )
-            .find(Boolean)!;
-          const actual = makeRecommendation(value);
-          assert.equal(actual.routine.id, expected.id);
-          assert.ok(isAllowed(actual.routine, mode));
-        }
+import { validateContent } from "../../scripts/validate-content";
+const examples = [
+  ["lower_back", ["H_SIT"], ["R_DRIVE"], 1],
+  ["between_scapulae", ["H_PINCH"], ["R_COMPUTER_BOTH"], 2],
+  ["neck_trapezius", ["H_SHRUG", "H_SIDE_SCREEN"], ["R_HEAD_TURN"], 3],
+  ["front_shoulder", ["H_ONE_FORWARD"], ["R_ONE_HAND"], 4],
+  ["between_scapulae", ["H_OVERHEAD"], ["R_OVERHEAD"], 5],
+  ["back_shoulder", ["H_ARMS_CLOSE"], ["R_PHONE"], 6],
+  ["rounded_shoulder", ["H_BOTH_FRONT"], ["R_COMPUTER_BOTH"], 7],
+  ["top_shoulder", ["H_CARRY"], ["R_HOLD_LOAD"], 8],
+  ["headache", ["H_SIDE_SCREEN"], ["R_HEAD_TURN"], 9],
+  ["headache", ["H_CLENCH"], ["R_CLENCH"], 10],
+  ["front_shoulder", ["H_CHEST_PUSH"], ["R_PUSH_CHEST"], 11],
+  ["headache", ["H_SIDE_SCREEN", "H_CLENCH"], ["R_HEAD_TURN", "R_CLENCH"], 10],
+  [
+    "top_shoulder",
+    ["H_CARRY", "H_SIDE_SCREEN"],
+    ["R_HOLD_LOAD", "R_HEAD_TURN"],
+    3,
+  ],
+  [
+    "front_shoulder",
+    ["H_ONE_FORWARD", "H_CHEST_PUSH"],
+    ["R_ONE_HAND", "R_PUSH_CHEST"],
+    11,
+  ],
+] as const;
+test("all supplied single and combined examples select the specified approved move", () => {
+  for (const [area, habits, recent, expected] of examples) {
+    const answers = validateAnswers({
+      area,
+      habits: [...habits],
+      recent: [...recent],
+    });
+    assert.equal(
+      makeRecommendation(answers).routine.displayNumber,
+      expected,
+      area,
+    );
+  }
 });
-test("question adapter excludes none, supports multiselect and injects conditional content only", () => {
-  assert.ok(!habitQuestions("NECK").some((q) => q.id === "HB99"));
-  assert.ok(!recentQuestions("NECK", []).some((q) => q.id === "RA99"));
-  const fixture: ContentExtensions = {
-    recentQuestions: [{ area: "NECK", allHabits: ["HB04"], ids: ["RA03"] }],
-  };
+test("every valid subset has one exclusive reachable branch, stable ordering and an allowed move", () => {
+  const result = validateContent();
+  assert.ok(result.checked > 30000);
   assert.deepEqual(
-    recentQuestions("NECK", ["HB04"], fixture).map((q) => q.id),
-    ["RA03"],
+    result.reachableNumbers,
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
   );
-  assert.equal(recentQuestions("NECK", [], fixture).length, 5);
 });
-test("KST midnight and restoration are separate from usage consumption", () => {
+test("special options are exclusive, empty/unknown inputs normalize to defaults, and recent choices are never hidden", () => {
+  assert.deepEqual(toggleExclusive(["H_SHRUG"], "H_UNKNOWN", ["H_UNKNOWN"]), [
+    "H_UNKNOWN",
+  ]);
+  assert.deepEqual(toggleExclusive(["H_UNKNOWN"], "H_SHRUG", ["H_UNKNOWN"]), [
+    "H_SHRUG",
+  ]);
+  assert.deepEqual(
+    toggleExclusive(["R_PHONE"], "R_NONE", ["R_NONE", "R_UNKNOWN"]),
+    ["R_NONE"],
+  );
+  assert.deepEqual(
+    toggleExclusive(["R_NONE"], "R_UNKNOWN", ["R_NONE", "R_UNKNOWN"]),
+    ["R_UNKNOWN"],
+  );
+  for (const area of areas) {
+    assert.deepEqual(
+      recentQuestions(area.id, ["H_UNKNOWN"]),
+      recentQuestions(
+        area.id,
+        habitQuestions(area.id).map((item) => item.id),
+      ),
+    );
+    const empty = validateAnswers({ area: area.id, habits: [], recent: [] });
+    assert.deepEqual(empty.habits, ["H_UNKNOWN"]);
+    assert.deepEqual(empty.recent, ["R_UNKNOWN"]);
+    assert.ok(
+      allowedRoutineNumbers[area.id].includes(
+        makeRecommendation(empty).routine.displayNumber,
+      ),
+    );
+  }
+  assert.throws(() =>
+    validateAnswers({
+      area: "headache",
+      habits: ["H_UNKNOWN", "H_CLENCH"],
+      recent: [],
+    }),
+  );
+  assert.throws(() =>
+    validateAnswers({
+      area: "headache",
+      habits: [],
+      recent: ["R_NONE", "R_CLENCH"],
+    }),
+  );
+  assert.throws(() =>
+    validateAnswers({ area: "lower_back", habits: ["H_SHRUG"], recent: [] }),
+  );
+});
+test("reasons cite only inputs that determined the winning branch and snapshot new IDs/version/steps", () => {
+  const a = validateAnswers({
+    area: "between_scapulae",
+    habits: ["H_PINCH", "H_OVERHEAD"],
+    recent: ["R_OVERHEAD"],
+  });
+  const rec = makeRecommendation(a);
+  assert.deepEqual(rec.matchedHabitIds, []);
+  assert.deepEqual(rec.matchedRecentActionIds, ["R_OVERHEAD"]);
+  assert.doesNotMatch(rec.reasonText, /날개뼈를 모으|힘을 주는 습관/);
+  const saved = snapshot(a, rec.routine, rec.pattern);
+  assert.equal(saved.contentVersion, "jikkot11-v1");
+  assert.equal(saved.routine.id, "jikkot11-r05");
+  assert.equal(saved.routine.steps.length, 2);
+  const head = makeRecommendation(
+    validateAnswers({
+      area: "headache",
+      habits: ["H_SIDE_SCREEN", "H_CLENCH"],
+      recent: ["R_HEAD_TURN", "R_CLENCH"],
+    }),
+  );
+  assert.doesNotMatch(head.reasonText, /고개|옆 화면/);
+});
+test("KST dates and progress ownership/version are independent of server usage and old records", () => {
   assert.equal(kstDate(new Date("2026-10-06T14:59:59Z")), "2026-10-06");
   assert.equal(kstDate(new Date("2026-10-06T15:00:00Z")), "2026-10-07");
-});
-test("progress rejects other account, expiry, schema, content and credentials never persist", () => {
-  const owner = { kind: "member" as const, id: "A" };
-  const p = fresh(owner);
+  const owner = { kind: "member" as const, id: "A" },
+    p = fresh(owner);
   assert.equal(restore(JSON.stringify(p), owner)?.screen, "home");
-  assert.equal(restore(JSON.stringify(p), { kind: "member", id: "B" }), null);
+  assert.equal(restore(JSON.stringify(p), { ...owner, id: "B" }), null);
   assert.equal(restore(JSON.stringify({ ...p, updatedAt: 0 }), owner), null);
   assert.equal(
-    restore(JSON.stringify({ ...p, contentVersion: "old" }), owner),
+    restore(
+      JSON.stringify({ ...p, contentVersion: "mvp-9.1-adapter-v1" }),
+      owner,
+    ),
     null,
   );
   assert.equal(
-    restore(JSON.stringify({ ...p, schemaVersion: 0 }), owner),
+    restore(JSON.stringify({ ...p, schemaVersion: 1 }), owner),
     null,
   );
   assert.ok(
     !(
       "password" in
-      restore(JSON.stringify({ ...p, password: "do-not-store" }), owner)!
+      restore(JSON.stringify({ ...p, password: "private" }), owner)!
     ),
   );
   assert.equal(p.contentVersion, CONTENT_VERSION);
 });
-test("same/worse fixture branches enforce posture and other-area links; empty production returns no next", () => {
-  assert.equal(nextRecommendation(a, "MV009", "NECK:0", "same", []), null);
-  const fixture: ContentExtensions = {
-    related: { "NECK:0": [{ area: "SHOULDER", routineId: "MV012" }] },
-    changes: {
-      MV009: [{ id: "change-1", label: "검증용 선택", nextRoutineId: "MV005" }],
-    },
-  };
-  assert.equal(
-    nextRecommendation(a, "MV009", "NECK:0", "same", [], fixture)?.id,
-    "MV012",
-  );
-  assert.equal(
-    nextRecommendation(a, "MV009", "NECK:0", "worse", ["change-1"], fixture)
-      ?.id,
-    "MV005",
-  );
-  assert.equal(
-    nextRecommendation(a, "MV009", "NECK:0", "worse", [], fixture),
-    null,
-  );
+test("alternatives stay within approved area mapping, exclude the current move, and never alias old IDs", () => {
+  assert.equal(routines.length, 11);
+  for (const area of areas) {
+    const a = validateAnswers({ area: area.id, habits: [], recent: [] });
+    const rec = makeRecommendation(a);
+    for (const feedback of ["same", "worse"] as const) {
+      const next = nextRecommendation(
+        a,
+        rec.routine.id,
+        rec.pattern,
+        feedback,
+        [],
+      );
+      if (area.id === "lower_back") assert.equal(next, null);
+      else {
+        assert.notEqual(next?.id, rec.routine.id);
+        assert.ok(allowedRoutineNumbers[area.id].includes(next!.displayNumber));
+      }
+    }
+    assert.equal(nextRecommendation(a, "MV001", "NECK:0", "same", []), null);
+    const allVisited = routines
+      .filter((routine) =>
+        allowedRoutineNumbers[area.id].includes(routine.displayNumber),
+      )
+      .map((routine) => routine.id);
+    assert.equal(
+      nextRecommendation(
+        a,
+        rec.routine.id,
+        rec.pattern,
+        "same",
+        [],
+        undefined,
+        allVisited,
+      ),
+      null,
+    );
+  }
 });

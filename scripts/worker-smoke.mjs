@@ -14,23 +14,19 @@ try {
     "비회원으로 체험하기",
     "이해하고 동의합니다",
     "루틴 시작하기",
-    "앉아서만 할 수 있음",
+    "목·승모근 주변",
     "다음",
-    "목",
+    "일할 때 어깨에 힘이 들어가거나 올라가요",
     "다음",
-    "오래 앉아 있어도 자세를 자주 바꾸지 않는다",
-    "다음",
-    "모니터를 오래 봤다",
+    "고개를 한쪽으로 돌리거나 같은 방향으로 오래 두었어요",
     "동작 추천받기",
   ])
     await click(label);
   await page.getByRole("button", { name: "루틴 완료", exact: true }).waitFor();
-  const media = await page
-    .locator("main img")
-    .evaluate((n) => ({
-      loaded: n.complete && n.naturalWidth > 0,
-      source: n.getAttribute("src"),
-    }));
+  const media = await page.locator("main img").evaluate((n) => ({
+    loaded: n.complete && n.naturalWidth > 0,
+    source: n.getAttribute("src"),
+  }));
   if (!media.loaded) throw new Error("Worker asset not loaded");
   await page.screenshot({
     path: "/tmp/jikkot-worker-routine-390.png",
@@ -50,8 +46,11 @@ try {
     }),
   );
   const guard = await page.request.get("http://127.0.0.1:8787/api/health");
-  if (guard.status() !== 503) throw new Error("Missing server credential guard failed");
-  console.log("PASS: Worker data API without server credential fails closed (503)");
+  if (guard.status() !== 503)
+    throw new Error("Missing server credential guard failed");
+  console.log(
+    "PASS: Worker data API without server credential fails closed (503)",
+  );
 } finally {
   await browser.close();
 }

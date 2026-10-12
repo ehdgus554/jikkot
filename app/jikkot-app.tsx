@@ -14,15 +14,9 @@ import {
   sendPasswordResetEmail,
 } from "firebase/auth";
 import { api, apiBase, configured, firebaseAuth } from "@/lib/firebase-client";
+import { areas, getRoutine, type Routine } from "./jikkot-data";
 import {
-  areas,
-  getRoutine,
-  type Routine,
-  type MovementMode,
-  type AreaCode,
-} from "./jikkot-data";
-import {
-  CONTENT_VERSION,
+  toggleExclusive,
   postureLabels,
   feedbackLabels,
   featureFlags,
@@ -67,8 +61,12 @@ type Rec = {
   snapshot: {
     answers: Answers;
     pattern: string;
-    routine: Pick<Routine, "id" | "name" | "image" | "cue" | "dose" | "comfort">;
-    area: { id: AreaCode; label: string };
+    routine: Pick<
+      Routine,
+      "id" | "name" | "image" | "cue" | "dose" | "comfort"
+    > &
+      Partial<Pick<Routine, "steps" | "displayNumber">>;
+    area: { id: string; label: string };
     habits: { id: string; label: string }[];
     recent: { id: string; label: string }[];
     contentVersion: string;
@@ -154,6 +152,10 @@ function ConnectedJikkotApp() {
     [foundUsername, setFoundUsername] = useState("");
   const authAction = useRef(false),
     pRef = useRef<Progress | null>(null);
+  const initialOAuth = useRef<{
+    code: string | null;
+    error: string | null;
+  } | null>(null);
   useEffect(() => {
     pRef.current = p;
   }, [p]);
@@ -164,6 +166,19 @@ function ConnectedJikkotApp() {
       ),
     [],
   );
+  const changeAnswers = (answers: Partial<Answers>) => {
+    setRec(null);
+    update({
+      answers,
+      recommendationId: undefined,
+      routineId: undefined,
+      feedback: undefined,
+      submissionId: undefined,
+      submitState: "idle",
+      changes: [],
+    });
+    setError("");
+  };
   const show = (screen: Screen) => {
     setError("");
     update({ screen });
@@ -296,8 +311,12 @@ function ConnectedJikkotApp() {
     const auth = firebaseAuth();
     let first = true;
     const params = new URLSearchParams(location.search);
-    const code = params.get("oauthCode"),
-      oauthError = params.get("oauthError");
+    initialOAuth.current ??= {
+      code: params.get("oauthCode"),
+      error: params.get("oauthError"),
+    };
+    const code = initialOAuth.current.code,
+      oauthError = initialOAuth.current.error;
     const unsubscribe = onAuthStateChanged(auth, () => {
       if (authAction.current || stopped) return;
       if (first) {
@@ -319,7 +338,7 @@ function ConnectedJikkotApp() {
         })();
       } else void establish(true).catch((e) => setError(e.message));
     });
-    if (code) {
+    if (code && !authAction.current) {
       authAction.current = true;
       history.replaceState({}, "", location.pathname);
       void (async () => {
@@ -344,6 +363,7 @@ function ConnectedJikkotApp() {
     } else if (oauthError) {
       history.replaceState({}, "", location.pathname);
       queueMicrotask(() => {
+        if (stopped) return;
         setError(
           "소셜 인증이 취소되었거나 실패했습니다. 원하는 방법으로 다시 시도해주세요.",
         );
@@ -458,7 +478,11 @@ function ConnectedJikkotApp() {
     run(async () => {
       if (preview) {
         setRec(null);
-        setP({ ...fresh(p!.owner, true), screen: "posture" });
+        setP({
+          ...fresh(p!.owner, true),
+          answers: { mode: "seated" },
+          screen: "area",
+        });
         return;
       }
       const result = await api<{ allowed: boolean }>("/eligibility");
@@ -466,8 +490,11 @@ function ConnectedJikkotApp() {
         setModal("limit");
         return;
       }
-      setP(fresh(p!.owner, p!.guestConsent));
-      update({ screen: "posture" });
+      setP({
+        ...fresh(p!.owner, p!.guestConsent),
+        answers: { mode: "seated" },
+        screen: "area",
+      });
     });
   const recommend = () =>
     run(async () => {
@@ -613,7 +640,8 @@ function ConnectedJikkotApp() {
     });
   const abandon = () =>
     run(async () => {
-      if (configured && firebaseAuth().currentUser && !member) await signOut(firebaseAuth());
+      if (configured && firebaseAuth().currentUser && !member)
+        await signOut(firebaseAuth());
       clearLocal();
       setEntry("choice");
       setError("");
@@ -1102,7 +1130,10 @@ function ConnectedJikkotApp() {
             {screen === "home" && (
               <>
                 <h1>지금 가능한 움직임부터</h1>
-                <p>자세와 최근 생활을 선택하면 동작 하나를 제안해요.</p>
+                <p>
+                  불편한 부위와 생활 습관·최근 행동을 선택하면 앉아서 하는 동작
+                  하나를 제안해요.
+                </p>
                 {
                   <Action
                     key={"루틴 시작하기"}
@@ -1154,129 +1185,109 @@ function ConnectedJikkotApp() {
                 </nav>
               </>
             )}
-            {["posture", "area", "habits", "recent"].includes(screen!) && (
+            {["area", "habits", "recent"].includes(screen!) && (
               <>
                 <p className="text-sm text-[#6268ba]">
-                  자세 → 부위 → 생활 습관 → 최근 상태
+                  부위 → 평소 습관 → 최근 행동
                 </p>
                 <h1>
-                  {screen === "posture"
-                    ? "현재 가능한 자세"
-                    : screen === "area"
-                      ? "불편한 부위"
-                      : screen === "habits"
-                        ? "평소 생활 습관"
-                        : "최근 상태"}
+                  {screen === "area"
+                    ? "어디가 불편한가요?"
+                    : screen === "habits"
+                      ? "평소 어떤 습관이 있나요?"
+                      : "오늘 또는 불편해지기 전에 무엇을 했나요?"}
                 </h1>
                 <p>
-                  {["habits", "recent"].includes(screen!)
-                    ? "해당하는 항목을 모두 선택해주세요."
-                    : "하나를 선택해주세요."}
+                  {screen === "area"
+                    ? "가장 신경 쓰이는 곳 하나를 골라주세요."
+                    : screen === "habits"
+                      ? "자주 하는 행동을 모두 골라주세요."
+                      : "최근에 한 행동을 모두 골라주세요."}
                 </p>
                 <div className="grid gap-3 sm:grid-cols-2">
-                  {screen === "posture" &&
-                    Object.entries(postureLabels).map(([id, label]) =>
-                      selection(label, id, answers.mode === id, () =>
-                        update({
-                          answers: { mode: id as MovementMode },
-                          recommendationId: undefined,
-                        }),
-                      ),
-                    )}
                   {screen === "area" &&
-                    areas.map((q) =>
-                      selection(q.label, q.id, answers.area === q.id, () =>
-                        update({
-                          answers: { mode: answers.mode, area: q.id },
-                          recommendationId: undefined,
-                        }),
+                    areas.map((area) =>
+                      selection(
+                        area.label,
+                        area.id,
+                        answers.area === area.id,
+                        () =>
+                          changeAnswers({
+                            mode: answers.mode ?? "seated",
+                            area: area.id,
+                          }),
                       ),
                     )}
                   {screen === "habits" &&
                     questionArea &&
-                    habitQuestions(questionArea).map((q) =>
+                    habitQuestions(questionArea).map((question) =>
                       selection(
-                        q.label,
-                        q.id,
-                        answers.habits?.includes(q.id) ?? false,
+                        question.label,
+                        question.id,
+                        answers.habits?.includes(question.id) ?? false,
                         () =>
-                          update({
-                            answers: {
-                              ...answers,
-                              habits: toggle(answers.habits ?? [], q.id),
-                              recent: [],
-                            },
-                            recommendationId: undefined,
+                          changeAnswers({
+                            ...answers,
+                            habits: toggleExclusive(
+                              answers.habits ?? [],
+                              question.id,
+                              ["H_UNKNOWN"],
+                            ),
+                            recent: [],
                           }),
                       ),
                     )}
                   {screen === "recent" &&
                     questionArea &&
                     recentQuestions(questionArea, answers.habits ?? []).map(
-                      (q) =>
+                      (question) =>
                         selection(
-                          q.label,
-                          q.id,
-                          answers.recent?.includes(q.id) ?? false,
+                          question.label,
+                          question.id,
+                          answers.recent?.includes(question.id) ?? false,
                           () =>
-                            update({
-                              answers: {
-                                ...answers,
-                                recent: toggle(answers.recent ?? [], q.id),
-                              },
-                              recommendationId: undefined,
+                            changeAnswers({
+                              ...answers,
+                              recent: toggleExclusive(
+                                answers.recent ?? [],
+                                question.id,
+                                ["R_NONE", "R_UNKNOWN"],
+                              ),
                             }),
                         ),
                     )}
                 </div>
-                {
-                  <Action
-                    key={screen === "recent" ? "동작 추천받기" : "다음"}
-                    label={screen === "recent" ? "동작 추천받기" : "다음"}
-                    onClick={() => {
-                      const selected =
-                        screen === "posture"
-                          ? answers.mode
-                          : screen === "area"
-                            ? answers.area
-                            : screen === "habits"
-                              ? answers.habits?.length
-                              : answers.recent?.length;
-                      if (!selected) {
-                        setError("항목을 하나 이상 선택해주세요.");
-                        return;
-                      }
-                      if (screen === "recent") recommend();
-                      else
-                        show(
-                          screen === "posture"
-                            ? "area"
-                            : screen === "area"
-                              ? "habits"
-                              : "recent",
-                        );
-                    }}
-                    busy={busy}
-                  />
-                }
-                {
-                  <Action
-                    key={"이전"}
-                    label={"이전"}
-                    onClick={() =>
-                      show(
-                        screen === "posture"
-                          ? "home"
-                          : screen === "area"
-                            ? "posture"
-                            : screen === "habits"
-                              ? "area"
-                              : "habits",
-                      )
+                <Action
+                  label={screen === "recent" ? "동작 추천받기" : "다음"}
+                  onClick={() => {
+                    const selected =
+                      screen === "area"
+                        ? answers.area
+                        : screen === "habits"
+                          ? answers.habits?.length
+                          : answers.recent?.length;
+                    if (!selected) {
+                      setError("항목을 하나 이상 선택해주세요.");
+                      return;
                     }
-                    busy={busy}
-                  />
-                }
+                    if (screen === "recent") recommend();
+                    else show(screen === "area" ? "habits" : "recent");
+                  }}
+                  busy={busy}
+                />
+                <Action
+                  label="이전"
+                  onClick={() =>
+                    show(
+                      screen === "area"
+                        ? "home"
+                        : screen === "habits"
+                          ? "area"
+                          : "habits",
+                    )
+                  }
+                  busy={busy}
+                />
               </>
             )}
             {screen === "analysis" && (
@@ -1435,7 +1446,14 @@ function ConnectedJikkotApp() {
               <>
                 <h1>부위별 기록</h1>
                 {!records.length && <p>저장된 기록이 없습니다.</p>}
-                {areas.map((area) => {
+                {Array.from(
+                  new Map(
+                    records.map((record) => [
+                      record.snapshot.area.id,
+                      record.snapshot.area,
+                    ]),
+                  ).values(),
+                ).map((area) => {
                   const rows = records.filter(
                     (r) => r.snapshot.area.id === area.id,
                   );
@@ -1462,7 +1480,7 @@ function ConnectedJikkotApp() {
                             {r.snapshot.habits.map((q) => q.label).join(", ")}
                           </p>
                           <p>
-                            최근 상태:{" "}
+                            최근 행동:{" "}
                             {r.snapshot.recent.map((q) => q.label).join(", ")}
                           </p>
                           {r.changes?.length > 0 && (
@@ -1566,7 +1584,7 @@ function ConnectedJikkotApp() {
         )}
       </section>
       <footer className="py-6 text-center text-xs text-gray-500">
-        의료 서비스가 아닙니다. 콘텐츠는 검수 전 시제품입니다. {CONTENT_VERSION}
+        의료 서비스가 아닙니다. 콘텐츠는 검수 전 시제품입니다.
       </footer>
       <Dialog
         open={modal !== null}

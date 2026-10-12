@@ -12,6 +12,7 @@ import {
   makeRecommendation,
   snapshot,
   nextRecommendation,
+  recommendationReason,
   kstDate,
   extensions,
   type Answers,
@@ -557,6 +558,7 @@ export function createApi(content: ContentExtensions = extensions) {
         kind: a.kind,
         recommendationId: rid,
         reason: rec.reason,
+        visitedRoutineIds: [rec.routine.id],
         snapshot: snapshot(answers!, rec.routine, rec.pattern, content),
         date: day,
         createdAt: Date.now(),
@@ -670,6 +672,15 @@ export function createApi(content: ContentExtensions = extensions) {
       (rec.feedback === "worse" && choices.length > 0 && b.changes.length === 0)
     )
       fail(400, "INVALID_CHANGES", "변화 항목을 선택해주세요.");
+    if (rec.snapshot.contentVersion !== CONTENT_VERSION) {
+      res.json({ recommendation: null });
+      return;
+    }
+    const visited = Array.isArray(rec.visitedRoutineIds)
+      ? rec.visitedRoutineIds.filter(
+          (id: unknown): id is string => typeof id === "string",
+        )
+      : [rec.snapshot.routine.id];
     const next = nextRecommendation(
       rec.snapshot.answers,
       rec.snapshot.routine.id,
@@ -677,6 +688,7 @@ export function createApi(content: ContentExtensions = extensions) {
       rec.feedback as Feedback,
       b.changes,
       content,
+      visited,
     );
     const newRef = db.doc(`recommendations/${b.nextRecommendationId}`);
     const result = await db.runTransaction(async (tx) => {
@@ -710,11 +722,12 @@ export function createApi(content: ContentExtensions = extensions) {
         kind: "member",
         recommendationId: b.nextRecommendationId,
         parentId: b.recommendationId,
-        reason: rec.reason,
+        reason: recommendationReason(rec.snapshot.answers.area, next),
+        visitedRoutineIds: [...new Set([...visited, next.id])],
         snapshot: snapshot(
           rec.snapshot.answers,
           next,
-          rec.snapshot.pattern,
+          `${CONTENT_VERSION}:alternative:${next.id}`,
           content,
         ),
         date: kstDate(),

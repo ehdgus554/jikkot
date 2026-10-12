@@ -99,10 +99,10 @@ test("keeps recent actions and habits short and specific to each area", async ()
     const recentIds = recentActionIdsByArea[area];
     const habitIds = habitIdsByArea[area];
 
-    assert.equal(recentIds.length, 6, `${area} recent action count`);
-    assert.equal(habitIds.length, 5, `${area} habit count`);
-    assert.equal(recentIds.at(-1), "RA99");
-    assert.equal(habitIds.at(-1), "HB99");
+    assert.ok(recentIds.length >= 6 && recentIds.length <= 8, `${area} recent action count`);
+    assert.ok(habitIds.length >= 5 && habitIds.length <= 7, `${area} habit count`);
+    assert.deepEqual(recentIds.slice(-2), ["R_NONE", "R_UNKNOWN"]);
+    assert.equal(habitIds.at(-1), "H_UNKNOWN");
     assert.equal(new Set(recentIds).size, recentIds.length);
     assert.equal(new Set(habitIds).size, habitIds.length);
 

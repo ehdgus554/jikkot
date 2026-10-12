@@ -2,7 +2,7 @@
 
 Firebase 미연결 상태에서는 준비 화면을 먼저 배포할 수 있습니다. Cloudflare 설치 실패 로그의 원인과 버튼 재배포에 사용할 브랜치/명령은 [Cloudflare 배포 수정 안내](docs/cloudflare-build-fix-ko.md)를 확인하세요. 준비 화면 빌드는 `npm run build:preparation`, 전체 준비 화면 배포는 `npm run deploy:preparation`입니다. 공개 Firebase 설정이 모두 없으면 기본 빌드는 문진·추천 화면을 확인할 수 있는 미리보기를 공개합니다. 로그인·저장은 비활성이고 답변을 서버에 저장하지 않습니다.
 
-자세 → 불편 부위 → 생활 습관 → 최근 상태를 선택하고 동작 하나를 수행한 뒤 피드백을 남깁니다. Firebase Spark Auth/Firestore가 인증과 데이터를 담당하고 Cloudflare Vinext Worker가 웹과 서버 API를 제공합니다. Functions와 SMS는 사용하지 않습니다. 기존 추천 콘텐츠는 검수 전 MVP이며 조건부 질문·관련 부위/악화 재추천표·GIF는 아직 확정되지 않았습니다. 회원 기능은 무료이고 스트레칭/쇼핑은 준비 중입니다.
+불편 부위 → 평소 습관 → 최근 행동의 세 질문을 선택하면 승인된 동작 하나를 바로 추천합니다. 동작을 수행한 뒤 피드백을 남깁니다. Firebase Spark Auth/Firestore가 인증과 데이터를 담당하고 Cloudflare Vinext Worker가 웹과 서버 API를 제공합니다. Functions와 SMS는 사용하지 않습니다. 추천 버전은 `jikkot11-v1`입니다. 승인된 11개 동작의 결정 트리와 원본 정적 PNG 안내 이미지를 사용하며, 기존 MVP 동작은 새 추천에서 제외합니다. 회원 기능은 무료이고 스트레칭/쇼핑은 준비 중입니다.
 
 Firebase 실제 연결을 위해 `npm run firebase:connect -- --project jikkot --site https://jikkot.ehdgus554.workers.dev --deploy --prepare-worker-key` 도구를 추가했습니다. 먼저 본인 Firebase 계정 로그인·프로젝트·Spark/인증 설정이 필요합니다. [최소 계정 설정](docs/firebase-quick-connect-ko.md)을 참고하세요.
 
@@ -26,7 +26,7 @@ npm run emulators
 다른 터미널에서 `npm run dev:api`, 또 다른 터미널에서 `npm run dev -- --port 5173 --strictPort`를 실행합니다. 실제 SMS나 실사용 데이터는 사용하지 않습니다. Firebase 연결이 없으면 앱은 연결 준비 상태를 안내하며 가짜 회원/기록으로 대체하지 않습니다.
 
 ```bash
-npm test                 # 콘텐츠 검사 + 빌드 + UI/추천/복원 회귀
+npm test                 # 31,046개 조합 검사 + 빌드 + UI/추천/복원 + 원본 PNG 검증
 npm run typecheck
 npm run lint
 npm run test:emulators   # 에뮬레이터를 새로 시작해 실제 Auth/Firestore 에뮬레이터와 Spark API/rules 검증
@@ -54,7 +54,7 @@ npm run build
 
 - [서비스 플로우 원문](docs/service-flow.md), [구현 지시서](docs/implementation-request.md)
 - [요구사항별 구현·검증](docs/implementation-checklist.md)
-- [콘텐츠 대기·추천 어댑터](docs/content-gaps.md)
+- [승인 추천 콘텐츠·검증](docs/recommendation-v1-validation.md), [콘텐츠 범위](docs/content-gaps.md)
 - [인증·한도·저장 설계](docs/auth-design.md)
 - [Firebase Spark·Google·Cloudflare 연결](docs/deployment-guide-ko.md)
 - [실행 검증 결과](docs/validation.md)

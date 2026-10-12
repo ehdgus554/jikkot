@@ -6,13 +6,20 @@ import {
   habitIdsByArea,
   recentActions,
   recentActionIdsByArea,
-  routes,
+  allowedRoutineNumbers,
   routines,
   type MovementMode,
   type AreaCode,
   type Routine,
 } from "../../app/jikkot-data.js";
-export const CONTENT_VERSION = "mvp-9.1-adapter-v1";
+import {
+  decisionTrees,
+  matchCondition,
+  type TreeName,
+  type DecisionRule,
+  type MatchedSignals,
+} from "./decision-trees.js";
+export const CONTENT_VERSION = "jikkot11-v1";
 export const postureLabels: Record<MovementMode, string> = {
   seated: "앉아서만 할 수 있음",
   standing: "서서 할 수 있음",
@@ -31,137 +38,236 @@ export const feedbackLabels: Record<Feedback, string> = {
   same: "비슷하다",
   worse: "더 불편하다",
 };
+// Keep the backend function signature compatible; approved questions/branches cannot be overridden.
 export type ContentExtensions = {
-  recentQuestions?: { area: AreaCode; allHabits: string[]; ids: string[] }[];
-  related?: Record<string, { area: AreaCode; routineId: string }[]>;
   changes?: Record<
     string,
     { id: string; label: string; nextRoutineId?: string }[]
   >;
 };
-// No unreviewed clinical connections in production. Tests inject explicit fixtures.
 export const extensions: ContentExtensions = {};
 export const habitQuestions = (area: AreaCode) =>
-  habits.filter((q) => habitIdsByArea[area].includes(q.id) && q.id !== "HB99");
+  habitIdsByArea[area].map(
+    (id) => habits.find((question) => question.id === id)!,
+  );
 export function recentQuestions(
   area: AreaCode,
-  selected: string[],
-  content = extensions,
+  _selected: string[],
+  _content?: ContentExtensions,
 ) {
-  const conditional = content.recentQuestions?.find(
-    (q) => q.area === area && q.allHabits.every((id) => selected.includes(id)),
-  );
-  return recentActions.filter(
-    (q) =>
-      (conditional?.ids ?? recentActionIdsByArea[area]).includes(q.id) &&
-      q.id !== "RA99",
+  void _selected;
+  void _content;
+  return recentActionIdsByArea[area].map(
+    (id) => recentActions.find((question) => question.id === id)!,
   );
 }
 export function isAllowed(routine: Routine, mode: MovementMode) {
-  return routine.positions.some((p) => allowedPositions[mode].includes(p));
+  return routine.positions.some((position) =>
+    allowedPositions[mode]?.includes(position),
+  );
 }
-export function validateAnswers(value: unknown, content = extensions): Answers {
+export function normalizeSelection(
+  ids: unknown,
+  allowed: readonly string[],
+  special: readonly string[],
+  empty: string,
+): string[] {
+  if (
+    !Array.isArray(ids) ||
+    ids.some((id) => typeof id !== "string" || !allowed.includes(id))
+  )
+    throw new Error("선택 항목을 확인해주세요.");
+  const selected = new Set<string>(ids);
+  if (!selected.size) selected.add(empty);
+  if (special.some((id) => selected.has(id)) && selected.size > 1)
+    throw new Error("잘 모름·해당 없음은 다른 항목과 함께 선택할 수 없습니다.");
+  return allowed.filter((id) => selected.has(id));
+}
+export function toggleExclusive(
+  ids: string[],
+  id: string,
+  special: readonly string[],
+): string[] {
+  if (ids.includes(id)) return ids.filter((selected) => selected !== id);
+  return special.includes(id)
+    ? [id]
+    : [...ids.filter((selected) => !special.includes(selected)), id];
+}
+export function validateAnswers(
+  value: unknown,
+  _content?: ContentExtensions,
+): Answers {
+  void _content;
   if (!value || typeof value !== "object")
     throw new Error("문진 답변을 확인해주세요.");
-  const a = value as Answers;
+  const a = value as Partial<Answers>;
+  const mode = a.mode ?? "seated";
   if (
-    !Object.hasOwn(postureLabels, a.mode) ||
-    !areas.some((q) => q.id === a.area)
+    !Object.hasOwn(postureLabels, mode) ||
+    !areas.some((area) => area.id === a.area)
   )
-    throw new Error("자세와 부위를 선택해주세요.");
-  for (const [ids, options] of [
-    [a.habits, habitQuestions(a.area)],
-    [a.recent, recentQuestions(a.area, a.habits ?? [], content)],
-  ] as const) {
-    if (
-      !Array.isArray(ids) ||
-      !ids.length ||
-      ids.length > options.length ||
-      new Set(ids).size !== ids.length ||
-      ids.some((id) => !options.some((q) => q.id === id))
-    )
-      throw new Error("선택 항목을 확인해주세요.");
-  }
+    throw new Error("불편한 부위를 선택해주세요.");
+  const area = a.area!;
   return {
-    mode: a.mode,
-    area: a.area,
-    habits: [...a.habits],
-    recent: [...a.recent],
+    mode,
+    area,
+    habits: normalizeSelection(
+      a.habits,
+      habitIdsByArea[area],
+      ["H_UNKNOWN"],
+      "H_UNKNOWN",
+    ),
+    recent: normalizeSelection(
+      a.recent,
+      recentActionIdsByArea[area],
+      ["R_NONE", "R_UNKNOWN"],
+      "R_UNKNOWN",
+    ),
   };
 }
-export function makeRecommendation(a: Answers) {
-  const recentTags = recentActions
-    .filter((q) => a.recent.includes(q.id))
-    .map((q) => q.tag as string);
-  const habitTags = habits
-    .filter((q) => a.habits.includes(q.id))
-    .map((q) => q.tag as string);
-  const index = routes[a.area].findIndex((r) =>
-    r.tags.some((t) => recentTags.includes(t)),
-  );
-  const routeIndex = index < 0 ? routes[a.area].length - 1 : index;
-  const route = routes[a.area][routeIndex];
-  const seen = new Set<string>();
-  const candidates = [route.relax, route.move, route.control]
-    .flatMap((ids) =>
-      ids
-        .map(getRoutine)
-        .filter((r): r is Routine => Boolean(r))
-        .filter((r) => isAllowed(r, a.mode))
-        .map((routine, index) => ({
-          routine,
-          index,
-          match: routine.clusters.some((t) => habitTags.includes(t)) ? 1 : 0,
-        }))
-        .sort((x, y) => y.match - x.match || x.index - y.index)
-        .map(({ routine }) => routine),
-    )
-    .filter((r) => {
-      if (seen.has(r.id)) return false;
-      seen.add(r.id);
-      return true;
-    });
-  // Keep the original route and slot ordering; never add unrelated fallback moves.
-  if (!candidates.length)
-    throw new Error(
-      `지원하지 않는 콘텐츠 조합: ${a.mode}/${a.area}/${routeIndex}`,
-    );
+const connectionText: Record<number, string> = {
+  1: "엉덩이와 골반 주변을 가볍게 움직이는 동작으로 허리 아래쪽의 뻣뻣함을 풀어보세요.",
+  2: "날개뼈 사이를 벌리고 등 위쪽을 부드럽게 늘리는 동작을 추천해요.",
+  3: "어깨를 편하게 두고 목과 날개뼈 위쪽을 대각선으로 늘리는 동작을 추천해요.",
+  4: "한쪽 가슴과 어깨 앞쪽을 여는 동작으로 움직임을 바꿔보세요.",
+  5: "책상에 손을 두고 겨드랑이와 등 주변을 길게 늘리는 동작을 추천해요.",
+  6: "팔꿈치를 몸에 붙이고 어깨를 바깥으로 가볍게 움직여보세요.",
+  7: "앉아서 가슴을 열고 어깨와 등 주변을 편하게 움직여보세요.",
+  8: "앉아서 손깍지 낀 팔을 뒤로 뻗으며 가슴과 어깨 주변을 열어보세요.",
+  9: "목 옆을 가볍게 문지르며 긴장감을 풀어보세요.",
+  10: "관자놀이에 손끝을 가볍게 대고 턱을 천천히 움직여보세요.",
+  11: "쇄골 아래 가슴 윗부분을 어깨 방향으로 부드럽게 쓸어보세요.",
+};
+export function recommendationReason(
+  area: AreaCode,
+  routine: Routine,
+  matched: MatchedSignals = { habits: [], recent: [] },
+) {
+  const habitPhrases: Record<string, string> = {
+    H_SIDE_SCREEN: "옆 화면을 보려고 고개를 돌리는 습관",
+    H_SHRUG: "어깨에 힘이 들어가거나 올라가는 습관",
+    H_ELBOW: "한쪽 팔꿈치로 기대는 습관",
+    H_BOTH_FRONT: "양팔을 앞에 두고 작업하는 습관",
+    H_ONE_FORWARD: "한쪽 팔을 앞으로 뻗어 작업하는 습관",
+    H_PINCH: "날개뼈를 모으고 힘을 주는 습관",
+    H_OVERHEAD: "팔을 높이 들거나 멀리 뻗는 습관",
+    H_CARRY: "가방이나 물건을 오래 드는 습관",
+    H_CHEST_PUSH: "가슴 운동이나 물건을 미는 습관",
+    H_ARMS_CLOSE: "물건을 몸 앞에 모아 사용하는 습관",
+    H_CLENCH: "이를 악무는 습관",
+    H_GRIND: "자는 동안 이를 갈거나 악무는 습관",
+    H_CHEW: "질긴 음식을 오래 씹는 습관",
+  };
+  const recentPhrases: Record<string, string> = {
+    R_HEAD_TURN: "고개를 한쪽으로 오래 둔 행동",
+    R_OVERHEAD: "팔을 위로·멀리 뻗은 행동",
+    R_HOLD_LOAD: "물건을 들거나 팔을 든 채 오래 버틴 행동",
+    R_ONE_HAND: "한쪽 손으로 마우스나 도구를 오래 사용한 행동",
+    R_COMPUTER_BOTH: "양팔을 앞에 두고 오래 작업한 행동",
+    R_DRIVE: "오래 운전한 행동",
+    R_PHONE: "휴대폰이나 작은 손작업을 오래 한 행동",
+    R_PUSH_CHEST: "물건을 밀거나 가슴 운동을 한 행동",
+    R_CLENCH: "이를 악문 행동",
+    R_CHEW: "껌이나 질긴 음식을 오래 씹은 행동",
+    R_SHRUG: "어깨에 힘을 준 채 일한 행동",
+    R_BAG_CARRY: "한쪽 어깨로 가방을 오래 멘 행동",
+  };
+  const phrases = [
+    ...matched.habits.map((id) => habitPhrases[id]),
+    ...matched.recent.map((id) => recentPhrases[id]),
+  ]
+    .filter(Boolean)
+    .slice(0, 2);
+  const areaName = area === "headache" ? "머리" : area === "rounded_shoulder" ? "앞으로 말린 어깨" : areas.find((item) => item.id === area)!.label;
+  const objectParticle = (areaName.charCodeAt(areaName.length - 1) - 0xac00) % 28 === 0 ? "를" : "을";
+  const intro = phrases.length
+    ? `${phrases.join("과 ")}을 선택했어요.`
+    : `선택한 ${areaName}${objectParticle} 편하게 움직일 수 있는 동작을 준비했어요.`;
+  return `${intro} ${connectionText[routine.displayNumber]}`;
+}
+function treeFor(area: AreaCode): TreeName {
+  return areas.find((item) => item.id === area)!.tree;
+}
+export function makeRecommendation(input: Answers) {
+  const answers = validateAnswers(input);
+  const signals = {
+    habits: new Set(answers.habits),
+    recent: new Set(answers.recent),
+  };
+  let chosen: DecisionRule | undefined,
+    matched: MatchedSignals | null = null;
+  for (const rule of decisionTrees[treeFor(answers.area)]) {
+    matched = matchCondition(rule.condition, signals);
+    if (matched) {
+      chosen = rule;
+      break;
+    }
+  }
+  if (!chosen || !matched) throw new Error("추천 분기를 찾을 수 없습니다.");
+  const routine = routines.find(
+    (item) => item.displayNumber === chosen.routineNumber,
+  )!;
+  if (!allowedRoutineNumbers[answers.area].includes(chosen.routineNumber))
+    throw new Error("부위에 맞지 않는 추천입니다.");
+  const reason = recommendationReason(answers.area, routine, matched);
   return {
-    pattern: `${a.area}:${routeIndex}`,
-    reason: route.reason,
-    routine: candidates[0],
-    candidateIds: candidates.map((r) => r.id),
+    routine,
+    routineId: routine.id,
+    ruleId: chosen.id,
+    pattern: chosen.id,
+    matchedHabitIds: matched.habits,
+    matchedRecentActionIds: matched.recent,
+    reasonText: reason,
+    reason,
     contentVersion: CONTENT_VERSION,
   };
 }
+export function recommendRoutine(input: {
+  bodyAreaId: AreaCode;
+  habitIds: Iterable<string>;
+  recentActionIds: Iterable<string>;
+}) {
+  return makeRecommendation({
+    mode: "seated",
+    area: input.bodyAreaId,
+    habits: [...input.habitIds],
+    recent: [...input.recentActionIds],
+  });
+}
 export function nextRecommendation(
-  a: Answers,
+  input: Answers,
   current: string,
-  pattern: string,
+  _pattern: string,
   feedback: Feedback,
-  changes: string[],
-  content = extensions,
+  _changes: string[],
+  _content?: ContentExtensions,
+  visited: readonly string[] = [current],
 ) {
-  if (feedback === "same") {
-    return (
-      content.related?.[pattern]
-        ?.map((link) => ({ link, routine: getRoutine(link.routineId) }))
-        .find(
-          ({ link, routine }) =>
-            link.area !== a.area &&
-            routine?.areas.includes(link.area) &&
-            routine.id !== current &&
-            isAllowed(routine, a.mode),
-        )?.routine ?? null
-    );
-  }
-  if (feedback === "worse") {
-    const questions = content.changes?.[current] ?? [];
-    const id = questions.find(
-      (q) => changes.includes(q.id) && q.nextRoutineId,
-    )?.nextRoutineId;
-    const routine = id ? getRoutine(id) : undefined;
-    return routine && isAllowed(routine, a.mode) ? routine : null;
+  void _changes;
+  void _content;
+  if (feedback === "better") return null;
+  const answers = validateAnswers(input);
+  if (!getRoutine(current)) return null; // Historical MV snapshots remain historical, not new ID aliases.
+  const rules = decisionTrees[treeFor(answers.area)];
+  const signals = {
+    habits: new Set(answers.habits),
+    recent: new Set(answers.recent),
+  };
+  const matching = rules.filter(
+    (rule) => matchCondition(rule.condition, signals) !== null,
+  );
+  const excluded = new Set([current, ...visited]);
+  // Reuse the supplied decision-tree content order for alternatives; never number-sort or invent moves.
+  for (const rule of [...matching, ...rules]) {
+    const routine = routines.find(
+      (item) => item.displayNumber === rule.routineNumber,
+    )!;
+    if (
+      !excluded.has(routine.id) &&
+      allowedRoutineNumbers[answers.area].includes(routine.displayNumber) &&
+      isAllowed(routine, answers.mode)
+    )
+      return routine;
   }
   return null;
 }
@@ -169,24 +275,36 @@ export function snapshot(
   a: Answers,
   routine: Routine,
   pattern: string,
-  content = extensions,
+  _content?: ContentExtensions,
 ) {
+  void _content;
+  const selected = makeRecommendation(a);
+  const primary =
+    selected.ruleId === pattern && selected.routine.id === routine.id;
   return {
     contentVersion: CONTENT_VERSION,
     answers: a,
     posture: postureLabels[a.mode],
-    area: { id: a.area, label: areas.find((q) => q.id === a.area)!.label },
+    area: {
+      id: a.area,
+      label: areas.find((area) => area.id === a.area)!.label,
+    },
     habits: habitQuestions(a.area)
-      .filter((q) => a.habits.includes(q.id))
-      .map((q) => ({ id: q.id, label: q.label })),
-    recent: recentQuestions(a.area, a.habits, content)
-      .filter((q) => a.recent.includes(q.id))
-      .map((q) => ({ id: q.id, label: q.label })),
+      .filter((question) => a.habits.includes(question.id))
+      .map(({ id, label }) => ({ id, label })),
+    recent: recentQuestions(a.area, a.habits)
+      .filter((question) => a.recent.includes(question.id))
+      .map(({ id, label }) => ({ id, label })),
     pattern,
+    ruleId: pattern,
+    matchedHabitIds: primary ? selected.matchedHabitIds : [],
+    matchedRecentActionIds: primary ? selected.matchedRecentActionIds : [],
     routine: {
       id: routine.id,
+      displayNumber: routine.displayNumber,
       name: routine.name,
       image: routine.image,
+      steps: [...routine.steps],
       cue: routine.cue,
       dose: routine.dose,
       comfort: routine.comfort,
@@ -194,7 +312,7 @@ export function snapshot(
   };
 }
 export const catalog = (mode: MovementMode) =>
-  routines.filter((r) => isAllowed(r, mode));
+  routines.filter((routine) => isAllowed(routine, mode));
 export function kstDate(date = new Date()) {
   return new Intl.DateTimeFormat("en-CA", {
     timeZone: "Asia/Seoul",

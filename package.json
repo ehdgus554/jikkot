@@ -10,7 +10,7 @@
     "build": "vinext build",
     "build:preparation": "JIKKOT_PREPARATION=true vinext build",
     "start": "vinext start",
-    "test": "npm run content:check && npm run build && node --test tests/ui-components.test.mjs && npm run test:service",
+    "test": "npm run content:check && npm run build && node --test tests/ui-components.test.mjs && npm run test:service && npm run test:images",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "deploy": "tsx scripts/check-deploy.ts && npm run content:check && npm run build && tsx scripts/check-worker-target.ts jikkot-ver9 && wrangler deploy",
     "deploy:preparation": "JIKKOT_PREPARATION=true npm run deploy",
@@ -29,7 +29,8 @@
     "dev:api": "tsx scripts/spark-local.ts",
     "test:spark": "tsx --test tests/spark/*.test.ts",
     "test:legacy-functions": "tsx --test tests/integration/*.test.ts",
-    "test:public-preview": "node scripts/public-preview-smoke.mjs"
+    "test:public-preview": "node scripts/public-preview-smoke.mjs",
+    "test:images": "tsx --test tests/assets/*.test.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

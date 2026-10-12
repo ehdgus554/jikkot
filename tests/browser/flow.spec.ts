@@ -9,28 +9,34 @@ async function guest(page: Page) {
 }
 async function questionnaire(page: Page, lostResponse = false) {
   await page.getByRole("button", { name: "루틴 시작하기" }).click();
-  await page.getByRole("button", { name: "앉아서만 할 수 있음" }).click();
-  await page.getByRole("button", { name: "다음", exact: true }).click();
-  await page.getByRole("button", { name: "목", exact: true }).click();
+  await page
+    .getByRole("button", { name: "목·승모근 주변", exact: true })
+    .click();
   await page.getByRole("button", { name: "다음", exact: true }).click();
   await expect(
-    page.getByRole("heading", { name: "평소 생활 습관" }),
+    page.getByRole("heading", { name: "평소 어떤 습관이 있나요?" }),
   ).toBeVisible();
   await page.getByRole("button", { name: "다음", exact: true }).click();
   await expect(page.getByRole("alert")).toContainText("선택");
   for (const label of [
-    "오래 앉아 있어도 자세를 자주 바꾸지 않는다",
-    "화면을 볼 때 머리가 어깨보다 앞으로 나오는 편이다",
-    "앉아 있을 때 어깨와 등이 둥글게 말리는 편이다",
+    "일할 때 어깨에 힘이 들어가거나 올라가요",
+    "옆에 있는 화면을 보려고 고개를 돌려요",
+    "가방이나 물건을 오래 들고 있어요",
   ])
     await page.getByRole("button", { name: label }).click();
   await page.getByRole("button", { name: "다음", exact: true }).click();
-  await expect(page.getByRole("heading", { name: "최근 상태" })).toBeVisible();
-  await expect(page.getByText("해당 없음")).toHaveCount(0);
+  await expect(
+    page.getByRole("heading", {
+      name: "오늘 또는 불편해지기 전에 무엇을 했나요?",
+    }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "특별히 한 행동이 없어요" }),
+  ).toBeVisible();
   for (const label of [
-    "모니터를 오래 봤다",
-    "휴대폰을 내려다보는 시간이 길었다",
-    "키보드나 마우스를 오래 사용했다",
+    "고개를 한쪽으로 돌리거나 같은 방향으로 오래 두었어요",
+    "물건을 들거나 팔을 든 채 오래 버텼어요",
+    "양팔을 앞에 두고 컴퓨터·노트북 작업을 오래 했어요",
   ])
     await page.getByRole("button", { name: label }).click();
   await page.getByRole("button", { name: "동작 추천받기" }).click();
@@ -60,7 +66,9 @@ test("consent blocks entry, multiselect single routine, reload, feedback and loc
   await expect(page.getByRole("dialog")).toContainText("서비스 준비 중");
   await page.keyboard.press("Escape");
   await questionnaire(page);
-  await expect(page.locator("main img")).toHaveCount(1);
+  await expect(
+    page.getByRole("heading", { name: "견갑거근 대각선 스트레칭" }),
+  ).toBeVisible();
   const id = await page.evaluate(
     () =>
       JSON.parse(localStorage.getItem("jikkot.progress.v1")!).recommendationId,

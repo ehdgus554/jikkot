@@ -9,11 +9,10 @@ import {
 } from "./recommendation";
 import { areas, getRoutine } from "../../app/jikkot-data";
 export const PROGRESS_KEY = "jikkot.progress.v1";
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 2;
 export type Owner = { kind: "guest" | "member"; id: string };
 export const screens = [
   "home",
-  "posture",
   "area",
   "habits",
   "recent",
@@ -29,7 +28,7 @@ export const screens = [
 ] as const;
 export type Screen = (typeof screens)[number];
 export type Progress = {
-  schemaVersion: 1;
+  schemaVersion: 2;
   owner: Owner;
   screen: Screen;
   answers: Partial<Answers>;
@@ -46,7 +45,7 @@ export type Progress = {
 };
 export function fresh(owner: Owner, guestConsent = false): Progress {
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     owner,
     screen: "home",
     answers: {},
@@ -102,7 +101,13 @@ export function restore(
       )
         return null;
     }
-    if (["area", "habits", "recent"].includes(p.screen) && !a.mode) return null;
+    if (a.habits?.includes("H_UNKNOWN") && a.habits.length > 1) return null;
+    if (
+      (a.recent?.includes("R_NONE") || a.recent?.includes("R_UNKNOWN")) &&
+      a.recent.length > 1
+    )
+      return null;
+    if (["habits", "recent"].includes(p.screen) && !a.mode) return null;
     if (["habits", "recent"].includes(p.screen) && !a.area) return null;
     if (p.screen === "recent" && !a.habits?.length) return null;
     for (const value of [p.recommendationId, p.submissionId])
@@ -137,7 +142,7 @@ export function restore(
     }
     // Persist only explicit fields. Credentials and auth form contents never enter progress.
     return {
-      schemaVersion: 1,
+      schemaVersion: 2,
       owner,
       screen: p.screen,
       answers: {

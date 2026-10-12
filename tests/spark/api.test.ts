@@ -18,9 +18,9 @@ const api = createSparkApi(env, undefined, { db, verify: emulatorIdentity });
 const consents = { privacy: true, nonMedical: true, version: "draft-v1" };
 const answers = {
   mode: "seated",
-  area: "NECK",
-  habits: ["HB01", "HB04", "HB05"],
-  recent: ["RA02", "RA03", "RA06"],
+  area: "neck_trapezius",
+  habits: ["H_SHRUG", "H_SIDE_SCREEN", "H_CARRY"],
+  recent: ["R_HEAD_TURN", "R_HOLD_LOAD", "R_COMPUTER_BOTH"],
 };
 async function identity(email?: string) {
   const response = await fetch(
@@ -266,4 +266,212 @@ test("Google signup requires profile consent and never inherits a password profi
   );
   assert.equal(denied.status, 403);
   assert.equal((await denied.json()).code, "LOGIN_METHOD_MISMATCH");
+});
+test("new snapshots and alternatives retain approved version/area and atomically preserve completed records", async () => {
+  const suffix = randomUUID().slice(0, 8),
+    user = await identity(`alternate-${suffix}@example.test`);
+  assert.equal(
+    (
+      await call("/signup", user.idToken, {
+        username: "alt_" + suffix,
+        nickname: "alt_" + suffix,
+        consents,
+      })
+    ).status,
+    200,
+  );
+  const rid = randomUUID(),
+    sid = randomUUID(),
+    nid = randomUUID();
+  const primary = await call("/recommendations", user.idToken, {
+    recommendationId: rid,
+    answers,
+  });
+  assert.equal(primary.status, 200);
+  assert.equal(primary.body.snapshot.contentVersion, "jikkot11-v1");
+  assert.equal(primary.body.snapshot.routine.id, "jikkot11-r03");
+  assert.deepEqual(primary.body.snapshot.matchedRecentActionIds, [
+    "R_HEAD_TURN",
+  ]);
+  assert.deepEqual(primary.body.snapshot.matchedHabitIds, []);
+  assert.equal(
+    (
+      await call("/feedback", user.idToken, {
+        recommendationId: rid,
+        submissionId: sid,
+        feedback: "same",
+      })
+    ).status,
+    200,
+  );
+  const payload = {
+    recommendationId: rid,
+    nextRecommendationId: nid,
+    changes: [],
+  };
+  const next = await call("/next", user.idToken, payload);
+  assert.equal(next.status, 200);
+  assert.equal(next.body.recommendation.snapshot.routine.id, "jikkot11-r08");
+  assert.equal(next.body.recommendation.snapshot.area.id, "neck_trapezius");
+  assert.equal(next.body.recommendation.snapshot.contentVersion, "jikkot11-v1");
+  assert.equal(next.body.recommendation.snapshot.routine.steps.length, 2);
+  assert.equal(
+    (await call("/next", user.idToken, payload)).body.recommendation
+      .recommendationId,
+    nid,
+  );
+  assert.equal(
+    (
+      await call("/next", user.idToken, {
+        ...payload,
+        nextRecommendationId: randomUUID(),
+      })
+    ).status,
+    409,
+  );
+  const records = await call("/records", user.idToken);
+  assert.equal(records.body.records.length, 1);
+  assert.equal(records.body.records[0].snapshot.routine.id, "jikkot11-r03");
+  assert.deepEqual(next.body.recommendation.visitedRoutineIds, [
+    "jikkot11-r03",
+    "jikkot11-r08",
+  ]);
+  assert.equal(
+    (
+      await call("/feedback", user.idToken, {
+        recommendationId: nid,
+        submissionId: randomUUID(),
+        feedback: "worse",
+      })
+    ).status,
+    200,
+  );
+  const finalId = randomUUID();
+  const final = await call("/next", user.idToken, {
+    recommendationId: nid,
+    nextRecommendationId: finalId,
+    changes: [],
+  });
+  assert.equal(final.body.recommendation.snapshot.routine.id, "jikkot11-r07");
+  assert.deepEqual(final.body.recommendation.visitedRoutineIds, [
+    "jikkot11-r03",
+    "jikkot11-r08",
+    "jikkot11-r07",
+  ]);
+  assert.equal(
+    (
+      await call("/feedback", user.idToken, {
+        recommendationId: finalId,
+        submissionId: randomUUID(),
+        feedback: "same",
+      })
+    ).status,
+    200,
+  );
+  assert.equal(
+    (
+      await call("/next", user.idToken, {
+        recommendationId: finalId,
+        nextRecommendationId: randomUUID(),
+        changes: [],
+      })
+    ).body.recommendation,
+    null,
+  );
+  const lower = {
+    mode: "seated",
+    area: "lower_back",
+    habits: ["H_UNKNOWN"],
+    recent: ["R_NONE"],
+  };
+  const lowerId = randomUUID();
+  assert.equal(
+    (
+      await call("/recommendations", user.idToken, {
+        recommendationId: lowerId,
+        answers: lower,
+      })
+    ).status,
+    200,
+  );
+  assert.equal(
+    (
+      await call("/feedback", user.idToken, {
+        recommendationId: lowerId,
+        submissionId: randomUUID(),
+        feedback: "worse",
+      })
+    ).status,
+    200,
+  );
+  const noAlternative = await call("/next", user.idToken, {
+    recommendationId: lowerId,
+    nextRecommendationId: randomUUID(),
+    changes: [],
+  });
+  assert.equal(noAlternative.status, 200);
+  assert.equal(noAlternative.body.recommendation, null);
+});
+test("old saved records and old recommendation IDs remain snapshots, with no implicit new movement conversion", async () => {
+  const suffix = randomUUID().slice(0, 8),
+    user = await identity(`old-${suffix}@example.test`);
+  assert.equal(
+    (
+      await call("/signup", user.idToken, {
+        username: "old_" + suffix,
+        nickname: "old_" + suffix,
+        consents,
+      })
+    ).status,
+    200,
+  );
+  const rid = randomUUID(),
+    sid = randomUUID();
+  const old = {
+    contentVersion: "mvp-9.1-adapter-v1",
+    area: { id: "NECK", label: "목" },
+    routine: {
+      id: "MV009",
+      name: "어깨 올렸다 힘 빼며 내리기",
+      image: "/assets/routines/R11.webp",
+      dose: "3~5회",
+    },
+    habits: [],
+    recent: [],
+    answers: {
+      mode: "seated",
+      area: "NECK",
+      habits: ["HB01"],
+      recent: ["RA02"],
+    },
+    pattern: "NECK:0",
+  };
+  await db.doc(`profiles/${user.localId}/records/${sid}`).set({
+    owner: user.localId,
+    snapshot: old,
+    feedback: "same",
+    createdAt: Date.now(),
+    changes: [],
+  });
+  await db.doc(`recommendations/${rid}`).set({
+    owner: user.localId,
+    kind: "member",
+    recommendationId: rid,
+    snapshot: old,
+    submissionId: sid,
+    feedback: "same",
+  });
+  const records = await call("/records", user.idToken);
+  assert.deepEqual(records.body.records[0].snapshot, old);
+  const next = await call("/next", user.idToken, {
+    recommendationId: rid,
+    nextRecommendationId: randomUUID(),
+    changes: [],
+  });
+  assert.equal(next.status, 200);
+  assert.equal(next.body.recommendation, null);
+  assert.deepEqual(
+    (await call("/records", user.idToken)).body.records[0].snapshot,
+    old,
+  );
 });
