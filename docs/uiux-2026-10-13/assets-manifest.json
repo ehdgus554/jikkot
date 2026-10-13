@@ -1,0 +1,112 @@
+[
+  {
+    "path": "public/assets/brand/wordmark-ui.png",
+    "sha256": "bdaeeea5c7e47d213088462f91602225c13517c1068f68049a9b447871fa49b7",
+    "size": 41480
+  },
+  {
+    "path": "public/assets/brand/body-soft-sketch.jpg",
+    "sha256": "12d9a22269fca0ae424ee0d901e5185c7d19e1729dd1f62c3d722b5e06394e3b",
+    "size": 34912
+  },
+  {
+    "path": "public/assets/brand/wordmark-original.png",
+    "sha256": "34160d960954eab6e23741831470e4b4338c3b486ebc4bdff11974218a5ad93a",
+    "size": 981723
+  },
+  {
+    "path": "public/assets/brand/turtle-home.png",
+    "sha256": "82f27cd4038f3f0bcd1f63220017fc3beac469f6449ac68906a48f401bc3f96f",
+    "size": 166632
+  },
+  {
+    "path": "public/assets/brand/google-g-logo.png",
+    "sha256": "d1ce9c2af0b10a7333abc99bc706f9a6a199e5b65bf3e3009624f076b8638e6a",
+    "size": 33661
+  },
+  {
+    "path": "public/assets/brand/brand-tokens.json",
+    "sha256": "66ad4479699ea1bdaa5c19378ade5482ea508d58a97cef66f959a5b6d8caf179",
+    "size": 444
+  },
+  {
+    "path": "public/assets/fonts/LINESeedKR-Rg.woff2",
+    "sha256": "709275188a8ef23040274490cd1fa048a02e9c441a238a4252837258cf8a43df",
+    "size": 523808
+  },
+  {
+    "path": "public/assets/fonts/LINESeedKR-Bd.woff2",
+    "sha256": "57f95a6c2ce2ff6fa84e28f96bc5d29dcf5a7e308c9a25ed9541eacff3edfa56",
+    "size": 463480
+  },
+  {
+    "path": "public/assets/fonts/Nunito-OFL.txt",
+    "sha256": "580df76c95a1ec5ab878ceb25bb3d85c6a076804e9c970c8c6972aea775fdf65",
+    "size": 4385
+  },
+  {
+    "path": "public/assets/fonts/Nunito-variable.ttf",
+    "sha256": "bb55a5ca5c2042335b3991af27c4d0705d0ef41cac6164ac737fd8f2a1e85207",
+    "size": 276932
+  },
+  {
+    "path": "public/assets/fonts/LINE-Seed-OFL.txt",
+    "sha256": "2e877cb9d5c82b6f0e0c5da509eb905ae8e299467da73c32f7b80bb9ce51ab62",
+    "size": 4321
+  },
+  {
+    "path": "public/assets/routines/routine-04-single-chest.png",
+    "sha256": "91c7e778766f41ad669eca8e2ef3ae2e1c177935a498b265b3b4dabbc34b49ac",
+    "size": 2549598
+  },
+  {
+    "path": "public/assets/routines/routine-01-figure4.png",
+    "sha256": "57506d1e40474b9846fd5cb1989600a77785e00f3fc18c215eed052959967520",
+    "size": 2275305
+  },
+  {
+    "path": "public/assets/routines/routine-08-seated-interlace.png",
+    "sha256": "10bb9bbf25581a12704554b43e2037130234c8ecc6679c1ff969d41e4d84e78b",
+    "size": 2422698
+  },
+  {
+    "path": "public/assets/routines/routine-03-diagonal-neck.png",
+    "sha256": "4956a817752f0ad3d9d339832da2ec912f36a306c9ec9df202ffc7d134663e14",
+    "size": 2480979
+  },
+  {
+    "path": "public/assets/routines/routine-05-desk-lat.png",
+    "sha256": "622e61e11d7259c6f4ff8824e780f0255c1a43fd98e2645f3932f06de1d61641",
+    "size": 2473742
+  },
+  {
+    "path": "public/assets/routines/routine-06-external-rotation.png",
+    "sha256": "e7379987b19fb5da9456896c0df5865da05976a4c84dc1a3f6196caeec375082",
+    "size": 2423986
+  },
+  {
+    "path": "public/assets/routines/routine-07-seated-chest.png",
+    "sha256": "c1cc2d90a6884a5e3d6325c181493c86499a3d4058b56e197692e870adbf1d97",
+    "size": 2401217
+  },
+  {
+    "path": "public/assets/routines/routine-02-upper-back.png",
+    "sha256": "e343828ef9ee7764930aa9a0dca5233b408c510c5d1ee76b5db4218462b5ff51",
+    "size": 2561433
+  },
+  {
+    "path": "public/assets/routines/routine-09-scm.png",
+    "sha256": "3787e83b34677987f47e79b345578fffd88c19ea87823288ccc92e465590bc9b",
+    "size": 2478725
+  },
+  {
+    "path": "public/assets/routines/routine-11-chest-sweep.png",
+    "sha256": "dcbc750bd9073bc4436baab04456f178dad8076937e38cecec83a9827704de5e",
+    "size": 2750511
+  },
+  {
+    "path": "public/assets/routines/routine-10-temple-jaw.png",
+    "sha256": "4a0b63027ea5c4afca1195338a032f0af21c04aa7cd701cd8953a65010fa851d",
+    "size": 2623749
+  }
+]

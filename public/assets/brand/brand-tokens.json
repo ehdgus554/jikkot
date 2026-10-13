@@ -1,0 +1,20 @@
+{
+  "name": "Jikkot",
+  "colors": {
+    "coral": "#EF7564",
+    "indigo": "#252A76",
+    "surface": "#FFFDFB",
+    "soft": "#F8F5F2",
+    "selected": "#FFF1ED",
+    "text": "#292A3B",
+    "muted": "#777682",
+    "border": "#EAE5E1"
+  },
+  "fonts": {
+    "korean": "LINE Seed KR",
+    "latin": "Nunito"
+  },
+  "logo": "assets/brand/wordmark-original.png",
+  "displayLogo": "assets/brand/wordmark-ui.png",
+  "approvedBodySource": "03-body.html"
+}

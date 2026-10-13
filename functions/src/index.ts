@@ -669,6 +669,7 @@ export function createApi(content: ContentExtensions = extensions) {
     if (
       b.changes.some((c) => !choices.some((q) => q.id === c)) ||
       new Set(b.changes).size !== b.changes.length ||
+      (b.changes.includes("unknown") && b.changes.length > 1) ||
       (rec.feedback === "worse" && choices.length > 0 && b.changes.length === 0)
     )
       fail(400, "INVALID_CHANGES", "변화 항목을 선택해주세요.");

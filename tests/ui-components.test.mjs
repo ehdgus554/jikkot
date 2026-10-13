@@ -99,8 +99,14 @@ test("keeps the approved five-area profiles specific and special options last", 
     const recentIds = recentActionIdsByArea[area];
     const habitIds = habitIdsByArea[area];
 
-    assert.ok(recentIds.length >= 6 && recentIds.length <= 10, `${area} recent action count`);
-    assert.ok(habitIds.length >= 5 && habitIds.length <= 8, `${area} habit count`);
+    assert.ok(
+      recentIds.length >= 6 && recentIds.length <= 10,
+      `${area} recent action count`,
+    );
+    assert.ok(
+      habitIds.length >= 5 && habitIds.length <= 8,
+      `${area} habit count`,
+    );
     assert.deepEqual(recentIds.slice(-2), ["R_NONE", "R_UNKNOWN"]);
     assert.equal(habitIds.at(-1), "H_UNKNOWN");
     assert.equal(new Set(recentIds).size, recentIds.length);
@@ -119,7 +125,7 @@ test("keeps the approved five-area profiles specific and special options last", 
   }
 });
 
-test("keeps Korean copy intact and uses the VER9.1 pastel palette", async () => {
+test("keeps Korean copy intact and uses the approved coral/indigo brand and real fonts", async () => {
   const [globals, app, packageJson] = await Promise.all([
     readFile(path.join(root, "app/globals.css"), "utf8"),
     readFile(path.join(root, "app/jikkot-app.tsx"), "utf8"),
@@ -128,9 +134,11 @@ test("keeps Korean copy intact and uses the VER9.1 pastel palette", async () => 
 
   assert.match(globals, /word-break:\s*keep-all/);
   assert.match(globals, /text-wrap:\s*pretty/);
-  assert.match(globals, /#ecebff/);
-  assert.match(globals, /#ffb9a8/);
-  assert.match(app, /VER9\.1 PROTOTYPE/);
+  assert.match(globals, /#EF7564/i);
+  assert.match(globals, /#252A76/i);
+  assert.match(globals, /LINESeedKR-Rg\.woff2/);
+  assert.match(globals, /Nunito-variable\.ttf/);
+  assert.doesNotMatch(app, /VER9\.1 PROTOTYPE/);
   assert.equal(JSON.parse(packageJson).version, "9.1.0");
 
   const legacyGreen = /#(?:123b32|0d2a24|286a58|1a5043|edf5f1|dcebe5)/i;

@@ -13,6 +13,8 @@ export const SCHEMA_VERSION = 2;
 export type Owner = { kind: "guest" | "member"; id: string };
 export const screens = [
   "home",
+  "posture",
+  "posture-unavailable",
   "area",
   "habits",
   "recent",
@@ -20,6 +22,7 @@ export const screens = [
   "routine",
   "feedback",
   "complete",
+  "session-end",
   "changes",
   "no-next",
   "records",
@@ -82,7 +85,15 @@ export function restore(
     if (p.contentVersion !== CONTENT_VERSION) {
       if (
         p.contentVersion === "jikkot11-v1" &&
-        ["area", "habits", "recent", "analysis", "routine", "feedback", "changes"].includes(p.screen) &&
+        [
+          "area",
+          "habits",
+          "recent",
+          "analysis",
+          "routine",
+          "feedback",
+          "changes",
+        ].includes(p.screen) &&
         (owner.kind === "member" || p.guestConsent === true)
       ) {
         return {
@@ -95,8 +106,7 @@ export function restore(
     }
     if (
       owner.kind === "guest" &&
-      (!p.guestConsent ||
-        ["records", "catalog", "browse", "changes"].includes(p.screen))
+      (!p.guestConsent || ["records", "catalog", "browse"].includes(p.screen))
     )
       return null;
     const a = p.answers;
@@ -122,7 +132,11 @@ export function restore(
       a.recent.length > 1
     )
       return null;
-    if (["habits", "recent"].includes(p.screen) && !a.mode) return null;
+    if (
+      ["habits", "recent", "posture-unavailable"].includes(p.screen) &&
+      !a.mode
+    )
+      return null;
     if (["habits", "recent"].includes(p.screen) && !a.area) return null;
     if (p.screen === "recent" && !a.habits?.length) return null;
     for (const value of [p.recommendationId, p.submissionId])
@@ -148,6 +162,7 @@ export function restore(
         "routine",
         "feedback",
         "complete",
+        "session-end",
         "changes",
         "no-next",
       ].includes(p.screen)

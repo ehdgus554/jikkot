@@ -144,7 +144,12 @@ test("unfinished detailed-area progress resets only its questionnaire, retaining
     ...fresh(owner, true),
     screen: "routine",
     contentVersion: "jikkot11-v1",
-    answers: { mode: "seated", area: "front_shoulder", habits: ["H_ONE_FORWARD"], recent: ["R_ONE_HAND"] },
+    answers: {
+      mode: "seated",
+      area: "front_shoulder",
+      habits: ["H_ONE_FORWARD"],
+      recent: ["R_ONE_HAND"],
+    },
     recommendationId: crypto.randomUUID(),
     routineId: "jikkot11-r04",
   };
@@ -155,7 +160,10 @@ test("unfinished detailed-area progress resets only its questionnaire, retaining
   assert.deepEqual(resumed.answers, { mode: "seated" });
   assert.equal(resumed.recommendationId, undefined);
   assert.equal(resumed.contentVersion, "jikkot11-v2-fiveareas");
-  assert.equal(restore(JSON.stringify(previous), { ...owner, id: "other" }), null);
+  assert.equal(
+    restore(JSON.stringify(previous), { ...owner, id: "other" }),
+    null,
+  );
   assert.throws(() => validateAnswers(previous.answers));
 });
 test("alternatives stay within approved area mapping, exclude the current move, and never alias old IDs", () => {
@@ -171,11 +179,11 @@ test("alternatives stay within approved area mapping, exclude the current move, 
         feedback,
         [],
       );
-      if (area.id === "lower") assert.equal(next, null);
-      else {
-        assert.notEqual(next?.id, rec.routine.id);
-        assert.ok(allowedRoutineNumbers[area.id].includes(next!.displayNumber));
-      }
+      assert.equal(
+        next,
+        null,
+        "Missing approved mapping must terminate for every area",
+      );
     }
     assert.equal(nextRecommendation(a, "MV001", "NECK:0", "same", []), null);
     const allVisited = routines
@@ -196,4 +204,89 @@ test("alternatives stay within approved area mapping, exclude the current move, 
       null,
     );
   }
+});
+
+test("an explicit alternative must match pattern, feedback and process and exclude visited/out-of-area moves", () => {
+  const answers = validateAnswers({
+    area: "neck",
+    habits: ["H_SHRUG"],
+    recent: ["R_HEAD_TURN"],
+  });
+  const primary = makeRecommendation(answers);
+  // Test-only configuration proves the gate; no such clinical mapping is enabled in production.
+  const mapping = {
+    pattern: primary.pattern,
+    currentRoutineId: primary.routine.id,
+    feedback: "worse" as const,
+    changeIds: ["step-2"],
+    nextRoutineId: "jikkot11-r08",
+  };
+  const content = { alternatives: [mapping] };
+  assert.equal(
+    nextRecommendation(
+      answers,
+      primary.routine.id,
+      primary.pattern,
+      "worse",
+      ["step-2"],
+      content,
+    )?.id,
+    "jikkot11-r08",
+  );
+  assert.equal(
+    nextRecommendation(
+      answers,
+      primary.routine.id,
+      "different-pattern",
+      "worse",
+      ["step-2"],
+      content,
+    ),
+    null,
+  );
+  assert.equal(
+    nextRecommendation(
+      answers,
+      primary.routine.id,
+      primary.pattern,
+      "same",
+      ["step-2"],
+      content,
+    ),
+    null,
+  );
+  assert.equal(
+    nextRecommendation(
+      answers,
+      primary.routine.id,
+      primary.pattern,
+      "worse",
+      ["unknown"],
+      content,
+    ),
+    null,
+  );
+  assert.equal(
+    nextRecommendation(
+      answers,
+      primary.routine.id,
+      primary.pattern,
+      "worse",
+      ["step-2"],
+      content,
+      [primary.routine.id, "jikkot11-r08"],
+    ),
+    null,
+  );
+  assert.equal(
+    nextRecommendation(
+      answers,
+      primary.routine.id,
+      primary.pattern,
+      "worse",
+      ["step-2"],
+      { alternatives: [{ ...mapping, nextRoutineId: "jikkot11-r01" }] },
+    ),
+    null,
+  );
 });

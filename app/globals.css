@@ -19,38 +19,38 @@
 }
 
 :root {
-  --background: #fff9f7;
-  --foreground: #303247;
-  --card: #ffffff;
-  --card-foreground: #303247;
-  --popover: #ffffff;
-  --popover-foreground: #303247;
-  --primary: #656abd;
-  --primary-foreground: #ffffff;
-  --secondary: #f0f1ff;
-  --secondary-foreground: #4f548f;
-  --muted: #f5f3f8;
-  --muted-foreground: #6f7183;
-  --accent: #ffe7dc;
-  --accent-foreground: #704b43;
+  --background: #fffdfb;
+  --foreground: #292a3b;
+  --card: #fffdfb;
+  --card-foreground: #292a3b;
+  --popover: #fffdfb;
+  --popover-foreground: #292a3b;
+  --primary: #ef7564;
+  --primary-foreground: #252a76;
+  --secondary: #f8f5f2;
+  --secondary-foreground: #252a76;
+  --muted: #f8f5f2;
+  --muted-foreground: #686774;
+  --accent: #fff1ed;
+  --accent-foreground: #252a76;
   --destructive: #c65f6f;
-  --border: #e6e2ec;
-  --input: #d8d4e2;
-  --ring: #8c91d8;
+  --border: #eae5e1;
+  --input: #eae5e1;
+  --ring: #252a76;
   --chart-1: #6268ba;
   --chart-2: #ffb9a8;
   --chart-3: #a9d9ef;
   --chart-4: #d5b6e8;
   --chart-5: #e7a36f;
   --radius: 0.875rem;
-  --sidebar: #f0f1ff;
-  --sidebar-foreground: #303247;
-  --sidebar-primary: #656abd;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #ffe7dc;
-  --sidebar-accent-foreground: #704b43;
-  --sidebar-border: #e6e2ec;
-  --sidebar-ring: #8c91d8;
+  --sidebar: #f8f5f2;
+  --sidebar-foreground: #292a3b;
+  --sidebar-primary: #ef7564;
+  --sidebar-primary-foreground: #fffdfb;
+  --sidebar-accent: #fff1ed;
+  --sidebar-accent-foreground: #252a76;
+  --sidebar-border: #eae5e1;
+  --sidebar-ring: #252a76;
 }
 
 @theme inline {
@@ -89,113 +89,897 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --font-sans:
-    "Nanum Gothic Jikkot", "Noto Sans KR", "Apple SD Gothic Neo", system-ui,
-    sans-serif;
+  --font-sans: "Nunito", "LINE Seed KR", sans-serif;
   --font-mono:
     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     "Courier New", monospace;
 }
 
 @font-face {
-  font-family: "Nanum Gothic Jikkot";
-  src: url("/assets/fonts/NanumGothic-v7-400.ttf") format("truetype");
-  font-style: normal;
+  font-family: "LINE Seed KR";
+  src: url("/assets/fonts/LINESeedKR-Rg.woff2") format("woff2");
   font-weight: 400;
+  font-style: normal;
   font-display: swap;
 }
-
 @font-face {
-  font-family: "Nanum Gothic Jikkot";
-  src: url("/assets/fonts/NanumGothic-v7-700.ttf") format("truetype");
-  font-style: normal;
+  font-family: "LINE Seed KR";
+  src: url("/assets/fonts/LINESeedKR-Bd.woff2") format("woff2");
   font-weight: 700;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Nanum Gothic Jikkot";
-  src: url("/assets/fonts/NanumGothic-v7-800.ttf") format("truetype");
   font-style: normal;
-  font-weight: 800 900;
   font-display: swap;
 }
-
+@font-face {
+  font-family: "Nunito";
+  src: url("/assets/fonts/Nunito-variable.ttf") format("truetype");
+  font-weight: 200 1000;
+  font-style: normal;
+  font-display: swap;
+}
 body {
+  margin: 0;
   min-width: 320px;
-  background:
-    radial-gradient(
-      circle at 14% 8%,
-      rgba(255, 185, 168, 0.42),
-      transparent 28rem
-    ),
-    radial-gradient(
-      circle at 88% 88%,
-      rgba(169, 217, 239, 0.4),
-      transparent 30rem
-    ),
-    linear-gradient(135deg, #ecebff 0%, #fff4ee 54%, #eaf8ff 100%);
+  background: #f1f0f4;
   color: var(--foreground);
-  font-family:
-    "Nanum Gothic Jikkot", "Noto Sans KR", "Apple SD Gothic Neo", system-ui,
-    sans-serif;
+  font-family: "Nunito", "LINE Seed KR", sans-serif;
   word-break: keep-all;
-  overflow-wrap: break-word;
   text-wrap: pretty;
+  overflow-wrap: anywhere;
 }
-
-h1,
-h2,
-h3,
-[data-slot="dialog-title"] {
-  text-wrap: balance;
-}
-
-p,
-li,
-strong,
-small,
-label,
-[data-slot="dialog-description"] {
-  word-break: keep-all;
-  overflow-wrap: break-word;
-  text-wrap: pretty;
-}
-
-[data-slot="button"],
-[data-slot="badge"],
-input {
-  word-break: normal;
-  text-wrap: nowrap;
-}
-
 button,
-input {
+input,
+textarea,
+select {
   font: inherit;
 }
-
+button,
+input,
+summary,
+a {
+  touch-action: manipulation;
+}
 button:focus-visible,
-input:focus-visible {
+input:focus-visible,
+summary:focus-visible,
+a:focus-visible {
+  outline: 3px solid #252a76;
   outline-offset: 3px;
 }
-
-.service-surface h1 {
-  font-size: clamp(1.35rem, 4vw, 1.8rem);
-  font-weight: 700;
-  line-height: 1.4;
+button:disabled {
+  cursor: default;
 }
-
-.service-surface form label {
+.jikkot-app {
+  --coral: #ef7564;
+  --indigo: #252a76;
+  --paper: #fffdfb;
+  --ink: #292a3b;
+  --soft: #f8f5f2;
+  --quiet: #686774;
+  --edge: #eae5e1;
+  --selected: #fff1ed;
+  max-width: 640px;
+  margin: 0 auto 30px;
+  padding: 0 12px;
+  color: var(--ink);
+}
+.jikkot-app .screen {
+  background: var(--paper);
+  border: 1px solid var(--edge);
+  border-radius: 28px;
+  padding: 30px 38px 28px;
+  box-shadow: 0 16px 50px #252a7610;
+  min-height: 430px;
+}
+.jikkot-app .top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 30px;
+  min-height: 42px;
+}
+.jikkot-app .logo {
+  width: 112px;
+  height: auto;
+  display: block;
+  background: #fff;
+  border-radius: 4px;
+}
+.jikkot-app .back,
+.jikkot-app .text-button {
+  background: transparent;
+  border: 0;
+  padding: 10px;
+  color: var(--quiet);
+  font-size: 13px;
+  min-height: 44px;
+}
+.jikkot-app .back {
+  margin-left: -10px;
+}
+.jikkot-app h1 {
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 1.4;
+  letter-spacing: -1.1px;
+  margin: 0 0 10px;
+  color: var(--ink);
+}
+.jikkot-app h3 {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.5;
+  letter-spacing: -0.5px;
+  margin: 8px 0 17px;
+}
+.jikkot-app .sub {
+  font-size: 14px;
+  color: var(--quiet);
+  margin: 0 0 25px;
+  line-height: 1.8;
+}
+.jikkot-app .steps {
+  display: flex;
+  gap: 7px;
+  margin-bottom: 22px;
+}
+.jikkot-app .step {
+  height: 4px;
+  background: var(--edge);
+  border-radius: 4px;
+  flex: 1;
+}
+.jikkot-app .step.done {
+  background: var(--coral);
+}
+.jikkot-app .context {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--quiet);
+  margin-bottom: 18px;
+}
+.jikkot-app .area-label {
+  color: var(--indigo);
+  background: var(--soft);
+  padding: 7px 13px;
+  border-radius: 25px;
+}
+.jikkot-app .choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.jikkot-app .choice {
+  position: relative;
+  border: 1px solid var(--edge);
+  border-radius: 17px;
+  background: var(--paper);
+  color: var(--ink);
+  text-align: left;
+  min-height: 88px;
+  padding: 23px 18px 17px;
+  font-size: 14px;
+  line-height: 1.6;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+.jikkot-app .choice:hover,
+.jikkot-app .wide-choice:hover {
+  border-color: var(--coral);
+}
+.jikkot-app [aria-pressed="true"] {
+  border-color: var(--coral);
+  background: var(--selected);
+}
+.jikkot-app .choice .tick {
+  width: 17px;
+  height: 17px;
+  border: 1px solid var(--edge);
+  border-radius: 50%;
+  position: absolute;
+  right: 10px;
+  top: 9px;
+  color: transparent;
+  text-align: center;
+  line-height: 15px;
+  font-size: 11px;
+}
+.jikkot-app .choice[aria-pressed="true"] .tick {
+  color: var(--indigo);
+  background: var(--coral);
+  border-color: var(--coral);
+}
+.jikkot-app .wide-list {
+  display: grid;
+  gap: 12px;
+}
+.jikkot-app .wide-choice {
+  border: 1px solid var(--edge);
+  border-radius: 17px;
+  background: var(--paper);
+  color: var(--ink);
+  padding: 20px 23px;
+  min-height: 76px;
+  text-align: left;
+  font-size: 16px;
+  line-height: 1.6;
+  width: 100%;
+}
+.jikkot-app .wide-choice small {
+  display: block;
+  color: var(--quiet);
+  font-size: 13px;
+  margin-top: 4px;
+  line-height: 1.6;
+}
+.jikkot-app .special {
+  width: 100%;
+  background: var(--soft);
+  border: 1px solid transparent;
+  border-radius: 12px;
+  min-height: 45px;
+  padding: 10px 14px;
+  color: var(--quiet);
+  font-size: 13px;
+  margin-top: 12px;
+}
+.jikkot-app .special[aria-pressed="true"] {
+  border-color: var(--coral);
+  background: var(--selected);
+  color: var(--ink);
+}
+.jikkot-app .footer {
+  margin-top: 27px;
+  display: grid;
+  gap: 11px;
+}
+.jikkot-app .primary {
+  background: var(--coral);
+  color: var(--indigo);
+  border: 0;
+  width: 100%;
+  min-height: 53px;
+  border-radius: 15px;
+  padding: 14px 16px;
+  font-size: 19px;
+  font-weight: 700;
+}
+.jikkot-app .primary:disabled {
+  background: var(--soft);
+  color: var(--quiet);
+}
+.jikkot-app .secondary {
+  background: var(--paper);
+  border: 1px solid var(--edge);
+  color: var(--indigo);
+  width: 100%;
+  min-height: 51px;
+  border-radius: 15px;
+  padding: 12px;
+  font-size: 14px;
+}
+.jikkot-app .note {
+  min-height: 20px;
+  font-size: 12px;
+  color: var(--quiet);
+  text-align: center;
+  line-height: 1.7;
+  margin: 12px 0 0;
+}
+.jikkot-app .summary {
+  background: var(--soft);
+  border-radius: 18px;
+  padding: 8px 20px;
+  margin: 25px 0;
+}
+.jikkot-app .summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 14px 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.jikkot-app .summary-row + .summary-row {
+  border-top: 1px solid var(--edge);
+}
+.jikkot-app .summary-row span {
+  color: var(--quiet);
+  flex-shrink: 0;
+}
+.jikkot-app .summary-row strong {
+  font-weight: 400;
+  text-align: right;
+}
+.jikkot-app .tag {
+  display: inline-block;
+  background: var(--selected);
+  color: var(--indigo);
+  font-size: 12px;
+  border-radius: 25px;
+  padding: 6px 12px;
+  margin-bottom: 18px;
+}
+.jikkot-app .center {
+  text-align: center;
+}
+.jikkot-app .mascot {
+  width: 190px;
+  max-width: 70%;
+  height: 221px;
+  object-fit: contain;
+  margin: 25px auto 21px;
   display: block;
 }
+.jikkot-app .home-title {
+  font-weight: 700;
+  color: var(--indigo);
+}
+.jikkot-app .eyebrow {
+  font-size: 12px;
+  color: var(--quiet);
+  margin: 0 0 13px;
+}
+.jikkot-app .nav {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  padding-top: 20px;
+  margin-top: 26px;
+  border-top: 1px solid var(--edge);
+}
+.jikkot-app .nav button {
+  background: transparent;
+  border: 0;
+  color: var(--quiet);
+  font-size: 12px;
+  min-height: 44px;
+  padding: 7px 2px;
+}
+.jikkot-app .nav small {
+  display: block;
+  font-size: 11px;
+  margin-top: 5px;
+}
+.jikkot-app .posture-name {
+  font-size: 18px;
+  color: var(--indigo);
+}
+.jikkot-app .routine-media {
+  display: block;
+  padding: 0;
+  background: #fff;
+  border: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  width: 100%;
+  margin: 22px 0;
+}
+.jikkot-app .routine-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.jikkot-app .routine-meta {
+  font-size: 12px;
+  color: var(--quiet);
+}
+.jikkot-app .instructions {
+  padding-left: 23px;
+  font-size: 14px;
+  line-height: 1.8;
+  margin: 0;
+}
+.jikkot-app .instructions li {
+  padding-left: 4px;
+  margin-bottom: 8px;
+}
+.jikkot-app .care {
+  font-size: 12px;
+  color: var(--quiet);
+  line-height: 1.6;
+  margin-top: 19px;
+}
+.jikkot-app .form {
+  display: grid;
+  gap: 9px;
+  margin-top: 24px;
+}
+.jikkot-app .form > label {
+  font-size: 13px;
+  margin-top: 8px;
+}
+.jikkot-app input:not([type="checkbox"]) {
+  min-width: 0;
+  width: 100%;
+  min-height: 49px;
+  padding: 12px 14px;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--edge);
+  border-radius: 12px;
+  font-size: 16px;
+}
+.jikkot-app input::placeholder {
+  color: var(--quiet);
+  font-size: 13px;
+}
+.jikkot-app .phone-row {
+  display: flex;
+  gap: 9px;
+}
+.jikkot-app .verify {
+  border: 1px solid var(--edge);
+  background: var(--soft);
+  color: var(--indigo);
+  border-radius: 12px;
+  padding: 0 13px;
+  min-height: 49px;
+  flex-shrink: 0;
+  font-size: 13px;
+}
+.jikkot-app .field-note {
+  font-size: 12px;
+  color: var(--quiet);
+  line-height: 1.7;
+  margin: 0 0 6px;
+}
+.jikkot-app .consents {
+  padding-top: 12px;
+  margin-top: 10px;
+  border-top: 1px solid var(--edge);
+}
+.jikkot-app .consent {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 46px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.jikkot-app .consent input {
+  accent-color: var(--coral);
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin: 0;
+}
+.jikkot-app .consent span {
+  flex: 1;
+}
+.jikkot-app .consent em {
+  font-style: normal;
+  color: var(--indigo);
+  margin-left: 3px;
+}
+.jikkot-app .divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 25px 0 18px;
+}
+.jikkot-app .divider span {
+  height: 1px;
+  background: var(--edge);
+  flex: 1;
+}
+.jikkot-app .divider p {
+  font-size: 12px;
+  color: var(--quiet);
+  margin: 0;
+}
+.jikkot-app .social {
+  width: 100%;
+  min-height: 49px;
+  border-radius: 13px;
+  border: 0;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.jikkot-app .kakao {
+  background: #fee500;
+  color: #24210c;
+}
+.jikkot-app .naver {
+  background: #03c75a;
+  color: var(--indigo);
+}
+.jikkot-app .google {
+  background: #fff;
+  color: var(--ink);
+  border: 1px solid var(--edge);
+}
+.jikkot-app .google img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+.jikkot-app details {
+  border: 1px solid var(--edge);
+  border-radius: 18px;
+  overflow: hidden;
+  margin-top: 14px;
+}
+.jikkot-app summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+.jikkot-app summary::-webkit-details-marker {
+  display: none;
+}
+.jikkot-app .record-date {
+  font-size: 12px;
+  color: var(--quiet);
+}
+.jikkot-app .record-detail {
+  background: var(--soft);
+  padding: 5px 20px 15px;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.jikkot-app .record-detail dt {
+  font-size: 12px;
+  color: var(--quiet);
+  margin-top: 14px;
+}
+.jikkot-app .record-detail dd {
+  margin: 5px 0 0;
+}
+.jikkot-app .record-group {
+  margin: 22px 0 12px;
+  font-size: 17px;
+  color: var(--indigo);
+}
+.jikkot-app .busy {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 42px 0;
+}
+.jikkot-app .busy span {
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  background: var(--coral);
+}
+.jikkot-app .error-text {
+  font-size: 13px;
+  color: #b3302a;
+  line-height: 1.7;
+  min-height: 22px;
+  margin: 5px 0;
+}
+.jikkot-app .modal {
+  background: #252a7640;
+  position: absolute;
+  inset: 0;
+  padding: 20px;
+  display: grid;
+  align-items: center;
+  z-index: 20;
+  border-radius: 28px;
+}
+.jikkot-app .modal-content {
+  background: var(--paper);
+  padding: 25px;
+  border-radius: 20px;
+  max-width: 100%;
+  max-height: 650px;
+  overflow: auto;
+}
+.jikkot-app .modal-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+.jikkot-app .screen {
+  position: relative;
+}
+.jikkot-app .body-map {
+  position: relative;
+  width: 100%;
+  max-width: 270px;
+  margin: 16px auto 0;
+  aspect-ratio: 1024/1536;
+}
+.jikkot-app .anatomy {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.jikkot-app .body-label {
+  position: absolute;
+  border: 1px solid #e6e4ed;
+  background: #fff;
+  color: #252a76;
+  min-width: 55px;
+  min-height: 44px;
+  padding: 10px 12px;
+  border-radius: 13px;
+  font-size: 14px;
+  transform: translateY(-50%);
+}
+.jikkot-app .head {
+  left: 78%;
+  top: 7.5%;
+}
+.jikkot-app .neck {
+  right: 78%;
+  top: 14.3%;
+}
+.jikkot-app .shoulder {
+  left: 78%;
+  top: 22.1%;
+}
+.jikkot-app .back-part {
+  right: 78%;
+  top: 29.1%;
+}
+.jikkot-app .waist {
+  left: 78%;
+  top: 39.4%;
+}
+.jikkot-app .body-hits {
+  cursor: pointer;
+}
+@media (max-width: 480px) {
+  .jikkot-app {
+    padding: 0 10px;
+  }
+  .jikkot-app .screen {
+    padding: 23px 20px;
+    border-radius: 23px;
+  }
+  .jikkot-app h1 {
+    font-size: 25px;
+  }
+  .jikkot-app .choices {
+    gap: 9px;
+  }
+  .jikkot-app .choice {
+    padding: 22px 12px 14px;
+    font-size: 13px;
+    min-height: 96px;
+  }
+  .jikkot-app .wide-choice {
+    padding: 18px;
+    font-size: 15px;
+  }
+  .jikkot-app .summary {
+    padding: 8px 15px;
+  }
+  .jikkot-app .summary-row {
+    gap: 10px;
+    font-size: 12px;
+  }
+  .jikkot-app .modal {
+    border-radius: 23px;
+    padding: 10px;
+  }
+}
 
+.jikkot-app {
+  margin-top: 24px;
+}
+.jikkot-app h1 {
+  font-size: clamp(25px, 4vw, 28px);
+}
+.jikkot-app .home-title {
+  font-size: clamp(26px, 7vw, 29px);
+  line-height: 1.4;
+}
+.jikkot-app .top .logo {
+  flex-shrink: 0;
+}
+.jikkot-app .header-spacer {
+  width: 44px;
+}
+.jikkot-app .consent label {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.jikkot-app .summary-row {
+  margin: 0;
+}
+.jikkot-app .summary-row dt {
+  color: var(--quiet);
+  flex-shrink: 0;
+}
+.jikkot-app .summary-row dd {
+  margin: 0;
+  text-align: right;
+}
+.jikkot-app .question-progress {
+  margin-bottom: 22px;
+}
+.jikkot-app .question-progress .steps {
+  margin: 0;
+}
+.jikkot-app .choices .choice {
+  min-width: 0;
+}
+.jikkot-app .body-map {
+  margin-top: 16px;
+}
+.jikkot-app .body-label {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s;
+}
+.jikkot-app .body-label.visible {
+  opacity: 1;
+}
+.jikkot-app .region {
+  opacity: 0;
+  fill: var(--coral);
+  pointer-events: none;
+  transition: opacity 0.18s;
+}
+.jikkot-app .region.preview {
+  opacity: 0.25;
+  filter: drop-shadow(0 0 7px #ef756480);
+}
+.jikkot-app .region.selected {
+  opacity: 0.39;
+}
+.jikkot-app .leader {
+  fill: none;
+  stroke: #ccc9d9;
+  stroke-width: 2.5;
+  opacity: 0;
+  pointer-events: none;
+}
+.jikkot-app .leader.is-visible {
+  opacity: 1;
+}
+.jikkot-app .body-hit {
+  fill: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.jikkot-app .body-hit:focus-visible {
+  outline: none;
+}
+.jikkot-app .body-hit[aria-disabled="true"] {
+  pointer-events: none;
+}
+.jikkot-app .routine-heading {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.5;
+  margin: 8px 0 17px;
+}
+.jikkot-app .routine-guide {
+  display: grid;
+  gap: 18px;
+}
+.jikkot-app .routine-guide .guide-image {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 18px;
+}
+.jikkot-app .routine-guide .care {
+  margin: 0;
+}
+.jikkot-app .footer {
+  margin-top: 27px;
+}
+.jikkot-app .preview-note {
+  background: var(--soft);
+  border-radius: 12px;
+  margin-bottom: 18px;
+  padding: 12px;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.jikkot-app .error-panel {
+  background: #fff1ed;
+  border: 1px solid #f0c2b8;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+.jikkot-app .error-panel p {
+  margin: 0;
+}
+.jikkot-app .error-panel .secondary {
+  margin-top: 12px;
+}
+.jikkot-app .account-note {
+  padding: 12px 0;
+  font-size: 12px;
+  color: var(--quiet);
+  line-height: 1.7;
+}
+.jikkot-app .social:disabled {
+  opacity: 0.7;
+}
+.jikkot-app .record-title {
+  font-size: 14px;
+  margin-top: 4px;
+  color: var(--ink);
+}
+.jikkot-app .record-detail dd {
+  overflow-wrap: anywhere;
+}
+.jikkot-app .consent input {
+  min-height: 18px;
+}
+.jikkot-app .policy-note {
+  background: var(--soft);
+  padding: 12px;
+  border-radius: 12px;
+}
+.jikkot-app .phone-row .verify {
+  min-width: 90px;
+}
+.jikkot-app .form .primary {
+  margin-top: 16px;
+}
+.jikkot-app .page-footer {
+  text-align: center;
+  padding: 16px;
+  color: var(--quiet);
+  font-size: 11px;
+  line-height: 1.7;
+}
+@keyframes jikkot-loading {
+  50% {
+    opacity: 0.3;
+    transform: translateY(-3px);
+  }
+}
+.jikkot-app .busy span {
+  animation: jikkot-loading 1s infinite;
+}
+.jikkot-app .busy span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.jikkot-app .busy span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+@media (max-width: 480px) {
+  .jikkot-app {
+    margin-top: 12px;
+  }
+  .jikkot-app .screen {
+    padding: 23px 20px;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
+    animation: none !important;
+    transition: none !important;
     scroll-behavior: auto !important;
-    animation-duration: 1ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 1ms !important;
   }
+}
+
+.jikkot-app .region.keyboard-focus {
+  opacity: 1;
+  fill: #ef756440;
+  stroke: var(--indigo);
+  stroke-width: 8;
+}
+.jikkot-dialog.jikkot-app {
+  margin: 0;
+  padding: 24px;
+  max-width: min(560px, calc(100vw - 32px));
 }

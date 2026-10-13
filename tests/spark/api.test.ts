@@ -63,11 +63,16 @@ test("Firestore REST codecs preserve nested snapshots and timestamps", () => {
 test("actual Spark recommendation endpoint returns every supplied five-area example and rejects retired input IDs", async () => {
   const suffix = randomUUID().slice(0, 8);
   const user = await identity(`five-${suffix}@example.test`);
-  assert.equal((await call("/signup", user.idToken, {
-    username: "five_" + suffix,
-    nickname: "five_" + suffix,
-    consents,
-  })).status, 200);
+  assert.equal(
+    (
+      await call("/signup", user.idToken, {
+        username: "five_" + suffix,
+        nickname: "five_" + suffix,
+        consents,
+      })
+    ).status,
+    200,
+  );
   for (const [area, habits, recent, number] of fiveAreasExamples) {
     const result = await call("/recommendations", user.idToken, {
       recommendationId: randomUUID(),
@@ -336,73 +341,18 @@ test("new snapshots and alternatives retain approved version/area and atomically
   };
   const next = await call("/next", user.idToken, payload);
   assert.equal(next.status, 200);
-  assert.equal(next.body.recommendation.snapshot.routine.id, "jikkot11-r08");
-  assert.equal(next.body.recommendation.snapshot.area.id, "neck");
-  assert.equal(next.body.recommendation.snapshot.contentVersion, "jikkot11-v2-fiveareas");
-  assert.equal(next.body.recommendation.snapshot.routine.steps.length, 2);
   assert.equal(
-    (await call("/next", user.idToken, payload)).body.recommendation
-      .recommendationId,
-    nid,
+    next.body.recommendation,
+    null,
+    "No approved mapping: do not reuse the broad area list",
   );
-  assert.equal(
-    (
-      await call("/next", user.idToken, {
-        ...payload,
-        nextRecommendationId: randomUUID(),
-      })
-    ).status,
-    409,
-  );
+  const retry = await call("/next", user.idToken, payload);
+  assert.equal(retry.status, 200);
+  assert.equal(retry.body.recommendation, null);
   const records = await call("/records", user.idToken);
   assert.equal(records.body.records.length, 1);
   assert.equal(records.body.records[0].snapshot.routine.id, "jikkot11-r03");
-  assert.deepEqual(next.body.recommendation.visitedRoutineIds, [
-    "jikkot11-r03",
-    "jikkot11-r08",
-  ]);
-  assert.equal(
-    (
-      await call("/feedback", user.idToken, {
-        recommendationId: nid,
-        submissionId: randomUUID(),
-        feedback: "worse",
-      })
-    ).status,
-    200,
-  );
-  const finalId = randomUUID();
-  const final = await call("/next", user.idToken, {
-    recommendationId: nid,
-    nextRecommendationId: finalId,
-    changes: [],
-  });
-  assert.equal(final.body.recommendation.snapshot.routine.id, "jikkot11-r07");
-  assert.deepEqual(final.body.recommendation.visitedRoutineIds, [
-    "jikkot11-r03",
-    "jikkot11-r08",
-    "jikkot11-r07",
-  ]);
-  assert.equal(
-    (
-      await call("/feedback", user.idToken, {
-        recommendationId: finalId,
-        submissionId: randomUUID(),
-        feedback: "same",
-      })
-    ).status,
-    200,
-  );
-  assert.equal(
-    (
-      await call("/next", user.idToken, {
-        recommendationId: finalId,
-        nextRecommendationId: randomUUID(),
-        changes: [],
-      })
-    ).body.recommendation,
-    null,
-  );
+  assert.equal(records.body.records[0].feedback, "same");
   const lower = {
     mode: "seated",
     area: "lower",
@@ -432,7 +382,7 @@ test("new snapshots and alternatives retain approved version/area and atomically
   const noAlternative = await call("/next", user.idToken, {
     recommendationId: lowerId,
     nextRecommendationId: randomUUID(),
-    changes: [],
+    changes: ["unknown"],
   });
   assert.equal(noAlternative.status, 200);
   assert.equal(noAlternative.body.recommendation, null);

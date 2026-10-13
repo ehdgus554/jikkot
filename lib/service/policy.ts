@@ -4,6 +4,9 @@ export const consentPolicy = {
   reviewedForLaunch: false,
 } as const;
 export const operationalPolicy = {
+  operatorName: "Jikkot",
+  contactEmail: null as string | null,
+  retentionPolicy: "untilWithdrawal",
   retentionDays: null as number | null,
   reviewedForLaunch: false,
 };

@@ -16,7 +16,7 @@ type Guide = Pick<Routine, "name" | "image" | "cue" | "dose" | "comfort"> &
 function GuideImage({ routine }: { routine: Guide }) {
   const [missing, setMissing] = useState(false);
   return missing ? (
-    <p className="rounded-xl bg-[#ecebff] p-4 text-sm">
+    <p role="alert" className="error-panel">
       동작 안내 이미지 연결을 기다리고 있어요.
     </p>
   ) : (
@@ -24,11 +24,11 @@ function GuideImage({ routine }: { routine: Guide }) {
       <img
         src={routine.image}
         alt={`${routine.name} 동작 안내`}
-        className="h-auto w-full rounded-2xl object-contain"
+        className="guide-image"
         onError={() => setMissing(true)}
       />
       <DialogTrigger asChild>
-        <Button variant="outline" className="w-full">
+        <Button variant="outline" className="w-full min-h-11">
           안내 이미지 확대
         </Button>
       </DialogTrigger>
@@ -52,15 +52,15 @@ function GuideImage({ routine }: { routine: Guide }) {
 }
 export function RoutineMedia({ routine }: { routine: Guide }) {
   return (
-    <article className="space-y-4">
+    <article className="routine-guide">
       {routine.displayNumber && (
-        <p className="text-sm text-[#6268ba]">동작 {routine.displayNumber}</p>
+        <p className="routine-meta">앉아서 · 동작 {routine.displayNumber}</p>
       )}
       <GuideImage key={routine.image} routine={routine} />
-      <h2 className="text-2xl font-bold">{routine.name}</h2>
-      {routine.dose && <p className="text-sm text-[#6268ba]">{routine.dose}</p>}
+      <h2 className="routine-heading">{routine.name}</h2>
+      {routine.dose && <p className="routine-meta">{routine.dose}</p>}
       {routine.steps?.length ? (
-        <ol className="list-decimal space-y-2 pl-5">
+        <ol className="instructions">
           {routine.steps.map((step) => (
             <li key={step}>{step}</li>
           ))}
@@ -68,9 +68,7 @@ export function RoutineMedia({ routine }: { routine: Guide }) {
       ) : (
         <p>{routine.cue}</p>
       )}
-      {routine.comfort && (
-        <p className="rounded-xl bg-[#ffe7dc] p-4">{routine.comfort}</p>
-      )}
+      {routine.comfort && <p className="care">{routine.comfort}</p>}
     </article>
   );
 }

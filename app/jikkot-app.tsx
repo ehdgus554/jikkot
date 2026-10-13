@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element -- Supplied official Google brand artwork is displayed intact. */
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   onAuthStateChanged,
@@ -14,12 +15,11 @@ import {
   sendPasswordResetEmail,
 } from "firebase/auth";
 import { api, apiBase, configured, firebaseAuth } from "@/lib/firebase-client";
-import { areas, getRoutine, type Routine } from "./jikkot-data";
+import { areas, getRoutine, routines, type Routine } from "./jikkot-data";
 import {
   toggleExclusive,
   postureLabels,
   feedbackLabels,
-  featureFlags,
   habitQuestions,
   recentQuestions,
   catalog,
@@ -36,7 +36,6 @@ import {
   type Owner,
 } from "@/lib/service/progress";
 import { RoutineMedia } from "@/components/routine-media";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Dialog,
@@ -46,7 +45,19 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 
-import { consentPolicy } from "@/lib/service/policy";
+import {
+  Header,
+  Surface,
+  PrimaryButton,
+  ChoiceCard,
+  QuestionProgress,
+  AreaContext,
+  ResultSummary,
+  ConsentRow,
+  BodySelector,
+  Home,
+} from "@/components/jikkot-ui";
+import { consentPolicy, operationalPolicy } from "@/lib/service/policy";
 import { ServicePreparation } from "@/components/service-preparation";
 import { previewRecommendation } from "@/lib/service/public-preview";
 type Member = { uid: string; username: string | null; nickname: string };
@@ -60,6 +71,7 @@ type Rec = {
   reason: string;
   snapshot: {
     answers: Answers;
+    posture?: string;
     pattern: string;
     routine: Pick<
       Routine,
@@ -90,30 +102,31 @@ type Entry =
   | "signup"
   | "recover"
   | "social-consent"
+  | "signup-complete"
+  | "phone"
   | null;
 const consentVersion = consentPolicy.version;
-const toggle = (ids: string[], id: string) =>
-  ids.includes(id) ? ids.filter((x) => x !== id) : [...ids, id];
 function Action({
   label,
   onClick,
   busy,
+  secondary = false,
   disabled = false,
 }: {
   label: string;
   onClick: () => void;
   busy: boolean;
+  secondary?: boolean;
   disabled?: boolean;
 }) {
   return (
-    <Button
-      type="button"
-      className="min-h-12 h-auto w-full whitespace-normal rounded-xl px-4 py-3"
+    <PrimaryButton
       onClick={onClick}
       disabled={busy || disabled}
+      secondary={secondary}
     >
       {label}
-    </Button>
+    </PrimaryButton>
   );
 }
 export default function JikkotApp() {
@@ -131,6 +144,27 @@ function ConnectedJikkotApp() {
     [member, setMember] = useState<Member | null>(null),
     [rec, setRec] = useState<Rec | null>(null),
     [records, setRecords] = useState<RecordRow[]>([]);
+  const [recordsLoading, setRecordsLoading] = useState(false);
+  const [fontError, setFontError] = useState("");
+  useEffect(() => {
+    let active = true;
+    void Promise.all([
+      document.fonts.load('400 16px "LINE Seed KR"', "직꼿"),
+      document.fonts.load('700 16px "LINE Seed KR"', "직꼿"),
+      document.fonts.load("400 16px Nunito", "Jikkot"),
+    ])
+      .then((fonts) => {
+        if (active && fonts.some((loaded) => !loaded.length))
+          setFontError("화면 글꼴을 불러오지 못했어요. 새로고침해주세요.");
+      })
+      .catch(() => {
+        if (active)
+          setFontError("화면 글꼴을 불러오지 못했어요. 새로고침해주세요.");
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
   const [providers, setProviders] = useState({
     google: true,
     kakao: false,
@@ -142,7 +176,9 @@ function ConnectedJikkotApp() {
   } | null>(null);
   const [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
-    [modal, setModal] = useState<"login" | "limit" | "preparing" | null>(null);
+    [modal, setModal] = useState<
+      "login" | "limit" | "preparing" | "privacy" | "non-medical" | null
+    >(null);
   const [username, setUsername] = useState(""),
     [password, setPassword] = useState(""),
     [email, setEmail] = useState(""),
@@ -150,6 +186,9 @@ function ConnectedJikkotApp() {
   const [confirmed, setConfirmed] = useState({ username: "", nickname: "" }),
     [consents, setConsents] = useState({ privacy: false, nonMedical: false }),
     [foundUsername, setFoundUsername] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState(""),
+    [phone, setPhone] = useState("");
+  const inFlight = useRef(false);
   const authAction = useRef(false),
     pRef = useRef<Progress | null>(null);
   const initialOAuth = useRef<{
@@ -203,6 +242,8 @@ function ConnectedJikkotApp() {
     setRecords([]);
     setRecordCursor(null);
     setPassword("");
+    setPasswordConfirmation("");
+    setPhone("");
     setUsername("");
     setEmail("");
     setNickname("");
@@ -211,7 +252,8 @@ function ConnectedJikkotApp() {
     setConsents({ privacy: false, nonMedical: false });
   };
   const run = async (fn: () => Promise<void>) => {
-    if (busy) return;
+    if (inFlight.current) return;
+    inFlight.current = true;
     setBusy(true);
     setError("");
     try {
@@ -230,15 +272,21 @@ function ConnectedJikkotApp() {
             "이미 가입한 이메일입니다. 로그인하거나 비밀번호를 재설정해주세요.",
           "auth/invalid-email": "이메일 주소를 확인해주세요.",
           "auth/weak-password": "비밀번호는 8자 이상으로 입력해주세요.",
+          "auth/network-request-failed": "연결을 확인한 뒤 다시 시도해주세요.",
           "auth/too-many-requests":
             "요청이 많습니다. 잠시 후 다시 시도해주세요.",
         };
         setError(
           messages[code] ??
-            (e instanceof Error ? e.message : "다시 시도해주세요."),
+            (e instanceof TypeError || code.startsWith("auth/")
+              ? "연결을 확인한 뒤 다시 시도해주세요."
+              : e instanceof Error
+                ? e.message
+                : "다시 시도해주세요."),
         );
       }
     } finally {
+      inFlight.current = false;
       setBusy(false);
     }
   };
@@ -259,6 +307,7 @@ function ConnectedJikkotApp() {
     setMember(me.member);
     if (me.kind === "pending") {
       setP(null);
+      setEmail(user.email ?? "");
       setEntry(
         user.providerData.some((q) => q.providerId === "password")
           ? "signup"
@@ -282,9 +331,14 @@ function ConnectedJikkotApp() {
     if (saved) {
       if (
         saved.recommendationId &&
-        ["routine", "feedback", "complete", "changes", "no-next"].includes(
-          saved.screen,
-        )
+        [
+          "routine",
+          "feedback",
+          "complete",
+          "session-end",
+          "changes",
+          "no-next",
+        ].includes(saved.screen)
       ) {
         try {
           setRec(await api<Rec>(`/recommendations/${saved.recommendationId}`));
@@ -389,6 +443,9 @@ function ConnectedJikkotApp() {
   useEffect(() => {
     if (!entry && p?.screen === "records") {
       let active = true;
+      queueMicrotask(() => {
+        if (active) setRecordsLoading(true);
+      });
       void api<{
         records: RecordRow[];
         nextCursor: { createdAt: number; id: string } | null;
@@ -397,10 +454,14 @@ function ConnectedJikkotApp() {
           if (active) {
             setRecords(r.records);
             setRecordCursor(r.nextCursor);
+            setRecordsLoading(false);
           }
         })
         .catch((e) => {
-          if (active) setError(e.message);
+          if (active) {
+            setError(e.message);
+            setRecordsLoading(false);
+          }
         });
       return () => {
         active = false;
@@ -480,8 +541,8 @@ function ConnectedJikkotApp() {
         setRec(null);
         setP({
           ...fresh(p!.owner, true),
-          answers: { mode: "seated" },
-          screen: "area",
+          answers: {},
+          screen: "posture",
         });
         return;
       }
@@ -492,8 +553,8 @@ function ConnectedJikkotApp() {
       }
       setP({
         ...fresh(p!.owner, p!.guestConsent),
-        answers: { mode: "seated" },
-        screen: "area",
+        answers: {},
+        screen: "posture",
       });
     });
   const recommend = () =>
@@ -526,18 +587,24 @@ function ConnectedJikkotApp() {
       setRec(r);
       update({ screen: "routine", routineId: r.snapshot.routine.id });
     });
-  const feedback = () =>
+  const feedback = (selected?: Feedback) =>
     run(async () => {
-      if (!p?.feedback || !p.recommendationId)
+      const value = selected ?? p?.feedback;
+      if (!value || !p?.recommendationId)
         throw new Error("피드백을 선택해주세요.");
       if (preview) {
-        update({ screen: "complete", submitState: "idle" });
+        update({
+          feedback: value,
+          screen: value === "worse" ? "changes" : "complete",
+          submitState: "idle",
+        });
         return;
       }
       const sid = p.submissionId ?? crypto.randomUUID();
       const pending = {
         ...p,
         submissionId: sid,
+        feedback: value,
         submitState: "pending" as const,
         updatedAt: Date.now(),
       };
@@ -546,16 +613,16 @@ function ConnectedJikkotApp() {
       await api("/feedback", {
         recommendationId: p.recommendationId,
         submissionId: sid,
-        feedback: p.feedback,
+        feedback: value,
       });
-      update({ submissionId: sid, submitState: "saved", screen: "complete" });
-      if (p.feedback !== "better") {
+      update({
+        feedback: value,
+        submissionId: sid,
+        submitState: "saved",
+        screen: value === "worse" ? "changes" : "complete",
+      });
+      if (value === "same") {
         if (!member) setModal("login");
-        else if (
-          p.feedback === "worse" &&
-          (extensions.changes?.[p.routineId ?? ""] ?? []).length
-        )
-          show("changes");
         else await requestNext([]);
       }
     });
@@ -646,178 +713,289 @@ function ConnectedJikkotApp() {
       setEntry("choice");
       setError("");
     });
+
+  const beginSignup = () => {
+    setModal(null);
+    setEntry("signup");
+    setError("");
+    setConfirmed({ username: "", nickname: "" });
+    setConsents({ privacy: false, nonMedical: false });
+  };
+  const availability = (kind: "username" | "nickname", value: string) =>
+    run(async () => {
+      authAction.current = true;
+      try {
+        if (!firebaseAuth().currentUser)
+          await signInAnonymously(firebaseAuth());
+        const result = await api<{ available: boolean }>("/availability", {
+          kind,
+          value,
+        });
+        if (!result.available)
+          throw new Error(
+            `이미 사용 중인 ${kind === "username" ? "아이디" : "닉네임"}입니다.`,
+          );
+        setConfirmed((old) => ({ ...old, [kind]: value }));
+      } finally {
+        authAction.current = false;
+      }
+    });
+  const signup = () =>
+    run(async () => {
+      if (password !== passwordConfirmation)
+        throw new Error("비밀번호 확인이 일치하지 않아요.");
+      if (password.length < 8 || password.length > 72)
+        throw new Error("비밀번호는 8~72자로 입력해주세요.");
+      await authenticate(async () => {
+        const current = firebaseAuth().currentUser;
+        if (
+          !current ||
+          !current.providerData.some(
+            (provider) => provider.providerId === "password",
+          ) ||
+          current.email !== email
+        )
+          await createUserWithEmailAndPassword(firebaseAuth(), email, password);
+        await api("/signup", {
+          username,
+          nickname,
+          consents: { ...consents, version: consentVersion },
+        });
+      });
+      setEntry("signup-complete");
+    });
   const consentInputs = (
-    <div className="space-y-3 rounded-xl bg-[#f0f1ff] p-4">
-      <label className="flex gap-3">
-        <input
-          type="checkbox"
-          checked={consents.privacy}
-          onChange={(e) =>
-            setConsents((c) => ({ ...c, privacy: e.target.checked }))
-          }
-        />
-        개인정보 수집·이용 동의 (필수)
-      </label>
-      <label className="flex gap-3">
-        <input
-          type="checkbox"
-          checked={consents.nonMedical}
-          onChange={(e) =>
-            setConsents((c) => ({ ...c, nonMedical: e.target.checked }))
-          }
-        />
-        진단·치료를 제공하는 의료 서비스가 아님을 이해합니다. (필수)
-      </label>
-      <p className="text-xs text-gray-500">
-        개발용 동의 문안입니다. 출시 전 수집 범위·보관기간·문안을 확정해야
-        합니다.
+    <div className="consents">
+      <ConsentRow
+        checked={consents.privacy}
+        onChange={(checked) =>
+          setConsents((old) => ({ ...old, privacy: checked }))
+        }
+        label="개인정보 수집·이용 동의"
+        onDetails={() => setModal("privacy")}
+      />
+      <ConsentRow
+        checked={consents.nonMedical}
+        onChange={(checked) =>
+          setConsents((old) => ({ ...old, nonMedical: checked }))
+        }
+        label="의료서비스가 아님을 확인"
+        onDetails={() => setModal("non-medical")}
+      />
+      <p className="field-note">
+        운영 약관은 확정 전입니다. ‘보기’에서 현재 안내와 준비 상태를
+        확인해주세요.
       </p>
     </div>
   );
-
   const screen = p?.screen;
   const answers = p?.answers ?? {};
   const questionArea = answers.area;
-  const selection = (
-    label: string,
-    id: string,
-    selected: boolean,
-    fn: () => void,
-  ) => (
-    <button
-      type="button"
-      key={id}
-      aria-pressed={selected}
-      onClick={fn}
-      className={`w-full rounded-xl border p-4 text-left leading-6 ${selected ? "border-[#6268ba] bg-[#ecebff]" : "bg-white"}`}
-    >
-      {selected ? "✓ " : ""}
-      {label}
-    </button>
-  );
-  return (
-    <main className="service-surface mx-auto min-h-screen max-w-3xl px-4 py-6 sm:px-8">
-      <header className="mb-8 flex items-center justify-between gap-4">
-        <div>
-          <strong className="text-3xl text-[#6268ba]">직꼿</strong>
-          <p className="text-xs text-gray-500">
-            VER9.1 PROTOTYPE · 무료 서비스
-          </p>
-        </div>
-        <span className="text-sm">
-          {preview ? "미리보기" : (member?.nickname ?? "비회원")}
-        </span>
-      </header>
-      {preview && (
-        <p role="status" className="mb-5 rounded-xl bg-[#ecebff] p-4 text-sm">
-          미리보기 · 문진과 추천 화면을 확인할 수 있어요. 로그인·가입·기록
-          저장은 Firebase 연결 후 이용할 수 있으며, 입력한 답변과 피드백은
-          서버에 저장되지 않습니다.
-        </p>
+  const areaLabel =
+    rec?.snapshot.area.label ??
+    areas.find((area) => area.id === questionArea)?.label ??
+    "";
+  const home = entry === "choice" || (!entry && screen === "home");
+  const changeQuestions = extensions.changes?.[p?.routineId ?? ""] ?? [];
+  const summary =
+    rec && p?.feedback ? (
+      <ResultSummary
+        area={rec.snapshot.area.label}
+        routine={rec.snapshot.routine.name}
+        feedback={feedbackLabels[p.feedback]}
+      />
+    ) : null;
+  const finishButtons = (
+    <footer className="footer">
+      {<Action label={"첫 화면으로"} onClick={reset} busy={busy} />}
+      {member && (
+        <Action
+          label={"기록 확인하기"}
+          onClick={() => requireMember("records")}
+          busy={busy}
+          secondary={true}
+        />
       )}
-      <section
-        className="space-y-5 rounded-3xl border bg-white p-5 shadow-sm sm:p-8"
-        aria-busy={busy}
-      >
+      {member && p?.feedback === "better" && (
+        <Action
+          label={"다른 루틴 하기"}
+          onClick={start}
+          busy={busy}
+          secondary={true}
+        />
+      )}
+    </footer>
+  );
+  const backQuestion = () =>
+    show(
+      screen === "area" ? "posture" : screen === "habits" ? "area" : "habits",
+    );
+  return (
+    <main className="jikkot-app">
+      <Surface busy={busy}>
+        {fontError && (
+          <p role="alert" className="error-panel">
+            {fontError}
+          </p>
+        )}
+        {preview && (
+          <p className="preview-note" role="status">
+            미리보기 · 문진과 동작을 확인할 수 있어요. 로그인·가입·서버 기록
+            저장은 연결 후 이용할 수 있습니다.
+          </p>
+        )}
         {error && (
-          <div role="alert" className="rounded-xl bg-red-50 p-4 text-red-800">
-            {error}
+          <div role="alert" className="error-panel">
+            <p>{error}</p>
+            {screen === "feedback" && p?.submitState === "pending" && (
+              <>
+                {
+                  <Action
+                    label={"저장 다시 시도"}
+                    onClick={() => feedback()}
+                    busy={busy}
+                    secondary={true}
+                  />
+                }
+              </>
+            )}
+            {screen === "complete" && member && p?.feedback === "same" && (
+              <Action label="다시 시도" onClick={() => run(() => requestNext([]))} busy={busy} secondary />
+            )}
           </div>
+        )}
+        {home && (
+          <Home
+            memberName={member?.nickname}
+            busy={busy}
+            begin={() => {
+              if (p && (member || p.guestConsent)) start();
+              else {
+                setEntry("guest-consent");
+                setError("");
+              }
+            }}
+            login={beginLogin}
+            logout={logout}
+            records={() => requireMember("records")}
+            comingSoon={() => setModal("preparing")}
+          />
         )}
         {entry === "splash" && (
           <>
+            <Header />
             <h1>직꼿을 준비하고 있어요</h1>
+            <div className="busy" role="status" aria-label="연결 확인 중">
+              <span />
+              <span />
+              <span />
+            </div>
             {error && (
-              <>
-                <Action
-                  label="연결 다시 확인"
-                  onClick={() => run(() => establish())}
-                  busy={busy}
-                />
-                <Action label="다시 로그인" onClick={beginLogin} busy={busy} />
-              </>
+              <footer className="footer">
+                {
+                  <Action
+                    label={"연결 다시 확인"}
+                    onClick={() => run(() => establish())}
+                    busy={busy}
+                  />
+                }
+                {
+                  <Action
+                    label={"다시 로그인"}
+                    onClick={beginLogin}
+                    busy={busy}
+                    secondary={true}
+                  />
+                }
+              </footer>
             )}
-          </>
-        )}
-        {entry === "choice" && (
-          <>
-            <h1>잠깐 움직여볼까요?</h1>
-            <p>지금 가능한 자세에서 가볍게 시작하세요.</p>
-            {
-              <Action
-                key={"로그인하기"}
-                label={"로그인하기"}
-                onClick={beginLogin}
-                busy={busy}
-              />
-            }
-            {
-              <Action
-                key={"비회원으로 체험하기"}
-                label={"비회원으로 체험하기"}
-                onClick={() => {
-                  setEntry("guest-consent");
-                  setError("");
-                }}
-                busy={busy}
-              />
-            }
           </>
         )}
         {entry === "guest-consent" && (
           <>
-            <h1>시작 전 확인해주세요</h1>
-            <p>
-              직꼿은 질환을 진단하거나 치료하는 의료 서비스가 아닙니다. 추천은
-              검수 전 시제품 콘텐츠입니다.
-              {preview
-                ? "현재 미리보기에서는 답변과 피드백을 서버에 저장하지 않습니다."
-                : "체험 답변·동작·피드백은 서비스 개선용 운영 데이터로 저장되며 개인 기록은 제공하지 않습니다."}
+            <Header back={() => setEntry("choice")} busy={busy} />
+            <h1>시작하기 전에 확인해주세요</h1>
+            <p className="sub">
+              직꼿은 질환을 진단하거나 치료하는 의료서비스가 아닙니다. 편안한
+              범위에서 가볍게 움직여주세요.
             </p>
-            {
-              <Action
-                key={"이해하고 동의합니다"}
-                label={"이해하고 동의합니다"}
-                onClick={beginGuest}
-                busy={busy}
-              />
-            }
-            {
-              <Action
-                key={"동의하지 않습니다"}
-                label={"동의하지 않습니다"}
-                onClick={() => {
-                  localStorage.setItem("jikkot.guest-declined", "true");
-                  setEntry("blocked");
-                  clearLocal();
-                  if (configured && firebaseAuth().currentUser?.isAnonymous)
-                    void api("/guest/consent/revoke", {}).catch(() => {});
-                }}
-                busy={busy}
-              />
-            }
+            <p className="account-note">
+              {preview
+                ? "미리보기의 답변과 피드백은 서버에 저장되지 않습니다."
+                : "비회원 체험 답변·동작·피드백은 서비스 개선용 운영 데이터로 저장되며 계정 기록으로 가져오지 않습니다."}
+            </p>
+            <button
+              className="text-button"
+              type="button"
+              onClick={() => setModal("non-medical")}
+            >
+              의료서비스가 아님을 확인 · 보기
+            </button>
+            <footer className="footer">
+              {
+                <Action
+                  label={"이해하고 동의합니다"}
+                  onClick={beginGuest}
+                  busy={busy}
+                />
+              }
+              {
+                <Action
+                  label={"동의하지 않습니다"}
+                  onClick={() => {
+                    localStorage.setItem("jikkot.guest-declined", "true");
+                    setEntry("blocked");
+                    clearLocal();
+                    if (configured && firebaseAuth().currentUser?.isAnonymous)
+                      void api("/guest/consent/revoke", {}).catch(() => {});
+                  }}
+                  busy={busy}
+                  secondary={true}
+                />
+              }
+            </footer>
           </>
         )}
         {entry === "blocked" && (
           <>
-            <h1>동의 없이는 이용할 수 없습니다</h1>
-            {
-              <Action
-                key={"초기 화면"}
-                label={"초기 화면"}
-                onClick={() => setEntry("choice")}
-                busy={busy}
-              />
-            }
+            <Header />
+            <h1>동의가 필요해요</h1>
+            <p className="sub">필수 안내에 동의한 뒤 이용할 수 있어요.</p>
+            <footer className="footer">
+              {
+                <Action
+                  label={"동의 다시 확인"}
+                  onClick={() => setEntry("guest-consent")}
+                  busy={busy}
+                />
+              }
+              {
+                <Action
+                  label={"첫 화면으로"}
+                  onClick={() => setEntry("choice")}
+                  busy={busy}
+                  secondary={true}
+                />
+              }
+            </footer>
           </>
         )}
         {entry === "login" && (
           <>
-            <h1>로그인</h1>
+            <Header back={() => setEntry(p ? null : "choice")} busy={busy} />
+            <h1>
+              나를 위한 루틴,
+              <br />
+              기록으로 이어가세요.
+            </h1>
+            <p className="sub">
+              로그인하면 루틴을 자유롭게 이용하고
+              <br />내 기록을 모아볼 수 있어요.
+            </p>
             <form
-              className="space-y-3"
-              onSubmit={(e) => {
-                e.preventDefault();
+              className="form"
+              onSubmit={(event) => {
+                event.preventDefault();
                 void run(() =>
                   authenticate(async () => {
                     await signInWithEmailAndPassword(
@@ -834,8 +1012,9 @@ function ConnectedJikkotApp() {
                 <Input
                   type="email"
                   autoComplete="email"
+                  required
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(event) => setEmail(event.target.value)}
                 />
               </label>
               <label>
@@ -843,609 +1022,829 @@ function ConnectedJikkotApp() {
                 <Input
                   type="password"
                   autoComplete="current-password"
+                  required
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(event) => setPassword(event.target.value)}
                 />
               </label>
-              <Button className="w-full min-h-12" disabled={busy || preview}>
+              <p className="field-note">
+                현재는 가입한 이메일로 로그인할 수 있어요. 아이디 로그인은 준비
+                중입니다.
+              </p>
+              <PrimaryButton type="submit" disabled={busy || preview}>
                 로그인
-              </Button>
+              </PrimaryButton>
             </form>
-            <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-              {(["google", "kakao", "naver"] as const).map((provider, i) => (
-                <Button
-                  key={provider}
-                  variant="outline"
-                  className="min-h-12"
-                  disabled={busy || preview}
-                  onClick={() => social(provider)}
-                >
-                  {["구글", "카카오", "네이버"][i]}
-                  {!providers[provider] && " (준비 중)"}
-                </Button>
-              ))}
+            <div className="divider">
+              <span />
+              <p>간편 로그인</p>
+              <span />
             </div>
-            {
-              <Action
-                key={"직접 회원가입"}
-                label={"직접 회원가입"}
-                onClick={() => {
-                  setEntry("signup");
-                  setConfirmed({ username: "", nickname: "" });
-                }}
-                busy={busy}
-              />
-            }
-            {
-              <Action
-                key={"이메일로 비밀번호 재설정"}
-                label={"이메일로 비밀번호 재설정"}
+            {(["kakao", "naver", "google"] as const).map((provider) => (
+              <button
+                type="button"
+                className={`social ${provider}`}
+                key={provider}
+                disabled={busy || preview}
+                onClick={() => social(provider)}
+              >
+                {provider === "google" && (
+                  <img
+                    src="/assets/brand/google-g-logo.png"
+                    width={20}
+                    height={20}
+                    alt=""
+                  />
+                )}
+                {provider === "google"
+                  ? "Google"
+                  : provider === "kakao"
+                    ? "카카오"
+                    : "네이버"}
+                로 계속하기{!providers[provider] && " · 준비 중"}
+              </button>
+            ))}
+            <div className="center">
+              <p className="note">아직 회원이 아니신가요?</p>
+              <button
+                type="button"
+                className="text-button"
+                onClick={beginSignup}
+              >
+                회원가입
+              </button>
+              <button
+                type="button"
+                className="text-button"
                 onClick={() => {
                   setEntry("recover");
                   setFoundUsername("");
                 }}
-                busy={busy}
-              />
-            }
-            {
-              <Action
-                key={"초기 화면"}
-                label={"초기 화면"}
-                onClick={() => setEntry("choice")}
-                busy={busy}
-              />
-            }
+              >
+                비밀번호 재설정
+              </button>
+            </div>
           </>
         )}
-        {(entry === "signup" || entry === "recover") && (
+        {entry === "signup" && (
           <>
-            <h1>
-              {entry === "signup"
-                ? "직접 회원가입"
-                : "이메일로 비밀번호 재설정"}
-            </h1>
-            {entry === "signup" && (
-              <>
-                <label>
-                  아이디 (영문 소문자·숫자·밑줄 4~20자)
-                  <Input
-                    autoComplete="username"
-                    value={username}
-                    onChange={(e) => {
-                      setUsername(e.target.value);
-                      setConfirmed((c) => ({ ...c, username: "" }));
-                    }}
-                  />
-                </label>
-                {
-                  <Action
-                    key={
-                      confirmed.username === username && username
-                        ? "아이디 확인 완료"
-                        : "아이디 중복 확인"
-                    }
-                    label={
-                      confirmed.username === username && username
-                        ? "아이디 확인 완료"
-                        : "아이디 중복 확인"
-                    }
-                    onClick={() =>
-                      run(async () => {
-                        const r = await api<{ available: boolean }>(
-                          "/availability",
-                          { kind: "username", value: username },
-                          true,
-                        );
-                        if (!r.available)
-                          throw new Error("이미 사용 중인 아이디입니다.");
-                        setConfirmed((c) => ({ ...c, username }));
-                      })
-                    }
-                    busy={busy}
-                  />
-                }
-                <label>
-                  비밀번호 (8~72자)
-                  <Input
-                    type="password"
-                    autoComplete="new-password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </label>
-                <label>
-                  이메일 (로그인에 사용)
-                  <Input
-                    type="email"
-                    autoComplete="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </label>
-                <label>
-                  닉네임 (한글·영문·숫자·밑줄 2~20자)
-                  <Input
-                    value={nickname}
-                    onChange={(e) => {
-                      setNickname(e.target.value);
-                      setConfirmed((c) => ({ ...c, nickname: "" }));
-                    }}
-                  />
-                </label>
-                {
-                  <Action
-                    key={
-                      confirmed.nickname === nickname && nickname
-                        ? "닉네임 확인 완료"
-                        : "닉네임 중복 확인"
-                    }
-                    label={
-                      confirmed.nickname === nickname && nickname
-                        ? "닉네임 확인 완료"
-                        : "닉네임 중복 확인"
-                    }
-                    onClick={() =>
-                      run(async () => {
-                        const r = await api<{ available: boolean }>(
-                          "/availability",
-                          { kind: "nickname", value: nickname },
-                          true,
-                        );
-                        if (!r.available)
-                          throw new Error("이미 사용 중인 닉네임입니다.");
-                        setConfirmed((c) => ({ ...c, nickname }));
-                      })
-                    }
-                    busy={busy}
-                  />
-                }
-              </>
-            )}
-            {entry === "signup" && (
-              <>
-                {consentInputs}
-                {
-                  <Action
-                    key={"가입하고 시작하기"}
-                    label={"가입하고 시작하기"}
-                    onClick={() =>
-                      run(() =>
-                        authenticate(async () => {
-                          if (password.length < 8 || password.length > 72)
-                            throw new Error(
-                              "비밀번호는 8~72자로 입력해주세요.",
-                            );
-                          const current = firebaseAuth().currentUser;
-                          if (
-                            !current ||
-                            !current.providerData.some(
-                              (provider) => provider.providerId === "password",
-                            ) ||
-                            current.email !== email
-                          ) {
-                            await createUserWithEmailAndPassword(
-                              firebaseAuth(),
-                              email,
-                              password,
-                            );
-                          }
-                          await api("/signup", {
-                            username,
-                            nickname,
-                            consents: { ...consents, version: consentVersion },
-                          });
-                        }),
-                      )
-                    }
-                    busy={busy}
-                    disabled={
-                      preview ||
-                      !consents.privacy ||
-                      !consents.nonMedical ||
-                      confirmed.username !== username ||
-                      confirmed.nickname !== nickname
-                    }
-                  />
-                }
-              </>
-            )}
-            {entry === "recover" && (
-              <>
-                <label>
-                  가입한 이메일
-                  <Input
-                    type="email"
-                    autoComplete="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </label>
+            <Header back={abandon} busy={busy} />
+            <h1>직꼿과 함께 시작해요.</h1>
+            <p className="sub">내게 맞는 루틴과 기록을 이어가세요.</p>
+            <form
+              className="form"
+              onSubmit={(event) => {
+                event.preventDefault();
+                signup();
+              }}
+            >
+              <label>
+                아이디
+                <Input
+                  autoComplete="username"
+                  value={username}
+                  onChange={(event) => {
+                    setUsername(event.target.value);
+                    setConfirmed((old) => ({ ...old, username: "" }));
+                  }}
+                />
+              </label>
+              <p className="field-note">영문 소문자·숫자·밑줄 4~20자</p>
+              {
                 <Action
-                  label="비밀번호 재설정 메일 보내기"
+                  label={
+                    confirmed.username === username && username
+                      ? "아이디 확인 완료"
+                      : "아이디 중복 확인"
+                  }
+                  onClick={() => availability("username", username)}
                   busy={busy}
-                  disabled={preview}
-                  onClick={() =>
-                    run(async () => {
-                      await sendPasswordResetEmail(firebaseAuth(), email);
-                      setFoundUsername(
-                        "가입한 이메일이라면 재설정 안내가 발송됩니다. 받은 편지함과 스팸함을 확인해주세요.",
-                      );
-                    })
+                  secondary={true}
+                  disabled={preview || !username}
+                />
+              }
+              <label>
+                비밀번호
+                <Input
+                  type="password"
+                  autoComplete="new-password"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                />
+              </label>
+              <p className="field-note">8~72자로 입력해주세요.</p>
+              <label>
+                비밀번호 확인
+                <Input
+                  type="password"
+                  autoComplete="new-password"
+                  value={passwordConfirmation}
+                  onChange={(event) =>
+                    setPasswordConfirmation(event.target.value)
                   }
                 />
-                {foundUsername && <p role="status">{foundUsername}</p>}
-              </>
-            )}
-            {
-              <Action
-                key={"가입·복구 포기"}
-                label={"가입·복구 포기"}
-                onClick={abandon}
-                busy={busy}
-              />
-            }
+              </label>
+              <label>
+                휴대폰 번호 <span className="field-note">연결 준비 중</span>
+                <div className="phone-row">
+                  <Input
+                    type="tel"
+                    autoComplete="tel"
+                    value={phone}
+                    onChange={(event) => setPhone(event.target.value)}
+                  />
+                  <button
+                    className="verify"
+                    type="button"
+                    onClick={() => setEntry("phone")}
+                  >
+                    인증하기
+                  </button>
+                </div>
+              </label>
+              <p className="field-note">
+                휴대폰 인증은 준비 중이며 현재 가입에 사용하지 않습니다.
+              </p>
+              <label>
+                이메일
+                <Input
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                />
+              </label>
+              <p className="field-note">
+                현재 이메일·비밀번호 로그인 연결에 필요한 주소입니다.
+              </p>
+              <label>
+                닉네임
+                <Input
+                  autoComplete="nickname"
+                  value={nickname}
+                  onChange={(event) => {
+                    setNickname(event.target.value);
+                    setConfirmed((old) => ({ ...old, nickname: "" }));
+                  }}
+                />
+              </label>
+              <p className="field-note">한글·영문·숫자·밑줄 2~20자</p>
+              {
+                <Action
+                  label={
+                    confirmed.nickname === nickname && nickname
+                      ? "닉네임 확인 완료"
+                      : "닉네임 중복 확인"
+                  }
+                  onClick={() => availability("nickname", nickname)}
+                  busy={busy}
+                  secondary={true}
+                  disabled={preview || !nickname}
+                />
+              }
+              {consentInputs}
+              <PrimaryButton
+                type="submit"
+                disabled={
+                  busy ||
+                  preview ||
+                  !username ||
+                  !nickname ||
+                  !password ||
+                  !passwordConfirmation ||
+                  !email ||
+                  !consents.privacy ||
+                  !consents.nonMedical ||
+                  confirmed.username !== username ||
+                  confirmed.nickname !== nickname
+                }
+              >
+                가입하기
+              </PrimaryButton>
+            </form>
+          </>
+        )}
+        {entry === "recover" && (
+          <>
+            <Header back={beginLogin} busy={busy} />
+            <h1>비밀번호 재설정</h1>
+            <p className="sub">가입한 이메일로 재설정 안내를 보내드려요.</p>
+            <form
+              className="form"
+              onSubmit={(event) => {
+                event.preventDefault();
+                run(async () => {
+                  await sendPasswordResetEmail(firebaseAuth(), email);
+                  setFoundUsername(
+                    "가입한 이메일이라면 재설정 안내가 발송됩니다. 받은 편지함과 스팸함을 확인해주세요.",
+                  );
+                });
+              }}
+            >
+              <label>
+                가입한 이메일
+                <Input
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                />
+              </label>
+              <PrimaryButton type="submit" disabled={busy || preview}>
+                비밀번호 재설정 메일 보내기
+              </PrimaryButton>
+              {foundUsername && (
+                <p role="status" className="field-note">
+                  {foundUsername}
+                </p>
+              )}
+            </form>
+          </>
+        )}
+        {entry === "phone" && (
+          <>
+            <Header back={() => setEntry("signup")} busy={busy} />
+            <h1>휴대폰 인증</h1>
+            <p className="sub">
+              휴대폰 인증 연결을 준비하고 있어요.
+              <br />
+              지금은 인증 문자를 보내거나 인증을 완료할 수 없습니다.
+            </p>
+            <form className="form">
+              <label>
+                인증번호
+                <Input
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  disabled
+                  placeholder="서비스 연결 후 입력할 수 있어요"
+                />
+              </label>
+              <button type="button" className="text-button" disabled>
+                인증번호 재발송 · 준비 중
+              </button>
+            </form>
+            <footer className="footer">
+              {
+                <Action
+                  label={"회원가입으로 돌아가기"}
+                  onClick={() => setEntry("signup")}
+                  busy={busy}
+                />
+              }
+            </footer>
           </>
         )}
         {entry === "social-consent" && (
           <>
+            <Header back={abandon} busy={busy} />
             <h1>직꼿 가입을 완료해주세요</h1>
-            <label>
-              닉네임 (한글·영문·숫자·밑줄 2~20자)
-              <Input
-                value={nickname}
-                onChange={(e) => setNickname(e.target.value)}
-              />
-            </label>
-            {consentInputs}
-            {
-              <Action
-                key={"동의하고 시작하기"}
-                label={"동의하고 시작하기"}
-                onClick={() =>
-                  run(async () => {
-                    await api("/social/activate", {
-                      nickname,
-                      consents: { ...consents, version: consentVersion },
-                    });
-                    clearLocal();
-                    await establish(true);
-                  })
+            <p className="sub">사용할 닉네임과 필수 동의를 확인해주세요.</p>
+            <form
+              className="form"
+              onSubmit={(event) => {
+                event.preventDefault();
+                run(async () => {
+                  await api("/social/activate", {
+                    nickname,
+                    consents: { ...consents, version: consentVersion },
+                  });
+                  clearLocal();
+                  await establish(true);
+                  setEntry("signup-complete");
+                });
+              }}
+            >
+              <label>
+                닉네임
+                <Input
+                  autoComplete="nickname"
+                  value={nickname}
+                  onChange={(event) => setNickname(event.target.value)}
+                />
+              </label>
+              {consentInputs}
+              <PrimaryButton
+                type="submit"
+                disabled={
+                  busy || !nickname || !consents.privacy || !consents.nonMedical
                 }
-                busy={busy}
-                disabled={!consents.privacy || !consents.nonMedical}
-              />
-            }
-            {
-              <Action
-                key={"가입 포기"}
-                label={"가입 포기"}
-                onClick={abandon}
-                busy={busy}
-              />
-            }
+              >
+                동의하고 시작하기
+              </PrimaryButton>
+            </form>
+            <button
+              type="button"
+              className="text-button"
+              onClick={abandon}
+              disabled={busy}
+            >
+              동의하지 않고 돌아가기
+            </button>
+          </>
+        )}
+        {entry === "signup-complete" && (
+          <>
+            <Header />
+            <span className="tag">가입 완료</span>
+            <h1>직꼿에 오신 걸 환영해요.</h1>
+            <p className="sub">
+              필요할 때 가볍게 움직이고,
+              <br />
+              나에게 맞는 루틴을 찾아가세요.
+            </p>
+            <div className="summary">
+              <p>횟수 제한 없이 루틴 이용</p>
+              <p>동작과 피드백 자동 기록</p>
+              <p>부위별 지난 기록 확인</p>
+            </div>
+            <footer className="footer">
+              {
+                <Action
+                  label={"내 루틴 시작하기"}
+                  onClick={() => {
+                    setEntry(null);
+                    start();
+                  }}
+                  busy={busy}
+                />
+              }
+            </footer>
           </>
         )}
         {!entry && p && (
           <>
-            {screen === "home" && (
+            {screen === "posture" && (
               <>
-                <h1>지금 가능한 움직임부터</h1>
-                <p>
-                  불편한 부위와 생활 습관·최근 행동을 선택하면 앉아서 하는 동작
-                  하나를 제안해요.
+                <Header back={reset} busy={busy} />
+                <h1>지금 어떤 상태인가요?</h1>
+                <p className="sub">
+                  지금 바로 할 수 있는 자세를 골라주세요.
+                  <br />그 자세에 맞는 동작을 찾아드릴게요.
                 </p>
-                {
-                  <Action
-                    key={"루틴 시작하기"}
-                    label={"루틴 시작하기"}
-                    onClick={start}
-                    busy={busy}
-                  />
-                }
-                <nav
-                  aria-label="서비스 메뉴"
-                  className="grid grid-cols-2 gap-3"
-                >
+                <div className="wide-list">
+                  {(
+                    [
+                      ["seated", "앉기", "의자에 앉아있어요."],
+                      ["standing", "서기", "가볍게 일어설 수 있어요."],
+                      ["lying", "눕기", "바닥에 누울 수도 있어요."],
+                    ] as const
+                  ).map(([mode, label, description]) => (
+                    <ChoiceCard
+                      key={mode}
+                      label={label}
+                      description={description}
+                      wide
+                      selected={answers.mode === mode}
+                      disabled={busy}
+                      onClick={() => changeAnswers({ mode })}
+                    />
+                  ))}
+                </div>
+                <p className="note">자세를 하나 선택해주세요</p>
+                <footer className="footer">
                   {
                     <Action
-                      key={"기록 확인"}
-                      label={"기록 확인"}
-                      onClick={() => requireMember("records")}
+                      label={"다음"}
+                      onClick={() => {
+                        const position = {
+                          seated: "앉기",
+                          standing: "서기",
+                          lying: "눕기",
+                        }[answers.mode!];
+                        show(
+                          routines.some((routine) =>
+                            routine.positions.some((item) => item === position),
+                          )
+                            ? "area"
+                            : "posture-unavailable",
+                        );
+                      }}
                       busy={busy}
+                      secondary={false}
+                      disabled={!answers.mode}
                     />
                   }
-                  {member && (
-                    <Action
-                      key={"로그아웃"}
-                      label={"로그아웃"}
-                      onClick={logout}
-                      busy={busy}
-                    />
-                  )}
+                </footer>
+              </>
+            )}
+            {screen === "posture-unavailable" && (
+              <>
+                <Header back={() => show("posture")} busy={busy} />
+                <h1>이 자세의 동작을 준비하고 있어요</h1>
+                <p className="sub">
+                  현재 안내 동작은 모두 앉아서 하는 동작이에요.
+                  <br />
+                  앉아서 이용할 수 있을 때 다시 시작해주세요.
+                </p>
+                <footer className="footer">
                   {
                     <Action
-                      key={"스트레칭"}
-                      label={"스트레칭"}
+                      label={"앉아서 이용하기"}
                       onClick={() => {
-                        if (!featureFlags.stretching) setModal("preparing");
+                        changeAnswers({ mode: "seated" });
+                        show("area");
                       }}
                       busy={busy}
                     />
                   }
                   {
                     <Action
-                      key={"쇼핑"}
-                      label={"쇼핑"}
-                      onClick={() => {
-                        if (!featureFlags.shopping) setModal("preparing");
-                      }}
+                      label={"첫 화면으로"}
+                      onClick={reset}
                       busy={busy}
+                      secondary={true}
                     />
                   }
-                </nav>
+                </footer>
               </>
             )}
             {["area", "habits", "recent"].includes(screen!) && (
               <>
-                <p className="text-sm text-[#6268ba]">
-                  부위 → 평소 습관 → 최근 행동
-                </p>
+                <Header back={backQuestion} busy={busy} />
+                <QuestionProgress
+                  step={screen === "area" ? 0 : screen === "habits" ? 1 : 2}
+                />
+                {screen !== "area" && (
+                  <AreaContext
+                    label={
+                      areas.find((area) => area.id === questionArea)?.label ??
+                      ""
+                    }
+                  />
+                )}
                 <h1>
                   {screen === "area"
                     ? "어디가 불편한가요?"
                     : screen === "habits"
                       ? "평소 어떤 습관이 있나요?"
-                      : "오늘 또는 불편해지기 전에 무엇을 했나요?"}
+                      : "최근에는 무엇을 했나요?"}
                 </h1>
-                <p>
-                  {screen === "area"
-                    ? "가장 신경 쓰이는 곳 하나를 골라주세요."
-                    : screen === "habits"
-                      ? "자주 하는 행동을 모두 골라주세요."
-                      : "최근에 한 행동을 모두 골라주세요."}
+                <p className="sub">
+                  {screen === "area" ? (
+                    <>
+                      그림에서 가장 불편한 곳을
+                      <br />
+                      하나만 눌러주세요.
+                    </>
+                  ) : screen === "habits" ? (
+                    "자주 하는 행동을 모두 골라주세요."
+                  ) : (
+                    "오늘이나 불편해지기 직전에 한 행동을 모두 골라주세요."
+                  )}
                 </p>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {screen === "area" &&
-                    areas.map((area) =>
-                      selection(
-                        area.label,
-                        area.id,
-                        answers.area === area.id,
-                        () =>
-                          changeAnswers({
-                            mode: answers.mode ?? "seated",
-                            area: area.id,
-                          }),
-                      ),
-                    )}
-                  {screen === "habits" &&
-                    questionArea &&
-                    habitQuestions(questionArea).map((question) =>
-                      selection(
-                        question.label,
-                        question.id,
-                        answers.habits?.includes(question.id) ?? false,
-                        () =>
-                          changeAnswers({
-                            ...answers,
-                            habits: toggleExclusive(
-                              answers.habits ?? [],
+                {screen === "area" ? (
+                  <BodySelector
+                    selected={questionArea}
+                    disabled={busy}
+                    onChange={(area) => {
+                      if (area !== questionArea)
+                        changeAnswers({ mode: answers.mode ?? "seated", area });
+                    }}
+                  />
+                ) : (
+                  <>
+                    <div className="choices">
+                      {(screen === "habits"
+                        ? habitQuestions(questionArea!)
+                        : recentQuestions(questionArea!, answers.habits ?? [])
+                      )
+                        .filter(
+                          (question) =>
+                            !["H_UNKNOWN", "R_NONE", "R_UNKNOWN"].includes(
                               question.id,
-                              ["H_UNKNOWN"],
                             ),
-                            recent: [],
-                          }),
-                      ),
-                    )}
-                  {screen === "recent" &&
-                    questionArea &&
-                    recentQuestions(questionArea, answers.habits ?? []).map(
-                      (question) =>
-                        selection(
-                          question.label,
-                          question.id,
-                          answers.recent?.includes(question.id) ?? false,
-                          () =>
-                            changeAnswers({
-                              ...answers,
-                              recent: toggleExclusive(
-                                answers.recent ?? [],
-                                question.id,
-                                ["R_NONE", "R_UNKNOWN"],
-                              ),
-                            }),
-                        ),
-                    )}
-                </div>
-                <Action
-                  label={screen === "recent" ? "동작 추천받기" : "다음"}
-                  onClick={() => {
-                    const selected =
-                      screen === "area"
-                        ? answers.area
-                        : screen === "habits"
-                          ? answers.habits?.length
-                          : answers.recent?.length;
-                    if (!selected) {
-                      setError("항목을 하나 이상 선택해주세요.");
-                      return;
-                    }
-                    if (screen === "recent") recommend();
-                    else show(screen === "area" ? "habits" : "recent");
-                  }}
-                  busy={busy}
-                />
-                <Action
-                  label="이전"
-                  onClick={() =>
-                    show(
-                      screen === "area"
-                        ? "home"
-                        : screen === "habits"
-                          ? "area"
-                          : "habits",
+                        )
+                        .map((question) => (
+                          <ChoiceCard
+                            key={question.id}
+                            label={question.label}
+                            selected={
+                              (screen === "habits"
+                                ? answers.habits
+                                : answers.recent
+                              )?.includes(question.id) ?? false
+                            }
+                            disabled={busy}
+                            onClick={() =>
+                              changeAnswers(
+                                screen === "habits"
+                                  ? {
+                                      ...answers,
+                                      habits: toggleExclusive(
+                                        answers.habits ?? [],
+                                        question.id,
+                                        ["H_UNKNOWN"],
+                                      ),
+                                      recent: [],
+                                    }
+                                  : {
+                                      ...answers,
+                                      recent: toggleExclusive(
+                                        answers.recent ?? [],
+                                        question.id,
+                                        ["R_NONE", "R_UNKNOWN"],
+                                      ),
+                                    },
+                              )
+                            }
+                          />
+                        ))}
+                    </div>
+                    {(screen === "habits"
+                      ? habitQuestions(questionArea!)
+                      : recentQuestions(questionArea!, answers.habits ?? [])
                     )
+                      .filter((question) =>
+                        ["H_UNKNOWN", "R_NONE", "R_UNKNOWN"].includes(
+                          question.id,
+                        ),
+                      )
+                      .map((question) => (
+                        <ChoiceCard
+                          special
+                          key={question.id}
+                          label={question.label}
+                          selected={
+                            (screen === "habits"
+                              ? answers.habits
+                              : answers.recent
+                            )?.includes(question.id) ?? false
+                          }
+                          disabled={busy}
+                          onClick={() =>
+                            changeAnswers(
+                              screen === "habits"
+                                ? {
+                                    ...answers,
+                                    habits: toggleExclusive(
+                                      answers.habits ?? [],
+                                      question.id,
+                                      ["H_UNKNOWN"],
+                                    ),
+                                    recent: [],
+                                  }
+                                : {
+                                    ...answers,
+                                    recent: toggleExclusive(
+                                      answers.recent ?? [],
+                                      question.id,
+                                      ["R_NONE", "R_UNKNOWN"],
+                                    ),
+                                  },
+                            )
+                          }
+                        />
+                      ))}
+                  </>
+                )}
+                {screen === "area" && (
+                  <p className="note">
+                    {questionArea
+                      ? `${areas.find((area) => area.id === questionArea)?.label} 부위를 선택했어요`
+                      : "부위를 하나 선택해주세요"}
+                  </p>
+                )}
+                <footer className="footer">
+                  {
+                    <Action
+                      label={screen === "recent" ? "내 루틴 보기" : "다음"}
+                      onClick={() =>
+                        screen === "recent"
+                          ? recommend()
+                          : show(screen === "area" ? "habits" : "recent")
+                      }
+                      busy={busy}
+                      secondary={false}
+                      disabled={
+                        !(screen === "area"
+                          ? answers.area
+                          : screen === "habits"
+                            ? answers.habits?.length
+                            : answers.recent?.length)
+                      }
+                    />
                   }
-                  busy={busy}
-                />
+                </footer>
               </>
             )}
             {screen === "analysis" && (
               <>
-                <h1>선택한 내용을 확인하고 있어요</h1>
-                <p>
-                  추천 저장이 중단되었다면 같은 추천으로 다시 시도할 수 있어요.
+                <Header />
+                <h1>
+                  {error
+                    ? "연결을 다시 확인해주세요"
+                    : "내 몸에 맞는 동작을 찾고 있어요"}
+                </h1>
+                <p className="sub">
+                  {error
+                    ? "선택한 답변은 유지돼요. 같은 추천으로 다시 시도할 수 있어요."
+                    : "선택한 부위와 생활 습관, 최근 행동을 확인하고 있어요."}
                 </p>
-                {
-                  <Action
-                    key={"추천 확인 · 재시도"}
-                    label={"추천 확인 · 재시도"}
-                    onClick={recommend}
-                    busy={busy}
-                  />
-                }
+                {busy ? (
+                  <div className="busy" role="status" aria-label="추천 준비 중">
+                    <span />
+                    <span />
+                    <span />
+                  </div>
+                ) : (
+                  <footer className="footer">
+                    {
+                      <Action
+                        label={"다시 시도"}
+                        onClick={recommend}
+                        busy={busy}
+                      />
+                    }
+                    {
+                      <Action
+                        label={"첫 화면으로"}
+                        onClick={reset}
+                        busy={busy}
+                        secondary={true}
+                      />
+                    }
+                  </footer>
+                )}
               </>
             )}
             {screen === "routine" && rec && (
               <>
-                <p>{rec.reason}</p>
+                <Header back={() => show("recent")} busy={busy} />
+                <AreaContext label={areaLabel} />
+                <h1>
+                  {rec.snapshot.pattern.includes(":alternative:")
+                    ? "다른 동작으로 이어가볼까요?"
+                    : "잠깐, 몸을 풀어볼까요?"}
+                </h1>
+                <p className="sub">{rec.reason}</p>
                 <RoutineMedia routine={rec.snapshot.routine} />
-                {
-                  <Action
-                    key={"루틴 완료"}
-                    label={"루틴 완료"}
-                    onClick={() => show("feedback")}
-                    busy={busy}
-                  />
-                }
+                <footer className="footer">
+                  {
+                    <Action
+                      label={"마쳤어요"}
+                      onClick={() => show("feedback")}
+                      busy={busy}
+                    />
+                  }
+                </footer>
+                <p className="note">동작을 마친 뒤 눌러주세요.</p>
               </>
             )}
             {screen === "feedback" && (
               <>
-                <h1>동작 후 어떠세요?</h1>
-                {Object.entries(feedbackLabels).map(([id, label]) =>
-                  selection(label, id, p.feedback === id, () => {
-                    if (p.submitState !== "pending")
-                      update({ feedback: id as Feedback });
-                  }),
-                )}
-                {
-                  <Action
-                    key={
-                      preview
-                        ? "완료 화면 미리보기"
-                        : p.submitState === "pending"
-                          ? "피드백 저장 재시도"
-                          : "피드백 저장"
-                    }
-                    label={
-                      preview
-                        ? "완료 화면 미리보기"
-                        : p.submitState === "pending"
-                          ? "피드백 저장 재시도"
-                          : "피드백 저장"
-                    }
-                    onClick={feedback}
-                    busy={busy}
-                  />
-                }
-                <p className="text-xs">
-                  {preview
-                    ? "미리보기에서는 피드백을 저장하지 않고 완료 화면만 확인합니다."
-                    : "저장이 완료된 뒤 다음 화면으로 이동합니다."}
+                <Header back={() => show("routine")} busy={busy} />
+                <AreaContext label={areaLabel} />
+                <h1>
+                  {error && p.submitState === "pending"
+                    ? "기록 저장을 완료하지 못했어요"
+                    : "동작 후 어떠세요?"}
+                </h1>
+                <p className="sub">
+                  {error && p.submitState === "pending"
+                    ? "선택한 피드백은 유지돼요. 위의 ‘저장 다시 시도’를 눌러주세요."
+                    : "느껴지는 변화를 하나 골라주세요."}
                 </p>
+                <div className="wide-list">
+                  {Object.entries(feedbackLabels).map(([id, label]) => (
+                    <ChoiceCard
+                      wide
+                      key={id}
+                      label={label}
+                      selected={p.feedback === id}
+                      disabled={busy || p.submitState === "pending"}
+                      onClick={() => feedback(id as Feedback)}
+                    />
+                  ))}
+                </div>
+                {p.submitState === "pending" && !busy && !error && (
+                  <footer className="footer">
+                    <Action
+                      label="저장 다시 시도"
+                      onClick={() => feedback()}
+                      busy={busy}
+                      secondary
+                    />
+                  </footer>
+                )}
+                {busy && (
+                  <p className="note" role="status">
+                    피드백을 저장하고 있어요.
+                  </p>
+                )}
               </>
             )}
-            {screen === "complete" && (
+            {["complete", "session-end"].includes(screen!) && (
               <>
-                <h1>루틴을 마쳤어요</h1>
-                <p>{p.feedback && feedbackLabels[p.feedback]}</p>
-                {p.feedback === "better" ? (
-                  <>
-                    {
-                      <Action
-                        key={"기록 확인"}
-                        label={"기록 확인"}
-                        onClick={() => requireMember("records")}
-                        busy={busy}
-                      />
-                    }
-                    {
-                      <Action
-                        key={"다른 루틴 보기"}
-                        label={"다른 루틴 보기"}
-                        onClick={() => requireMember("catalog")}
-                        busy={busy}
-                      />
-                    }
-                  </>
-                ) : (
-                  <Action
-                    key={"다음 추천 확인"}
-                    label={"다음 추천 확인"}
-                    onClick={() => {
-                      if (!member) setModal("login");
-                      else if (
-                        p.feedback === "worse" &&
-                        (extensions.changes?.[p.routineId ?? ""] ?? []).length
-                      )
-                        show("changes");
-                      else run(() => requestNext([]));
-                    }}
-                    busy={busy}
-                  />
-                )}
-                {
-                  <Action
-                    key={"첫 화면"}
-                    label={"첫 화면"}
-                    onClick={reset}
-                    busy={busy}
-                  />
-                }
+                <Header />
+                <span className="tag">
+                  루틴 {screen === "complete" ? "완료" : "종료"}
+                </span>
+                <h1>오늘의 루틴을 마쳤어요.</h1>
+                <p className="sub">
+                  {member
+                    ? "동작과 알려주신 느낌을 내 기록에 남겼어요."
+                    : "잠깐의 움직임으로 나를 돌봤어요. 비회원 체험은 계정 기록에 저장되지 않아요."}
+                </p>
+                {summary}
+                {finishButtons}
               </>
             )}
             {screen === "changes" && (
               <>
-                <h1>어떤 변화가 있었나요?</h1>
-                {(extensions.changes?.[p.routineId ?? ""] ?? []).map((q) =>
-                  selection(q.label, q.id, p.changes.includes(q.id), () =>
-                    update({ changes: toggle(p.changes, q.id) }),
-                  ),
-                )}
-                {
-                  <Action
-                    key={"다음 추천 확인"}
-                    label={"다음 추천 확인"}
-                    onClick={() =>
-                      run(async () => {
-                        if (!p.changes.length)
-                          throw new Error("변화를 선택해주세요.");
-                        await requestNext(p.changes);
-                      })
-                    }
-                    busy={busy}
-                  />
-                }
+                <Header back={() => show("complete")} busy={busy} />
+                <AreaContext label={areaLabel} />
+                <h1>어느 과정에서 불편했나요?</h1>
+                <p className="sub">
+                  방금 한 동작
+                  <br />
+                  {rec?.snapshot.routine.name}
+                </p>
+                <p className="field-note">해당하는 과정을 모두 골라주세요.</p>
+                <div className="wide-list">
+                  {changeQuestions.map((question) => (
+                    <ChoiceCard
+                      wide
+                      key={question.id}
+                      label={question.label}
+                      selected={p.changes.includes(question.id)}
+                      disabled={busy}
+                      onClick={() =>
+                        update({
+                          changes: toggleExclusive(p.changes, question.id, [
+                            "unknown",
+                          ]),
+                        })
+                      }
+                    />
+                  ))}
+                </div>
+                <footer className="footer">
+                  {
+                    <Action
+                      label={"확인"}
+                      onClick={() =>
+                        member
+                          ? run(() => requestNext(p.changes))
+                          : show("session-end")
+                      }
+                      busy={busy}
+                      secondary={false}
+                      disabled={!p.changes.length}
+                    />
+                  }
+                  {
+                    <Action
+                      label={"여기서 마칠게요"}
+                      onClick={() => show("session-end")}
+                      busy={busy}
+                      secondary={true}
+                    />
+                  }
+                </footer>
               </>
             )}
             {screen === "no-next" && (
               <>
-                <h1>추가 추천이 없습니다</h1>
-                {
-                  <Action
-                    key={"완료하기"}
-                    label={"완료하기"}
-                    onClick={reset}
-                    busy={busy}
-                  />
-                }
+                <Header />
+                <h1>추가로 안내할 동작이 없어요</h1>
+                <p className="sub">
+                  오늘은 여기까지 마무리해요.
+                  <br />
+                  알려주신 느낌은 기록에 함께 남겼어요.
+                </p>
+                {summary}
+                {finishButtons}
               </>
             )}
-            {screen === "records" && (
+            {screen === "records" && member && (
               <>
-                <h1>부위별 기록</h1>
-                {!records.length && <p>저장된 기록이 없습니다.</p>}
+                <Header
+                  back={() => show(p.returnScreen ?? "home")}
+                  busy={busy}
+                />
+                <h1>내 기록</h1>
+                <p className="sub">나를 돌본 순간들을 부위별로 모았어요.</p>
+                {recordsLoading && (
+                  <p className="note" role="status">
+                    기록을 불러오고 있어요.
+                  </p>
+                )}
+                {!records.length && !error && !recordsLoading && (
+                  <>
+                    <h2 className="routine-heading">아직 기록이 없어요</h2>
+                    <p className="sub">첫 루틴을 시작하고 느낌을 남겨보세요.</p>
+                    {
+                      <Action
+                        label={"첫 루틴 시작하기"}
+                        onClick={start}
+                        busy={busy}
+                      />
+                    }
+                  </>
+                )}
                 {Array.from(
                   new Map(
                     records.map((record) => [
@@ -1453,184 +1852,228 @@ function ConnectedJikkotApp() {
                       record.snapshot.area,
                     ]),
                   ).values(),
-                ).map((area) => {
-                  const rows = records.filter(
-                    (r) => r.snapshot.area.id === area.id,
-                  );
-                  return rows.length ? (
-                    <section key={area.id}>
-                      <h2>{area.label}</h2>
-                      {rows.map((r) => (
-                        <article
-                          className="my-3 rounded-xl bg-[#f0f1ff] p-4"
-                          key={r.id}
-                        >
-                          <p>
-                            {new Date(r.createdAt).toLocaleString("ko-KR", {
-                              timeZone: "Asia/Seoul",
-                            })}
-                          </p>
-                          <h3>
-                            {r.snapshot.routine.name} ·{" "}
-                            {feedbackLabels[r.feedback]}
-                          </h3>
-                          <p>부위: {r.snapshot.area.label}</p>
-                          <p>
-                            생활 습관:{" "}
-                            {r.snapshot.habits.map((q) => q.label).join(", ")}
-                          </p>
-                          <p>
-                            최근 행동:{" "}
-                            {r.snapshot.recent.map((q) => q.label).join(", ")}
-                          </p>
-                          {r.changes?.length > 0 && (
-                            <p>
-                              추가 변화:{" "}
-                              {r.changes.map((q) => q.label).join(", ")}
-                            </p>
-                          )}
-                        </article>
+                ).map((area) => (
+                  <section key={area.id}>
+                    <h2 className="record-group">{area.label}</h2>
+                    {records
+                      .filter((record) => record.snapshot.area.id === area.id)
+                      .map((record) => (
+                        <details key={record.id}>
+                          <summary>
+                            <div>
+                              <span className="record-date">
+                                {new Date(record.createdAt).toLocaleString(
+                                  "ko-KR",
+                                  { timeZone: "Asia/Seoul" },
+                                )}
+                              </span>
+                              <div className="record-title">
+                                {record.snapshot.routine.name}
+                              </div>
+                            </div>
+                            <span>
+                              {feedbackLabels[record.feedback]}{" "}
+                              <span aria-hidden="true">⌄</span>
+                            </span>
+                          </summary>
+                          <dl className="record-detail">
+                            {[
+                              [
+                                "자세",
+                                record.snapshot.posture ??
+                                  (record.snapshot.answers?.mode
+                                    ? postureLabels[
+                                        record.snapshot.answers.mode
+                                      ]
+                                    : "자세 정보 없음"),
+                              ],
+                              ["부위", record.snapshot.area.label],
+                              [
+                                "평소 습관",
+                                record.snapshot.habits
+                                  .map((question) => question.label)
+                                  .join(", "),
+                              ],
+                              [
+                                "최근 행동",
+                                record.snapshot.recent
+                                  .map((question) => question.label)
+                                  .join(", "),
+                              ],
+                              ["추천 동작", record.snapshot.routine.name],
+                              ["동작 후 느낌", feedbackLabels[record.feedback]],
+                              ...(record.changes?.length
+                                ? [
+                                    [
+                                      "불편했던 과정",
+                                      record.changes
+                                        .map((question) => question.label)
+                                        .join(", "),
+                                    ],
+                                  ]
+                                : []),
+                            ].map(([label, value]) => (
+                              <div key={label}>
+                                <dt>{label}</dt>
+                                <dd>{value}</dd>
+                              </div>
+                            ))}
+                          </dl>
+                        </details>
                       ))}
-                    </section>
-                  ) : null;
-                })}
-                {
-                  <Action
-                    key={"기록 다시 불러오기"}
-                    label={"기록 다시 불러오기"}
-                    onClick={() =>
-                      run(async () => {
-                        const result = await api<{
-                          records: RecordRow[];
-                          nextCursor: { createdAt: number; id: string } | null;
-                        }>("/records");
-                        setRecords(result.records);
-                        setRecordCursor(result.nextCursor);
-                      })
-                    }
-                    busy={busy}
-                  />
-                }
-                {recordCursor && (
-                  <Action
-                    label="이전 기록 더 보기"
-                    busy={busy}
-                    onClick={() =>
-                      run(async () => {
-                        const query = new URLSearchParams({
-                          after: String(recordCursor.createdAt),
-                          afterId: recordCursor.id,
-                        });
-                        const result = await api<{
-                          records: RecordRow[];
-                          nextCursor: { createdAt: number; id: string } | null;
-                        }>(`/records?${query}`);
-                        setRecords((old) => [...old, ...result.records]);
-                        setRecordCursor(result.nextCursor);
-                      })
-                    }
-                  />
-                )}
-                {
-                  <Action
-                    key={"돌아가기"}
-                    label={"돌아가기"}
-                    onClick={() => show(p.returnScreen ?? "home")}
-                    busy={busy}
-                  />
-                }
-              </>
-            )}
-            {screen === "catalog" && (
-              <>
-                <h1>다른 루틴 보기</h1>
-                <p>{postureLabels[answers.mode!]}</p>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {catalog(answers.mode!).map((r) => (
+                  </section>
+                ))}
+                <footer className="footer">
+                  {
                     <Action
-                      key={r.name}
-                      label={r.name}
+                      label={"기록 다시 불러오기"}
                       onClick={() =>
-                        update({ screen: "browse", routineId: r.id })
+                        run(async () => {
+                          const result = await api<{
+                            records: RecordRow[];
+                            nextCursor: {
+                              createdAt: number;
+                              id: string;
+                            } | null;
+                          }>("/records");
+                          setRecords(result.records);
+                          setRecordCursor(result.nextCursor);
+                        })
                       }
                       busy={busy}
+                      secondary={true}
                     />
+                  }
+                  {recordCursor && (
+                    <Action
+                      label={"이전 기록 더 보기"}
+                      onClick={() =>
+                        run(async () => {
+                          const query = new URLSearchParams({
+                            after: String(recordCursor.createdAt),
+                            afterId: recordCursor.id,
+                          });
+                          const result = await api<{
+                            records: RecordRow[];
+                            nextCursor: {
+                              createdAt: number;
+                              id: string;
+                            } | null;
+                          }>(`/records?${query}`);
+                          setRecords((old) => [...old, ...result.records]);
+                          setRecordCursor(result.nextCursor);
+                        })
+                      }
+                      busy={busy}
+                      secondary={true}
+                    />
+                  )}
+                </footer>
+              </>
+            )}
+            {screen === "catalog" && member && (
+              <>
+                <Header back={() => show("complete")} busy={busy} />
+                <h1>동작 안내</h1>
+                <div className="wide-list">
+                  {catalog(answers.mode!).map((routine) => (
+                    <PrimaryButton
+                      secondary
+                      key={routine.id}
+                      onClick={() =>
+                        update({ screen: "browse", routineId: routine.id })
+                      }
+                    >
+                      {routine.name}
+                    </PrimaryButton>
                   ))}
                 </div>
-                {
-                  <Action
-                    key={"돌아가기"}
-                    label={"돌아가기"}
-                    onClick={() => show("complete")}
-                    busy={busy}
-                  />
-                }
               </>
             )}
-            {screen === "browse" && p.routineId && getRoutine(p.routineId) && (
-              <>
-                <RoutineMedia routine={getRoutine(p.routineId)!} />
-                {
-                  <Action
-                    key={"목록으로"}
-                    label={"목록으로"}
-                    onClick={() => show("catalog")}
-                    busy={busy}
-                  />
-                }
-              </>
-            )}
+            {screen === "browse" &&
+              member &&
+              p.routineId &&
+              getRoutine(p.routineId) && (
+                <>
+                  <Header back={() => show("catalog")} busy={busy} />
+                  <RoutineMedia routine={getRoutine(p.routineId)!} />
+                </>
+              )}
           </>
         )}
-      </section>
-      <footer className="py-6 text-center text-xs text-gray-500">
-        의료 서비스가 아닙니다. 콘텐츠는 검수 전 시제품입니다.
-      </footer>
+      </Surface>
+      <p className="page-footer">직꼿은 의료서비스가 아닙니다.</p>
       <Dialog
         open={modal !== null}
         onOpenChange={(open) => {
           if (!open) setModal(null);
         }}
       >
-        <DialogContent>
+        <DialogContent className="jikkot-dialog jikkot-app">
           <DialogHeader>
             <DialogTitle>
               {modal === "limit"
-                ? "오늘 체험 완료"
+                ? "오늘의 체험을 마쳤어요"
                 : modal === "preparing"
-                  ? "서비스 준비 중"
-                  : "로그인이 필요합니다"}
+                  ? "조금만 기다려주세요"
+                  : modal === "privacy"
+                    ? "개인정보 수집·이용 안내"
+                    : modal === "non-medical"
+                      ? "의료서비스가 아님을 확인"
+                      : "로그인이 필요해요"}
             </DialogTitle>
             <DialogDescription>
               {modal === "limit"
-                ? "비회원은 한국 날짜 기준 하루 첫 추천을 한 번 체험할 수 있어요."
+                ? "비회원은 한국시간 기준 하루 1회 체험할 수 있어요. 회원은 제한 없이 이용할 수 있어요."
                 : modal === "preparing"
-                  ? "이 기능은 아직 준비 중입니다."
-                  : "회원은 기록과 동작 목록, 다음 추천을 이용할 수 있어요. 로그인하면 기존 체험 답변은 초기화됩니다."}
+                  ? "스트레칭과 쇼핑 기능은 준비 중이에요."
+                  : modal === "privacy"
+                    ? "운영 약관 확정 전의 현재 수집 안내입니다."
+                    : modal === "non-medical"
+                      ? "직꼿은 질환을 진단하거나 치료하는 의료서비스가 아닙니다."
+                      : "회원은 내 기록과 루틴을 이용할 수 있어요. 로그인 후에는 비회원 체험을 계정 기록으로 가져오지 않습니다."}
             </DialogDescription>
           </DialogHeader>
-          {modal !== "preparing" && (
-            <Action
-              key={"로그인하기"}
-              label={"로그인하기"}
-              onClick={beginLogin}
-              busy={busy}
-            />
+          {modal === "privacy" && (
+            <div className="policy-copy">
+              <p>운영자: {operationalPolicy.operatorName}</p>
+              <p>
+                수집 항목: 인증 식별자, 이메일, 아이디·닉네임, 동의 정보, 문진
+                답변, 동작과 피드백.
+              </p>
+              <p>
+                목적: 로그인·회원 관리, 동작 추천, 계정 기록 제공 및 서비스
+                개선.
+              </p>
+              <p>
+                보유기간 방침: 탈퇴 시까지. 탈퇴·삭제 절차와 확정 약관은 준비
+                중입니다.
+              </p>
+              <p>문의 이메일: 미정</p>
+              <p>
+                동의 문안 버전: {consentPolicy.version} · 운영 약관 검토 미완료
+              </p>
+              <p>
+                비밀번호는 Firebase Authentication이 처리하며 직꼿의 진행 상태에
+                저장하지 않습니다.
+              </p>
+            </div>
           )}
-          {
-            <Action
-              key={"닫기"}
-              label={"닫기"}
-              onClick={() => {
-                if (modal === "limit") {
-                  clearLocal();
-                  setEntry("choice");
-                }
-                setModal(null);
-              }}
-              busy={busy}
-            />
-          }
+          {modal === "non-medical" && (
+            <p>
+              생활 습관과 최근 행동을 바탕으로 가벼운 동작을 안내합니다. 질환의
+              진단·치료·개선 효과를 보장하지 않습니다. 승인된 안내를 편안한
+              범위에서 이용해주세요.
+            </p>
+          )}
+          {["limit", "login"].includes(modal ?? "") && (
+            <PrimaryButton onClick={beginLogin} disabled={busy}>
+              로그인하기
+            </PrimaryButton>
+          )}
+          <PrimaryButton secondary onClick={() => setModal(null)}>
+            닫기
+          </PrimaryButton>
         </DialogContent>
       </Dialog>
     </main>

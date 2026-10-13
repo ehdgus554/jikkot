@@ -34,18 +34,39 @@ export type Answers = {
 };
 export type Feedback = "better" | "same" | "worse";
 export const feedbackLabels: Record<Feedback, string> = {
-  better: "편해졌다",
-  same: "비슷하다",
-  worse: "더 불편하다",
+  better: "편해졌어요",
+  same: "비슷해요",
+  worse: "더 불편해요",
 };
 // Keep the backend function signature compatible; approved questions/branches cannot be overridden.
 export type ContentExtensions = {
+  alternatives?: {
+    pattern: string;
+    currentRoutineId: string;
+    feedback: "same" | "worse";
+    changeIds: readonly string[];
+    nextRoutineId: string;
+  }[];
   changes?: Record<
     string,
     { id: string; label: string; nextRoutineId?: string }[]
   >;
 };
-export const extensions: ContentExtensions = {};
+// Process choices quote the approved instructions; they are not alternative mappings.
+export const extensions: ContentExtensions = {
+  changes: Object.fromEntries(
+    routines.map((routine) => [
+      routine.id,
+      [
+        ...routine.steps.map((label, index) => ({
+          id: `step-${index + 1}`,
+          label,
+        })),
+        { id: "unknown", label: "잘 모르겠어요" },
+      ],
+    ]),
+  ),
+};
 export const habitQuestions = (area: AreaCode) =>
   habitIdsByArea[area].map(
     (id) => habits.find((question) => question.id === id)!,
@@ -179,7 +200,10 @@ export function recommendationReason(
     .filter(Boolean)
     .slice(0, 2);
   const areaName = areas.find((item) => item.id === area)!.label;
-  const objectParticle = (areaName.charCodeAt(areaName.length - 1) - 0xac00) % 28 === 0 ? "를" : "을";
+  const objectParticle =
+    (areaName.charCodeAt(areaName.length - 1) - 0xac00) % 28 === 0
+      ? "를"
+      : "을";
   const intro = phrases.length
     ? `${phrases.join("과 ")}을 선택했어요.`
     : `선택한 ${areaName}${objectParticle} 편하게 움직일 수 있는 동작을 준비했어요.`;
@@ -243,32 +267,34 @@ export function nextRecommendation(
   _content?: ContentExtensions,
   visited: readonly string[] = [current],
 ) {
-  void _changes;
-  void _content;
   if (feedback === "better") return null;
   const answers = validateAnswers(input);
-  if (!getRoutine(current)) return null; // Historical MV snapshots remain historical, not new ID aliases.
-  const rules = decisionTrees[treeFor(answers.area)];
-  const signals = {
-    habits: new Set(answers.habits),
-    recent: new Set(answers.recent),
-  };
-  const matching = rules.filter(
-    (rule) => matchCondition(rule.condition, signals) !== null,
-  );
+  if (!getRoutine(current)) return null;
   const excluded = new Set([current, ...visited]);
-  // Reuse the supplied decision-tree content order for alternatives; never number-sort or invent moves.
-  for (const rule of [...matching, ...rules]) {
-    const routine = routines.find(
-      (item) => item.displayNumber === rule.routineNumber,
-    )!;
+  for (const mapping of (_content ?? extensions).alternatives ?? []) {
     if (
+      mapping.pattern !== _pattern ||
+      mapping.currentRoutineId !== current ||
+      mapping.feedback !== feedback
+    )
+      continue;
+    if (
+      new Set(_changes).size !== _changes.length ||
+      mapping.changeIds.length !== _changes.length ||
+      mapping.changeIds.some((id) => !_changes.includes(id))
+    )
+      continue;
+    const routine = getRoutine(mapping.nextRoutineId);
+    if (
+      routine &&
       !excluded.has(routine.id) &&
       allowedRoutineNumbers[answers.area].includes(routine.displayNumber) &&
       isAllowed(routine, answers.mode)
     )
       return routine;
   }
+  // No approved pattern/process mapping has been supplied. A broad area candidate
+  // is not an approved substitute; finish rather than guessing another movement.
   return null;
 }
 export function snapshot(

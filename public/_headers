@@ -1,0 +1,7 @@
+/assets/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+/assets/brand/*
+  Cache-Control: public, max-age=86400
+/assets/routines/*
+  Cache-Control: public, max-age=86400

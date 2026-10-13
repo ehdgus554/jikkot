@@ -10,7 +10,6 @@ import {
   habitQuestions,
   recentQuestions,
   validateAnswers,
-  recommendationReason,
   nextRecommendation,
   CONTENT_VERSION,
 } from "../lib/service/recommendation";
@@ -32,13 +31,25 @@ export function validateContent() {
   const fallbackRoutines = new Set<number>(),
     specificRoutines = new Set<number>();
   assert.equal(routines.length, 11);
-  assert.deepEqual(areas.map(({ id, label }) => ({ id, label })), suppliedSpec.bodyAreas);
+  assert.deepEqual(
+    areas.map(({ id, label }) => ({ id, label })),
+    suppliedSpec.bodyAreas,
+  );
   assert.equal(new Set(routines.map((routine) => routine.id)).size, 11);
   assert.equal(new Set(routines.map((routine) => routine.image)).size, 11);
   for (const area of areas) {
-    assert.deepEqual(habitQuestions(area.id).map(({ id }) => id), [...suppliedSpec.habitProfiles[area.id], "H_UNKNOWN"]);
-    assert.deepEqual(recentQuestions(area.id, []).map(({ id }) => id), [...suppliedSpec.recentProfiles[area.id], "R_NONE", "R_UNKNOWN"]);
-    assert.deepEqual(allowedRoutineNumbers[area.id], suppliedSpec.allowedRoutines[area.id]);
+    assert.deepEqual(
+      habitQuestions(area.id).map(({ id }) => id),
+      [...suppliedSpec.habitProfiles[area.id], "H_UNKNOWN"],
+    );
+    assert.deepEqual(
+      recentQuestions(area.id, []).map(({ id }) => id),
+      [...suppliedSpec.recentProfiles[area.id], "R_NONE", "R_UNKNOWN"],
+    );
+    assert.deepEqual(
+      allowedRoutineNumbers[area.id],
+      suppliedSpec.allowedRoutines[area.id],
+    );
     const habitSets = validSubsets(
       habitQuestions(area.id).map((question) => question.id),
       ["H_UNKNOWN"],
@@ -56,11 +67,21 @@ export function validateContent() {
           recent,
         });
         const result = makeRecommendation(input);
-        const reference = referenceRecommendation(area.id, input.habits, input.recent);
+        const reference = referenceRecommendation(
+          area.id,
+          input.habits,
+          input.recent,
+        );
         assert.equal(result.routine.displayNumber, reference.routineNumber);
         assert.equal(result.ruleId, reference.ruleId);
-        assert.deepEqual([...result.matchedHabitIds].sort(), [...reference.matchedHabitIds].sort());
-        assert.deepEqual([...result.matchedRecentActionIds].sort(), [...reference.matchedRecentActionIds].sort());
+        assert.deepEqual(
+          [...result.matchedHabitIds].sort(),
+          [...reference.matchedHabitIds].sort(),
+        );
+        assert.deepEqual(
+          [...result.matchedRecentActionIds].sort(),
+          [...reference.matchedRecentActionIds].sort(),
+        );
         const effective = effectiveRules(area.tree, {
           habits: new Set(input.habits),
           recent: new Set(input.recent),
@@ -131,20 +152,20 @@ export function validateContent() {
       const routine = routines.find((item) => item.displayNumber === number)!;
       for (const feedback of ["same", "worse"] as const) {
         const next = nextRecommendation(sample, routine.id, "", feedback, []);
-        if (allowedRoutineNumbers[area.id].length === 1)
-          assert.equal(next, null);
-        else {
-          assert.ok(next && next.id !== routine.id);
-          assert.ok(
-            allowedRoutineNumbers[area.id].includes(next!.displayNumber),
-          );
-          assert.ok(recommendationReason(area.id, next!));
-        }
+        assert.equal(
+          next,
+          null,
+          "No approved alternative mapping: never fall through to broad area candidates",
+        );
       }
     }
   }
   assert.equal(reached.size, 11);
-  assert.equal(checked, 42544, "Exactly the supplied non-empty, exclusive UI combinations");
+  assert.equal(
+    checked,
+    42544,
+    "Exactly the supplied non-empty, exclusive UI combinations",
+  );
   assert.equal(branches.size, 46);
   return {
     checked,
