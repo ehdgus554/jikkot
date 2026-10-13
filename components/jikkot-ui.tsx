@@ -33,7 +33,7 @@ export function Header({
         <Logo />
       )}
       {back ? <Logo /> : right}
-      {back && <span className="header-spacer" aria-hidden="true" />}
+      {back && (right ?? <span className="header-spacer" aria-hidden="true" />)}
     </header>
   );
 }
@@ -101,7 +101,7 @@ export function ChoiceCard({
     >
       <span>{label}</span>
       {description && <small>{description}</small>}
-      {!wide && !special && (
+      {!special && (
         <span className="tick" aria-hidden="true">
           ✓
         </span>
@@ -185,7 +185,6 @@ export function Home({
   memberName,
   begin,
   login,
-  logout,
   records,
   comingSoon,
   busy,
@@ -193,7 +192,6 @@ export function Home({
   memberName?: string;
   begin: () => void;
   login: () => void;
-  logout: () => void;
   records: () => void;
   comingSoon: () => void;
   busy: boolean;
@@ -207,9 +205,9 @@ export function Home({
               type="button"
               className="text-button"
               disabled={busy}
-              onClick={logout}
+              onClick={records}
             >
-              로그아웃
+              {memberName}
             </button>
           ) : (
             <button

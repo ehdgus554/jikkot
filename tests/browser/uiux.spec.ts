@@ -90,11 +90,22 @@ test("approved artwork, loaded fonts, title metadata and responsive UI match the
     .getByRole("button", { name: "내 몸 풀어주기", exact: true })
     .click();
   await capture("posture");
+  for (const name of ["앉기", "눕기", "서기", "앉기"]) {
+    const card = page.getByRole("button", { name, exact: false });
+    await expect(card).toHaveCSS("cursor", "pointer");
+    await card.click();
+    await expect(card).toHaveAttribute("aria-pressed", "true");
+    await expect(card).toHaveCSS("background-color", "rgb(255, 241, 237)");
+    await expect(card).toHaveCSS("border-top-color", "rgb(239, 117, 100)");
+    await expect(card.locator(".tick")).toHaveCSS("color", "rgb(37, 42, 118)");
+    await expect(page.locator('.wide-choice[aria-pressed="true"]')).toHaveCount(1);
+  }
   await page.getByRole("button", { name: "앉기", exact: false }).click();
   await page.getByRole("button", { name: "다음", exact: true }).click();
   await capture("body");
   await expect(page.locator(".step")).toHaveCount(3);
   const neck = page.getByRole("button", { name: "목", exact: true });
+  await expect(neck).toHaveCSS("cursor", "pointer");
   await neck.focus();
   await expect(page.locator(".body-label.neck")).toHaveCSS("opacity", "1");
   await page.keyboard.press("Enter");

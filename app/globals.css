@@ -145,7 +145,16 @@ a:focus-visible {
   outline: 3px solid #252a76;
   outline-offset: 3px;
 }
-button:disabled {
+.jikkot-app button:not(:disabled),
+.jikkot-app a[href],
+.jikkot-app summary,
+.jikkot-app label:has(input[type="checkbox"]:not(:disabled)),
+.jikkot-app input[type="checkbox"]:not(:disabled),
+.jikkot-app [role="button"]:not([aria-disabled="true"]) {
+  cursor: pointer;
+}
+button:disabled,
+[aria-disabled="true"] {
   cursor: default;
 }
 .jikkot-app {
@@ -178,6 +187,9 @@ button:disabled {
   margin-bottom: 30px;
   min-height: 42px;
 }
+.jikkot-app .top:has(.back):has(> .text-button) {
+  gap: 8px;
+}
 .jikkot-app .logo {
   width: 112px;
   height: auto;
@@ -196,6 +208,10 @@ button:disabled {
 }
 .jikkot-app .back {
   margin-left: -10px;
+  white-space: nowrap;
+}
+.jikkot-app .top > .text-button {
+  white-space: nowrap;
 }
 .jikkot-app h1 {
   font-weight: 400;
@@ -274,7 +290,8 @@ button:disabled {
   border-color: var(--coral);
   background: var(--selected);
 }
-.jikkot-app .choice .tick {
+.jikkot-app .choice .tick,
+.jikkot-app .wide-choice .tick {
   width: 17px;
   height: 17px;
   border: 1px solid var(--edge);
@@ -287,7 +304,8 @@ button:disabled {
   line-height: 15px;
   font-size: 11px;
 }
-.jikkot-app .choice[aria-pressed="true"] .tick {
+.jikkot-app .choice[aria-pressed="true"] .tick,
+.jikkot-app .wide-choice[aria-pressed="true"] .tick {
   color: var(--indigo);
   background: var(--coral);
   border-color: var(--coral);
@@ -297,16 +315,21 @@ button:disabled {
   gap: 12px;
 }
 .jikkot-app .wide-choice {
+  position: relative;
   border: 1px solid var(--edge);
   border-radius: 17px;
   background: var(--paper);
   color: var(--ink);
-  padding: 20px 23px;
+  padding: 20px 38px 20px 23px;
   min-height: 76px;
   text-align: left;
   font-size: 16px;
   line-height: 1.6;
   width: 100%;
+}
+.jikkot-app .wide-choice[aria-pressed="true"] {
+  border-color: var(--coral);
+  background: var(--selected);
 }
 .jikkot-app .wide-choice small {
   display: block;

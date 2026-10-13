@@ -876,7 +876,6 @@ function ConnectedJikkotApp() {
               }
             }}
             login={beginLogin}
-            logout={logout}
             records={() => requireMember("records")}
             comingSoon={() => setModal("preparing")}
           />
@@ -1824,6 +1823,16 @@ function ConnectedJikkotApp() {
                 <Header
                   back={() => show(p.returnScreen ?? "home")}
                   busy={busy}
+                  right={
+                    <button
+                      type="button"
+                      className="text-button"
+                      disabled={busy}
+                      onClick={logout}
+                    >
+                      로그아웃
+                    </button>
+                  }
                 />
                 <h1>내 기록</h1>
                 <p className="sub">나를 돌본 순간들을 부위별로 모았어요.</p>

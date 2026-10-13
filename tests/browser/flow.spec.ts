@@ -106,6 +106,7 @@ test("native email signup validates confirmation and consent; phone remains hone
     .getByRole("button", { name: "내 루틴 시작하기", exact: true })
     .click();
   await page.getByRole("button", { name: "‹ 이전", exact: true }).click();
+  await page.getByRole("button", { name: username, exact: true }).click();
   await page.getByRole("button", { name: "로그아웃", exact: true }).click();
   await page
     .getByRole("button", { name: "로그인 · 회원가입", exact: true })
@@ -143,12 +144,18 @@ test("guest history never transfers; records save automatically and stay isolate
   await page.getByRole("button", { name: "편해졌어요", exact: true }).click();
   await page.getByRole("button", { name: "첫 화면으로", exact: true }).click();
   await login(page, first);
+  const nickname = page.locator("header").getByRole("button");
+  await expect(nickname).toHaveText(`uiux_${first.email.slice(5, 13)}`);
+  await expect(page.getByRole("button", { name: "로그아웃", exact: true })).toHaveCount(0);
+  await expect(nickname).toHaveCSS("cursor", "pointer");
   expect(
     await page.evaluate(
       () => JSON.parse(localStorage.getItem("jikkot.progress.v1")!).answers,
     ),
   ).toEqual({});
-  await page.getByRole("button", { name: "내 기록", exact: true }).click();
+  await nickname.click();
+  await expect(page.locator("header").getByRole("button", { name: "로그아웃", exact: true })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await expect(
     page.getByRole("heading", { name: "아직 기록이 없어요" }),
   ).toBeVisible();
@@ -161,11 +168,13 @@ test("guest history never transfers; records save automatically and stay isolate
     .click();
   await expect(page.locator("details")).toHaveCount(1);
   await page.locator("details summary").click();
+  await expect(page.locator("details summary")).toHaveCSS("cursor", "pointer");
   await expect(page.locator("details")).toContainText("고개를 한쪽으로");
   await page.reload();
   await expect(page.locator("details")).toHaveCount(1);
   await page.getByRole("button", { name: "‹ 이전", exact: true }).click();
   await page.getByRole("button", { name: "첫 화면으로", exact: true }).click();
+  await page.getByRole("button", { name: "내 기록", exact: true }).click();
   await page.getByRole("button", { name: "로그아웃", exact: true }).click();
   await expect(
     page.getByRole("button", { name: "로그인 · 회원가입", exact: true }),
