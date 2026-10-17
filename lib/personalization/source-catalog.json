@@ -1,0 +1,4183 @@
+[
+  {
+    "catalogId": "O01",
+    "name": "Figure4 스트레칭 허벅지 당기기",
+    "catalogGroup": "existing",
+    "imageFileName": "001_O01_male.png",
+    "imageArchivePath": "Jikkot_74/001_O01_male.png",
+    "imageSha256": "a6676ca4ba0a66b111c4efea5597adc1bb64842ea266029924f8998bffc21ac9",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "figure4-thigh-pull",
+    "legacyIdInSource": "jikkot11-r01",
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "허리",
+      "허벅지"
+    ],
+    "patternIds": [
+      "P10"
+    ],
+    "actualTarget": "엉덩이 뒤와 고관절 바깥 회전 조직",
+    "steps": [
+      "의자에 앉아 한쪽 발목을 반대쪽 허벅지 위에 올려요.",
+      "올라온 다리의 허벅지 아래를 양손으로 받쳐 몸 쪽으로 부드럽게 당겨요.",
+      "무릎을 아래로 누르는 동작이 아니에요."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "허리 · 허벅지 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "앉은 뒤 엉덩이가 뻣뻣하고 다리 교차·허벅지 당기기가 편함",
+      "부담 연결 가설": "고관절 굽힘·회전 참여를 확보해 몸통에서 대신 움직이는 부담을 줄일 후보",
+      "제외할 패턴과 반응": "무릎·사타구니 압박 또는 허벅지 당기며 허리 불편이 재현됨",
+      "다른 후보": "D06(P10·교차 불가),D26(P20·작은 골반 움직임이 편함)",
+      "사용자 설명 예시": "앉은 뒤 엉덩이가 뻣뻣하다고 답해, 허리와 함께 움직이는 고관절을 먼저 다뤄볼게요."
+    },
+    "sourceNotes": [
+      "수행 조건: 무릎을 누르지 말고, 허벅지를 부드럽게 당겨요.",
+      "원본 데이터에 시간과 횟수 미기재"
+    ],
+    "sourceReferences": [],
+    "sourceReferenceText": "출처: 직꼿 UI UX 검토 원본 2026년 10월 13일 · 원본 관리 ID jikkot11-r01 | 이미지 파일 Seated figure-four thigh pull guide(1).png",
+    "publicationApproval": "verify_existing_source",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "O02",
+    "name": "팔 꼬아 앞으로 밀며 고개 숙이기",
+    "catalogGroup": "existing",
+    "imageFileName": "002_O02_female.png",
+    "imageArchivePath": "Jikkot_74/002_O02_female.png",
+    "imageSha256": "5c871f05bc249e10ff6bf0b854406b334319f9d10b25cf0d1f47ed9d8265211e",
+    "imageWidth": 1312,
+    "imageHeight": 1199,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "character": "여자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "upper-back-reach",
+    "legacyIdInSource": "jikkot11-r02",
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "등",
+      "어깨"
+    ],
+    "patternIds": [
+      "P03"
+    ],
+    "actualTarget": "견갑골 사이 뒤쪽 조직과 흉추 굽힘",
+    "steps": [
+      "팔을 교차해 손을 잡고 앞으로 길게 뻗어요.",
+      "날개뼈 사이가 벌어지도록 등 위쪽을 부드럽게 둥글게 만들어요.",
+      "고개를 편하게 숙여요."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "등 · 어깨 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "날개뼈를 계속 모으고 버틴 습관 + 가벼운 앞으로 뻗기가 편했던 경험",
+      "부담 연결 가설": "지속해서 뒤로 모으던 견갑부에 반대 방향의 편한 움직임을 제공할 후보",
+      "제외할 패턴과 반응": "팔을 앞으로 둔 작업 P01에서 이 방향이 악화함; D24도 동일 부담 대체에서 제외",
+      "다른 후보": "O04(P01·가슴 앞 뻣뻣함),D03(P04·윗등 펴기가 편함)",
+      "사용자 설명 예시": "날개뼈에 힘을 주고 오래 버텼다고 답해, 앞으로 가볍게 뻗는 움직임을 골랐어요."
+    },
+    "sourceNotes": [
+      "수행 조건: 팔을 앞으로 길게 뻗으며, 등 위쪽을 부드럽게 늘려요.",
+      "원본 데이터에 시간과 횟수 미기재"
+    ],
+    "sourceReferences": [],
+    "sourceReferenceText": "출처: 직꼿 UI UX 검토 원본 2026년 10월 13일 · 원본 관리 ID jikkot11-r02 | 이미지 파일 Seated Arm Reach and Neck Stretch(1).png",
+    "publicationApproval": "verify_existing_source",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "O03",
+    "name": "견갑거근 대각선 스트레칭",
+    "catalogGroup": "existing",
+    "imageFileName": "003_O03_male.png",
+    "imageArchivePath": "Jikkot_74/003_O03_male.png",
+    "imageSha256": "ea345ef9eec9453f7eca2469d2cd8ac59d2106308b368552b7d06bbaf5b86804",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "levator-diagonal",
+    "legacyIdInSource": "jikkot11-r03",
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "목",
+      "어깨",
+      "등"
+    ],
+    "patternIds": [
+      "P02"
+    ],
+    "actualTarget": "견갑거근 주변 목 뒤 위쪽",
+    "steps": [
+      "한쪽 손으로 의자 옆을 잡고 어깨를 편하게 아래로 둬요.",
+      "고개를 반대쪽으로 돌린 뒤 그쪽 겨드랑이를 보듯 대각선으로 숙여요.",
+      "반대 손은 머리 위에 가볍게 얹고 세게 당기지 않아요."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "목 · 어깨 · 등 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "어깨를 올리고 버팀 + 목 뒤 위쪽의 국소 당김 + 대각선 숙임이 편함",
+      "부담 연결 가설": "목과 견갑골을 잇는 근육 주변의 지속 수축 부담을 조절할 후보",
+      "제외할 패턴과 반응": "어깨를 낮추거나 고개 숙일 때 등 통증이 증가함; 날개뼈 안쪽 불편만으로 배정 금지",
+      "다른 후보": "O04(P01),D02(P05·몸통 회전 제한감)",
+      "사용자 설명 예시": "어깨를 올리고 버틴 습관과 목 뒤 당김을 함께 보고, 목과 어깨를 잇는 부위를 골랐어요."
+    },
+    "sourceNotes": [
+      "수행 조건: 고개를 대각선으로 숙이고, 손으로 세게 당기지 않아요.",
+      "원본 데이터에 시간과 횟수 미기재"
+    ],
+    "sourceReferences": [],
+    "sourceReferenceText": "출처: 직꼿 UI UX 검토 원본 2026년 10월 13일 · 원본 관리 ID jikkot11-r03 | 이미지 파일 Two-Step Diagonal Neck Stretch(1).png",
+    "publicationApproval": "verify_existing_source",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "O04",
+    "name": "의자를 이용한 한쪽 가슴 열기",
+    "catalogGroup": "existing",
+    "imageFileName": "004_O04_female.png",
+    "imageArchivePath": "Jikkot_74/004_O04_female.png",
+    "imageSha256": "71102aee6827a0de31fb517f8769e2ca972758c897196ea9d9e35b092a1de4e3",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "여자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "chair-chest",
+    "legacyIdInSource": "jikkot11-r04",
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "등",
+      "어깨",
+      "목"
+    ],
+    "patternIds": [
+      "P01"
+    ],
+    "actualTarget": "가슴 앞 대흉근 주변과 어깨 앞의 편한 신장",
+    "steps": [
+      "한쪽 손을 같은 쪽 엉덩이 뒤나 좌판 뒤에 고정해요.",
+      "가슴을 편하게 세우고 몸통과 시선을 손을 둔 쪽의 반대 방향으로 함께 돌려요."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "등 · 어깨 · 목 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "팔을 앞으로 길게 둔 작업 + 가슴 앞 뻣뻣함·말린 느낌 + 손 뒤 고정이 편함",
+      "부담 연결 가설": "가슴 앞 움직임을 확보해 견갑부를 같은 전방 위치에 오래 고정하는 부담을 바꿀 후보",
+      "제외할 패턴과 반응": "어깨 앞이 끼임; 뒤로 모으기·몸통 돌리기에서 악화함; 과도한 견갑골 압착 금지",
+      "다른 후보": "O11(P01·표면 마사지가 편함),O06(P01·작은 바깥돌림이 편함)",
+      "사용자 설명 예시": "팔을 앞에 두고 오래 작업해 가슴 앞이 뻣뻣하다고 답했어요. 등과 연결된 가슴 앞을 먼저 열어볼게요."
+    },
+    "sourceNotes": [
+      "수행 조건: 손을 뒤에 고정하고, 가슴 앞쪽이 당기는 범위까지만 움직여요.",
+      "원본 데이터에 시간과 횟수 미기재"
+    ],
+    "sourceReferences": [],
+    "sourceReferenceText": "출처: 직꼿 UI UX 검토 원본 2026년 10월 13일 · 원본 관리 ID jikkot11-r04 | 이미지 파일 Seated twist with aligned gaze(1).png",
+    "publicationApproval": "verify_existing_source",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "O05",
+    "name": "책상 광배근 날개뼈 스트레칭",
+    "catalogGroup": "existing",
+    "imageFileName": "005_O05_male.png",
+    "imageArchivePath": "Jikkot_74/005_O05_male.png",
+    "imageSha256": "975c74dca24abe798e78a50df237e3ce8e1393a84f34ba11892040186534b6c2",
+    "imageWidth": 1536,
+    "imageHeight": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "desk-lat",
+    "legacyIdInSource": "jikkot11-r05",
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "어깨",
+      "등"
+    ],
+    "patternIds": [
+      "P07"
+    ],
+    "actualTarget": "광배근 주변 겨드랑이 뒤와 등 옆의 팔 올림 범위",
+    "steps": [
+      "양손을 책상 위에 두고 의자를 뒤로 보내며 상체를 숙여요.",
+      "한쪽을 더 늘리고 싶으면 그쪽 손을 조금 더 앞으로 뻗어요."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "어깨 · 등 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "팔 올릴 때 겨드랑이 뒤가 당기고 책상 지지가 편함",
+      "부담 연결 가설": "팔 올림에 몸통을 과하게 젖히는 보상을 줄일 가동 범위 후보",
+      "제외할 패턴과 반응": "앞으로 뻗으면 날개뼈 안쪽 불편이 재현됨; P01만으로 배정 금지; 의자가 불안정함",
+      "다른 후보": "O04(P01),D02(P05)",
+      "사용자 설명 예시": "팔을 올릴 때 겨드랑이 뒤가 뻣뻣하다고 답해, 책상으로 지지하며 그 방향을 다뤄볼게요."
+    },
+    "sourceNotes": [
+      "수행 조건: 손은 책상에 두고, 겨드랑이와 등 옆쪽을 부드럽게 늘려요.",
+      "원본 데이터에 시간과 횟수 미기재"
+    ],
+    "sourceReferences": [],
+    "sourceReferenceText": "출처: 직꼿 UI UX 검토 원본 2026년 10월 13일 · 원본 관리 ID jikkot11-r05 | 이미지 파일 Seated Desk Lat Stretch Guide(1).png",
+    "publicationApproval": "verify_existing_source",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "O06",
+    "name": "팔꿈치 붙이고 양손 바깥으로 벌리기",
+    "catalogGroup": "existing",
+    "imageFileName": "006_O06_female.png",
+    "imageArchivePath": "Jikkot_74/006_O06_female.png",
+    "imageSha256": "2a9829a412e4f6ab6e5ebfdd8b8fb638abb8701e0dc18bfb277e3538f1c5759d",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "여자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "seated-external-rotation",
+    "legacyIdInSource": "jikkot11-r06",
+    "movementTypeSource": "가동성 및 가벼운 활성화",
+    "linkedRegions": [
+      "등",
+      "어깨",
+      "목"
+    ],
+    "patternIds": [
+      "P01",
+      "P04"
+    ],
+    "actualTarget": "어깨 바깥돌림과 견갑부의 편한 동시 움직임",
+    "steps": [
+      "팔꿈치를 몸통에 붙이고 손바닥을 위로 둬요.",
+      "팔꿈치는 제자리에 두고 양손을 바깥으로 벌려요."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "등 · 어깨 · 목 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "팔 앞 작업 뒤 말린 느낌 + 팔꿈치를 붙인 작은 바깥돌림이 편함",
+      "부담 연결 가설": "어깨 회전 방향을 바꿔 한 자세로 고정한 부담을 분산할 후보; 근력 회복 효과와 구분",
+      "제외할 패턴과 반응": "날개뼈를 강하게 모으거나 아래로 누르며 통증이 생김; 바깥돌림 자체가 불편함",
+      "다른 후보": "O11(P01),D03(P04)",
+      "사용자 설명 예시": "어깨가 앞쪽에 오래 머문 느낌을 고려해, 작게 바깥으로 움직여볼게요. 날개뼈를 꽉 조이지 않아요."
+    },
+    "sourceNotes": [
+      "수행 조건: 팔꿈치를 붙인 채, 손만 편한 범위에서 바깥으로 벌려요.",
+      "원본 데이터에 시간과 횟수 미기재"
+    ],
+    "sourceReferences": [],
+    "sourceReferenceText": "출처: 직꼿 UI UX 검토 원본 2026년 10월 13일 · 원본 관리 ID jikkot11-r06 | 이미지 파일 Seated elbow-together outward rotation(1).png",
+    "publicationApproval": "verify_existing_source",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "O07",
+    "name": "앉아서 뒷짐 가슴 열기",
+    "catalogGroup": "existing",
+    "imageFileName": "007_O07_male.png",
+    "imageArchivePath": "Jikkot_74/007_O07_male.png",
+    "imageSha256": "b56c16ea7dd2f13b58dc123262aeec041cd6f8a4b62af9fc5c786ed7a87e9ffb",
+    "imageWidth": 1312,
+    "imageHeight": 1199,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "character": "남자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "hands-on-back-chest",
+    "legacyIdInSource": "jikkot11-r07",
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "등",
+      "어깨",
+      "목"
+    ],
+    "patternIds": [
+      "P01",
+      "P04"
+    ],
+    "actualTarget": "가슴 앞과 어깨 앞의 편한 신장",
+    "steps": [
+      "의자에 앉아 양손의 손등을 허리 뒤에 대요.",
+      "엄지는 안쪽을 향하게 두고 팔꿈치를 살짝 뒤로 보내며 가슴을 열어요.",
+      "허리를 과하게 꺾지 않아요."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "등 · 어깨 · 목 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "가슴 앞 뻣뻣함 + 양손을 허리 뒤에 댈 수 있고 작은 가슴 열기가 편함",
+      "부담 연결 가설": "가슴 앞과 몸통 폄 방향을 확보해 전방 고정 작업의 부담을 바꿀 후보",
+      "제외할 패턴과 반응": "팔꿈치 뒤 이동에서 어깨 앞 압박·허리 젖힘·등 통증이 생김",
+      "다른 후보": "O11(P01),O06(P01)",
+      "사용자 설명 예시": "가슴 앞이 뻣뻣하다는 답변을 고려했어요. 허리를 젖히지 않고 가슴 앞을 작게 열어볼게요."
+    },
+    "sourceNotes": [
+      "수행 조건: 의자에 앉아 손등을 허리에 대고, 허리를 꺾지 않고 가슴을 열어요.",
+      "원본 데이터에 시간과 횟수 미기재"
+    ],
+    "sourceReferences": [],
+    "sourceReferenceText": "출처: 직꼿 UI UX 검토 원본 2026년 10월 13일 · 원본 관리 ID jikkot11-r07 | 이미지 파일 Seated chest-opening stretch guide(1).png",
+    "publicationApproval": "verify_existing_source",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "O08",
+    "name": "앉아서 손깍지 끼고 팔 뒤로 뻗기",
+    "catalogGroup": "existing",
+    "imageFileName": "008_O08_female.png",
+    "imageArchivePath": "Jikkot_74/008_O08_female.png",
+    "imageSha256": "c02205cb0348960e6effa5ec549d15c808f2b2dfa0b226bf8a2e4de50be21cba",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "여자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "interlaced-back-chest",
+    "legacyIdInSource": "jikkot11-r08",
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "등",
+      "어깨",
+      "목"
+    ],
+    "patternIds": [
+      "P01",
+      "P04"
+    ],
+    "actualTarget": "가슴 앞과 어깨 앞의 팔 뒤 이동 범위",
+    "steps": [
+      "의자에 앉아 등 뒤에서 손깍지를 껴요.",
+      "가슴을 편하게 세우고 팔을 뒤로 길게 뻗어요."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "등 · 어깨 · 목 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "가슴 앞 뻣뻣함 + 등 뒤 손깍지와 팔 뒤 이동이 편함",
+      "부담 연결 가설": "앞쪽 조직의 편한 움직임을 확보할 후보; O07보다 수행 부담이 크면 우선순위를 낮춤",
+      "제외할 패턴과 반응": "손깍지를 위해 어깨를 억지로 돌림; 팔 뒤 이동·견갑골 모으기에서 악화함",
+      "다른 후보": "O11(P01),O06(P01)",
+      "사용자 설명 예시": "등 뒤 손깍지가 편한 경우에만, 가슴 앞을 열어 앞으로 고정한 자세를 바꿔볼게요."
+    },
+    "sourceNotes": [
+      "수행 조건: 의자에 앉아 가슴을 세우고, 손깍지 낀 팔을 뒤로 길게 뻗어요.",
+      "원본 데이터에 시간과 횟수 미기재"
+    ],
+    "sourceReferences": [],
+    "sourceReferenceText": "출처: 직꼿 UI UX 검토 원본 2026년 10월 13일 · 원본 관리 ID jikkot11-r08 | 이미지 파일 08. 앉아서 손깍지 끼고 팔 뒤로 뻗기(1).png",
+    "publicationApproval": "verify_existing_source",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "O09",
+    "name": "흉쇄유돌근 마사지",
+    "catalogGroup": "existing",
+    "imageFileName": "009_O09_male.png",
+    "imageArchivePath": "Jikkot_74/009_O09_male.png",
+    "imageSha256": "d2cbe39da1fdaa6b3789e31efb880af431790563afbad523072bde9578aa77f9",
+    "imageWidth": 1312,
+    "imageHeight": 1199,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "character": "남자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "scm-surface",
+    "legacyIdInSource": "jikkot11-r09",
+    "movementTypeSource": "표면 마사지",
+    "linkedRegions": [
+      "머리",
+      "목"
+    ],
+    "patternIds": [
+      "P04"
+    ],
+    "actualTarget": "흉쇄유돌근이 위치한 목 옆 표면",
+    "steps": [
+      "귀 뒤에서 쇄골로 이어지는 목 옆 근육에 손끝을 가볍게 대요.",
+      "표면을 부드럽게 문질러요."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "머리 · 목 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "화면 고정 작업 뒤 목 옆 뻐근함이 실제로 동반됨; 손 위치 원고 검토 상태 확인",
+      "부담 연결 가설": "머리 불편과 함께 보고한 목 주변 부담을 다룰 후보; 두통 원인 확인이나 약 대체 목적 아님",
+      "제외할 패턴과 반응": "목 앞·맥박 부위 압박; 어지럼·찌릿함; 머리 불편만 있고 목 동반 입력이 없음",
+      "다른 후보": "D03(P04·윗등 움직임이 편함),D15(P06·턱 동반)",
+      "사용자 설명 예시": "머리 불편과 함께 목 옆도 뻐근하다고 답했어요. 그 주변의 부담을 부드럽게 다루는 후보예요."
+    },
+    "sourceNotes": [
+      "수행 조건: 목 앞쪽이나 맥박이 느껴지는 곳은 누르지 않아요.",
+      "원본 데이터에 시간과 횟수 미기재"
+    ],
+    "sourceReferences": [],
+    "sourceReferenceText": "출처: 직꼿 UI UX 검토 원본 2026년 10월 13일 · 원본 관리 ID jikkot11-r09 | 이미지 파일 Gentle seated SCM massage guide(1).png",
+    "publicationApproval": "verify_existing_source",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "O10",
+    "name": "관자놀이 누르며 입 열고 닫기",
+    "catalogGroup": "existing",
+    "imageFileName": "010_O10_female.png",
+    "imageArchivePath": "Jikkot_74/010_O10_female.png",
+    "imageSha256": "bbabe5d852abe78630ee0deb1f9485cd085e468ea4af26d3bc9b271855f596f8",
+    "imageWidth": 1331,
+    "imageHeight": 1182,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "character": "여자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "temple-jaw",
+    "legacyIdInSource": "jikkot11-r10",
+    "movementTypeSource": "표면 마사지 및 턱 가동성",
+    "linkedRegions": [
+      "머리"
+    ],
+    "patternIds": [
+      "P06"
+    ],
+    "actualTarget": "관자근 주변과 턱의 작은 열림 닫힘",
+    "steps": [
+      "양쪽 관자놀이에 손끝을 가볍게 대요.",
+      "손끝을 둔 채 입을 편한 범위에서 천천히 열고 닫아요."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "머리 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "이를 악무는 습관 + 관자·턱 뻐근함 + 작은 입 움직임이 편함",
+      "부담 연결 가설": "반복 수축한 저작근 부담과 턱 움직임을 함께 다룰 후보",
+      "제외할 패턴과 반응": "입 벌리며 통증·잠김; 손으로 누를수록 악화; 모든 두통에 기본 연결 금지",
+      "다른 후보": "D15(P06·움직임 불편 시 마사지가 편한 경우만),D16(P06·혀 지지 움직임이 편함)",
+      "사용자 설명 예시": "이를 악무는 습관과 턱 주변 느낌을 함께 고려해, 관자 주변과 작은 턱 움직임을 골랐어요."
+    },
+    "sourceNotes": [
+      "수행 조건: 손끝을 가볍게 댄 채, 입을 편한 범위에서 천천히 움직여요.",
+      "원본 데이터에 시간과 횟수 미기재"
+    ],
+    "sourceReferences": [],
+    "sourceReferenceText": "출처: 직꼿 UI UX 검토 원본 2026년 10월 13일 · 원본 관리 ID jikkot11-r10 | 이미지 파일 Gentle temple press jaw exercise(1).png",
+    "publicationApproval": "verify_existing_source",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "O11",
+    "name": "쇄골 아래 바깥쪽 쓸어내기 마사지",
+    "catalogGroup": "existing",
+    "imageFileName": "011_O11_male.png",
+    "imageArchivePath": "Jikkot_74/011_O11_male.png",
+    "imageSha256": "d191f270022d1bedcbf10b52486c29c4e54fad2b306851ccf134880fa6d728f8",
+    "imageWidth": 1374,
+    "imageHeight": 1145,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "character": "남자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "chest-surface",
+    "legacyIdInSource": "jikkot11-r11",
+    "movementTypeSource": "표면 마사지",
+    "linkedRegions": [
+      "등",
+      "어깨",
+      "목"
+    ],
+    "patternIds": [
+      "P01"
+    ],
+    "actualTarget": "대흉근 윗부분 주변의 가슴 표면",
+    "steps": [
+      "쇄골 바로 아래 가슴 윗부분에 손을 가볍게 대요.",
+      "가슴 중앙에서 어깨 방향으로 천천히 쓸어줘요."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "등 · 어깨 · 목 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "팔 앞 작업 뒤 쇄골 아래 가슴 윗부분의 국소 뻣뻣함 + 가벼운 접촉이 편함",
+      "부담 연결 가설": "앞쪽 가슴 긴장감을 다뤄 연관 견갑부 부담을 바꿀 보조 후보; 깊은 소흉근을 직접 푸는 동작 아님",
+      "제외할 패턴과 반응": "뼈·겨드랑이를 깊게 누름; 피부 자극·접촉 통증; 마사지로 단축 교정 단정 금지",
+      "다른 후보": "O06(P01),D03(P04)",
+      "사용자 설명 예시": "등이 불편해도 가슴 앞이 함께 뻣뻣할 수 있어요. 답변에 맞춰 쇄골 아래 표면을 부드럽게 다뤄볼게요."
+    },
+    "sourceNotes": [
+      "수행 조건: 쇄골 아래의 부드러운 부위를, 가슴 중앙에서 어깨쪽으로 천천히 쓸어요.",
+      "원본 데이터에 시간과 횟수 미기재"
+    ],
+    "sourceReferences": [],
+    "sourceReferenceText": "출처: 직꼿 UI UX 검토 원본 2026년 10월 13일 · 원본 관리 ID jikkot11-r11 | 이미지 파일 Under-Collarbone Chest Sweep Guide(1).png",
+    "publicationApproval": "verify_existing_source",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D01",
+    "name": "어깨를 고정하고 옆목 늘리기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "012_D01_female.png",
+    "imageArchivePath": "Jikkot_74/012_D01_female.png",
+    "imageSha256": "d991ba15ab4fe2b700b6abf04d05bf41de33c926156a48200a0371dc6818e17a",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "여자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "upper-trap-side",
+    "legacyIdInSource": null,
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "목",
+      "어깨"
+    ],
+    "patternIds": [
+      "P02"
+    ],
+    "actualTarget": "위쪽 승모근 등 목 옆 주변",
+    "steps": [
+      "의자에 앉아 정면을 본다.",
+      "한 손으로 반대쪽 어깨를 부드럽게 고정한다.",
+      "고개를 고정한 어깨의 반대 방향으로 천천히 기울인다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "목 · 어깨 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "어깨를 올리고 버틴 습관 + 목 옆 국소 당김 + 옆 기울임이 편함",
+      "부담 연결 가설": "어깨와 목을 연결하는 부위의 지속 수축 부담을 조절할 후보",
+      "제외할 패턴과 반응": "기울임이나 어깨 고정에서 악화; P01·P04의 목 불편에 기본 배정 금지",
+      "다른 후보": "O04(P01),D03(P04)",
+      "사용자 설명 예시": "어깨를 올리고 버틴 뒤 목 옆이 당긴다는 답변에 맞춰, 그 방향을 작게 늘려볼게요."
+    },
+    "sourceNotes": [
+      "조건: 손으로 머리를 잡아당기지 않는다. 목 불편의 원인을 진단하는 동작으로 설명하지 않는다.",
+      "원문에 앉은 자세와 어깨 고정 방법이 명시되어 있다. 기존 견갑거근 대각선과 늘리는 방향이 다르다. 원문: 각 5초, 좌우 3회"
+    ],
+    "sourceReferences": [
+      {
+        "label": "NHS · 유연성 운동",
+        "url": "https://www.nhs.uk/live-well/exercise/flexibility-exercises/"
+      }
+    ],
+    "sourceReferenceText": "출처: NHS · 유연성 운동",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D02",
+    "name": "의자에서 가슴 방향 좌우 돌리기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "013_D02_male.png",
+    "imageArchivePath": "Jikkot_74/013_D02_male.png",
+    "imageSha256": "a2beaba25837cd1fc6a4ef5e1908e34e0289ef4bfa21332569926dca91a2ccb6",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "torso-rotation",
+    "legacyIdInSource": null,
+    "movementTypeSource": "가동성",
+    "linkedRegions": [
+      "목",
+      "등",
+      "어깨"
+    ],
+    "patternIds": [
+      "P05",
+      "P04"
+    ],
+    "actualTarget": "흉추 회전과 몸통 움직임",
+    "steps": [
+      "발바닥을 바닥에 두고 앉는다.",
+      "팔을 가슴 앞에서 교차해 어깨에 둔다.",
+      "골반을 유지하면서 상체를 편한 범위로 좌우 돌린다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "목 · 등 · 어깨 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "한 방향을 오래 보거나 상체를 고정함 + 몸통 회전 제한감 + 작은 회전이 편함",
+      "부담 연결 가설": "몸통 회전 참여를 늘려 목만으로 방향을 바꾸는 부담을 분산할 후보",
+      "제외할 패턴과 반응": "목·허리로 끝까지 비틀거나 회전 자체가 악화함",
+      "다른 후보": "D03(P04),O04(P01)",
+      "사용자 설명 예시": "몸통을 고정하고 목으로 방향을 바꾸는 습관을 고려해, 윗등의 작은 회전을 골랐어요."
+    },
+    "sourceNotes": [
+      "조건: 허리·목을 억지로 끝까지 비틀지 않는다.",
+      "NHS 원문의 의자 상체 회전. 임의의 서기 버전은 삭제했다. 원문: 각 5초, 좌우 5회",
+      "같은 계열: D02, D13, Y04 · 한 묶음에는 한 후보만 선택"
+    ],
+    "sourceReferences": [
+      {
+        "label": "NHS · 앉아서 하는 운동",
+        "url": "https://www.nhs.uk/live-well/exercise/sitting-exercises/"
+      }
+    ],
+    "sourceReferenceText": "출처: NHS · 앉아서 하는 운동",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D03",
+    "name": "등받이로 윗등 부드럽게 펴기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "014_D03_female.png",
+    "imageArchivePath": "Jikkot_74/014_D03_female.png",
+    "imageSha256": "b1ea08bbf86e2aeadd85eec2de26d9d10c2604ad63b31bb6ed2ed147a728f5df",
+    "imageWidth": 1295,
+    "imageHeight": 1214,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "character": "여자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "chair-thoracic-extension",
+    "legacyIdInSource": null,
+    "movementTypeSource": "가동성 및 스트레칭",
+    "linkedRegions": [
+      "목",
+      "등",
+      "어깨"
+    ],
+    "patternIds": [
+      "P04",
+      "P01"
+    ],
+    "actualTarget": "흉추 폄과 가슴 앞의 편한 열림",
+    "steps": [
+      "안정된 의자에서 양발을 바닥에 둔다.",
+      "양손으로 머리 뒤를 받친다.",
+      "목·허리를 꺾지 않고 등받이 위에서 윗등을 부드럽게 편다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "목 · 등 · 어깨 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "몸통을 둥글게 둔 작업 뒤 윗등 뻣뻣함 + 등받이를 이용한 작은 폄이 편함",
+      "부담 연결 가설": "흉추 움직임을 확보해 목과 어깨가 한 위치에서 버티는 부담을 바꿀 후보",
+      "제외할 패턴과 반응": "등받이가 불안정함; 목·허리를 꺾어 악화함; 폄에서 불편함",
+      "다른 후보": "O06(P01),D02(P05)",
+      "사용자 설명 예시": "윗등이 굳은 느낌을 고려해, 목과 어깨에 연결된 윗등을 등받이로 받쳐 움직여볼게요."
+    },
+    "sourceNotes": [
+      "조건: 등받이 높이·의자 안정성이 조건이다. 머리를 손으로 당기지 않는다.",
+      "원문에 의자 등받이 지지와 윗등 움직임이 명시되어 있다. 책상 광배근 동작과 방식이 다르다. 원문 초보자 버전: 작은 범위, 10~20초"
+    ],
+    "sourceReferences": [
+      {
+        "label": "More Life Health · 의자 등 펴기",
+        "url": "https://morelifehealth.com/seated-thoracic-extension-stretch"
+      }
+    ],
+    "sourceReferenceText": "출처: More Life Health · 의자 등 펴기",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D04",
+    "name": "의자 옆에 앉아 고관절 앞 늘리기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "015_D04_male.png",
+    "imageArchivePath": "Jikkot_74/015_D04_male.png",
+    "imageSha256": "227823dd4c887a05f812b8b0d39b021b30deb52643027be4f928eea188a96c73",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "hip-flexor-stretch",
+    "legacyIdInSource": null,
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "허리",
+      "허벅지"
+    ],
+    "patternIds": [
+      "P09",
+      "P12"
+    ],
+    "actualTarget": "장요근 등 고관절 앞 주변",
+    "steps": [
+      "안정된 의자의 옆쪽에 앉는다.",
+      "한쪽 무릎을 아래로 내리고 다리를 뒤로 보낸다.",
+      "엉덩이에 힘을 주며 고관절을 펴되 허리는 젖히지 않는다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "허리 · 허벅지 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "오래 앉음 + 다리를 뒤로 보낼 때 고관절 앞 당김 + 안정된 의자에서 고관절 폄이 편함",
+      "부담 연결 가설": "고관절 폄 참여를 확보해 허리 젖힘으로 대신하는 부담을 줄일 후보",
+      "제외할 패턴과 반응": "다리를 뒤로 보내며 허리가 젖혀져 악화; 사타구니 압박; 의자 지지 불안정",
+      "다른 후보": "D26(P20),D06(P10)",
+      "사용자 설명 예시": "오래 앉은 뒤 고관절 앞이 당긴다고 답해, 허리와 함께 움직이는 고관절 앞을 골랐어요."
+    },
+    "sourceNotes": [
+      "조건: 팔걸이·의자 구조에 따라 수행이 어려울 수 있다. 바퀴 달린 의자는 피한다.",
+      "Physitrack 원문 자체가 의자를 이용한 고관절 앞 스트레칭이다. 서서 하는 런지로 임의 전환하지 않는다. 원문: 구체적 시간·횟수 미기재",
+      "같은 계열: D04, Y06 · 한 묶음에는 한 후보만 선택"
+    ],
+    "sourceReferences": [
+      {
+        "label": "Physitrack · 의자 옆 고관절 앞 스트레칭",
+        "url": "https://uk.physitrack.com/home-exercise-video/seated-hip-flexor-stretch"
+      }
+    ],
+    "sourceReferenceText": "출처: Physitrack · 의자 옆 고관절 앞 스트레칭",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D05",
+    "name": "의자 한쪽 다리 펴고 허벅지 뒤 늘리기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "016_D05_female.png",
+    "imageArchivePath": "Jikkot_74/016_D05_female.png",
+    "imageSha256": "617706039f8de0a9b2e7ea9c7e313711234f5de7a6a32b23d9e735ca5d8a0f79",
+    "imageWidth": 1222,
+    "imageHeight": 1287,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "character": "여자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "hamstring-stretch",
+    "legacyIdInSource": null,
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "허리",
+      "햄스트링",
+      "무릎"
+    ],
+    "patternIds": [
+      "P11"
+    ],
+    "actualTarget": "햄스트링의 편한 신장과 고관절 굽힘",
+    "steps": [
+      "의자 앞쪽에 앉아 한 다리를 앞으로 편다.",
+      "등을 세우고 발목을 과하게 위로 당기지 않는다.",
+      "골반에서 상체를 앞으로 기울여 허벅지 뒤의 당김을 확인한다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "허리 · 햄스트링 · 무릎 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "골반에서 숙일 때 허벅지 뒤가 국소적으로 당김 + 의자에서 편한 범위가 있음",
+      "부담 연결 가설": "고관절 굽힘 참여를 확보해 허리로만 숙이는 부담을 바꿀 후보; 무릎 연결은 뒤 허벅지 동반 시만",
+      "제외할 패턴과 반응": "찌릿하게 다리로 뻗음; 이미 숙인 자세에서 늘리면 악화; 무릎 통증만으로 배정 금지",
+      "다른 후보": "D26(P20),D04(P09)",
+      "사용자 설명 예시": "숙일 때 허벅지 뒤가 뻣뻣하다는 답변을 고려해, 허리 대신 골반에서 움직이는 범위를 다뤄볼게요."
+    },
+    "sourceNotes": [
+      "조건: 허리를 둥글게 말아 발끝에 닿으려 하지 않는다.",
+      "원문에 의자 자세·골반에서 숙이기·발목 보상 주의가 구체적으로 제시된다. 양다리·발끝 각도 변형은 삭제했다. 원문: 구체적 시간·횟수 미기재",
+      "같은 계열: D05, D12, Y07 · 한 묶음에는 한 후보만 선택"
+    ],
+    "sourceReferences": [
+      {
+        "label": "[P]rehab · 의자 햄스트링",
+        "url": "https://theprehabguys.com/vimeo-video/seated-hamstring-stretch/"
+      }
+    ],
+    "sourceReferenceText": "출처: [P]rehab · 의자 햄스트링",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D06",
+    "name": "앉아서 한쪽 무릎 가슴으로 당기기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "017_D06_male.png",
+    "imageArchivePath": "Jikkot_74/017_D06_male.png",
+    "imageSha256": "b4e80194bc85ee1b6e16f543f5b2f170ef370417de31c8327f99e7717a53d003",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "seated-knee-hug",
+    "legacyIdInSource": null,
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "허리",
+      "허벅지"
+    ],
+    "patternIds": [
+      "P10",
+      "P19"
+    ],
+    "actualTarget": "엉덩이 뒤와 고관절 굽힘 범위",
+    "steps": [
+      "양발을 바닥에 두고 앉는다.",
+      "한쪽 무릎을 양손으로 잡아 가슴 방향으로 당긴다.",
+      "몸을 뒤로 젖히지 않고 편한 당김을 유지한다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "허리 · 허벅지 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "앉은 뒤 엉덩이 뻣뻣함 + 무릎 당기기가 편함; P19는 편한 굽힘 경험이 함께 있을 때",
+      "부담 연결 가설": "고관절 굽힘 참여를 확보할 후보; 손으로 무릎을 잡는 것은 무릎 치료 타깃 아님",
+      "제외할 패턴과 반응": "무릎 잡기·고관절 앞 압박·허리 굽힘에서 악화",
+      "다른 후보": "D26(P20),O06(P01·상체 패턴인 경우에만)",
+      "사용자 설명 예시": "엉덩이가 굳은 느낌과 편한 굽힘 경험을 고려해, 고관절 뒤쪽을 부드럽게 다뤄볼게요."
+    },
+    "sourceNotes": [
+      "조건: 서기·눕기에서 같은 무릎 당기기를 새 항목으로 추가하지 않는다.",
+      "앉은 엉덩이 스트레칭의 원문 수행법이 확인된다. Figure-4와 달리 다리를 교차하지 않는다. 원문: 구체적 시간·횟수 미기재"
+    ],
+    "sourceReferences": [
+      {
+        "label": "[P]rehab · 의자 무릎 당기기",
+        "url": "https://theprehabguys.com/vimeo-video/seated-glute-stretch/"
+      }
+    ],
+    "sourceReferenceText": "출처: [P]rehab · 의자 무릎 당기기",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D14",
+    "name": "바닥에 앉아 발바닥 맞대고 안쪽 허벅지 늘리기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "018_D14_female.png",
+    "imageArchivePath": "Jikkot_74/018_D14_female.png",
+    "imageSha256": "a94ca80c7ce80eaaee5a2555f1f7da2c8482e75ca554bff7850e99d345050945",
+    "imageWidth": 1310,
+    "imageHeight": 1200,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "character": "여자",
+    "actualPose": "앉기·바닥",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "butterfly",
+    "legacyIdInSource": null,
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "허벅지",
+      "허리"
+    ],
+    "patternIds": [
+      "P14"
+    ],
+    "actualTarget": "고관절 내전근 주변 허벅지 안쪽",
+    "steps": [
+      "등을 세우고 바닥에 앉는다.",
+      "무릎을 굽혀 발바닥을 맞대고 발을 잡는다.",
+      "무릎을 바닥 방향으로 부드럽게 낮추며 당김을 확인한다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "허벅지 · 허리 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "다리 벌림 제한감 + 안쪽 허벅지의 편한 당김 + 바닥 앉기가 가능함",
+      "부담 연결 가설": "고관절 벌림 참여를 확보해 하체와 몸통의 움직임 분담을 검토할 후보",
+      "제외할 패턴과 반응": "무릎·사타구니 압박; 허리를 말아 과하게 숙임",
+      "다른 후보": "D29(P14·의자 가능),D26(P20)",
+      "사용자 설명 예시": "다리를 벌릴 때 안쪽 허벅지가 뻣뻣하다고 답해, 무릎을 누르지 않고 고관절 주변을 다뤄볼게요."
+    },
+    "sourceNotes": [
+      "조건: 손으로 무릎을 강하게 누르지 않는다. 바닥 공간이 없는 환경에서는 제외한다.",
+      "NHS 원문에서 바닥 앉기·발바닥 맞대기·안쪽 허벅지 타깃이 확인된다. 의자용이라고 표시하지 않는다. 원문: 15~20초",
+      "같은 계열: D14, Y09 · 한 묶음에는 한 후보만 선택"
+    ],
+    "sourceReferences": [
+      {
+        "label": "NHS · 운동 후 스트레칭",
+        "url": "https://www.nhs.uk/live-well/exercise/how-to-stretch-after-exercising/"
+      }
+    ],
+    "sourceReferenceText": "출처: NHS · 운동 후 스트레칭",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D15",
+    "name": "관자 턱 옆 근육 부드럽게 마사지",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "019_D15_male.png",
+    "imageArchivePath": "Jikkot_74/019_D15_male.png",
+    "imageSha256": "b9b550e8caff3c53c69b79d5f5065e9fae63983b3b11541d0eed1f022a26bbbc",
+    "imageWidth": 1159,
+    "imageHeight": 1358,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "character": "남자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "jaw-muscle-massage",
+    "legacyIdInSource": null,
+    "movementTypeSource": "표면 마사지",
+    "linkedRegions": [
+      "머리"
+    ],
+    "patternIds": [
+      "P06"
+    ],
+    "actualTarget": "관자근 및 교근 주변",
+    "steps": [
+      "입을 살짝 움직여 관자·볼 옆 근육 위치를 찾는다.",
+      "손가락으로 해당 근육을 가볍게 원을 그리며 마사지한다.",
+      "양쪽을 확인하되 눈과 턱관절 자체를 강하게 누르지 않는다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "머리 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "악물기·반복 씹기 + 관자 또는 턱 옆 국소 뻐근함 + 접촉이 편함",
+      "부담 연결 가설": "저작근의 반복 수축 부담을 다룰 후보; 턱 관련 머리 불편과 연결 가능하나 원인 확정 아님",
+      "제외할 패턴과 반응": "눈·턱관절 자체를 강하게 누름; 접촉 악화; 머리 불편만으로 배정 금지",
+      "다른 후보": "D16(P06·작은 턱 움직임이 편함),D03(P04·목과 윗등 동반)",
+      "사용자 설명 예시": "이를 악물거나 턱을 많이 쓴 답변을 고려해, 턱 옆과 관자 주변을 부드럽게 다뤄볼게요."
+    },
+    "sourceNotes": [
+      "조건: 턱·관자 주변 뻣뻣함 입력이 있을 때만 연결. 머리 불편 전반의 원인으로 해석하지 않는다.",
+      "O10은 관자 접촉과 입 움직임이 결합된 원고다. 이 후보의 교근 마사지와 동일 절차로 간주하지 않는다. 원문: 부드러운 마사지 수 분; 서비스 시간 별도 검토"
+    ],
+    "sourceReferences": [
+      {
+        "label": "NHS Liverpool · 턱관절 주변 마사지·움직임",
+        "url": "https://www.uhliverpool.nhs.uk/patients-and-visitors/patient-leaflets/temporomandibular-joint-exercises-pif-370-v6pdf"
+      }
+    ],
+    "sourceReferenceText": "출처: NHS Liverpool · 턱관절 주변 마사지·움직임",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D16",
+    "name": "혀를 입천장에 두고 천천히 입 벌리기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "020_D16_female.png",
+    "imageArchivePath": "Jikkot_74/020_D16_female.png",
+    "imageSha256": "3e2d56646dfa3b79d53846bf9e7393b684d6e3aead7df66e3e7287bfe260d783",
+    "imageWidth": 1312,
+    "imageHeight": 1199,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "character": "여자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "controlled-jaw-opening",
+    "legacyIdInSource": null,
+    "movementTypeSource": "가동성",
+    "linkedRegions": [
+      "머리"
+    ],
+    "patternIds": [
+      "P06"
+    ],
+    "actualTarget": "저작근 주변의 긴장감과 턱의 작은 열림 닫힘",
+    "steps": [
+      "혀를 입천장에 댄다.",
+      "혀가 닿는 범위 안에서 입을 천천히 벌린다.",
+      "가볍게 닫고 편한 범위로 반복한다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "머리 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "악물기 습관 + 턱 뻣뻣함 + 혀를 입천장에 둔 작은 움직임이 편함",
+      "부담 연결 가설": "큰 입 벌림 대신 통제된 턱 움직임을 확보할 후보; 저작근 강화 운동이나 두통 진단 아님",
+      "제외할 패턴과 반응": "턱 잠김·통증·작은 움직임도 불편함",
+      "다른 후보": "D15(P06·접촉이 편한 경우),D03(P04·목과 윗등 동반)",
+      "사용자 설명 예시": "턱이 뻣뻣하다는 답변을 보고, 혀를 지지한 작은 입 움직임을 골랐어요."
+    },
+    "sourceNotes": [
+      "조건: 입을 크게 억지로 벌리지 않는다. 턱 잠김·불편 반응이 있으면 자동 배정 제외.",
+      "마사지와 다른 실제 턱 움직임. 가만히 눈 감기·호흡만 하기와 구분. 원문: 개별 처방란; 횟수 미확정"
+    ],
+    "sourceReferences": [
+      {
+        "label": "NHS Liverpool · 턱관절 주변 마사지·움직임",
+        "url": "https://www.uhliverpool.nhs.uk/patients-and-visitors/patient-leaflets/temporomandibular-joint-exercises-pif-370-v6pdf"
+      }
+    ],
+    "sourceReferenceText": "출처: NHS Liverpool · 턱관절 주변 마사지·움직임",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D17",
+    "name": "의자 잡고 대각선으로 목 뒤 늘리기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "021_D17_male.png",
+    "imageArchivePath": "Jikkot_74/021_D17_male.png",
+    "imageSha256": "7804b068fe679a91a23e8945b218028ddc4d951fd07eb9a961f836a9e657723d",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "levator-diagonal",
+    "legacyIdInSource": null,
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "목",
+      "어깨",
+      "등"
+    ],
+    "patternIds": [
+      "P02"
+    ],
+    "actualTarget": "견갑거근 주변 목 뒤 위쪽",
+    "steps": [
+      "늘릴 쪽 손으로 의자를 잡아 어깨를 고정한다.",
+      "반대 방향으로 고개를 돌리고 대각선 아래를 본다.",
+      "다른 손은 지지만 하고 머리를 잡아당기지 않는다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "목 · 어깨 · 등 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "어깨를 올려 버팀 + 목 뒤 위쪽 당김 + 대각선 숙임이 편함",
+      "부담 연결 가설": "목과 견갑골을 잇는 부위의 지속 수축 부담을 조절할 후보; O03과 같은 방향 계열",
+      "제외할 패턴과 반응": "목 숙임·어깨 낮추기에서 악화; P01의 등 통증만으로 배정 금지",
+      "다른 후보": "O04(P01),D02(P05)",
+      "사용자 설명 예시": "어깨를 올리고 버틴 답변과 목 뒤 당김을 함께 고려했어요. 대각선 방향이 편할 때만 골라요."
+    },
+    "sourceNotes": [
+      "조건: 원문 시연과 좌우 방향을 제작 때 재확인. 어지럼·찌릿함에서 중단.",
+      "기존 견갑거근 계열의 원문 보완; 옆목 기울임과 당김 방향이 다름. 서비스 실시량 미확정"
+    ],
+    "sourceReferences": [
+      {
+        "label": "Cambridge University Hospitals · 목 운동",
+        "url": "https://www.cuh.nhs.uk/patient-information/neck-exercises-and-advice/"
+      }
+    ],
+    "sourceReferenceText": "출처: Cambridge University Hospitals · 목 운동",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D18",
+    "name": "고개를 숙이지 않고 턱 뒤로 당기기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "022_D18_female.png",
+    "imageArchivePath": "Jikkot_74/022_D18_female.png",
+    "imageSha256": "93eb39eaf84a4e9ec7c5d998a592362953aad4fadf9c73a22ea37c9ff9fa7691",
+    "imageWidth": 1312,
+    "imageHeight": 1199,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "character": "여자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "chin-retraction",
+    "legacyIdInSource": null,
+    "movementTypeSource": "가동성",
+    "linkedRegions": [
+      "목",
+      "머리",
+      "어깨"
+    ],
+    "patternIds": [
+      "P04"
+    ],
+    "actualTarget": "머리 뒤 이동과 목의 작은 가동 범위",
+    "steps": [
+      "등을 세우고 정면을 본다.",
+      "고개를 숙이지 않은 채 턱을 수평으로 뒤로 당긴다.",
+      "풀고 시작 위치로 돌아온다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "목 · 머리 · 어깨 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "화면을 가까이 보며 고개를 앞으로 둠 + 작은 턱 뒤 이동이 편함; 머리는 목 동반 입력이 있을 때만",
+      "부담 연결 가설": "목 위치의 다양성을 확보할 후보; 깊은 목 굽힘근을 강화하거나 정렬을 영구 교정한다고 설명하지 않음",
+      "제외할 패턴과 반응": "턱을 세게 눌러 목 압박·머리 불편 증가; 뒤 이동 자체가 악화",
+      "다른 후보": "D03(P04),O04(P01)",
+      "사용자 설명 예시": "고개를 앞으로 둔 작업 습관을 고려해, 숙이지 않고 머리 위치를 작게 바꿔볼게요."
+    },
+    "sourceNotes": [
+      "조건: 턱을 힘껏 누르지 않는다. 목 움직임 콘텐츠로 분류.",
+      "목을 옆으로 늘리는 동작과 다른 방향·역할. 서비스 실시량 미확정"
+    ],
+    "sourceReferences": [
+      {
+        "label": "Cambridge University Hospitals · 목 운동",
+        "url": "https://www.cuh.nhs.uk/patient-information/neck-exercises-and-advice/"
+      }
+    ],
+    "sourceReferenceText": "출처: Cambridge University Hospitals · 목 운동",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D19",
+    "name": "앉아서 고개 좌우 천천히 돌리기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "023_D19_male.png",
+    "imageArchivePath": "Jikkot_74/023_D19_male.png",
+    "imageSha256": "440ce2540c30fc5aded1cc6be92630e269c68848516d9f384e7c8cb516a35c8f",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "neck-turn",
+    "legacyIdInSource": null,
+    "movementTypeSource": "가동성",
+    "linkedRegions": [
+      "목",
+      "어깨"
+    ],
+    "patternIds": [
+      "P05",
+      "P20"
+    ],
+    "actualTarget": "목 회전의 편한 범위",
+    "steps": [
+      "어깨를 편하게 두고 정면을 본다.",
+      "편한 범위로 한쪽을 바라봤다가 돌아온다.",
+      "반대쪽도 같은 방법으로 움직인다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "목 · 어깨 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "목을 한 방향에 오래 고정함 + 목만 회전 뻣뻣함 + 작은 회전이 편함",
+      "부담 연결 가설": "고정된 목 회전에 움직임 다양성을 제공할 후보; 흉추 제한감이 주되면 D02를 검토",
+      "제외할 패턴과 반응": "목 회전에서 어지럼·찌릿함·통증 증가; 목 원 돌리기 금지",
+      "다른 후보": "D02(P05·몸통 제한감),D03(P04)",
+      "사용자 설명 예시": "목을 한 방향으로 오래 둔 답변을 고려해, 편한 범위에서 좌우 움직임을 바꿔볼게요."
+    },
+    "sourceNotes": [
+      "조건: 원형으로 목을 돌리거나 끝범위를 밀지 않는다.",
+      "원문 자체의 앉은 목 회전. 서기 복제는 등록하지 않음. 원문: 각 5초, 좌우 3회"
+    ],
+    "sourceReferences": [
+      {
+        "label": "NHS · 앉아서 하는 운동",
+        "url": "https://www.nhs.uk/live-well/exercise/sitting-exercises/"
+      }
+    ],
+    "sourceReferenceText": "출처: NHS · 앉아서 하는 운동",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D20",
+    "name": "턱을 아래로 내려 목 뒤 늘리기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "024_D20_female.png",
+    "imageArchivePath": "Jikkot_74/024_D20_female.png",
+    "imageSha256": "b56f09702fbafd6529e8861bba49b49b5f19b935df2fe7cd41927120b6fd1b4a",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "여자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "neck-flexion",
+    "legacyIdInSource": null,
+    "movementTypeSource": "가동성 및 스트레칭",
+    "linkedRegions": [
+      "목",
+      "어깨"
+    ],
+    "patternIds": [
+      "P02"
+    ],
+    "actualTarget": "목 뒤 주변의 편한 굽힘 범위",
+    "steps": [
+      "앉아서 어깨를 편하게 둔다.",
+      "턱을 가슴 방향으로 천천히 내린다.",
+      "편한 범위에서 돌아온다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "목 · 어깨 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "최근 고개를 뒤로 들고 버틴 활동 + 목 뒤 국소 당김 + 작은 숙임이 편함",
+      "부담 연결 가설": "목 뒤를 지속 사용한 방향을 바꿀 후보; 앞으로 숙인 작업 P04의 기본 해법으로 쓰지 않음",
+      "제외할 패턴과 반응": "이미 숙임에서 악화; 고개 숙이며 등 통증 재현",
+      "다른 후보": "D03(P04),D02(P05)",
+      "사용자 설명 예시": "고개를 들고 버틴 뒤 목 뒤가 당긴다는 답변에 맞춰, 편한 작은 숙임을 검토했어요."
+    },
+    "sourceNotes": [
+      "조건: 손으로 머리를 누르지 않음. 옆목·대각선과 방향이 다른 후보.",
+      "CUH의 목 굽힘 수행법. 같은 동작의 서기 버전을 만들지 않음. 서비스 실시량 미확정"
+    ],
+    "sourceReferences": [
+      {
+        "label": "Cambridge University Hospitals · 목 운동",
+        "url": "https://www.cuh.nhs.uk/patient-information/neck-exercises-and-advice/"
+      }
+    ],
+    "sourceReferenceText": "출처: Cambridge University Hospitals · 목 운동",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D21",
+    "name": "팔을 가슴 앞으로 당겨 어깨 뒤 늘리기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "025_D21_male.png",
+    "imageArchivePath": "Jikkot_74/025_D21_male.png",
+    "imageSha256": "7c9680f5069cbdaa78a0b1ad42f060852e07666220746d6f6fe1c07e0bb3d99e",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "cross-body-shoulder",
+    "legacyIdInSource": null,
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "어깨",
+      "등"
+    ],
+    "patternIds": [
+      "P08"
+    ],
+    "actualTarget": "어깨 뒤 근육과 주변 조직",
+    "steps": [
+      "등을 세우고 한 팔을 가슴 앞으로 보낸다.",
+      "반대 손으로 팔을 부드럽게 몸 쪽으로 당긴다.",
+      "어깨 뒤 당김을 확인하고 반대쪽도 실시한다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "어깨 · 등 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "어깨 뒤 제한감 + 가슴 앞으로 팔을 가져가는 방향이 편함",
+      "부담 연결 가설": "어깨 움직임 참여를 확보해 견갑부가 대신 버티는 부담을 검토할 후보",
+      "제외할 패턴과 반응": "앞 어깨 압박·견갑부 통증 증가; P01의 전인 불편에서 같은 방향 악화",
+      "다른 후보": "O06(P01),D03(P04)",
+      "사용자 설명 예시": "어깨 뒤가 뻣뻣하고 이 방향은 편하다는 답변을 고려해, 뒤쪽의 편한 범위를 다뤄볼게요."
+    },
+    "sourceNotes": [
+      "조건: 어깨 앞쪽 압박·통증이 있으면 제외. 팔꿈치 관절을 꺾지 않는다.",
+      "원문이 앉기·서기를 명시. 앉기 대표 하나만 등록. 원문: 20~30초"
+    ],
+    "sourceReferences": [
+      {
+        "label": "DNA Physical Therapy / Nader Amer · 어깨 뒤 스트레칭",
+        "url": "https://dnaphysicaltherapy.com/exercises/shoulder/posterior-shoulder-stretch/"
+      }
+    ],
+    "sourceReferenceText": "출처: DNA Physical Therapy / Nader Amer · 어깨 뒤 스트레칭",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D22",
+    "name": "손을 머리 뒤에 두고 가슴 열기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "026_D22_female.png",
+    "imageArchivePath": "Jikkot_74/026_D22_female.png",
+    "imageSha256": "aadd83e06977c4be627c9e2d88d6775bc300738b19829100d783d26b753e5410",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "여자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "behind-head-chest",
+    "legacyIdInSource": null,
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "등",
+      "어깨",
+      "목"
+    ],
+    "patternIds": [
+      "P01",
+      "P04"
+    ],
+    "actualTarget": "대흉근 주변 가슴 앞과 흉추 폄",
+    "steps": [
+      "팔꿈치를 굽혀 손가락을 머리 뒤에서 깍지 낀다.",
+      "팔꿈치를 뒤로 보내며 가슴 앞을 부드럽게 연다.",
+      "허리를 과하게 젖히지 않고 돌아온다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "등 · 어깨 · 목 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "가슴 앞 뻣뻣함 + 손을 머리 뒤에 둘 수 있고 작은 팔꿈치 열림이 편함",
+      "부담 연결 가설": "가슴 앞과 윗등 움직임을 확보해 전방 고정 작업의 부담을 바꿀 후보",
+      "제외할 패턴과 반응": "팔 올리기·팔꿈치 뒤 이동에서 어깨 압박; 손으로 머리를 밀어 목 악화",
+      "다른 후보": "O11(P01),O06(P01)",
+      "사용자 설명 예시": "가슴 앞이 뻣뻣하다는 답변을 고려해, 손으로 머리를 밀지 않고 가슴 앞을 열어볼게요."
+    },
+    "sourceNotes": [
+      "조건: 손으로 머리를 밀지 않는다. 팔 각도를 바꾼 항목은 따로 세지 않음.",
+      "등받이 지지 D03과 다른 방식의 가슴 동작. 한 루틴의 가슴 동작 중복은 피함. 원문: 10~30초, 2~4회"
+    ],
+    "sourceReferences": [
+      {
+        "label": "ACE / Stephanie Thielen · 가슴 스트레칭 5변형",
+        "url": "https://www.acefitness.org/resources/everyone/blog/5657/5-chest-stretch-variations/"
+      }
+    ],
+    "sourceReferenceText": "출처: ACE / Stephanie Thielen · 가슴 스트레칭 5변형",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D23",
+    "name": "책상 위 손을 앞으로 미끄러뜨려 어깨 등 늘리기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "027_D23_male.png",
+    "imageArchivePath": "Jikkot_74/027_D23_male.png",
+    "imageSha256": "0b9b3f50305f05aebaa582fe5df83a13a0048c99ddef00e7629a96f216b293b1",
+    "imageWidth": 1536,
+    "imageHeight": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "table-lat-reach",
+    "legacyIdInSource": null,
+    "movementTypeSource": "가동성 및 스트레칭",
+    "linkedRegions": [
+      "어깨",
+      "등"
+    ],
+    "patternIds": [
+      "P07"
+    ],
+    "actualTarget": "팔 올림 범위와 광배근 주변 등 옆",
+    "steps": [
+      "손을 책상 위 천에 올리고 앉는다.",
+      "등을 길게 유지하며 손을 앞으로 미끄러뜨리고 골반에서 숙인다.",
+      "편한 범위에서 천천히 돌아온다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "어깨 · 등 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "겨드랑이 뒤 제한감 + 책상 위 손 미끄러뜨리기가 편함",
+      "부담 연결 가설": "팔을 지지해 어깨 가동 범위를 확보하고 허리 젖힘 보상을 줄일 후보",
+      "제외할 패턴과 반응": "앞으로 뻗을 때 날개뼈 안쪽 악화; O05와 동일 방향을 대체로 반복하지 않음",
+      "다른 후보": "O04(P01),D02(P05)",
+      "사용자 설명 예시": "팔을 올릴 때 등 옆이 당긴다는 답변을 보고, 책상에 지지한 작은 움직임을 골랐어요."
+    },
+    "sourceNotes": [
+      "조건: 안정된 의자·책상 필요. 기존 책상 광배근 동작과 자산 통합 검토.",
+      "원문 자체의 의자·책상 지지. 단순 서기 복제 추가 없음. 원문: 편한 범위, 5초 유지"
+    ],
+    "sourceReferences": [
+      {
+        "label": "Arthritis UK · 어깨·책상 미끄러뜨리기",
+        "url": "https://www.arthritis-uk.org/information-and-support/living-with-arthritis/health-and-wellbeing/exercising-with-arthritis/exercises-for-healthy-joints/exercises-for-the-shoulders/"
+      }
+    ],
+    "sourceReferenceText": "출처: Arthritis UK · 어깨·책상 미끄러뜨리기",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D24",
+    "name": "양손을 앞으로 밀어 윗등 늘리기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "028_D24_female.png",
+    "imageArchivePath": "Jikkot_74/028_D24_female.png",
+    "imageSha256": "b88562c009c872174a68b251aa87872a660e74e302656a2791f92492c478e9fb",
+    "imageWidth": 1312,
+    "imageHeight": 1199,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "character": "여자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "upper-back-reach",
+    "legacyIdInSource": null,
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "등",
+      "어깨"
+    ],
+    "patternIds": [
+      "P03"
+    ],
+    "actualTarget": "견갑골 사이 뒤쪽 조직과 흉추 굽힘",
+    "steps": [
+      "앉아서 등을 길게 세운다.",
+      "양손을 앞으로 밀면서 윗등을 부드럽게 둥글린다.",
+      "편한 당김을 확인한다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "등 · 어깨 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "날개뼈 모으고 버틴 습관 + 앞으로 뻗기가 편했던 경험",
+      "부담 연결 가설": "뒤로 모으는 지속 수축에 반대 방향의 편한 움직임을 제공할 후보",
+      "제외할 패턴과 반응": "P01에서 앞으로 뻗기 악화; O02와 같은 부담 방향으로 제외",
+      "다른 후보": "O04(P01),D03(P04)",
+      "사용자 설명 예시": "날개뼈에 계속 힘을 줬다는 답변을 고려해, 윗등을 앞으로 부드럽게 움직여볼게요."
+    },
+    "sourceNotes": [
+      "조건: 목을 깊게 꺾거나 허리에서만 구부리지 않는다.",
+      "O02와 같은 방향의 계열이지만 팔 교차·고개 숙이기 절차는 다르다. 기존 원고를 임의로 대체하지 않는다. 서비스 실시량 미확정"
+    ],
+    "sourceReferences": [
+      {
+        "label": "Physitrack · 앉은 등 앞으로 늘리기",
+        "url": "https://uk.physitrack.com/home-exercise-video/seated-thoracic-stretch"
+      }
+    ],
+    "sourceReferenceText": "출처: Physitrack · 앉은 등 앞으로 늘리기",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D25",
+    "name": "의자에서 옆으로 몸통 기울이기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "029_D25_male.png",
+    "imageArchivePath": "Jikkot_74/029_D25_male.png",
+    "imageSha256": "35a9cf26babb5e2849176ef96f260ec99277c8b121b6407eaef7ab97cae7f4b1",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "trunk-sidebend",
+    "legacyIdInSource": null,
+    "movementTypeSource": "가동성 및 스트레칭",
+    "linkedRegions": [
+      "등",
+      "허리"
+    ],
+    "patternIds": [
+      "P13"
+    ],
+    "actualTarget": "몸통 옆과 허리 옆의 편한 옆굽힘",
+    "steps": [
+      "양손을 몸 옆에 두고 앉는다.",
+      "한 손이 바닥 쪽으로 내려가도록 몸통을 옆으로 기울인다.",
+      "정면을 유지하며 돌아와 반대쪽도 실시한다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "등 · 허리 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "한쪽으로 기대는 습관 + 옆구리 국소 당김 + 옆 기울임이 편함",
+      "부담 연결 가설": "몸통 옆의 고정 부담을 바꾸고 연관된 골반 움직임을 검토할 후보",
+      "제외할 패턴과 반응": "옆굽힘에서 허리·등 통증 증가; 불편한 쪽이 짧다고 가정해 더 늘리지 않음",
+      "다른 후보": "D26(P20),D08(P13·고관절 바깥 동반)",
+      "사용자 설명 예시": "한쪽으로 기대는 습관과 옆구리 당김을 고려해, 몸통 옆의 편한 움직임을 골랐어요."
+    },
+    "sourceNotes": [
+      "조건: 몸을 비틀지 않는다. 큰 팔 올리기 변형을 임의 추가하지 않음.",
+      "원문 의자 옆굽힘. 누운 옆굽힘은 지지 대안으로 구분. 서비스 실시량 미확정",
+      "같은 계열: D25, Y05, Y10 · 한 묶음에는 한 후보만 선택"
+    ],
+    "sourceReferences": [
+      {
+        "label": "Physitrack · 의자 옆굽힘",
+        "url": "https://ie.physitrack.com/home-exercise-video/seated-lumbar-side-flexion"
+      }
+    ],
+    "sourceReferenceText": "출처: Physitrack · 의자 옆굽힘",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D26",
+    "name": "의자에서 골반 앞뒤로 기울이기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "030_D26_female.png",
+    "imageArchivePath": "Jikkot_74/030_D26_female.png",
+    "imageSha256": "bf9d32363dc641f7266ef30347ddbe7d8bf798e9fa9547ce461a9346fe9efde9",
+    "imageWidth": 1294,
+    "imageHeight": 1216,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "character": "여자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "seated-pelvic-tilt",
+    "legacyIdInSource": null,
+    "movementTypeSource": "가동성",
+    "linkedRegions": [
+      "허리",
+      "등"
+    ],
+    "patternIds": [
+      "P20",
+      "P19"
+    ],
+    "actualTarget": "골반 앞뒤 기울임과 작은 허리 움직임",
+    "steps": [
+      "단단한 의자 앞쪽에 안전하게 앉는다.",
+      "꼬리뼈를 말아 넣듯 골반을 뒤로 굴린다.",
+      "작은 범위로 골반을 앞으로 굴려 돌아온다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "허리 · 등 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "오래 앉은 뒤 굳은 느낌 + 작은 골반 움직임이 편함; P19는 폄 불편 경험 동반",
+      "부담 연결 가설": "골반과 허리의 움직임 분담을 연습할 후보; 근육 단축을 가정하지 않음",
+      "제외할 패턴과 반응": "한 방향에서 불편 증가; 깊게 굽히거나 젖혀 같은 증상을 반복함",
+      "다른 후보": "D04(P09),D06(P10)",
+      "사용자 설명 예시": "오래 같은 자세였다는 답변을 고려해, 허리를 크게 비틀기보다 골반을 작게 움직여볼게요."
+    },
+    "sourceNotes": [
+      "조건: 몸통 전체를 흔들지 않는다. 눕기 복제는 신규 동작으로 추가하지 않음.",
+      "NHS의 앉은 골반 움직임을 직접 대조. 서비스 실시량 미확정"
+    ],
+    "sourceReferences": [
+      {
+        "label": "South Tees NHS · 앉은 골반 기울이기",
+        "url": "https://www.southtees.nhs.uk/resources/pelvic-tilt-in-sitting/"
+      }
+    ],
+    "sourceReferenceText": "출처: South Tees NHS · 앉은 골반 기울이기",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D27",
+    "name": "의자에서 등 둥글렸다 펴는 캣카우",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "031_D27_male.png",
+    "imageArchivePath": "Jikkot_74/031_D27_male.png",
+    "imageSha256": "e981822311e435cd3af0916d5020b8d3617ef387e4b3c9378a6e849d835ded9d",
+    "imageWidth": 1267,
+    "imageHeight": 1241,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "character": "남자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "cat-cow",
+    "legacyIdInSource": null,
+    "movementTypeSource": "가동성",
+    "linkedRegions": [
+      "등",
+      "허리",
+      "목"
+    ],
+    "patternIds": [
+      "P20",
+      "P04"
+    ],
+    "actualTarget": "골반과 흉추의 편한 굽힘 폄",
+    "steps": [
+      "발을 바닥에 두고 양손을 허벅지에 놓는다.",
+      "가슴을 열며 등을 길게 편다.",
+      "골반과 턱을 부드럽게 말아 등을 둥글린 뒤 반복한다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "등 · 허리 · 목 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "오래 상체 고정 + 작은 등 둥글림과 펴기가 모두 편함",
+      "부담 연결 가설": "몸통의 움직임 다양성을 확보해 한 위치에서 버티는 부담을 바꿀 후보",
+      "제외할 패턴과 반응": "앞으로 뻗는 등 둥글림에서 견갑부 악화; 특정 굽힘·폄 방향 악화 시 전체 반복을 배정하지 않음",
+      "다른 후보": "D03(P04·폄 편함),D26(P20)",
+      "사용자 설명 예시": "몸통을 오래 고정한 답변을 고려해, 편한 범위에서 등을 둥글렸다 펴며 움직임을 바꿔볼게요."
+    },
+    "sourceNotes": [
+      "조건: 목을 뒤로 젖히지 않는다. 골반 동작과 한 묶음에 반복 배정하지 않음.",
+      "원문에 실제 의자 버전이 있음. 네발 요가 버전은 환경 대안이며 한 계열로 관리. 서비스 실시량 미확정",
+      "같은 계열: D27, Y02 · 한 묶음에는 한 후보만 선택"
+    ],
+    "sourceReferences": [
+      {
+        "label": "Cleveland Clinic / Paula Brown · 캣카우",
+        "url": "https://health.clevelandclinic.org/cat-cow-stretch"
+      }
+    ],
+    "sourceReferenceText": "출처: Cleveland Clinic / Paula Brown · 캣카우",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D28",
+    "name": "의자에서 다리 교차해 엉덩이 늘리기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "032_D28_female.png",
+    "imageArchivePath": "Jikkot_74/032_D28_female.png",
+    "imageSha256": "9d53ba10f922366e3ca7f27a5f8236b10e97f0820bc2ff7f778aacb0a816c2ec",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "여자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "figure-four",
+    "legacyIdInSource": null,
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "허리",
+      "허벅지"
+    ],
+    "patternIds": [
+      "P10"
+    ],
+    "actualTarget": "엉덩이 뒤와 고관절 바깥 회전 조직",
+    "steps": [
+      "한쪽 발목을 반대쪽 허벅지 위에 올린다.",
+      "등을 길게 유지하고 골반에서 상체를 숙인다.",
+      "올린 다리 쪽 엉덩이 당김을 확인한다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "허리 · 허벅지 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "앉은 뒤 엉덩이 제한감 + 다리 교차와 골반에서 숙이기가 편함",
+      "부담 연결 가설": "고관절 굽힘·회전 참여를 확보해 허리에서 대신 숙이는 부담을 줄일 후보",
+      "제외할 패턴과 반응": "무릎 압박·사타구니 끼임·허리 굽힘에서 악화; O01과 수행법 혼동 금지",
+      "다른 후보": "D06(P10),D26(P20)",
+      "사용자 설명 예시": "엉덩이의 뻣뻣함을 고려해, 등을 길게 둔 채 고관절에서 움직여볼게요."
+    },
+    "sourceNotes": [
+      "조건: 무릎을 강하게 누르지 않는다. 원문 본문·기존 승인 원고와 시연 대조 필요.",
+      "O01은 허벅지 당기기, D28은 골반에서 상체 숙이기다. 절차를 구분한다. 서비스 실시량 미확정"
+    ],
+    "sourceReferences": [
+      {
+        "label": "[P]rehab · 앉은 Figure-4",
+        "url": "https://theprehabguys.com/vimeo-video/seated-piriformis-stretch/"
+      }
+    ],
+    "sourceReferenceText": "출처: [P]rehab · 앉은 Figure-4",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D29",
+    "name": "의자에서 무릎 벌려 안쪽 허벅지 늘리기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "033_D29_male.png",
+    "imageArchivePath": "Jikkot_74/033_D29_male.png",
+    "imageSha256": "8a35c33697284b5ad0e497a96ffa0588ce3cff36318f5a08e35117328d338360",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "chair-adductor",
+    "legacyIdInSource": null,
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "허벅지",
+      "허리"
+    ],
+    "patternIds": [
+      "P14"
+    ],
+    "actualTarget": "고관절 내전근 주변 허벅지 안쪽",
+    "steps": [
+      "등을 세우고 무릎을 양옆으로 벌린다.",
+      "손으로 허벅지를 부드럽게 바깥으로 안내한다.",
+      "안쪽 당김이 느껴지는 범위에서 유지한다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "허벅지 · 허리 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "의자에서 다리 벌림 제한감 + 안쪽 허벅지의 편한 당김",
+      "부담 연결 가설": "고관절 벌림의 참여를 확보해 하체·골반 움직임 분담을 검토할 후보",
+      "제외할 패턴과 반응": "무릎을 손으로 비틀거나 누름; 사타구니·무릎 통증",
+      "다른 후보": "D26(P20),D06(P10·엉덩이 뒤 제한감)",
+      "사용자 설명 예시": "안쪽 허벅지가 뻣뻣하다는 답변을 보고, 의자에서 고관절 주변을 부드럽게 열어볼게요."
+    },
+    "sourceNotes": [
+      "조건: 무릎 자체를 비틀거나 강하게 누르지 않는다.",
+      "발바닥을 맞대는 바닥 D14와 실제 지지·실행 환경이 다름. 한 루틴에는 하나만. 서비스 실시량 미확정"
+    ],
+    "sourceReferences": [
+      {
+        "label": "Physitrack · 의자 안쪽 허벅지",
+        "url": "https://na.physitrack.com/home-exercise-video/hip-adductor-stretch-sitting"
+      }
+    ],
+    "sourceReferenceText": "출처: Physitrack · 의자 안쪽 허벅지",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D30",
+    "name": "의자에서 수건으로 무릎 편 종아리 늘리기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "034_D30_female.png",
+    "imageArchivePath": "Jikkot_74/034_D30_female.png",
+    "imageSha256": "c84ac22f74e626174874dee8012e07d0385c3963bf2786d8ffee0c1780dedc93",
+    "imageWidth": 1312,
+    "imageHeight": 1199,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "character": "여자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "calf-knee-straight",
+    "legacyIdInSource": null,
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "발목",
+      "종아리",
+      "무릎"
+    ],
+    "patternIds": [
+      "P15"
+    ],
+    "actualTarget": "비복근 중심 종아리 뒤",
+    "steps": [
+      "수건을 발 앞쪽에 걸고 양끝을 잡는다.",
+      "무릎을 펴고 뒤꿈치를 바닥에 둔다.",
+      "수건을 부드럽게 당겨 발끝이 몸 쪽으로 오게 한다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "발목 · 종아리 · 무릎 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "종아리 뒤와 발목 제한감 + 의자에서 무릎 편 수건 당기기가 편함",
+      "부담 연결 가설": "발목 참여를 확보할 의자 대안; 무릎 연결은 발목 제한감과 과제 맥락이 함께 있을 때만",
+      "제외할 패턴과 반응": "다리로 뻗는 찌릿함; 수건을 세게 당겨 악화; 발목 앞 압박",
+      "다른 후보": "D33(P20),D31(P15·굽힌 방향 편함·지지 확인)",
+      "사용자 설명 예시": "발목과 종아리 뒤의 뻣뻣함을 고려해, 앉아서 무릎을 편 방향을 골랐어요."
+    },
+    "sourceNotes": [
+      "조건: 일상 후보는 수건 사용 가능. 주말 무장비 묶음에는 넣지 않는다.",
+      "서기 D09와 같은 계열의 실제 지지 대안. 동작 수보다 자세 접근성 확보 목적. 서비스 실시량 미확정",
+      "같은 계열: D09, D30 · 한 묶음에는 한 후보만 선택"
+    ],
+    "sourceReferences": [
+      {
+        "label": "Physitrack · 의자 수건 종아리",
+        "url": "https://ca.physitrack.com/home-exercise-video/calf-stretch-seated"
+      }
+    ],
+    "sourceReferenceText": "출처: Physitrack · 의자 수건 종아리",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D31",
+    "name": "앉아서 수건으로 무릎 굽힌 종아리 늘리기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "035_D31_male.png",
+    "imageArchivePath": "Jikkot_74/035_D31_male.png",
+    "imageSha256": "4323a5421b3e95ff692587d33124a897a389de907622c4dc356b23aea11f56b5",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "앉기·지지 검토",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "calf-knee-bent",
+    "legacyIdInSource": null,
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "발목",
+      "종아리",
+      "무릎"
+    ],
+    "patternIds": [
+      "P15"
+    ],
+    "actualTarget": "가자미근 중심 종아리 뒤",
+    "steps": [
+      "수건을 발 앞쪽에 걸고 양끝을 잡는다.",
+      "무릎을 굽히고 뒤꿈치를 바닥에 둔다.",
+      "등을 세운 채 수건으로 발끝을 몸 쪽으로 당긴다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "발목 · 종아리 · 무릎 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "무릎 굽힌 발목 제한감 + 수건 당기기가 편함; 의자·바닥 지지 확인 전 자동 배정 보류",
+      "부담 연결 가설": "무릎 굽힌 과제의 발목 참여를 확보할 앉기 후보",
+      "제외할 패턴과 반응": "지지 자세 미확인; 발목 앞 끼임·무릎 통증·과한 수건 당김",
+      "다른 후보": "D33(P20),D10(P15·서기 가능)",
+      "사용자 설명 예시": "무릎을 굽힌 상태의 발목 뒤 당김을 고려한 후보예요. 수행 지지가 확인된 뒤 사용해요."
+    },
+    "sourceNotes": [
+      "조건: 본문은 앉기만 명시. 의자·바닥 지지는 원문 영상 확인 후 확정하며, 현재 어느 쪽으로도 집계하지 않는다.",
+      "서기 D10과 한 계열의 지지 대안. 자세 세부 검토를 마치기 전 자동 배정 제외. 서비스 실시량 미확정",
+      "같은 계열: D10, D31 · 한 묶음에는 한 후보만 선택"
+    ],
+    "sourceReferences": [
+      {
+        "label": "[P]rehab · 무릎 굽힌 수건 종아리",
+        "url": "https://theprehabguys.com/vimeo-video/seated-calf-stretch-knee-bent-towel-2/"
+      }
+    ],
+    "sourceReferenceText": "출처: [P]rehab · 무릎 굽힌 수건 종아리",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D32",
+    "name": "앉아서 발가락 당겨 발바닥 늘리기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "036_D32_female.png",
+    "imageArchivePath": "Jikkot_74/036_D32_female.png",
+    "imageSha256": "120f3c22409bbd40db64166e2eb00a3aa3ccf64024b84b8923f2626f9f64d5b5",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "여자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "plantar-fascia",
+    "legacyIdInSource": null,
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "발목",
+      "종아리"
+    ],
+    "patternIds": [
+      "P16"
+    ],
+    "actualTarget": "발바닥 조직과 발가락 폄 범위",
+    "steps": [
+      "한 발을 반대 무릎 위에 올린다.",
+      "발가락 밑부분을 잡아 몸 쪽으로 부드럽게 당긴다.",
+      "발바닥 당김을 확인한다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "발목 · 종아리 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "발바닥 국소 당김 + 발가락을 부드럽게 뒤로 보내는 방향이 편함",
+      "부담 연결 가설": "발가락 움직임 참여를 확보해 발의 반복 부하를 다룰 후보; 발목 선택에 발바닥 동반 입력 필요",
+      "제외할 패턴과 반응": "발가락 관절·발바닥 통증 증가; 발목만 뻣뻣한 입력에 자동 배정 금지",
+      "다른 후보": "D33(P20),D30(P15·종아리 뒤 동반)",
+      "사용자 설명 예시": "발목뿐 아니라 발바닥도 뻣뻣하다는 답변을 보고, 발가락과 발바닥의 편한 범위를 골랐어요."
+    },
+    "sourceNotes": [
+      "조건: 발목 자체 치료 동작으로 표시하지 않음. 발바닥 느낌을 별도 확인한 연결 후보.",
+      "종아리 늘리기와 다른 실제 발바닥 타깃. 원문: 15~20초, 3회"
+    ],
+    "sourceReferences": [
+      {
+        "label": "Arthritis UK · 발바닥·발목",
+        "url": "https://www.arthritis-uk.org/information-and-support/living-with-arthritis/health-and-wellbeing/exercising-with-arthritis/exercises-for-healthy-joints/exercises-for-the-toes-feet-and-ankles/"
+      }
+    ],
+    "sourceReferenceText": "출처: Arthritis UK · 발바닥·발목",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D33",
+    "name": "앉아서 발목 위아래 움직이기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "037_D33_male.png",
+    "imageArchivePath": "Jikkot_74/037_D33_male.png",
+    "imageSha256": "6af07e9a97b6f5c9e3f129cb54b2dd566a438fd828b1d6510c79fbcea5aa6178",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "앉기·의자",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "ankle-pump",
+    "legacyIdInSource": null,
+    "movementTypeSource": "가동성",
+    "linkedRegions": [
+      "발목",
+      "종아리"
+    ],
+    "patternIds": [
+      "P20",
+      "P17"
+    ],
+    "actualTarget": "발목의 작은 위아래 움직임",
+    "steps": [
+      "의자를 잡고 한 다리를 펴 발을 바닥에서 띄운다.",
+      "발끝을 앞으로 보냈다가 몸 쪽으로 당긴다.",
+      "다리를 바꿔 반복한다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "발목 · 종아리 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "오래 앉거나 선 뒤 굳은 느낌 + 체중 지지 없는 작은 발목 움직임이 편함",
+      "부담 연결 가설": "종아리에 추가 부하를 크게 주지 않고 발목 움직임 다양성을 확보할 후보",
+      "제외할 패턴과 반응": "작은 움직임에서도 통증 증가; 반복 수나 속도를 피로 해소 명목으로 높이지 않음",
+      "다른 후보": "D30(P15·편한 종아리 당김 확인),D32(P16)",
+      "사용자 설명 예시": "오래 고정한 뒤 굳은 느낌을 고려해, 앉아서 발목을 작게 움직여볼게요."
+    },
+    "sourceNotes": [
+      "조건: 보조 가동성으로 표시. 원·글자·위아래를 각각 새 스트레칭으로 세지 않음.",
+      "다른 스트레칭이 어려운 때의 실제 관절 움직임 선택지. 원문: 각 발 2세트×5회"
+    ],
+    "sourceReferences": [
+      {
+        "label": "NHS · 앉아서 하는 운동",
+        "url": "https://www.nhs.uk/live-well/exercise/sitting-exercises/"
+      }
+    ],
+    "sourceReferenceText": "출처: NHS · 앉아서 하는 운동",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "Y05",
+    "name": "바닥에 앉아 옆구리 늘리기",
+    "catalogGroup": "leisure_candidate",
+    "imageFileName": "038_Y05_female.png",
+    "imageArchivePath": "Jikkot_74/038_Y05_female.png",
+    "imageSha256": "44bf4be9d9d1f4c71a629f7e8e776d9a5b3112a3c885c3c2d0213a6a1ed9b35f",
+    "imageWidth": 1275,
+    "imageHeight": 1234,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "character": "여자",
+    "actualPose": "앉기·바닥",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "trunk-sidebend",
+    "legacyIdInSource": null,
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "등",
+      "허리"
+    ],
+    "patternIds": [
+      "P13"
+    ],
+    "actualTarget": "몸통 옆과 광배근 주변의 편한 옆굽힘",
+    "steps": [
+      "다리를 편하게 교차해 앉는다.",
+      "한 손을 바닥에 두고 반대 팔을 위로 보낸다.",
+      "팔을 따라 몸통을 옆으로 기울이고 돌아온다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "등 · 허리 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "한쪽 기대는 습관 + 옆구리 국소 당김 + 바닥 앉기와 팔 위 이동이 편함",
+      "부담 연결 가설": "몸통 옆의 고정 부담과 팔 올림의 참여를 함께 다룰 후보",
+      "제외할 패턴과 반응": "팔 올리기·몸통 옆굽힘에서 악화; 아픈 쪽만 더 길게 늘리는 배정 금지",
+      "다른 후보": "D25(P13·의자 가능),D26(P20)",
+      "사용자 설명 예시": "한쪽으로 기대며 옆구리가 굳은 느낌을 고려해, 몸통 옆의 편한 범위를 다뤄볼게요."
+    },
+    "sourceNotes": [
+      "조건: 몸통을 비틀지 않음. 바닥 앉기에서 무릎·발목 불편 시 제외.",
+      "맨몸 기본형; 전체 영상·개인 연결 검토 미완료 실시량은 서비스 시연 후 확정",
+      "같은 계열: D25, Y05, Y10 · 한 묶음에는 한 후보만 선택"
+    ],
+    "sourceReferences": [
+      {
+        "label": "Yoga 15 / Abi Carver · 바닥에 앉아 옆구리 늘리기",
+        "url": "https://yoga15.com/pose/seated-sidebend/"
+      }
+    ],
+    "sourceReferenceText": "출처: Yoga 15 / Abi Carver · 바닥에 앉아 옆구리 늘리기",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "Y07",
+    "name": "한 다리 펴고 앞으로 접기",
+    "catalogGroup": "leisure_candidate",
+    "imageFileName": "039_Y07_male.png",
+    "imageArchivePath": "Jikkot_74/039_Y07_male.png",
+    "imageSha256": "59af6d37eef01e317d3143d86be1938dfb68188896b5408df49a34584d693707",
+    "imageWidth": 1536,
+    "imageHeight": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "앉기·바닥",
+    "sourceSelectionPose": "앉기",
+    "sourceFamilyId": "hamstring-stretch",
+    "legacyIdInSource": null,
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "허리",
+      "햄스트링",
+      "허벅지"
+    ],
+    "patternIds": [
+      "P11"
+    ],
+    "actualTarget": "햄스트링과 종아리 뒤의 편한 신장",
+    "steps": [
+      "한 다리는 펴고 반대 발바닥은 안쪽 허벅지에 둔다.",
+      "가슴을 편 다리 방향으로 정렬한다.",
+      "골반에서 숙여 정강이·발목 중 닿는 곳을 잡는다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "허리 · 햄스트링 · 허벅지 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "허벅지 뒤 국소 제한감 + 바닥에서 한 다리를 펴고 골반에서 숙이기가 편함",
+      "부담 연결 가설": "고관절 굽힘 참여를 확보해 허리로만 숙이는 부담을 줄일 후보; 두 조직 중 실제 편한 당김을 기록",
+      "제외할 패턴과 반응": "다리로 찌릿하게 뻗음; 허리를 말아 악화; 최근 과하게 숙인 자세의 피로",
+      "다른 후보": "D12(P11·눕기 가능),D26(P20)",
+      "사용자 설명 예시": "허벅지 뒤가 뻣뻣하다는 답변에 맞춰, 발끝에 닿기보다 골반에서 편하게 움직여볼게요."
+    },
+    "sourceNotes": [
+      "조건: 머리가 무릎에 닿는 것을 목표로 삼지 않음. 허리를 말아 깊이 내려가지 않음.",
+      "맨몸 기본형; 전체 영상·개인 연결 검토 미완료 실시량은 서비스 시연 후 확정",
+      "같은 계열: D05, D12, Y07 · 한 묶음에는 한 후보만 선택"
+    ],
+    "sourceReferences": [
+      {
+        "label": "Yoga 15 / Abi Carver · 한 다리 펴고 앞으로 접기",
+        "url": "https://yoga15.com/pose/head-to-knee/"
+      }
+    ],
+    "sourceReferenceText": "출처: Yoga 15 / Abi Carver · 한 다리 펴고 앞으로 접기",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D07",
+    "name": "벽 문틀에 굽힌 팔 대고 가슴 늘리기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "040_D07_female.png",
+    "imageArchivePath": "Jikkot_74/040_D07_female.png",
+    "imageSha256": "43aaaf5fdba6879c1b9ba6a3b60fc86ff07594c7028bdd260b86c8984efbe10a",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "여자",
+    "actualPose": "서기",
+    "sourceSelectionPose": "서기",
+    "sourceFamilyId": "wall-bent-arm-chest",
+    "legacyIdInSource": null,
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "등",
+      "어깨",
+      "목"
+    ],
+    "patternIds": [
+      "P01"
+    ],
+    "actualTarget": "대흉근 주변 가슴 앞과 어깨 앞",
+    "steps": [
+      "벽 모서리 또는 문틀에서 앞뒤로 발을 둔다.",
+      "늘릴 쪽 팔을 어깨 높이에서 90도로 굽혀 벽에 댄다.",
+      "가슴을 열린 공간 쪽으로 부드럽게 이동한다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "등 · 어깨 · 목 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "팔 앞 고정 작업 + 가슴 앞 뻣뻣함 + 벽 지지와 팔 벌림이 편함",
+      "부담 연결 가설": "가슴 앞 움직임을 확보해 전방 고정된 견갑부의 부담을 바꿀 후보",
+      "제외할 패턴과 반응": "벽 지지에서 어깨 앞이 끼이거나 아픔; 견갑골을 강하게 모음",
+      "다른 후보": "O11(P01·앉기 가능),O06(P01·앉기 가능)",
+      "사용자 설명 예시": "팔을 앞에 두고 오래 작업한 답변을 보고, 등과 연결된 가슴 앞을 벽으로 지지해 열어볼게요."
+    },
+    "sourceNotes": [
+      "조건: 어깨 앞 압박이나 통증을 만들면 제외. 벽이 없는 운동 장소에 억지로 배치하지 않는다.",
+      "원문에 벽 지지·팔 각도·체중 이동이 명시된다. 의자를 잡는 기존 가슴 동작을 그냥 서서 하라는 버전이 아니다. 원문 공통: 10~30초, 2~4회"
+    ],
+    "sourceReferences": [
+      {
+        "label": "ACE / Stephanie Thielen · 가슴 스트레칭 5변형",
+        "url": "https://www.acefitness.org/resources/everyone/blog/5657/5-chest-stretch-variations/"
+      }
+    ],
+    "sourceReferenceText": "출처: ACE / Stephanie Thielen · 가슴 스트레칭 5변형",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D08",
+    "name": "다리 교차하고 바깥 고관절 늘리기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "041_D08_male.png",
+    "imageArchivePath": "Jikkot_74/041_D08_male.png",
+    "imageSha256": "545a1658f794b6b5c4f27adcddb1c05be4ee97965f53cb221d7dc57de592661c",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "서기",
+    "sourceSelectionPose": "서기",
+    "sourceFamilyId": "standing-outer-hip",
+    "legacyIdInSource": null,
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "허벅지",
+      "허리"
+    ],
+    "patternIds": [
+      "P13"
+    ],
+    "actualTarget": "고관절 바깥 주변의 편한 신장",
+    "steps": [
+      "벽 옆에 서서 균형을 지지한다.",
+      "벽 가까운 다리를 반대 다리 뒤로 교차한다.",
+      "몸통을 비틀지 않고 골반을 벽 쪽으로 부드럽게 이동한다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "허벅지 · 허리 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "한 발에 체중을 오래 실음 + 바깥 고관절 국소 당김 + 교차 서기가 편함",
+      "부담 연결 가설": "비대칭 하체 지지와 몸통 옆 부담을 함께 검토할 후보; 장경인대 길이를 바꾼다고 단정하지 않음",
+      "제외할 패턴과 반응": "바깥 무릎 통증·고관절 압박·불안정한 균형; 바깥 허벅지가 아프다는 이유만으로 배정 금지",
+      "다른 후보": "D25(P13·몸통 옆 당김),D26(P20)",
+      "사용자 설명 예시": "한쪽으로 버티는 습관과 바깥 고관절 당김을 함께 고려해, 그 주변을 부드럽게 움직여볼게요."
+    },
+    "sourceNotes": [
+      "조건: 원문 명칭의 장경인대를 직접 늘린다고 단정하지 않고 바깥 고관절 당김으로 설명한다.",
+      "AAOS 원문의 지지·다리 교차·골반 이동이 확인된다. 앉은 Figure-4를 서서 바꾼 버전이 아니다. 원문: 30초, 2세트×4회"
+    ],
+    "sourceReferences": [
+      {
+        "label": "AAOS · 고관절 프로그램",
+        "url": "https://www.orthoinfo.org/recovery/hip-conditioning-program"
+      }
+    ],
+    "sourceReferenceText": "출처: AAOS · 고관절 프로그램",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D09",
+    "name": "벽에서 무릎 펴고 종아리 늘리기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "042_D09_female.png",
+    "imageArchivePath": "Jikkot_74/042_D09_female.png",
+    "imageSha256": "966d4994751831ab7fc12e59c1219904db3500d9735223618ede26680ea63d15",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "여자",
+    "actualPose": "서기",
+    "sourceSelectionPose": "서기",
+    "sourceFamilyId": "calf-knee-straight",
+    "legacyIdInSource": null,
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "발목",
+      "종아리",
+      "무릎"
+    ],
+    "patternIds": [
+      "P15"
+    ],
+    "actualTarget": "비복근 중심의 종아리 뒤",
+    "steps": [
+      "벽을 지지하고 한 다리를 뒤에 둔다.",
+      "뒤쪽 무릎을 편 채 뒤꿈치를 바닥에 둔다.",
+      "골반을 벽 방향으로 부드럽게 이동한다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "발목 · 종아리 · 무릎 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "서기·걷기 뒤 종아리 뒤 당김 + 무릎을 편 방향이 편함; 무릎 연결은 발목 제한감 동반 시만",
+      "부담 연결 가설": "발목 움직임 참여를 확보해 걷기·계단에서 하체 부담을 분산할 후보",
+      "제외할 패턴과 반응": "뒤꿈치·종아리 통증 재현; 무릎 뒤 압박; 반복 사용 피로 P17만으로 깊게 늘리지 않음",
+      "다른 후보": "D33(P20),D10(P15·굽힌 방향이 편한 경우만)",
+      "사용자 설명 예시": "발목이 뻣뻣하고 종아리 뒤도 당긴다고 답해, 무릎을 편 방향을 골랐어요."
+    },
+    "sourceNotes": [
+      "조건: 지지 없는 버전·걸음 자세 버전을 별도 신규 동작으로 만들지 않는다.",
+      "원문에서 뒤쪽 무릎을 편 종아리 스트레칭이 별도 설명된다. 원문: 30초, 2세트×10회; 서비스 용량 별도 검토",
+      "같은 계열: D09, D30 · 한 묶음에는 한 후보만 선택"
+    ],
+    "sourceReferences": [
+      {
+        "label": "AAOS · 발·발목 프로그램",
+        "url": "https://www.orthoinfo.org/recovery/foot-and-ankle-conditioning-program"
+      }
+    ],
+    "sourceReferenceText": "출처: AAOS · 발·발목 프로그램",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D10",
+    "name": "벽에서 무릎 굽혀 종아리 늘리기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "043_D10_male.png",
+    "imageArchivePath": "Jikkot_74/043_D10_male.png",
+    "imageSha256": "9d9e5f48a4a6318d20a8fcbd7b977800961feffed1930991adf45a54a50fdd18",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "서기",
+    "sourceSelectionPose": "서기",
+    "sourceFamilyId": "calf-knee-bent",
+    "legacyIdInSource": null,
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "발목",
+      "종아리",
+      "무릎"
+    ],
+    "patternIds": [
+      "P15"
+    ],
+    "actualTarget": "가자미근 중심의 종아리 뒤와 발목 굽힘",
+    "steps": [
+      "벽을 지지하고 한 다리를 뒤에 둔다.",
+      "뒤쪽 무릎도 굽히면서 뒤꿈치를 바닥에 유지한다.",
+      "양발 사이에서 골반을 안정시키며 부드럽게 이동한다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "발목 · 종아리 · 무릎 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "발목 굽힘 제한감 + 무릎 굽힌 방향의 종아리 당김이 편함",
+      "부담 연결 가설": "무릎이 굽혀지는 과제에서 발목 참여를 확보할 후보; 무릎 통증 원인 교정으로 단정하지 않음",
+      "제외할 패턴과 반응": "발목 앞 끼임·무릎 통증·뒤꿈치 들림으로 보상",
+      "다른 후보": "D33(P20),D09(P15·편 방향이 편한 경우만)",
+      "사용자 설명 예시": "무릎을 굽힌 자세에서도 발목 뒤가 뻣뻣하다고 답해, 그 방향을 부드럽게 다뤄볼게요."
+    },
+    "sourceNotes": [
+      "조건: 발목 앞쪽이 끼이거나 뒤꿈치가 들릴 만큼 밀지 않는다.",
+      "같은 자리의 이름만 바꾼 항목이 아니다. 원문이 무릎 굽힘과 가자미근 타깃을 따로 구분한다. 원문: 30초, 2세트×10회; 서비스 용량 별도 검토",
+      "같은 계열: D10, D31 · 한 묶음에는 한 후보만 선택"
+    ],
+    "sourceReferences": [
+      {
+        "label": "AAOS · 발·발목 프로그램",
+        "url": "https://www.orthoinfo.org/recovery/foot-and-ankle-conditioning-program"
+      }
+    ],
+    "sourceReferenceText": "출처: AAOS · 발·발목 프로그램",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "W01",
+    "name": "걸어가며 런지",
+    "catalogGroup": "warmup_candidate",
+    "imageFileName": "044_W01_female.png",
+    "imageArchivePath": "Jikkot_74/044_W01_female.png",
+    "imageSha256": "3d72e49ebad520cd483c83a3afb2d23b04fa31941ca3f45c43bc07abc47f0242",
+    "imageWidth": 1312,
+    "imageHeight": 1199,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "character": "여자",
+    "actualPose": "서기",
+    "sourceSelectionPose": "서기",
+    "sourceFamilyId": "W01",
+    "legacyIdInSource": null,
+    "movementTypeSource": "동적 준비",
+    "linkedRegions": [
+      "허리",
+      "허벅지"
+    ],
+    "patternIds": [
+      "P21",
+      "P09"
+    ],
+    "actualTarget": "고관절 굽힘 폄과 하체의 지지 협응",
+    "steps": [
+      "허리에 손을 두고 한 발 앞으로 걷는다.",
+      "앞 무릎·고관절·발목 방향을 맞추며 뒷무릎을 바닥에 닿기 전까지 낮춘다.",
+      "뒷발로 밀어 반대쪽 다리를 앞으로 보내 반복한다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "허리 · 허벅지 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "선택 종목에 런지 역할 필요 + 무릎·고관절 부하가 편함; 개인 추가는 고관절 앞 제한감 동반 시만",
+      "부담 연결 가설": "고관절·무릎·발목이 이동을 나눠 맡게 준비할 후보; 허리 통증 교정 동작으로 자동 배정 금지",
+      "제외할 패턴과 반응": "런지에서 무릎 통증·허리 젖힘·고관절 압박; 피로 P17에 추가 부하 금지",
+      "다른 후보": "W03(P21·다리 흔들기 편함)",
+      "사용자 설명 예시": "운동에 필요한 고관절과 하체의 움직임을 천천히 준비해볼게요."
+    },
+    "sourceNotes": [
+      "조건: 편한 범위에서 천천히 시작. 서비스 시간·횟수는 자체 시연 후 확정.",
+      "원문 수행법 확인; 조합·연결 검토 대기",
+      "출처: HSS / Leigh-Ann Bramble · 동적·정적 스트레칭"
+    ],
+    "sourceReferences": [],
+    "sourceReferenceText": null,
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "W02",
+    "name": "운동 전 서서 몸통 좌우 회전",
+    "catalogGroup": "warmup_candidate",
+    "imageFileName": "045_W02_male.png",
+    "imageArchivePath": "Jikkot_74/045_W02_male.png",
+    "imageSha256": "3f45968f2c566b9fd62fe0bd7afaf196a806b9af08f24a91d6c907d9a7f11c38",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "서기",
+    "sourceSelectionPose": "서기",
+    "sourceFamilyId": "W02",
+    "legacyIdInSource": null,
+    "movementTypeSource": "동적 준비",
+    "linkedRegions": [
+      "목",
+      "등",
+      "어깨"
+    ],
+    "patternIds": [
+      "P21",
+      "P05"
+    ],
+    "actualTarget": "흉추 중심의 편한 몸통 회전",
+    "steps": [
+      "양발을 어깨 너비로 두고 팔꿈치를 굽힌다.",
+      "발 위치를 유지하며 몸통을 좌우로 부드럽게 돌린다.",
+      "반동으로 끝범위까지 비틀지 않는다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "목 · 등 · 어깨 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "종목에 몸통 회전 역할 필요 또는 몸통 회전 제한감 + 작은 서서 회전이 편함",
+      "부담 연결 가설": "몸통의 회전 참여를 준비해 목이나 어깨에만 방향 전환이 몰리지 않도록 할 후보",
+      "제외할 패턴과 반응": "발을 고정한 과한 비틀기·허리 또는 목에서 악화",
+      "다른 후보": "W17(P21·어깨 역할·바닥 가능),개인 추가 생략(대체 조건 불일치)",
+      "사용자 설명 예시": "목과 어깨만으로 방향을 바꾸기보다, 몸통도 함께 움직일 수 있도록 준비해볼게요."
+    },
+    "sourceNotes": [
+      "조건: 편한 범위에서 천천히 시작. 서비스 시간·횟수는 자체 시연 후 확정.",
+      "원문 수행법 확인; 조합·연결 검토 대기",
+      "출처: HSS / Leigh-Ann Bramble · 동적·정적 스트레칭"
+    ],
+    "sourceReferences": [],
+    "sourceReferenceText": null,
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "W03",
+    "name": "지지하며 다리 앞뒤 좌우 흔들기",
+    "catalogGroup": "warmup_candidate",
+    "imageFileName": "046_W03_female.png",
+    "imageArchivePath": "Jikkot_74/046_W03_female.png",
+    "imageSha256": "4e0fb529852b1c7c1b588551b006c1b68324db04bc554eef4f0545faf488bea5",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "여자",
+    "actualPose": "서기",
+    "sourceSelectionPose": "서기",
+    "sourceFamilyId": "W03",
+    "legacyIdInSource": null,
+    "movementTypeSource": "동적 준비",
+    "linkedRegions": [
+      "허리",
+      "허벅지"
+    ],
+    "patternIds": [
+      "P21",
+      "P09",
+      "P10"
+    ],
+    "actualTarget": "고관절 앞뒤와 옆 움직임",
+    "steps": [
+      "벽을 가볍게 지지하고 한 다리를 들어 올린다.",
+      "다리를 앞뒤로 부드럽게 흔든다.",
+      "벽을 마주 보고 좌우 방향도 실시한 뒤 반대 다리로 바꾼다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "허리 · 허벅지 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "종목에 고관절 범위 준비 필요 + 지지한 다리 움직임이 편함; 개인 추가는 고관절 제한감 동반 시만",
+      "부담 연결 가설": "고관절 움직임 참여를 준비해 허리에서 흔들림을 대신 만드는 부담을 줄일 후보",
+      "제외할 패턴과 반응": "허리를 흔들며 다리를 차거나 고관절·무릎 불편 증가",
+      "다른 후보": "W07(P21·무릎 안기가 편함),개인 추가 생략(조건 불일치)",
+      "사용자 설명 예시": "몸통을 크게 흔들지 않고 고관절의 앞뒤와 옆 움직임을 준비해볼게요."
+    },
+    "sourceNotes": [
+      "조건: 편한 범위에서 천천히 시작. 서비스 시간·횟수는 자체 시연 후 확정.",
+      "원문 수행법 확인; 조합·연결 검토 대기",
+      "출처: Peloton / Mila Lazar·Emily Booth · 자전거 준비"
+    ],
+    "sourceReferences": [],
+    "sourceReferenceText": null,
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "W04",
+    "name": "운동 전 팔 원 그리기",
+    "catalogGroup": "warmup_candidate",
+    "imageFileName": "047_W04_male.png",
+    "imageArchivePath": "Jikkot_74/047_W04_male.png",
+    "imageSha256": "9eba9887dc310425226a6bd85b81796b87eec784c441c7f1689050cd21468ba2",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "서기",
+    "sourceSelectionPose": "서기",
+    "sourceFamilyId": "W04",
+    "legacyIdInSource": null,
+    "movementTypeSource": "동적 준비",
+    "linkedRegions": [
+      "어깨",
+      "등"
+    ],
+    "patternIds": [
+      "P21"
+    ],
+    "actualTarget": "어깨 회전과 견갑부의 편한 동시 움직임",
+    "steps": [
+      "양발을 어깨 너비로 두고 무릎을 부드럽게 둔다.",
+      "팔로 원을 그리며 움직임 범위를 점진적으로 조절한다.",
+      "허리를 젖히거나 갈비뼈를 과하게 들지 않는다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "어깨 · 등 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "종목에 팔 움직임 준비 필요 + 작은 팔 원이 편함; 어깨 불편 기록만으로 개인 교정 배정 금지",
+      "부담 연결 가설": "운동 중 팔 움직임을 점진적으로 준비할 후보; 가슴 앞 단축의 해결책으로 간주하지 않음",
+      "제외할 패턴과 반응": "팔 원에서 끼임·견갑부 통증·허리 젖힘; 아플수록 큰 원 반복 금지",
+      "다른 후보": "W17(P21·바닥 지지와 팔 올림 편함),개인 추가 생략",
+      "사용자 설명 예시": "운동에서 쓸 팔 움직임을 작은 원부터 준비해볼게요. 범위는 편한 만큼만 넓혀요."
+    },
+    "sourceNotes": [
+      "조건: 편한 범위에서 천천히 시작. 서비스 시간·횟수는 자체 시연 후 확정.",
+      "원문 수행법 확인; 조합·연결 검토 대기",
+      "출처: Peloton / Mila Lazar·Emily Booth · 자전거 준비"
+    ],
+    "sourceReferences": [],
+    "sourceReferenceText": null,
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "W05",
+    "name": "맨몸 스쿼트",
+    "catalogGroup": "warmup_candidate",
+    "imageFileName": "048_W05_female.png",
+    "imageArchivePath": "Jikkot_74/048_W05_female.png",
+    "imageSha256": "cd87c650da502192b04536f96fbd2c015fbe7bbdd8a466aaa6c2f16a2ea14c93",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "여자",
+    "actualPose": "서기",
+    "sourceSelectionPose": "서기",
+    "sourceFamilyId": "W05",
+    "legacyIdInSource": null,
+    "movementTypeSource": "활성화 및 준비",
+    "linkedRegions": [
+      "허리",
+      "허벅지",
+      "무릎"
+    ],
+    "patternIds": [
+      "P21",
+      "P12"
+    ],
+    "actualTarget": "둔근 대퇴사두근과 몸통 하체의 지지 협응",
+    "steps": [
+      "양발을 어깨 너비로 두고 발끝을 약간 바깥으로 둔다.",
+      "엉덩이를 뒤로 보내며 무릎을 굽힌다.",
+      "가슴·등을 안정시키고 발로 밀어 돌아온다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "허리 · 허벅지 · 무릎 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "종목에 하체 부하 준비 필요 + 편한 범위 스쿼트 경험; 무릎 통증만으로 배정 금지",
+      "부담 연결 가설": "고관절·무릎·발목이 하체 지지를 나눠 맡게 준비할 후보; 약한 근육을 스트레칭한다는 설명 금지",
+      "제외할 패턴과 반응": "무릎 통증·허리에서 버팀·최근 부하 증가 피로; 깊이와 반복을 억지로 늘림",
+      "다른 후보": "W03(P21·가동 범위 역할),개인 추가 생략",
+      "사용자 설명 예시": "하체와 몸통이 힘을 나눠 쓰도록, 편한 깊이에서 움직임을 준비해볼게요."
+    },
+    "sourceNotes": [
+      "조건: 편한 범위에서 천천히 시작. 서비스 시간·횟수는 자체 시연 후 확정.",
+      "원문 수행법 확인; 조합·연결 검토 대기",
+      "출처: Peloton / Mila Lazar·Emily Booth · 자전거 준비"
+    ],
+    "sourceReferences": [],
+    "sourceReferenceText": null,
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "W06",
+    "name": "양발 뒤꿈치 들기",
+    "catalogGroup": "warmup_candidate",
+    "imageFileName": "049_W06_male.png",
+    "imageArchivePath": "Jikkot_74/049_W06_male.png",
+    "imageSha256": "ee91c23214f8b1fbe08fed27a925b05290f4f586cb1810adfcfd56a390a5f1b0",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "서기",
+    "sourceSelectionPose": "서기",
+    "sourceFamilyId": "W06",
+    "legacyIdInSource": null,
+    "movementTypeSource": "활성화 및 준비",
+    "linkedRegions": [
+      "종아리",
+      "발목"
+    ],
+    "patternIds": [
+      "P21"
+    ],
+    "actualTarget": "종아리의 발목 밀어내기와 균형",
+    "steps": [
+      "벽·의자를 잡고 양발로 선다.",
+      "양쪽 뒤꿈치를 천천히 들어 올린다.",
+      "천천히 내려온다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "종아리 · 발목 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "종목에 발목 밀어내기 준비 필요 + 양발 체중 부하와 뒤꿈치 들기가 편함",
+      "부담 연결 가설": "종아리 힘 사용을 준비하는 후보; 뻣뻣함 해소용 정적 스트레칭과 구분",
+      "제외할 패턴과 반응": "종아리·아킬레스 부하 통증·최근 사용 과다 피로; 종아리 불편만으로 추가 금지",
+      "다른 후보": "D33(P20·일상 목적·앉기 가능),운동 개인 추가 생략",
+      "사용자 설명 예시": "운동에서 쓸 종아리와 발목의 밀어내기를 편한 범위에서 준비해볼게요."
+    },
+    "sourceNotes": [
+      "조건: 편한 범위에서 천천히 시작. 서비스 시간·횟수는 자체 시연 후 확정.",
+      "원문 수행법 확인; 조합·연결 검토 대기",
+      "출처: AAOS · 발·발목 프로그램"
+    ],
+    "sourceReferences": [],
+    "sourceReferenceText": null,
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "W07",
+    "name": "서서 무릎 교대로 안기",
+    "catalogGroup": "warmup_candidate",
+    "imageFileName": "050_W07_female.png",
+    "imageArchivePath": "Jikkot_74/050_W07_female.png",
+    "imageSha256": "6bc9d35709b2607ae8633aa81d8d08e246d0a127d88df739fdd26779e1dc5b53",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "여자",
+    "actualPose": "서기",
+    "sourceSelectionPose": "서기",
+    "sourceFamilyId": "W07",
+    "legacyIdInSource": null,
+    "movementTypeSource": "동적 준비",
+    "linkedRegions": [
+      "허리",
+      "허벅지"
+    ],
+    "patternIds": [
+      "P21",
+      "P10"
+    ],
+    "actualTarget": "고관절 굽힘 범위와 한 발 지지",
+    "steps": [
+      "서서 한 무릎을 몸 쪽으로 올려 정강이를 잡는다.",
+      "상체를 세운 채 잠깐 당겼다가 발을 내려놓는다.",
+      "좌우를 번갈아 반복한다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "허리 · 허벅지 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "종목에 고관절 굽힘 준비 필요 + 무릎 잡기와 한 발 균형이 편함; 개인 추가는 엉덩이 뒤 제한감 동반",
+      "부담 연결 가설": "고관절에서 다리를 올리는 참여를 준비해 몸통을 크게 젖히는 보상을 줄일 후보",
+      "제외할 패턴과 반응": "무릎 잡기 통증·균형 불안·고관절 앞 끼임",
+      "다른 후보": "W03(P21·지지 가능),개인 추가 생략",
+      "사용자 설명 예시": "고관절에서 다리를 올릴 수 있도록 준비해볼게요. 몸통을 뒤로 젖혀 높이를 만들지 않아요."
+    },
+    "sourceNotes": [
+      "조건: 균형이 어렵거나 무릎을 잡는 것이 불편하면 제외.",
+      "본문 수행법 확인; 서비스 시간·횟수·종목 조합 검토 대기",
+      "출처: Peloton / Mila Lazar·Emily Booth · 자전거 준비"
+    ],
+    "sourceReferences": [],
+    "sourceReferenceText": null,
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "W08",
+    "name": "한 발로 지지해 몸통 숙이기",
+    "catalogGroup": "warmup_candidate",
+    "imageFileName": "051_W08_male.png",
+    "imageArchivePath": "Jikkot_74/051_W08_male.png",
+    "imageSha256": "da18175fc510f6c29d773376c4b41c75e7f9c3347b1adb08c0758423de0b1cd0",
+    "imageWidth": 1536,
+    "imageHeight": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "서기",
+    "sourceSelectionPose": "서기",
+    "sourceFamilyId": "W08",
+    "legacyIdInSource": null,
+    "movementTypeSource": "동적 준비 및 균형",
+    "linkedRegions": [
+      "허리",
+      "햄스트링",
+      "허벅지"
+    ],
+    "patternIds": [
+      "P21",
+      "P11"
+    ],
+    "actualTarget": "햄스트링 둔근과 고관절 힌지 협응",
+    "steps": [
+      "한 발로 서고 지지 무릎을 조금 굽힌다.",
+      "반대 다리를 뒤로 보내며 골반에서 상체를 숙인다.",
+      "골반을 정면으로 유지하고 천천히 돌아온다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "허리 · 햄스트링 · 허벅지 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "숙련된 한 발 지지 경험 + 힌지 움직임이 편함; 뒤 허벅지 제한감은 별도 확인",
+      "부담 연결 가설": "고관절에서 숙이고 돌아오는 분담을 준비할 후보; 높은 균형 부담으로 초보 기본 제외",
+      "제외할 패턴과 반응": "균형 불안·허리 굽힘 악화·다리 찌릿함; 지지 변형을 임의로 만들지 않음",
+      "다른 후보": "W16(P21·바닥 가능),W03(P21)",
+      "사용자 설명 예시": "한 발 지지가 익숙하고 편한 경우에만, 고관절에서 숙였다 돌아오는 움직임을 준비해요."
+    },
+    "sourceNotes": [
+      "조건: 균형 요구가 커서 초보 기본 루틴에서 제외. 원문의 inverted hamstring.",
+      "본문 수행법 확인; 서비스 시간·횟수·종목 조합 검토 대기",
+      "출처: Peloton / Mila Lazar·Emily Booth · 자전거 준비"
+    ],
+    "sourceReferences": [],
+    "sourceReferenceText": null,
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "W09",
+    "name": "옆으로 런지",
+    "catalogGroup": "warmup_candidate",
+    "imageFileName": "052_W09_female.png",
+    "imageArchivePath": "Jikkot_74/052_W09_female.png",
+    "imageSha256": "c127956cdca2e98b937695259416d583ca4c35085d507ed49a0824735ed3dec4",
+    "imageWidth": 1374,
+    "imageHeight": 1145,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "character": "여자",
+    "actualPose": "서기",
+    "sourceSelectionPose": "서기",
+    "sourceFamilyId": "W09",
+    "legacyIdInSource": null,
+    "movementTypeSource": "동적 준비",
+    "linkedRegions": [
+      "허벅지",
+      "무릎"
+    ],
+    "patternIds": [
+      "P21",
+      "P14"
+    ],
+    "actualTarget": "고관절 내전근 범위와 옆 방향 지지",
+    "steps": [
+      "한 발을 옆으로 내딛는다.",
+      "그쪽 무릎을 굽히며 엉덩이를 뒤로 보낸다.",
+      "반대 다리는 길게 두고 밀어 돌아온다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "허벅지 · 무릎 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "종목에 옆 이동 준비 필요 + 옆 런지 부하가 편함; 개인 추가는 안쪽 허벅지 제한감 동반",
+      "부담 연결 가설": "고관절과 하체가 옆 방향 이동을 분담하도록 준비할 후보",
+      "제외할 패턴과 반응": "사타구니·무릎 통증·깊은 런지 불편; 무릎 불편만으로 내전근 원인 추정 금지",
+      "다른 후보": "W13(P21·바닥 가능·지지 편함),개인 추가 생략",
+      "사용자 설명 예시": "옆 방향으로 움직일 때 고관절과 하체가 함께 참여하도록 편한 범위를 준비해볼게요."
+    },
+    "sourceNotes": [
+      "조건: 깊이보다 무릎·발 방향과 균형 우선.",
+      "USTA 동작명·엉덩이 뒤로 큐 확인; 상세 문장은 서비스 코칭 초안, 시연 검토 대기",
+      "출처: USTA · 테니스 동적 준비"
+    ],
+    "sourceReferences": [],
+    "sourceReferenceText": null,
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "W10",
+    "name": "발을 교차하지 않고 옆으로 이동",
+    "catalogGroup": "warmup_candidate",
+    "imageFileName": "053_W10_male.png",
+    "imageArchivePath": "Jikkot_74/053_W10_male.png",
+    "imageSha256": "49bd537167a8f3df3d70fde9f32a5ebf10f4a9d6df8d3b36ad9d6b69ca0c98ae",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "서기",
+    "sourceSelectionPose": "서기",
+    "sourceFamilyId": "W10",
+    "legacyIdInSource": null,
+    "movementTypeSource": "종목 움직임 준비",
+    "linkedRegions": [
+      "허벅지",
+      "무릎",
+      "발목"
+    ],
+    "patternIds": [
+      "P21"
+    ],
+    "actualTarget": "고관절 옆 방향 제어와 하체 협응",
+    "steps": [
+      "무릎을 부드럽게 굽히고 선다.",
+      "한 발을 옆으로 내딛고 다른 발이 따라오게 한다.",
+      "발을 교차하지 않고 짧게 좌우 이동한다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "허벅지 · 무릎 · 발목 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "축구·테니스 등 옆 이동 역할 필요 + 짧은 옆걸음과 체중 이동이 편함",
+      "부담 연결 가설": "옆 이동에서 고관절·무릎·발목의 방향 전환 협응을 준비; 근육 신장이나 통증 교정 타깃 아님",
+      "제외할 패턴과 반응": "착지·옆 이동 통증·미끄러운 공간; 속도와 거리로 강도 강요",
+      "다른 후보": "W03(P21·고관절 범위 역할),개인 추가 생략",
+      "사용자 설명 예시": "운동에 필요한 옆 방향 체중 이동을 짧고 편한 범위에서 준비해볼게요."
+    },
+    "sourceNotes": [
+      "조건: 미끄럽지 않고 옆으로 이동할 공간 필요.",
+      "USTA side shuffle 목록·밀어내기 큐 확인; 쉬운 속도는 서비스 강도 조절 초안",
+      "출처: USTA · 테니스 동적 준비"
+    ],
+    "sourceReferences": [],
+    "sourceReferenceText": null,
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "W11",
+    "name": "무릎 높여 제자리 움직이기",
+    "catalogGroup": "warmup_candidate",
+    "imageFileName": "054_W11_female.png",
+    "imageArchivePath": "Jikkot_74/054_W11_female.png",
+    "imageSha256": "bd3969e57175119177c2b01e4db5886cdd1fd49bb2f2152269073f63b7a26502",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "여자",
+    "actualPose": "서기",
+    "sourceSelectionPose": "서기",
+    "sourceFamilyId": "W11",
+    "legacyIdInSource": null,
+    "movementTypeSource": "동적 준비",
+    "linkedRegions": [
+      "허벅지",
+      "허리"
+    ],
+    "patternIds": [
+      "P21"
+    ],
+    "actualTarget": "고관절 굽힘과 몸통의 교대 움직임",
+    "steps": [
+      "상체를 세우고 한 무릎을 들어 올린다.",
+      "내려놓으며 반대 무릎을 올린다.",
+      "발끝을 올리며 좌우를 리듬 있게 교대한다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "허벅지 · 허리 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "종목에 교대 다리 움직임 필요 + 낮은 속도 무릎 올림이 편함",
+      "부담 연결 가설": "고관절에서 다리를 들고 몸통이 지지하는 협응을 준비; 허리 통증 완화의 기본 동작 아님",
+      "제외할 패턴과 반응": "고관절 앞 끼임·허리 젖힘·착지 불편; 점프와 빠른 속도 강요 금지",
+      "다른 후보": "W03(P21),개인 추가 생략",
+      "사용자 설명 예시": "몸통을 편하게 지지하며 다리를 번갈아 드는 움직임을 준비해볼게요."
+    },
+    "sourceNotes": [
+      "조건: 달리기처럼 빠른 수행은 후순위. 점프 강요 없음.",
+      "USTA high knees 목록·무릎/발끝 큐 확인; 낮은 속도는 서비스 초안",
+      "출처: USTA · 테니스 동적 준비"
+    ],
+    "sourceReferences": [],
+    "sourceReferenceText": null,
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "W12",
+    "name": "뒤꿈치를 뒤로 교대로 올리기",
+    "catalogGroup": "warmup_candidate",
+    "imageFileName": "055_W12_male.png",
+    "imageArchivePath": "Jikkot_74/055_W12_male.png",
+    "imageSha256": "6692b8cf5d177d4326a5c5b08708263223f7ea5c85510e6fe885f5a2d5be0a3d",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "서기",
+    "sourceSelectionPose": "서기",
+    "sourceFamilyId": "W12",
+    "legacyIdInSource": null,
+    "movementTypeSource": "동적 준비",
+    "linkedRegions": [
+      "허벅지",
+      "햄스트링"
+    ],
+    "patternIds": [
+      "P21"
+    ],
+    "actualTarget": "무릎 굽힘과 허벅지 앞뒤의 교대 움직임",
+    "steps": [
+      "상체를 조금 앞으로 두고 선다.",
+      "한 무릎을 굽혀 뒤꿈치를 엉덩이 쪽으로 올린다.",
+      "좌우를 번갈아 반복한다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "허벅지 · 햄스트링 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "종목에 교대 무릎 굽힘 필요 + 뒤꿈치를 뒤로 올리는 움직임이 편함",
+      "부담 연결 가설": "허벅지 앞뒤가 동적으로 움직이는 준비 후보; 대퇴사두근 정적 스트레칭과 구분",
+      "제외할 패턴과 반응": "무릎 통증·앞 허벅지 압박·허리 젖힘; 발이 엉덩이에 닿게 강요",
+      "다른 후보": "W03(P21·고관절 역할),개인 추가 생략",
+      "사용자 설명 예시": "무릎을 편하게 굽혔다 펴며 운동에 필요한 허벅지 앞뒤 움직임을 준비해볼게요."
+    },
+    "sourceNotes": [
+      "조건: 뒤꿈치를 반드시 엉덩이에 닿게 하지 않음.",
+      "USTA butt kicks 목록·무릎 아래 큐 확인; 서비스 시연 대기",
+      "출처: USTA · 테니스 동적 준비"
+    ],
+    "sourceReferences": [],
+    "sourceReferenceText": null,
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D11",
+    "name": "옆으로 누워 허벅지 앞 늘리기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "056_D11_female.png",
+    "imageArchivePath": "Jikkot_74/056_D11_female.png",
+    "imageSha256": "deac81cc98474f7d05c3195cf3731cd630353b62ab0bf791ed95c0623a097397",
+    "imageWidth": 1774,
+    "imageHeight": 887,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "character": "여자",
+    "actualPose": "눕기·옆으로",
+    "sourceSelectionPose": "눕기",
+    "sourceFamilyId": "side-lying-quad",
+    "legacyIdInSource": null,
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "허리",
+      "허벅지",
+      "무릎"
+    ],
+    "patternIds": [
+      "P09"
+    ],
+    "actualTarget": "대퇴사두근 특히 대퇴직근 주변 허벅지 앞",
+    "steps": [
+      "옆으로 누워 아래쪽 팔로 머리를 받친다.",
+      "위쪽 발을 잡아 뒤꿈치를 엉덩이 방향으로 당긴다.",
+      "양 무릎을 가깝게 두고 허리·골반을 꺾지 않는다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "허리 · 허벅지 · 무릎 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "앉기·계단 활동 뒤 허벅지 앞 당김 + 옆누운 무릎 굽힘이 편함",
+      "부담 연결 가설": "허벅지 앞의 움직임 범위가 고관절·무릎 과제에 참여하도록 할 후보; 허리 연결은 고관절 앞 입력 동반 시만",
+      "제외할 패턴과 반응": "무릎 앞 통증·허리 젖힘·급하게 발목을 당김",
+      "다른 후보": "D04(P09·앞 고관절 당김),D26(P20)",
+      "사용자 설명 예시": "허벅지 앞 당김과 활동 내용을 함께 고려해, 허리와 무릎에도 연결된 앞쪽 근육을 다뤄볼게요."
+    },
+    "sourceNotes": [
+      "조건: 손이 발에 닿지 않거나 무릎 앞 통증이 생기면 수행을 강요하지 않는다.",
+      "NHS의 옆누운 허벅지 스트레칭 수행법을 확인했다. 서기·엎드리기 복제는 목록에서 제외했다. 원문: 15~20초"
+    ],
+    "sourceReferences": [
+      {
+        "label": "NHS · 운동 후 스트레칭",
+        "url": "https://www.nhs.uk/live-well/exercise/how-to-stretch-after-exercising/"
+      }
+    ],
+    "sourceReferenceText": "출처: NHS · 운동 후 스트레칭",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D12",
+    "name": "누워 허벅지 받치고 뒤쪽 늘리기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "057_D12_male.png",
+    "imageArchivePath": "Jikkot_74/057_D12_male.png",
+    "imageSha256": "b590af7d0aae86a212e2b8813529c3321fb42e7e4b49c3374541216764d03fac",
+    "imageWidth": 1536,
+    "imageHeight": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "눕기·바로",
+    "sourceSelectionPose": "눕기",
+    "sourceFamilyId": "hamstring-stretch",
+    "legacyIdInSource": null,
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "허리",
+      "햄스트링",
+      "무릎"
+    ],
+    "patternIds": [
+      "P11"
+    ],
+    "actualTarget": "햄스트링의 편한 신장",
+    "steps": [
+      "바로 누워 무릎을 굽힌다.",
+      "한쪽 허벅지 뒤를 받쳐 무릎을 가슴 방향으로 가져온다.",
+      "가능한 만큼 무릎을 펴며 허벅지 뒤의 당김을 확인한다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "허리 · 햄스트링 · 무릎 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "허벅지 뒤 국소 제한감 + 누워 허벅지를 받친 작은 무릎 폄이 편함",
+      "부담 연결 가설": "등을 지지하면서 고관절·무릎 각도를 조절해 허리에서 대신 움직이는 부담을 줄일 후보",
+      "제외할 패턴과 반응": "다리로 뻗는 찌릿함·무릎 뒤 통증·굽힘에서 악화",
+      "다른 후보": "D26(P20),D04(P09)",
+      "사용자 설명 예시": "허벅지 뒤의 당김을 고려해, 등을 바닥에 지지하고 편한 범위를 다뤄볼게요."
+    },
+    "sourceNotes": [
+      "조건: 의자와 같은 계열의 대안으로 관리하며 한 루틴에 둘 다 넣어 수를 늘리지 않는다.",
+      "누운 원문이 실제 존재한다. 의자의 골반 숙이기와 달리 등을 지지하고 고관절·무릎 각도를 조절한다. 원문: 30~60초, 2세트×4회",
+      "같은 계열: D05, D12, Y07 · 한 묶음에는 한 후보만 선택"
+    ],
+    "sourceReferences": [
+      {
+        "label": "AAOS · 고관절 프로그램",
+        "url": "https://www.orthoinfo.org/recovery/hip-conditioning-program"
+      }
+    ],
+    "sourceReferenceText": "출처: AAOS · 고관절 프로그램",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "D13",
+    "name": "옆으로 누워 책 펼치듯 가슴 돌리기",
+    "catalogGroup": "daily_candidate",
+    "imageFileName": "058_D13_female.png",
+    "imageArchivePath": "Jikkot_74/058_D13_female.png",
+    "imageSha256": "95ae601f36f27d25c82cbab7627030d9db4227f841c5e939b2c481d80ba905e4",
+    "imageWidth": 1536,
+    "imageHeight": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "여자",
+    "actualPose": "눕기·옆으로",
+    "sourceSelectionPose": "눕기",
+    "sourceFamilyId": "torso-rotation",
+    "legacyIdInSource": null,
+    "movementTypeSource": "가동성",
+    "linkedRegions": [
+      "목",
+      "등",
+      "어깨"
+    ],
+    "patternIds": [
+      "P05",
+      "P04",
+      "P01"
+    ],
+    "actualTarget": "흉추 회전과 가슴 앞의 편한 열림",
+    "steps": [
+      "머리를 지지하고 옆으로 누워 엉덩이·무릎을 굽힌다.",
+      "위쪽 어깨와 팔을 뒤쪽 바닥 방향으로 연다.",
+      "편한 범위까지 움직인 뒤 천천히 돌아온다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "목 · 등 · 어깨 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "몸통 회전 뻣뻣함 + 옆누운 가슴 열림이 편함; P01은 가슴 앞 입력을 함께 확인",
+      "부담 연결 가설": "몸통 회전 참여를 늘려 목·어깨의 고정 부담을 분산할 후보",
+      "제외할 패턴과 반응": "팔 뒤 열림·어깨 압박·허리 비틀기에서 악화",
+      "다른 후보": "D03(P04),O06(P01)",
+      "사용자 설명 예시": "몸통 회전이 뻣뻣하다는 답변을 고려해, 옆으로 누워 가슴과 윗등을 함께 움직여볼게요."
+    },
+    "sourceNotes": [
+      "조건: 어깨 압박·허리 과회전을 만들지 않는다. 손을 가슴에 둔 쉬운 버전을 독립 동작으로 세지 않는다.",
+      "E3 Rehab 원문의 옆누운 흉추 회전. 중력을 이용해 팔·몸통을 받치는 실제 누운 동작이다. 원문: 좌우 6~8회 천천히; 선택한 계열 1개",
+      "같은 계열: D02, D13, Y04 · 한 묶음에는 한 후보만 선택"
+    ],
+    "sourceReferences": [
+      {
+        "label": "E3 Rehab / Marc · 날개뼈 사이 불편 운동",
+        "url": "https://e3rehab.com/rhomboidexercises/"
+      }
+    ],
+    "sourceReferenceText": "출처: E3 Rehab / Marc · 날개뼈 사이 불편 운동",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "Y08",
+    "name": "해피 베이비",
+    "catalogGroup": "leisure_candidate",
+    "imageFileName": "059_Y08_male.png",
+    "imageArchivePath": "Jikkot_74/059_Y08_male.png",
+    "imageSha256": "0e7193e4dd2551177b75f70ec44dba28be0b5b42f800295764d6625031bca0a2",
+    "imageWidth": 1536,
+    "imageHeight": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "눕기·바로",
+    "sourceSelectionPose": "눕기",
+    "sourceFamilyId": "happy-baby",
+    "legacyIdInSource": null,
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "허리",
+      "허벅지"
+    ],
+    "patternIds": [
+      "P10",
+      "P14",
+      "P19"
+    ],
+    "actualTarget": "고관절 뒤와 허벅지 안쪽의 굽힘 벌림 범위",
+    "steps": [
+      "누워 무릎을 몸 쪽으로 가져오고 양옆으로 벌린다.",
+      "발 바깥쪽을 잡고 발목을 무릎 위로 둔다.",
+      "허리를 지지하며 발을 부드럽게 몸 쪽으로 당긴다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "허리 · 허벅지 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "엉덩이 뒤 또는 허벅지 안쪽 제한감 + 누운 고관절 굽힘 벌림이 편함",
+      "부담 연결 가설": "고관절이 굽힘·벌림을 분담하도록 할 후보; P19는 굽힘이 편했던 경험이 있을 때만",
+      "제외할 패턴과 반응": "무릎 강한 당김·사타구니 압박·허리 굽힘에서 악화",
+      "다른 후보": "Y09(P14·벌림이 편함),D26(P20·앉기 가능)",
+      "사용자 설명 예시": "엉덩이와 허벅지 안쪽의 느낌을 함께 고려해, 누워 고관절의 편한 움직임을 다뤄볼게요."
+    },
+    "sourceNotes": [
+      "조건: 발에 안 닿으면 원문 대안인 발목·정강이 잡기. 무릎 강하게 당기지 않음.",
+      "맨몸 기본형; 전체 영상·개인 연결 검토 미완료 실시량은 서비스 시연 후 확정"
+    ],
+    "sourceReferences": [
+      {
+        "label": "Yoga 15 / Abi Carver · 해피 베이비",
+        "url": "https://yoga15.com/pose/happy-baby/"
+      }
+    ],
+    "sourceReferenceText": "출처: Yoga 15 / Abi Carver · 해피 베이비",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "Y09",
+    "name": "누운 나비 자세",
+    "catalogGroup": "leisure_candidate",
+    "imageFileName": "060_Y09_female.png",
+    "imageArchivePath": "Jikkot_74/060_Y09_female.png",
+    "imageSha256": "22156cf974564e98f611f284caecf358727afb663f6a0ff54d034c614ce26169",
+    "imageWidth": 1536,
+    "imageHeight": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "여자",
+    "actualPose": "눕기·바로",
+    "sourceSelectionPose": "눕기",
+    "sourceFamilyId": "butterfly",
+    "legacyIdInSource": null,
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "허리",
+      "허벅지"
+    ],
+    "patternIds": [
+      "P14"
+    ],
+    "actualTarget": "고관절 내전근 주변의 편한 벌림",
+    "steps": [
+      "누워 발바닥을 맞대고 무릎을 양옆으로 연다.",
+      "팔을 머리 위로 보내 반대 팔꿈치를 잡는다.",
+      "무릎을 손으로 밀지 않고 돌아올 때 손으로 모은다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "허리 · 허벅지 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "허벅지 안쪽 뻣뻣함 + 누운 다리 벌림이 편함; 허리는 안쪽 제한감 동반 시만",
+      "부담 연결 가설": "등을 지지하고 고관절 벌림 참여를 확보할 후보; 팔 위 이동은 별도 어깨 수행 조건",
+      "제외할 패턴과 반응": "무릎·사타구니 압박 또는 팔 위 이동 불편; 무릎을 바닥으로 억지로 누름",
+      "다른 후보": "D29(P14·앉기 가능),D26(P20)",
+      "사용자 설명 예시": "다리 벌림이 뻣뻣하다는 답변을 고려해, 등을 지지한 상태에서 고관절 주변을 열어볼게요."
+    },
+    "sourceNotes": [
+      "조건: 무장비로 유지하기 불편하면 다른 후보 선택. 지지 쿠션을 필수로 요구하지 않음.",
+      "맨몸 기본형; 전체 영상·개인 연결 검토 미완료 실시량은 서비스 시연 후 확정",
+      "같은 계열: D14, Y09 · 한 묶음에는 한 후보만 선택"
+    ],
+    "sourceReferences": [
+      {
+        "label": "Yoga 15 / Abi Carver · 누운 나비 자세",
+        "url": "https://yoga15.com/pose/reclining-butterfly/"
+      }
+    ],
+    "sourceReferenceText": "출처: Yoga 15 / Abi Carver · 누운 나비 자세",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "Y10",
+    "name": "누워 바나나처럼 옆구리 늘리기",
+    "catalogGroup": "leisure_candidate",
+    "imageFileName": "061_Y10_male.png",
+    "imageArchivePath": "Jikkot_74/061_Y10_male.png",
+    "imageSha256": "a18577aec53a6a70c45fcc2dfc53b433ceabe02b839073a10399f7f0eab15aeb",
+    "imageWidth": 1536,
+    "imageHeight": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "눕기·바로",
+    "sourceSelectionPose": "눕기",
+    "sourceFamilyId": "trunk-sidebend",
+    "legacyIdInSource": null,
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "등",
+      "허리",
+      "어깨"
+    ],
+    "patternIds": [
+      "P13",
+      "P07"
+    ],
+    "actualTarget": "몸통 옆과 광배근 주변의 편한 옆굽힘",
+    "steps": [
+      "누워 팔을 머리 위로 보내 반대 팔꿈치를 잡는다.",
+      "발과 상체를 한쪽으로 옮겨 몸을 완만한 곡선으로 만든다.",
+      "어깨를 편하게 지지하고 반대쪽도 실시한다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "등 · 허리 · 어깨 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "옆구리 또는 등 옆 국소 제한감 + 누운 팔 위 이동과 옆굽힘이 편함",
+      "부담 연결 가설": "몸통 옆과 팔 올림 범위를 함께 확보할 후보; 어깨 연결은 등 옆 제한감 입력이 있을 때만",
+      "제외할 패턴과 반응": "팔 올림·옆굽힘에서 악화; 더 불편한 쪽이 짧다고 단정함",
+      "다른 후보": "D25(P13·앉기 가능),D13(P05)",
+      "사용자 설명 예시": "옆구리와 등 옆의 뻣뻣함을 고려해, 누운 지지에서 편한 범위를 다뤄볼게요."
+    },
+    "sourceNotes": [
+      "조건: 등·어깨 손상이나 팔 올리기 불편 시 제외.",
+      "맨몸 기본형; 전체 영상·개인 연결 검토 미완료 실시량은 서비스 시연 후 확정",
+      "같은 계열: D25, Y05, Y10 · 한 묶음에는 한 후보만 선택"
+    ],
+    "sourceReferences": [
+      {
+        "label": "Yoga 15 / Abi Carver · 누워 바나나처럼 옆구리 늘리기",
+        "url": "https://yoga15.com/pose/reclining-sidebend/"
+      }
+    ],
+    "sourceReferenceText": "출처: Yoga 15 / Abi Carver · 누워 바나나처럼 옆구리 늘리기",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "Y11",
+    "name": "스핑크스 자세",
+    "catalogGroup": "leisure_candidate",
+    "imageFileName": "062_Y11_female.png",
+    "imageArchivePath": "Jikkot_74/062_Y11_female.png",
+    "imageSha256": "15d79ae6c95d09df2aca87ebe5f8fc75b8035c09d8e2fa3a78ec675f2038e44f",
+    "imageWidth": 1774,
+    "imageHeight": 887,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "character": "여자",
+    "actualPose": "눕기·엎드림",
+    "sourceSelectionPose": "눕기",
+    "sourceFamilyId": "sphinx",
+    "legacyIdInSource": null,
+    "movementTypeSource": "가동성 및 조건부 스트레칭",
+    "linkedRegions": [
+      "등",
+      "허리"
+    ],
+    "patternIds": [
+      "P18"
+    ],
+    "actualTarget": "흉추와 허리의 작은 폄 움직임",
+    "steps": [
+      "엎드려 팔꿈치를 어깨 아래에 둔다.",
+      "아래팔로 지지하며 가슴을 부드럽게 세운다.",
+      "허리를 압박하지 않는 범위로 유지하고 내려온다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "등 · 허리 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "이전 일상에서 작은 폄은 편했고 굽힘은 불편했다고 보고함 + 엎드린 팔꿈치 지지가 편함",
+      "부담 연결 가설": "개인의 방향 반응을 따르는 후보; 고관절 앞 단축을 해결하는 동작으로 설명하지 않음",
+      "제외할 패턴과 반응": "폄에서 압박·악화; P19; 허리 불편만으로 기본 배정 금지; 새로운 통증 유발 시험 금지",
+      "다른 후보": "D26(P20·앉기 가능),D03(P04·윗등 폄만 편함)",
+      "사용자 설명 예시": "작은 가슴 세우기는 편했던 경험을 고려한 후보예요. 허리를 깊게 젖히지 않아요."
+    },
+    "sourceNotes": [
+      "조건: 허리 폄에서 불편하거나 팔꿈치·어깨·허리 손상 시 제외. 기본 허리 루틴에 일괄 배치하지 않음.",
+      "맨몸 기본형; 전체 영상·개인 연결 검토 미완료 실시량은 서비스 시연 후 확정"
+    ],
+    "sourceReferences": [
+      {
+        "label": "Yoga 15 / Abi Carver · 스핑크스 자세",
+        "url": "https://yoga15.com/pose/sphinx/"
+      }
+    ],
+    "sourceReferenceText": "출처: Yoga 15 / Abi Carver · 스핑크스 자세",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "Y12",
+    "name": "브리지 자세",
+    "catalogGroup": "leisure_candidate",
+    "imageFileName": "063_Y12_male.png",
+    "imageArchivePath": "Jikkot_74/063_Y12_male.png",
+    "imageSha256": "fd6857930ade876c168acc40b82de9088dc4758410d3615c56a88b13659ca608",
+    "imageWidth": 1536,
+    "imageHeight": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "눕기·바로",
+    "sourceSelectionPose": "눕기",
+    "sourceFamilyId": "bridge",
+    "legacyIdInSource": null,
+    "movementTypeSource": "활성화 및 근력 동작",
+    "linkedRegions": [
+      "허리",
+      "허벅지"
+    ],
+    "patternIds": [
+      "P12",
+      "P09"
+    ],
+    "actualTarget": "둔근과 몸통의 고관절 폄 협응",
+    "steps": [
+      "무릎을 굽히고 발을 골반 너비로 바닥에 둔다.",
+      "발로 바닥을 밀며 엉덩이를 들어 올린다.",
+      "무릎 방향을 유지하며 천천히 내려온다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "허리 · 허벅지 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "일어설 때 허리로 버티는 느낌 + 낮은 엉덩이 들기가 편함; 앉았다는 이유만으로 약화 판정 금지",
+      "부담 연결 가설": "엉덩이가 힘을 내고 몸통이 지지하는 분담을 연습할 후보; 스트레칭과 역할이 다름",
+      "제외할 패턴과 반응": "허리 젖힘·허벅지 뒤 경련·목으로 버티기에서 불편; 높이·반복을 통증 해소 명목으로 늘림",
+      "다른 후보": "D26(P20),D04(P09·앞 고관절 제한감)",
+      "사용자 설명 예시": "일어설 때 허리로 버티는 느낌을 고려해, 엉덩이와 몸통이 힘을 나눠 쓰는 움직임을 골랐어요."
+    },
+    "sourceNotes": [
+      "조건: 목으로 버티지 않음. 스트레칭 개수와 별도 표시. 손깍지·높은 아치 단계는 초기 제외.",
+      "맨몸 기본형; 전체 영상·개인 연결 검토 미완료 실시량은 서비스 시연 후 확정"
+    ],
+    "sourceReferences": [
+      {
+        "label": "Yoga 15 / Abi Carver · 브리지 자세",
+        "url": "https://yoga15.com/pose/bridge/"
+      }
+    ],
+    "sourceReferenceText": "출처: Yoga 15 / Abi Carver · 브리지 자세",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "W16",
+    "name": "누워 허벅지 잡고 무릎 펴기 반복",
+    "catalogGroup": "warmup_candidate",
+    "imageFileName": "064_W16_female.png",
+    "imageArchivePath": "Jikkot_74/064_W16_female.png",
+    "imageSha256": "b07e6f3ec8fb62a11448c544332916f85e02a6897dbb2e08925586ec39ec91db",
+    "imageWidth": 1536,
+    "imageHeight": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "여자",
+    "actualPose": "눕기",
+    "sourceSelectionPose": "눕기",
+    "sourceFamilyId": "W16",
+    "legacyIdInSource": null,
+    "movementTypeSource": "동적 준비",
+    "linkedRegions": [
+      "허리",
+      "햄스트링",
+      "무릎"
+    ],
+    "patternIds": [
+      "P21",
+      "P11"
+    ],
+    "actualTarget": "햄스트링 범위와 고관절 무릎의 동시 움직임",
+    "steps": [
+      "누워 한 허벅지 뒤를 잡고 무릎을 올린다.",
+      "무릎을 편한 만큼 펴 발을 위로 보낸다.",
+      "잠깐 멈춘 뒤 다시 굽힌다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "허리 · 햄스트링 · 무릎 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "뒤 허벅지 범위 역할 또는 제한감 + 누운 작은 무릎 폄 반복이 편함",
+      "부담 연결 가설": "등을 지지하며 뒤 허벅지 범위를 동적으로 준비할 후보; 신경을 세게 당기는 운동으로 설명하지 않음",
+      "제외할 패턴과 반응": "다리로 찌릿하게 뻗음·무릎 뒤 통증·과한 무릎 폄",
+      "다른 후보": "W03(P21·서기 가능),개인 추가 생략",
+      "사용자 설명 예시": "등을 바닥에 지지한 채 허벅지 뒤의 편한 움직임 범위를 준비해볼게요."
+    },
+    "sourceNotes": [
+      "조건: D12의 정적 원문을 임의 변환한 것이 아니라 USMS의 hamstring pumps. 같은 계열 대안.",
+      "본문 수행법 확인; 서비스 시간·횟수·종목 조합 검토 대기",
+      "출처: U.S. Masters Swimming / Bo Hickey · 수영 전 준비"
+    ],
+    "sourceReferences": [],
+    "sourceReferenceText": null,
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "W17",
+    "name": "누워 한 팔을 바닥 따라 위로 미끄러뜨리기",
+    "catalogGroup": "warmup_candidate",
+    "imageFileName": "065_W17_male.png",
+    "imageArchivePath": "Jikkot_74/065_W17_male.png",
+    "imageSha256": "9d4c64776d2c01795ced67420a181d6f3d7613ee955f7e581ea970add51a4d7b",
+    "imageWidth": 1536,
+    "imageHeight": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "눕기",
+    "sourceSelectionPose": "눕기",
+    "sourceFamilyId": "W17",
+    "legacyIdInSource": null,
+    "movementTypeSource": "동적 준비",
+    "linkedRegions": [
+      "목",
+      "등",
+      "어깨"
+    ],
+    "patternIds": [
+      "P21",
+      "P01",
+      "P04",
+      "P07"
+    ],
+    "actualTarget": "어깨 팔 올림과 가슴 앞 흉추의 편한 범위",
+    "steps": [
+      "누워 무릎을 굽히고 한 팔을 옆으로 둔다.",
+      "팔꿈치를 굽힌 상태에서 팔을 바닥 따라 머리 위로 보낸다.",
+      "허리가 들리지 않게 천천히 되돌린다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "목 · 등 · 어깨 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "팔 올림 역할 또는 가슴·윗등 제한감 + 누운 바닥 팔 이동이 편함",
+      "부담 연결 가설": "등을 지지하고 어깨·몸통이 함께 팔 올림을 준비할 후보; 바닥 접촉을 정상 정렬 기준으로 삼지 않음",
+      "제외할 패턴과 반응": "팔 올림에서 끼임·견갑부 악화·허리 젖힘; 팔꿈치 바닥 접촉 강요",
+      "다른 후보": "W02(P21·회전 역할·서기 가능),개인 추가 생략",
+      "사용자 설명 예시": "가슴과 윗등의 느낌을 함께 고려해, 등을 지지하며 팔 올림 범위를 준비해볼게요."
+    },
+    "sourceNotes": [
+      "조건: 팔꿈치 바닥 접촉을 억지로 강요하지 않음. 원문 single-arm floor angel.",
+      "본문 수행법 확인; 서비스 시간·횟수·종목 조합 검토 대기",
+      "출처: U.S. Masters Swimming / Bo Hickey · 수영 전 준비"
+    ],
+    "sourceReferences": [],
+    "sourceReferenceText": null,
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "Y01",
+    "name": "팔 뻗은 아기 자세",
+    "catalogGroup": "leisure_candidate",
+    "imageFileName": "066_Y01_female.png",
+    "imageArchivePath": "Jikkot_74/066_Y01_female.png",
+    "imageSha256": "017d8a543bad453e6f0aab0a877b90a1192efd8c2a5c3ee8b792e4aef00a78c1",
+    "imageWidth": 1536,
+    "imageHeight": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "여자",
+    "actualPose": "바닥·무릎",
+    "sourceSelectionPose": "바닥",
+    "sourceFamilyId": "extended-child",
+    "legacyIdInSource": null,
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "어깨",
+      "등",
+      "허리"
+    ],
+    "patternIds": [
+      "P07",
+      "P10"
+    ],
+    "actualTarget": "광배근 주변 등 옆과 고관절 굽힘 범위",
+    "steps": [
+      "네발 자세에서 엉덩이를 뒤꿈치 쪽으로 보낸다.",
+      "팔을 앞으로 뻗고 가슴을 편하게 낮춘다.",
+      "무릎·발목을 누르지 않고 천천히 나온다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "어깨 · 등 · 허리 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "팔 올림의 겨드랑이 뒤 제한감 또는 편한 고관절 굽힘 + 팔 뻗기와 무릎 접촉이 편함",
+      "부담 연결 가설": "팔 올림과 고관절 굽힘에 여러 부위가 참여하는 후보; 등이 아프다는 이유로 깊게 늘리지 않음",
+      "제외할 패턴과 반응": "앞으로 뻗어 견갑부 악화; 깊은 무릎 굽힘·발목 접촉·허리 굽힘 불편",
+      "다른 후보": "D13(P05·눕기 가능),D06(P10·앉기 가능)",
+      "사용자 설명 예시": "등과 연결된 팔 올림이나 고관절 굽힘이 뻣뻣하다는 답변에 맞춰, 편한 범위를 다뤄볼게요."
+    },
+    "sourceNotes": [
+      "조건: 무릎 깊은 굽힘·발목 접촉 불편 시 제외. 호흡만 하는 휴식 동작이 아닌 팔 뻗기형 채택.",
+      "맨몸 기본형; 전체 영상·개인 연결 검토 미완료 실시량은 서비스 시연 후 확정"
+    ],
+    "sourceReferences": [
+      {
+        "label": "Yoga 15 / Abi Carver · 팔 뻗은 아기 자세",
+        "url": "https://yoga15.com/pose/child/"
+      }
+    ],
+    "sourceReferenceText": "출처: Yoga 15 / Abi Carver · 팔 뻗은 아기 자세",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "Y02",
+    "name": "네발 캣카우",
+    "catalogGroup": "leisure_candidate",
+    "imageFileName": "067_Y02_male.png",
+    "imageArchivePath": "Jikkot_74/067_Y02_male.png",
+    "imageSha256": "8a703f9ec7ddf00cf003f6a568f458d37ccac9226d428a70af06cc9ca23a581c",
+    "imageWidth": 1536,
+    "imageHeight": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "바닥·네발",
+    "sourceSelectionPose": "바닥",
+    "sourceFamilyId": "cat-cow",
+    "legacyIdInSource": null,
+    "movementTypeSource": "가동성",
+    "linkedRegions": [
+      "등",
+      "허리",
+      "목"
+    ],
+    "patternIds": [
+      "P20",
+      "P04"
+    ],
+    "actualTarget": "골반과 흉추의 편한 굽힘 폄",
+    "steps": [
+      "손은 어깨 아래, 무릎은 골반 아래에 둔다.",
+      "가슴을 부드럽게 열고 등을 편다.",
+      "꼬리뼈와 턱을 말며 등을 둥글린 뒤 반복한다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "등 · 허리 · 목 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "몸통 고정 뒤 굳은 느낌 + 네발 지지와 작은 굽힘 폄이 모두 편함",
+      "부담 연결 가설": "골반·흉추가 나눠 움직이는 경험을 제공할 후보; 통증 부위만 반복해서 늘리는 목적 아님",
+      "제외할 패턴과 반응": "손목·무릎 지지 불편; 등 둥글림 또는 폄에서 악화; P01의 앞으로 뻗기 악화 동반",
+      "다른 후보": "D27(P20·앉기),D13(P05·눕기)",
+      "사용자 설명 예시": "오래 고정한 몸통의 느낌을 고려해, 골반과 윗등이 함께 작게 움직이도록 골랐어요."
+    },
+    "sourceNotes": [
+      "조건: 손목·무릎 지지가 가능한 경우. 목·허리를 깊게 꺾지 않음.",
+      "의자 캣카우와 같은 계열. 한 루틴에는 둘 중 하나. 실시량은 서비스 시연 후 확정",
+      "같은 계열: D27, Y02 · 한 묶음에는 한 후보만 선택"
+    ],
+    "sourceReferences": [
+      {
+        "label": "Cleveland Clinic / Paula Brown · 맨몸 캣카우",
+        "url": "https://health.clevelandclinic.org/cat-cow-stretch"
+      }
+    ],
+    "sourceReferenceText": "출처: Cleveland Clinic / Paula Brown · 맨몸 캣카우",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "Y03",
+    "name": "퍼피 자세",
+    "catalogGroup": "leisure_candidate",
+    "imageFileName": "068_Y03_female.png",
+    "imageArchivePath": "Jikkot_74/068_Y03_female.png",
+    "imageSha256": "1f0752ae5d9151db68c0d8d105b07dc8c56fc1b55447e7ea511a8a8a4ded5916",
+    "imageWidth": 1536,
+    "imageHeight": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "여자",
+    "actualPose": "바닥·무릎",
+    "sourceSelectionPose": "바닥",
+    "sourceFamilyId": "puppy",
+    "legacyIdInSource": null,
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "어깨",
+      "등"
+    ],
+    "patternIds": [
+      "P07"
+    ],
+    "actualTarget": "팔 올림 범위와 광배근 주변 등 옆 및 가슴 앞",
+    "steps": [
+      "네발 자세에서 손을 앞으로 걷듯 보낸다.",
+      "엉덩이를 뒤꿈치 방향으로 조금 보내며 가슴을 낮춘다.",
+      "팔과 등 옆 당김을 확인한다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "어깨 · 등 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "팔 위 방향에서 겨드랑이 뒤가 뻣뻣함 + 네발에서 가슴 낮추기가 편함",
+      "부담 연결 가설": "팔 올림에 필요한 주변 조직의 편한 범위를 확보할 후보; P01의 가슴 동작과 자동 동등 취급하지 않음",
+      "제외할 패턴과 반응": "팔 앞으로 뻗기·어깨 위 방향·가슴 누르기에서 견갑부 또는 어깨 악화",
+      "다른 후보": "D13(P05),O04(P01·앉기 가능)",
+      "사용자 설명 예시": "팔을 위로 보낼 때 등 옆이 뻣뻣하다는 답변을 고려한 후보예요. 가슴을 바닥으로 밀지 않아요."
+    },
+    "sourceNotes": [
+      "조건: 목·어깨·무릎·손목 손상 시 제외. 바닥을 향해 가슴을 억지로 누르지 않음.",
+      "맨몸 기본형; 전체 영상·개인 연결 검토 미완료 실시량은 서비스 시연 후 확정"
+    ],
+    "sourceReferences": [
+      {
+        "label": "Yoga 15 / Abi Carver · 퍼피 자세",
+        "url": "https://yoga15.com/pose/puppy/"
+      }
+    ],
+    "sourceReferenceText": "출처: Yoga 15 / Abi Carver · 퍼피 자세",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "Y04",
+    "name": "바늘 꿰기 자세",
+    "catalogGroup": "leisure_candidate",
+    "imageFileName": "069_Y04_male.png",
+    "imageArchivePath": "Jikkot_74/069_Y04_male.png",
+    "imageSha256": "f9e23be038225cf71f7c5228f49c370d4a3fe307786f6af6743c647b98257108",
+    "imageWidth": 1536,
+    "imageHeight": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "바닥·네발",
+    "sourceSelectionPose": "바닥",
+    "sourceFamilyId": "torso-rotation",
+    "legacyIdInSource": null,
+    "movementTypeSource": "회전 및 스트레칭",
+    "linkedRegions": [
+      "목",
+      "등",
+      "어깨"
+    ],
+    "patternIds": [
+      "P05",
+      "P08"
+    ],
+    "actualTarget": "흉추 회전과 어깨 뒤 움직임",
+    "steps": [
+      "네발 자세에서 한 손을 위쪽으로 열어 몸통을 돌린다.",
+      "그 팔을 반대 팔 아래로 통과시킨다.",
+      "어깨와 머리를 편하게 바닥에 두고 돌아온다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "목 · 등 · 어깨 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "몸통 회전 또는 어깨 뒤 제한감 + 네발 회전과 어깨 바닥 지지가 편함",
+      "부담 연결 가설": "몸통·어깨가 함께 방향을 바꾸게 해 목만 돌리는 부담을 분산할 후보",
+      "제외할 패턴과 반응": "반대 겨드랑이 아래로 팔을 보내며 견갑부 악화; 목에 체중 실림; 어깨 바닥 압박",
+      "다른 후보": "D13(P05),D02(P05·앉기 가능)",
+      "사용자 설명 예시": "몸통 회전과 어깨 뒤의 제한감을 함께 고려해, 윗등과 어깨가 같이 움직이는 후보를 골랐어요."
+    },
+    "sourceNotes": [
+      "조건: 목에 체중을 싣지 않음. 목·어깨·무릎 손상 시 제외.",
+      "맨몸 기본형; 전체 영상·개인 연결 검토 미완료 실시량은 서비스 시연 후 확정",
+      "같은 계열: D02, D13, Y04 · 한 묶음에는 한 후보만 선택"
+    ],
+    "sourceReferences": [
+      {
+        "label": "Yoga 15 / Abi Carver · 바늘 꿰기 자세",
+        "url": "https://yoga15.com/pose/thread-the-needle/"
+      }
+    ],
+    "sourceReferenceText": "출처: Yoga 15 / Abi Carver · 바늘 꿰기 자세",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "Y06",
+    "name": "낮은 런지",
+    "catalogGroup": "leisure_candidate",
+    "imageFileName": "070_Y06_female.png",
+    "imageArchivePath": "Jikkot_74/070_Y06_female.png",
+    "imageSha256": "9c694532449741e61b969fd91bc444e6e3ff176fee2c2479286b0993f4069c2d",
+    "imageWidth": 1024,
+    "imageHeight": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "여자",
+    "actualPose": "바닥·반무릎",
+    "sourceSelectionPose": "바닥",
+    "sourceFamilyId": "hip-flexor-stretch",
+    "legacyIdInSource": null,
+    "movementTypeSource": "정적 스트레칭",
+    "linkedRegions": [
+      "허리",
+      "허벅지"
+    ],
+    "patternIds": [
+      "P09",
+      "P12"
+    ],
+    "actualTarget": "장요근 등 뒤쪽 다리의 고관절 앞",
+    "steps": [
+      "한 발을 앞에 놓고 반대 무릎을 바닥에 둔다.",
+      "양손을 앞 허벅지에 놓고 상체를 세운다.",
+      "앞 무릎을 발목 위에 두며 뒤쪽 고관절 앞을 연다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "허리 · 허벅지 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "오래 앉음 + 뒤로 다리를 보낼 때 앞 고관절 당김 + 반무릎 지지가 편함",
+      "부담 연결 가설": "고관절 폄 참여를 확보해 허리에서 대신 젖히는 부담을 바꿀 후보",
+      "제외할 패턴과 반응": "무릎 접촉 불편; 고관절 대신 허리를 젖혀 악화; 사타구니 압박",
+      "다른 후보": "D04(P09·앉기 가능),D26(P20)",
+      "사용자 설명 예시": "오래 앉은 뒤 고관절 앞이 당긴다는 답변을 고려해, 허리를 젖히지 않고 고관절 앞을 다뤄볼게요."
+    },
+    "sourceNotes": [
+      "조건: 원문은 다운독에서 진입. 서비스는 반무릎 직접 진입을 별도 시연 검토; 무릎 접촉 불편 시 제외.",
+      "맨몸 기본형; 전체 영상·개인 연결 검토 미완료 실시량은 서비스 시연 후 확정",
+      "같은 계열: D04, Y06 · 한 묶음에는 한 후보만 선택"
+    ],
+    "sourceReferences": [
+      {
+        "label": "Yoga 15 / Abi Carver · 낮은 런지",
+        "url": "https://yoga15.com/pose/low-lunge/"
+      }
+    ],
+    "sourceReferenceText": "출처: Yoga 15 / Abi Carver · 낮은 런지",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "Y13",
+    "name": "다운독",
+    "catalogGroup": "leisure_candidate",
+    "imageFileName": "071_Y13_male.png",
+    "imageArchivePath": "Jikkot_74/071_Y13_male.png",
+    "imageSha256": "56784b11955d2f0140e9090eaf2201bce6e6e1cd92392b47e9b6873c21069c29",
+    "imageWidth": 1536,
+    "imageHeight": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "바닥·손발 지지",
+    "sourceSelectionPose": "바닥",
+    "sourceFamilyId": "down-dog",
+    "legacyIdInSource": null,
+    "movementTypeSource": "복합 스트레칭 및 지지",
+    "linkedRegions": [
+      "어깨",
+      "등",
+      "허리",
+      "햄스트링",
+      "종아리",
+      "발목"
+    ],
+    "patternIds": [
+      "P07",
+      "P11",
+      "P15"
+    ],
+    "actualTarget": "팔 올림과 햄스트링 종아리 뒤의 복합 범위",
+    "steps": [
+      "네발 자세에서 손을 조금 앞으로 둔다.",
+      "발가락을 세우고 엉덩이를 올린다.",
+      "무릎을 굽혀 등을 길게 한 뒤 편한 만큼 뒤꿈치를 내린다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "어깨 · 등 · 허리 · 햄스트링 · 종아리 · 발목 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "등 옆 또는 뒤 허벅지·종아리 제한감 + 손발 지지 경험과 편한 범위가 모두 확인됨",
+      "부담 연결 가설": "상체·하체 범위를 함께 다루는 복합 후보; 여러 부위의 단축을 한 번에 진단하거나 풀었다고 해석하지 않음",
+      "제외할 패턴과 반응": "손목·어깨 부하·머리 낮춤 제한·앞으로 뻗기 악화·다리 찌릿함; 초보 기본 자동 배정 제외",
+      "다른 후보": "D12(P11),D10(P15),D23(P07·각 조건과 환경 별도 일치)",
+      "사용자 설명 예시": "여러 방향의 뻣뻣함과 지지 경험이 함께 확인된 경우에만 쓰는 복합 후보예요."
+    },
+    "sourceNotes": [
+      "조건: 중급 선택 후보. 손목·어깨 지지 또는 머리가 낮아지는 자세를 피해야 하는 경우 제외. 초보 기본에서 제외.",
+      "맨몸 기본형; 전체 영상·개인 연결 검토 미완료 실시량은 서비스 시연 후 확정"
+    ],
+    "sourceReferences": [
+      {
+        "label": "Yoga 15 / Abi Carver · 다운독",
+        "url": "https://yoga15.com/pose/downward-dog/"
+      }
+    ],
+    "sourceReferenceText": "출처: Yoga 15 / Abi Carver · 다운독",
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "W13",
+    "name": "네발에서 한 다리 옆으로 뻗고 앞뒤 이동",
+    "catalogGroup": "warmup_candidate",
+    "imageFileName": "072_W13_female.png",
+    "imageArchivePath": "Jikkot_74/072_W13_female.png",
+    "imageSha256": "dfbeabc43c23f1a2f1282b23c55cefc210ff31a328f5f04982bedcfd0cce4e16",
+    "imageWidth": 1536,
+    "imageHeight": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "여자",
+    "actualPose": "바닥·네발",
+    "sourceSelectionPose": "바닥",
+    "sourceFamilyId": "W13",
+    "legacyIdInSource": null,
+    "movementTypeSource": "동적 준비",
+    "linkedRegions": [
+      "허벅지",
+      "허리",
+      "무릎"
+    ],
+    "patternIds": [
+      "P21",
+      "P14"
+    ],
+    "actualTarget": "고관절 내전근 범위와 골반 앞뒤 이동",
+    "steps": [
+      "네발 자세에서 한 다리를 옆으로 펴 발을 바닥에 둔다.",
+      "지지 무릎 쪽으로 엉덩이를 뒤로 보낸다.",
+      "잠깐 당김을 확인한 뒤 앞으로 돌아온다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "허벅지 · 허리 · 무릎 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "안쪽 허벅지 제한감 또는 종목에 고관절 범위 역할 + 네발 지지와 옆 다리 뻗기가 편함",
+      "부담 연결 가설": "고관절 벌림과 굽힘을 함께 준비해 골반·몸통의 보상을 줄일 후보",
+      "제외할 패턴과 반응": "무릎·손목 지지 통증·사타구니 압박·허리 굽힘 악화",
+      "다른 후보": "W03(P21·서기 가능),개인 추가 생략",
+      "사용자 설명 예시": "안쪽 허벅지와 고관절의 범위를, 몸통을 과하게 숙이지 않고 준비해볼게요."
+    },
+    "sourceNotes": [
+      "조건: 손목·무릎 지지와 옆으로 다리 펼 공간 필요. 원문 adductor rock.",
+      "본문 수행법 확인; 서비스 시간·횟수·종목 조합 검토 대기",
+      "출처: U.S. Masters Swimming / Bo Hickey · 수영 전 준비"
+    ],
+    "sourceReferences": [],
+    "sourceReferenceText": null,
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "W14",
+    "name": "네발에서 팔 위로 열고 아래로 통과",
+    "catalogGroup": "warmup_candidate",
+    "imageFileName": "073_W14_male.png",
+    "imageArchivePath": "Jikkot_74/073_W14_male.png",
+    "imageSha256": "e01ddd7b5c7840046e2329b828cc913c033db6d7088ffe0a8c47ebb9482f37c3",
+    "imageWidth": 1536,
+    "imageHeight": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "남자",
+    "actualPose": "바닥·네발",
+    "sourceSelectionPose": "바닥",
+    "sourceFamilyId": "W14",
+    "legacyIdInSource": null,
+    "movementTypeSource": "동적 준비",
+    "linkedRegions": [
+      "목",
+      "등",
+      "어깨"
+    ],
+    "patternIds": [
+      "P21",
+      "P05"
+    ],
+    "actualTarget": "흉추 회전과 어깨의 동시 움직임",
+    "steps": [
+      "네발 자세에서 한 팔을 위로 올리며 몸통을 연다.",
+      "그 팔을 반대 겨드랑이 아래로 보낸다.",
+      "골반은 크게 흔들지 않고 좌우 반복한다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "목 · 등 · 어깨 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "몸통 회전 역할 또는 제한감 + 네발 지지와 팔 열기 통과가 편함",
+      "부담 연결 가설": "흉추 참여를 준비해 목·어깨에만 회전 부담이 몰리지 않도록 할 후보",
+      "제외할 패턴과 반응": "팔을 아래로 보내며 견갑부 악화·손목 지지 통증·목 비틀기",
+      "다른 후보": "W02(P21·서기 가능),개인 추가 생략",
+      "사용자 설명 예시": "몸통과 어깨가 함께 방향을 바꾸는 움직임을 준비해볼게요. 팔을 통과시킬 때도 편한 범위만 써요."
+    },
+    "sourceNotes": [
+      "조건: 주말 Y04는 유지형, W14는 원문 동적형. 같은 계열로 중복 배치하지 않음.",
+      "본문 수행법 확인; 서비스 시간·횟수·종목 조합 검토 대기",
+      "출처: U.S. Masters Swimming / Bo Hickey · 수영 전 준비"
+    ],
+    "sourceReferences": [],
+    "sourceReferenceText": null,
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  },
+  {
+    "catalogId": "W15",
+    "name": "네발에서 한 팔 앞으로 들고 버티기",
+    "catalogGroup": "warmup_candidate",
+    "imageFileName": "074_W15_female.png",
+    "imageArchivePath": "Jikkot_74/074_W15_female.png",
+    "imageSha256": "094cb5663b33838b99c671debba03fd75ce7bb549cd51072663c7ad09cf4c54c",
+    "imageWidth": 1536,
+    "imageHeight": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "character": "여자",
+    "actualPose": "바닥·네발",
+    "sourceSelectionPose": "바닥",
+    "sourceFamilyId": "W15",
+    "legacyIdInSource": null,
+    "movementTypeSource": "활성화",
+    "linkedRegions": [
+      "등",
+      "어깨",
+      "허리"
+    ],
+    "patternIds": [
+      "P21"
+    ],
+    "actualTarget": "몸통의 회전 제어와 어깨 팔 올림 협응",
+    "steps": [
+      "네발 자세에서 배에 가볍게 힘을 준다.",
+      "한 팔을 어깨 앞으로 뻗는다.",
+      "골반을 돌리지 않고 잠깐 유지한 뒤 손을 내려놓는다."
+    ],
+    "mappingSource": {
+      "연결 가능한 불편 부위": "등 · 어깨 · 허리 — 아래 조건이 일치할 때만",
+      "습관과 최근 상태 조건": "종목에 몸통 지지 역할 필요 + 네발 한 팔 들기에서 몸통과 어깨가 편함",
+      "부담 연결 가설": "팔이 움직일 때 몸통이 지지하는 분담을 준비할 후보; 등 통증을 늘려 푸는 동작 아님",
+      "제외할 패턴과 반응": "팔 앞으로 뻗어 견갑부 악화·허리 젖힘·손목 지지 불편",
+      "다른 후보": "W17(P21·팔 올림 역할·눕기 가능),개인 추가 생략",
+      "사용자 설명 예시": "팔이 움직일 때 몸통이 안정적으로 함께 지지하는 경험을 준비해볼게요."
+    },
+    "sourceNotes": [
+      "조건: 스트레칭으로 분류하지 않음. 손목·무릎 지지 불편 시 제외.",
+      "본문 수행법 확인; 서비스 시간·횟수·종목 조합 검토 대기",
+      "출처: U.S. Masters Swimming / Bo Hickey · 수영 전 준비"
+    ],
+    "sourceReferences": [],
+    "sourceReferenceText": null,
+    "publicationApproval": "draft",
+    "dosage": null,
+    "importNotes": [
+      "실시량은 현재 저장소의 승인 원문 또는 후속 검수에서 확인. 이 데이터만으로 승인하지 않음."
+    ]
+  }
+]

@@ -2,16 +2,16 @@ import { expect, type APIRequestContext, type Page } from "@playwright/test";
 export async function guestHome(page: Page) {
   await page.goto("/");
   await page
-    .getByRole("button", { name: "내 몸 풀어주기", exact: true })
+    .getByRole("button", { name: "불편한 곳 풀기", exact: true })
     .click();
   await page.getByRole("button", { name: "이해하고 동의합니다" }).click();
   await expect(
-    page.getByRole("button", { name: "내 몸 풀어주기", exact: true }),
+    page.getByRole("button", { name: "불편한 곳 풀기", exact: true }),
   ).toBeVisible();
 }
 export async function seatedQuestions(page: Page) {
   await page
-    .getByRole("button", { name: "내 몸 풀어주기", exact: true })
+    .getByRole("button", { name: "불편한 곳 풀기", exact: true })
     .click();
   await page.getByRole("button", { name: "앉기", exact: false }).click();
   await page.getByRole("button", { name: "다음", exact: true }).click();
@@ -70,6 +70,6 @@ export async function login(
   await page.getByLabel("비밀번호", { exact: true }).fill(user.password);
   await page.getByRole("button", { name: "로그인", exact: true }).click();
   await expect(
-    page.getByRole("button", { name: "내 몸 풀어주기", exact: true }),
+    page.getByRole("button", { name: "불편한 곳 풀기", exact: true }),
   ).toBeVisible();
 }

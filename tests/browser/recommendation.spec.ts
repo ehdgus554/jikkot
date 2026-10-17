@@ -1,6 +1,13 @@
+import { readFileSync } from "node:fs";
 import { test, expect, type Page } from "@playwright/test";
 import { FirestoreRest } from "../../worker/firestore-rest";
 import { guestHome, seatedQuestions } from "./helpers";
+const mediaManifest = JSON.parse(
+  readFileSync(
+    new URL("../../lib/personalization/media-manifest.json", import.meta.url),
+    "utf8",
+  ),
+) as { catalogId: string; width: number }[];
 async function guest(page: Page) {
   await guestHome(page);
   await seatedQuestions(page);
@@ -82,8 +89,11 @@ for (const [area, habit, recent, title, number] of representativePaths) {
         page
           .locator(".guide-image")
           .evaluate(
-            (img: HTMLImageElement) =>
-              img.complete && img.naturalWidth === 1536,
+            (img: HTMLImageElement, width: number) =>
+              img.complete && img.naturalWidth === width,
+            mediaManifest.find(
+              (m) => m.catalogId === `O${String(number).padStart(2, "0")}`,
+            )!.width,
           ),
       )
       .toBe(true);

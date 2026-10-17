@@ -53,3 +53,5 @@ next-env.d.ts
 __pycache__/
 !.env.example
 !functions/.env.example
+.dev.vars*
+!.dev.vars.example

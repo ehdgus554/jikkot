@@ -60,6 +60,8 @@ import {
 import { consentPolicy, operationalPolicy } from "@/lib/service/policy";
 import { ServicePreparation } from "@/components/service-preparation";
 import { previewRecommendation } from "@/lib/service/public-preview";
+import { PersonalizedExperience } from "@/components/personalized-experience";
+import type { Purpose } from "@/lib/personalization/types";
 type Member = { uid: string; username: string | null; nickname: string };
 type Me = {
   member: Member | null;
@@ -139,6 +141,7 @@ export default function JikkotApp() {
 
 function ConnectedJikkotApp() {
   const preview = !configured;
+  const [personalPurpose,setPersonalPurpose]=useState<Purpose|null>(null);
   const [entry, setEntry] = useState<Entry>(configured ? "splash" : "choice"),
     [p, setP] = useState<Progress | null>(null),
     [member, setMember] = useState<Member | null>(null),
@@ -232,6 +235,7 @@ function ConnectedJikkotApp() {
     }
   };
   const clearLocal = () => {
+    setPersonalPurpose(null);
     setMember(null);
     localStorage.removeItem(PROGRESS_KEY);
     Object.keys(sessionStorage)
@@ -531,6 +535,7 @@ function ConnectedJikkotApp() {
         });
         clearLocal();
         await establish(true);
+        setPersonalPurpose(null);
       } finally {
         authAction.current = false;
       }
@@ -864,7 +869,7 @@ function ConnectedJikkotApp() {
             )}
           </div>
         )}
-        {home && (
+        {home && (entry === "choice" || preview) && (
           <Home
             memberName={member?.nickname}
             busy={busy}
@@ -878,8 +883,11 @@ function ConnectedJikkotApp() {
             login={beginLogin}
             records={() => requireMember("records")}
             comingSoon={() => setModal("preparing")}
+            warmup={beginLogin}
+            leisure={beginLogin}
           />
         )}
+        {!entry && p && screen === "home" && !preview && <PersonalizedExperience key={`${p.owner.id}:${p.owner.kind}`} uid={p.owner.id} memberName={member?.nickname} initialPurpose={personalPurpose} onLogin={beginLogin} onLogout={logout} onExistingDaily={start} onExistingRecords={()=>requireMember("records")} />}
         {entry === "splash" && (
           <>
             <Header />
@@ -1678,7 +1686,6 @@ function ConnectedJikkotApp() {
                     ? "다른 동작으로 이어가볼까요?"
                     : "잠깐, 몸을 풀어볼까요?"}
                 </h1>
-                <p className="sub">{rec.reason}</p>
                 <RoutineMedia routine={rec.snapshot.routine} />
                 <footer className="footer">
                   {

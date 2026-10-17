@@ -5,6 +5,10 @@ import { emulatorIdentity } from "./spark-emulator-identity";
 const env = {
   FIREBASE_PROJECT_ID: "demo-jikkot",
   FIREBASE_WEB_API_KEY: "demo-key",
+  DEPLOYMENT_STAGE: "review",
+  REVIEW_ENABLED: "true",
+  REVIEW_ALLOWED_UIDS: process.env.JIKKOT_REVIEW_UIDS ?? "",
+  GROWTH_ENABLED: "true",
   ALLOWED_ORIGINS:
     "http://127.0.0.1:5173,http://localhost:5173,http://127.0.0.1:8787,http://localhost:8787",
 };

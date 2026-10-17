@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import "./personalization.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://jikkot.ehdgus554.workers.dev"),
@@ -28,8 +29,9 @@ export const metadata: Metadata = {
     images: ["/assets/brand/wordmark-ui.png"],
   },
   icons: {
-    icon: { url: "/assets/brand/wordmark-ui.png", type: "image/png" },
-    shortcut: "/assets/brand/wordmark-ui.png",
+    icon: { url: "/assets/brand/turtle-home.png", type: "image/png", sizes:"any" },
+    shortcut: "/assets/brand/turtle-home.png",
+    apple: "/assets/brand/turtle-home.png",
   },
 };
 

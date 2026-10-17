@@ -1,0 +1,964 @@
+[
+  {
+    "catalogId": "O01",
+    "archivePath": "Jikkot_74/001_O01_male.png",
+    "path": "/assets/jikkot74/001_O01_male.png",
+    "sha256": "a6676ca4ba0a66b111c4efea5597adc1bb64842ea266029924f8998bffc21ac9",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "O02",
+    "archivePath": "Jikkot_74/002_O02_female.png",
+    "path": "/assets/jikkot74/002_O02_female.png",
+    "sha256": "5c871f05bc249e10ff6bf0b854406b334319f9d10b25cf0d1f47ed9d8265211e",
+    "width": 1312,
+    "height": 1199,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "O03",
+    "archivePath": "Jikkot_74/003_O03_male.png",
+    "path": "/assets/jikkot74/003_O03_male.png",
+    "sha256": "ea345ef9eec9453f7eca2469d2cd8ac59d2106308b368552b7d06bbaf5b86804",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "O04",
+    "archivePath": "Jikkot_74/004_O04_female.png",
+    "path": "/assets/jikkot74/004_O04_female.png",
+    "sha256": "71102aee6827a0de31fb517f8769e2ca972758c897196ea9d9e35b092a1de4e3",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "O05",
+    "archivePath": "Jikkot_74/005_O05_male.png",
+    "path": "/assets/jikkot74/005_O05_male.png",
+    "sha256": "975c74dca24abe798e78a50df237e3ce8e1393a84f34ba11892040186534b6c2",
+    "width": 1536,
+    "height": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "O06",
+    "archivePath": "Jikkot_74/006_O06_female.png",
+    "path": "/assets/jikkot74/006_O06_female.png",
+    "sha256": "2a9829a412e4f6ab6e5ebfdd8b8fb638abb8701e0dc18bfb277e3538f1c5759d",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "O07",
+    "archivePath": "Jikkot_74/007_O07_male.png",
+    "path": "/assets/jikkot74/007_O07_male.png",
+    "sha256": "b56c16ea7dd2f13b58dc123262aeec041cd6f8a4b62af9fc5c786ed7a87e9ffb",
+    "width": 1312,
+    "height": 1199,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "O08",
+    "archivePath": "Jikkot_74/008_O08_female.png",
+    "path": "/assets/jikkot74/008_O08_female.png",
+    "sha256": "c02205cb0348960e6effa5ec549d15c808f2b2dfa0b226bf8a2e4de50be21cba",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "O09",
+    "archivePath": "Jikkot_74/009_O09_male.png",
+    "path": "/assets/jikkot74/009_O09_male.png",
+    "sha256": "d2cbe39da1fdaa6b3789e31efb880af431790563afbad523072bde9578aa77f9",
+    "width": 1312,
+    "height": 1199,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "O10",
+    "archivePath": "Jikkot_74/010_O10_female.png",
+    "path": "/assets/jikkot74/010_O10_female.png",
+    "sha256": "bbabe5d852abe78630ee0deb1f9485cd085e468ea4af26d3bc9b271855f596f8",
+    "width": 1331,
+    "height": 1182,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "O11",
+    "archivePath": "Jikkot_74/011_O11_male.png",
+    "path": "/assets/jikkot74/011_O11_male.png",
+    "sha256": "d191f270022d1bedcbf10b52486c29c4e54fad2b306851ccf134880fa6d728f8",
+    "width": 1374,
+    "height": 1145,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D01",
+    "archivePath": "Jikkot_74/012_D01_female.png",
+    "path": "/assets/jikkot74/012_D01_female.png",
+    "sha256": "d991ba15ab4fe2b700b6abf04d05bf41de33c926156a48200a0371dc6818e17a",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D02",
+    "archivePath": "Jikkot_74/013_D02_male.png",
+    "path": "/assets/jikkot74/013_D02_male.png",
+    "sha256": "a2beaba25837cd1fc6a4ef5e1908e34e0289ef4bfa21332569926dca91a2ccb6",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D03",
+    "archivePath": "Jikkot_74/014_D03_female.png",
+    "path": "/assets/jikkot74/014_D03_female.png",
+    "sha256": "b1ea08bbf86e2aeadd85eec2de26d9d10c2604ad63b31bb6ed2ed147a728f5df",
+    "width": 1295,
+    "height": 1214,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D04",
+    "archivePath": "Jikkot_74/015_D04_male.png",
+    "path": "/assets/jikkot74/015_D04_male.png",
+    "sha256": "227823dd4c887a05f812b8b0d39b021b30deb52643027be4f928eea188a96c73",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D05",
+    "archivePath": "Jikkot_74/016_D05_female.png",
+    "path": "/assets/jikkot74/016_D05_female.png",
+    "sha256": "617706039f8de0a9b2e7ea9c7e313711234f5de7a6a32b23d9e735ca5d8a0f79",
+    "width": 1222,
+    "height": 1287,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D06",
+    "archivePath": "Jikkot_74/017_D06_male.png",
+    "path": "/assets/jikkot74/017_D06_male.png",
+    "sha256": "b4e80194bc85ee1b6e16f543f5b2f170ef370417de31c8327f99e7717a53d003",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D14",
+    "archivePath": "Jikkot_74/018_D14_female.png",
+    "path": "/assets/jikkot74/018_D14_female.png",
+    "sha256": "a94ca80c7ce80eaaee5a2555f1f7da2c8482e75ca554bff7850e99d345050945",
+    "width": 1310,
+    "height": 1200,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D15",
+    "archivePath": "Jikkot_74/019_D15_male.png",
+    "path": "/assets/jikkot74/019_D15_male.png",
+    "sha256": "b9b550e8caff3c53c69b79d5f5065e9fae63983b3b11541d0eed1f022a26bbbc",
+    "width": 1159,
+    "height": 1358,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D16",
+    "archivePath": "Jikkot_74/020_D16_female.png",
+    "path": "/assets/jikkot74/020_D16_female.png",
+    "sha256": "3e2d56646dfa3b79d53846bf9e7393b684d6e3aead7df66e3e7287bfe260d783",
+    "width": 1312,
+    "height": 1199,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D17",
+    "archivePath": "Jikkot_74/021_D17_male.png",
+    "path": "/assets/jikkot74/021_D17_male.png",
+    "sha256": "7804b068fe679a91a23e8945b218028ddc4d951fd07eb9a961f836a9e657723d",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D18",
+    "archivePath": "Jikkot_74/022_D18_female.png",
+    "path": "/assets/jikkot74/022_D18_female.png",
+    "sha256": "93eb39eaf84a4e9ec7c5d998a592362953aad4fadf9c73a22ea37c9ff9fa7691",
+    "width": 1312,
+    "height": 1199,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D19",
+    "archivePath": "Jikkot_74/023_D19_male.png",
+    "path": "/assets/jikkot74/023_D19_male.png",
+    "sha256": "440ce2540c30fc5aded1cc6be92630e269c68848516d9f384e7c8cb516a35c8f",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D20",
+    "archivePath": "Jikkot_74/024_D20_female.png",
+    "path": "/assets/jikkot74/024_D20_female.png",
+    "sha256": "b56f09702fbafd6529e8861bba49b49b5f19b935df2fe7cd41927120b6fd1b4a",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D21",
+    "archivePath": "Jikkot_74/025_D21_male.png",
+    "path": "/assets/jikkot74/025_D21_male.png",
+    "sha256": "7c9680f5069cbdaa78a0b1ad42f060852e07666220746d6f6fe1c07e0bb3d99e",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D22",
+    "archivePath": "Jikkot_74/026_D22_female.png",
+    "path": "/assets/jikkot74/026_D22_female.png",
+    "sha256": "aadd83e06977c4be627c9e2d88d6775bc300738b19829100d783d26b753e5410",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D23",
+    "archivePath": "Jikkot_74/027_D23_male.png",
+    "path": "/assets/jikkot74/027_D23_male.png",
+    "sha256": "0b9b3f50305f05aebaa582fe5df83a13a0048c99ddef00e7629a96f216b293b1",
+    "width": 1536,
+    "height": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D24",
+    "archivePath": "Jikkot_74/028_D24_female.png",
+    "path": "/assets/jikkot74/028_D24_female.png",
+    "sha256": "b88562c009c872174a68b251aa87872a660e74e302656a2791f92492c478e9fb",
+    "width": 1312,
+    "height": 1199,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D25",
+    "archivePath": "Jikkot_74/029_D25_male.png",
+    "path": "/assets/jikkot74/029_D25_male.png",
+    "sha256": "35a9cf26babb5e2849176ef96f260ec99277c8b121b6407eaef7ab97cae7f4b1",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D26",
+    "archivePath": "Jikkot_74/030_D26_female.png",
+    "path": "/assets/jikkot74/030_D26_female.png",
+    "sha256": "bf9d32363dc641f7266ef30347ddbe7d8bf798e9fa9547ce461a9346fe9efde9",
+    "width": 1294,
+    "height": 1216,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D27",
+    "archivePath": "Jikkot_74/031_D27_male.png",
+    "path": "/assets/jikkot74/031_D27_male.png",
+    "sha256": "e981822311e435cd3af0916d5020b8d3617ef387e4b3c9378a6e849d835ded9d",
+    "width": 1267,
+    "height": 1241,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D28",
+    "archivePath": "Jikkot_74/032_D28_female.png",
+    "path": "/assets/jikkot74/032_D28_female.png",
+    "sha256": "9d53ba10f922366e3ca7f27a5f8236b10e97f0820bc2ff7f778aacb0a816c2ec",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D29",
+    "archivePath": "Jikkot_74/033_D29_male.png",
+    "path": "/assets/jikkot74/033_D29_male.png",
+    "sha256": "8a35c33697284b5ad0e497a96ffa0588ce3cff36318f5a08e35117328d338360",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D30",
+    "archivePath": "Jikkot_74/034_D30_female.png",
+    "path": "/assets/jikkot74/034_D30_female.png",
+    "sha256": "c84ac22f74e626174874dee8012e07d0385c3963bf2786d8ffee0c1780dedc93",
+    "width": 1312,
+    "height": 1199,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D31",
+    "archivePath": "Jikkot_74/035_D31_male.png",
+    "path": "/assets/jikkot74/035_D31_male.png",
+    "sha256": "4323a5421b3e95ff692587d33124a897a389de907622c4dc356b23aea11f56b5",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D32",
+    "archivePath": "Jikkot_74/036_D32_female.png",
+    "path": "/assets/jikkot74/036_D32_female.png",
+    "sha256": "120f3c22409bbd40db64166e2eb00a3aa3ccf64024b84b8923f2626f9f64d5b5",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D33",
+    "archivePath": "Jikkot_74/037_D33_male.png",
+    "path": "/assets/jikkot74/037_D33_male.png",
+    "sha256": "6af07e9a97b6f5c9e3f129cb54b2dd566a438fd828b1d6510c79fbcea5aa6178",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "Y05",
+    "archivePath": "Jikkot_74/038_Y05_female.png",
+    "path": "/assets/jikkot74/038_Y05_female.png",
+    "sha256": "44bf4be9d9d1f4c71a629f7e8e776d9a5b3112a3c885c3c2d0213a6a1ed9b35f",
+    "width": 1275,
+    "height": 1234,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "Y07",
+    "archivePath": "Jikkot_74/039_Y07_male.png",
+    "path": "/assets/jikkot74/039_Y07_male.png",
+    "sha256": "59af6d37eef01e317d3143d86be1938dfb68188896b5408df49a34584d693707",
+    "width": 1536,
+    "height": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D07",
+    "archivePath": "Jikkot_74/040_D07_female.png",
+    "path": "/assets/jikkot74/040_D07_female.png",
+    "sha256": "43aaaf5fdba6879c1b9ba6a3b60fc86ff07594c7028bdd260b86c8984efbe10a",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D08",
+    "archivePath": "Jikkot_74/041_D08_male.png",
+    "path": "/assets/jikkot74/041_D08_male.png",
+    "sha256": "545a1658f794b6b5c4f27adcddb1c05be4ee97965f53cb221d7dc57de592661c",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D09",
+    "archivePath": "Jikkot_74/042_D09_female.png",
+    "path": "/assets/jikkot74/042_D09_female.png",
+    "sha256": "966d4994751831ab7fc12e59c1219904db3500d9735223618ede26680ea63d15",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D10",
+    "archivePath": "Jikkot_74/043_D10_male.png",
+    "path": "/assets/jikkot74/043_D10_male.png",
+    "sha256": "9d9e5f48a4a6318d20a8fcbd7b977800961feffed1930991adf45a54a50fdd18",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "W01",
+    "archivePath": "Jikkot_74/044_W01_female.png",
+    "path": "/assets/jikkot74/044_W01_female.png",
+    "sha256": "3d72e49ebad520cd483c83a3afb2d23b04fa31941ca3f45c43bc07abc47f0242",
+    "width": 1312,
+    "height": 1199,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "W02",
+    "archivePath": "Jikkot_74/045_W02_male.png",
+    "path": "/assets/jikkot74/045_W02_male.png",
+    "sha256": "3f45968f2c566b9fd62fe0bd7afaf196a806b9af08f24a91d6c907d9a7f11c38",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "W03",
+    "archivePath": "Jikkot_74/046_W03_female.png",
+    "path": "/assets/jikkot74/046_W03_female.png",
+    "sha256": "4e0fb529852b1c7c1b588551b006c1b68324db04bc554eef4f0545faf488bea5",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "W04",
+    "archivePath": "Jikkot_74/047_W04_male.png",
+    "path": "/assets/jikkot74/047_W04_male.png",
+    "sha256": "9eba9887dc310425226a6bd85b81796b87eec784c441c7f1689050cd21468ba2",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "W05",
+    "archivePath": "Jikkot_74/048_W05_female.png",
+    "path": "/assets/jikkot74/048_W05_female.png",
+    "sha256": "cd87c650da502192b04536f96fbd2c015fbe7bbdd8a466aaa6c2f16a2ea14c93",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "W06",
+    "archivePath": "Jikkot_74/049_W06_male.png",
+    "path": "/assets/jikkot74/049_W06_male.png",
+    "sha256": "ee91c23214f8b1fbe08fed27a925b05290f4f586cb1810adfcfd56a390a5f1b0",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "W07",
+    "archivePath": "Jikkot_74/050_W07_female.png",
+    "path": "/assets/jikkot74/050_W07_female.png",
+    "sha256": "6bc9d35709b2607ae8633aa81d8d08e246d0a127d88df739fdd26779e1dc5b53",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "W08",
+    "archivePath": "Jikkot_74/051_W08_male.png",
+    "path": "/assets/jikkot74/051_W08_male.png",
+    "sha256": "da18175fc510f6c29d773376c4b41c75e7f9c3347b1adb08c0758423de0b1cd0",
+    "width": 1536,
+    "height": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "W09",
+    "archivePath": "Jikkot_74/052_W09_female.png",
+    "path": "/assets/jikkot74/052_W09_female.png",
+    "sha256": "c127956cdca2e98b937695259416d583ca4c35085d507ed49a0824735ed3dec4",
+    "width": 1374,
+    "height": 1145,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "W10",
+    "archivePath": "Jikkot_74/053_W10_male.png",
+    "path": "/assets/jikkot74/053_W10_male.png",
+    "sha256": "49bd537167a8f3df3d70fde9f32a5ebf10f4a9d6df8d3b36ad9d6b69ca0c98ae",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "W11",
+    "archivePath": "Jikkot_74/054_W11_female.png",
+    "path": "/assets/jikkot74/054_W11_female.png",
+    "sha256": "bd3969e57175119177c2b01e4db5886cdd1fd49bb2f2152269073f63b7a26502",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "W12",
+    "archivePath": "Jikkot_74/055_W12_male.png",
+    "path": "/assets/jikkot74/055_W12_male.png",
+    "sha256": "6692b8cf5d177d4326a5c5b08708263223f7ea5c85510e6fe885f5a2d5be0a3d",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D11",
+    "archivePath": "Jikkot_74/056_D11_female.png",
+    "path": "/assets/jikkot74/056_D11_female.png",
+    "sha256": "deac81cc98474f7d05c3195cf3731cd630353b62ab0bf791ed95c0623a097397",
+    "width": 1774,
+    "height": 887,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D12",
+    "archivePath": "Jikkot_74/057_D12_male.png",
+    "path": "/assets/jikkot74/057_D12_male.png",
+    "sha256": "b590af7d0aae86a212e2b8813529c3321fb42e7e4b49c3374541216764d03fac",
+    "width": 1536,
+    "height": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "D13",
+    "archivePath": "Jikkot_74/058_D13_female.png",
+    "path": "/assets/jikkot74/058_D13_female.png",
+    "sha256": "95ae601f36f27d25c82cbab7627030d9db4227f841c5e939b2c481d80ba905e4",
+    "width": 1536,
+    "height": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "Y08",
+    "archivePath": "Jikkot_74/059_Y08_male.png",
+    "path": "/assets/jikkot74/059_Y08_male.png",
+    "sha256": "0e7193e4dd2551177b75f70ec44dba28be0b5b42f800295764d6625031bca0a2",
+    "width": 1536,
+    "height": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "Y09",
+    "archivePath": "Jikkot_74/060_Y09_female.png",
+    "path": "/assets/jikkot74/060_Y09_female.png",
+    "sha256": "22156cf974564e98f611f284caecf358727afb663f6a0ff54d034c614ce26169",
+    "width": 1536,
+    "height": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "Y10",
+    "archivePath": "Jikkot_74/061_Y10_male.png",
+    "path": "/assets/jikkot74/061_Y10_male.png",
+    "sha256": "a18577aec53a6a70c45fcc2dfc53b433ceabe02b839073a10399f7f0eab15aeb",
+    "width": 1536,
+    "height": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "Y11",
+    "archivePath": "Jikkot_74/062_Y11_female.png",
+    "path": "/assets/jikkot74/062_Y11_female.png",
+    "sha256": "15d79ae6c95d09df2aca87ebe5f8fc75b8035c09d8e2fa3a78ec675f2038e44f",
+    "width": 1774,
+    "height": 887,
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "Y12",
+    "archivePath": "Jikkot_74/063_Y12_male.png",
+    "path": "/assets/jikkot74/063_Y12_male.png",
+    "sha256": "fd6857930ade876c168acc40b82de9088dc4758410d3615c56a88b13659ca608",
+    "width": 1536,
+    "height": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "W16",
+    "archivePath": "Jikkot_74/064_W16_female.png",
+    "path": "/assets/jikkot74/064_W16_female.png",
+    "sha256": "b07e6f3ec8fb62a11448c544332916f85e02a6897dbb2e08925586ec39ec91db",
+    "width": 1536,
+    "height": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "W17",
+    "archivePath": "Jikkot_74/065_W17_male.png",
+    "path": "/assets/jikkot74/065_W17_male.png",
+    "sha256": "9d4c64776d2c01795ced67420a181d6f3d7613ee955f7e581ea970add51a4d7b",
+    "width": 1536,
+    "height": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "Y01",
+    "archivePath": "Jikkot_74/066_Y01_female.png",
+    "path": "/assets/jikkot74/066_Y01_female.png",
+    "sha256": "017d8a543bad453e6f0aab0a877b90a1192efd8c2a5c3ee8b792e4aef00a78c1",
+    "width": 1536,
+    "height": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "Y02",
+    "archivePath": "Jikkot_74/067_Y02_male.png",
+    "path": "/assets/jikkot74/067_Y02_male.png",
+    "sha256": "8a703f9ec7ddf00cf003f6a568f458d37ccac9226d428a70af06cc9ca23a581c",
+    "width": 1536,
+    "height": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "Y03",
+    "archivePath": "Jikkot_74/068_Y03_female.png",
+    "path": "/assets/jikkot74/068_Y03_female.png",
+    "sha256": "1f0752ae5d9151db68c0d8d105b07dc8c56fc1b55447e7ea511a8a8a4ded5916",
+    "width": 1536,
+    "height": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "Y04",
+    "archivePath": "Jikkot_74/069_Y04_male.png",
+    "path": "/assets/jikkot74/069_Y04_male.png",
+    "sha256": "f9e23be038225cf71f7c5228f49c370d4a3fe307786f6af6743c647b98257108",
+    "width": 1536,
+    "height": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "Y06",
+    "archivePath": "Jikkot_74/070_Y06_female.png",
+    "path": "/assets/jikkot74/070_Y06_female.png",
+    "sha256": "9c694532449741e61b969fd91bc444e6e3ff176fee2c2479286b0993f4069c2d",
+    "width": 1024,
+    "height": 1536,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "Y13",
+    "archivePath": "Jikkot_74/071_Y13_male.png",
+    "path": "/assets/jikkot74/071_Y13_male.png",
+    "sha256": "56784b11955d2f0140e9090eaf2201bce6e6e1cd92392b47e9b6873c21069c29",
+    "width": 1536,
+    "height": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "W13",
+    "archivePath": "Jikkot_74/072_W13_female.png",
+    "path": "/assets/jikkot74/072_W13_female.png",
+    "sha256": "dfbeabc43c23f1a2f1282b23c55cefc210ff31a328f5f04982bedcfd0cce4e16",
+    "width": 1536,
+    "height": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "W14",
+    "archivePath": "Jikkot_74/073_W14_male.png",
+    "path": "/assets/jikkot74/073_W14_male.png",
+    "sha256": "e01ddd7b5c7840046e2329b828cc913c033db6d7088ffe0a8c47ebb9482f37c3",
+    "width": 1536,
+    "height": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  },
+  {
+    "catalogId": "W15",
+    "archivePath": "Jikkot_74/074_W15_female.png",
+    "path": "/assets/jikkot74/074_W15_female.png",
+    "sha256": "094cb5663b33838b99c671debba03fd75ce7bb549cd51072663c7ad09cf4c54c",
+    "width": 1536,
+    "height": 1024,
+    "alphaExtrema": [
+      0,
+      254
+    ],
+    "installed": true
+  }
+]

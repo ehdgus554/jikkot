@@ -53,9 +53,6 @@ function GuideImage({ routine }: { routine: Guide }) {
 export function RoutineMedia({ routine }: { routine: Guide }) {
   return (
     <article className="routine-guide">
-      {routine.displayNumber && (
-        <p className="routine-meta">앉아서 · 동작 {routine.displayNumber}</p>
-      )}
       <GuideImage key={routine.image} routine={routine} />
       <h2 className="routine-heading">{routine.name}</h2>
       {routine.dose && <p className="routine-meta">{routine.dose}</p>}

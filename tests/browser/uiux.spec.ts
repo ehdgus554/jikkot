@@ -20,7 +20,7 @@ test("approved artwork, loaded fonts, title metadata and responsive UI match the
   };
   await page.goto("/");
   await expect(
-    page.getByRole("button", { name: "내 몸 풀어주기", exact: true }),
+    page.getByRole("button", { name: "불편한 곳 풀기", exact: true }),
   ).toBeVisible();
   await page.evaluate(() => document.fonts.ready);
   expect(
@@ -56,7 +56,7 @@ test("approved artwork, loaded fonts, title metadata and responsive UI match the
       ),
   ).toBe(true);
   const cta = await page
-    .getByRole("button", { name: "내 몸 풀어주기", exact: true })
+    .getByRole("button", { name: "불편한 곳 풀기", exact: true })
     .evaluate((button) => ({
       size: parseFloat(getComputedStyle(button).fontSize),
       weight: Number(getComputedStyle(button).fontWeight),
@@ -87,7 +87,7 @@ test("approved artwork, loaded fonts, title metadata and responsive UI match the
   await guestHome(page);
   await capture("consented-home");
   await page
-    .getByRole("button", { name: "내 몸 풀어주기", exact: true })
+    .getByRole("button", { name: "불편한 곳 풀기", exact: true })
     .click();
   await capture("posture");
   for (const name of ["앉기", "눕기", "서기", "앉기"]) {

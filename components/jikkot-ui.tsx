@@ -186,7 +186,9 @@ export function Home({
   begin,
   login,
   records,
-  comingSoon,
+  warmup,
+  leisure,
+  bundlesReady = false,
   busy,
 }: {
   memberName?: string;
@@ -194,6 +196,9 @@ export function Home({
   login: () => void;
   records: () => void;
   comingSoon: () => void;
+  warmup?: () => void;
+  leisure?: () => void;
+  bundlesReady?: boolean;
   busy: boolean;
 }) {
   return (
@@ -240,9 +245,11 @@ export function Home({
           <br />
           따라 하기 쉬운 동작 하나를 안내해드려요.
         </p>
-        <PrimaryButton onClick={begin} disabled={busy}>
-          내 몸 풀어주기
-        </PrimaryButton>
+        <div className="personal-home-actions">
+          <PrimaryButton onClick={begin} disabled={busy}>불편한 곳 풀기</PrimaryButton>
+          <PrimaryButton onClick={warmup ?? login} disabled={busy} secondary>운동 전 몸풀기{!bundlesReady && <small aria-hidden="true" className="menu-pending">콘텐츠 검토 중</small>}</PrimaryButton>
+          <PrimaryButton onClick={leisure ?? login} disabled={busy} secondary>여유롭게 몸풀기{!bundlesReady && <small aria-hidden="true" className="menu-pending">콘텐츠 검토 중</small>}</PrimaryButton>
+        </div>
         <p className="note">
           {memberName
             ? `${memberName}님, 필요할 때 가볍게 움직여보세요.`
@@ -255,12 +262,6 @@ export function Home({
         </button>
         <button type="button" onClick={records} disabled={busy}>
           내 기록
-        </button>
-        <button type="button" onClick={comingSoon}>
-          스트레칭<small>준비 중</small>
-        </button>
-        <button type="button" onClick={comingSoon}>
-          쇼핑<small>준비 중</small>
         </button>
       </nav>
     </>

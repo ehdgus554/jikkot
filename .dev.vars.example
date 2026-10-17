@@ -1,0 +1,10 @@
+# Server-only settings. Copy to ignored .dev.vars for local Wrangler, or configure the existing review Worker.
+DEPLOYMENT_STAGE=review
+REVIEW_ENABLED=true
+# Replace with the UID of a dedicated, consented review member. Empty denies all reviewers.
+REVIEW_ALLOWED_UIDS=
+GROWTH_ENABLED=true
+AI_ENABLED=false
+# Optional provider model; AI_API_KEY belongs in an encrypted server secret.
+AI_MODEL=
+# FIREBASE_SERVICE_ACCOUNT belongs in an encrypted server secret; never in VITE_* variables.

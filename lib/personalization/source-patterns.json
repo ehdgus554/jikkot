@@ -1,0 +1,170 @@
+[
+  {
+    "patternId": "P01",
+    "name": "팔을 앞에 둔 작업과 가슴 앞 뻣뻣함",
+    "requiredInputSource": "팔걸이·먼 책상에 팔을 길게 두는 습관 + 최근 어깨가 말린 느낌·가슴 앞 뻣뻣함",
+    "roleSource": "가슴 앞의 편안한 움직임과 어깨 바깥돌림을 먼저 검토한다. 앞으로 뻗기에서 악화한 이력은 별도로 배제한다.",
+    "hypothesisSource": "P01 팔을 앞에 둔 작업과 가슴 앞 뻣뻣함 어깨 전인과 몸통 고정이 오래 이어져 견갑부의 부담이 달라졌을 가능성. 가슴 근육의 실제 단축이나 능형근의 손상은 확정하지 않는다.",
+    "status": "planning_hypothesis_not_diagnosis"
+  },
+  {
+    "patternId": "P02",
+    "name": "어깨나 고개를 들고 버틴 작업",
+    "requiredInputSource": "어깨를 올린 습관 또는 고개를 들고 버틴 활동 + 최근 목 옆·목 뒤의 국소 당김",
+    "roleSource": "팔 지지와 화면 높이 등 맥락을 확인하고, 편한 방향의 목 주변 움직임을 검토한다.",
+    "hypothesisSource": "P02 어깨나 고개를 들고 버틴 작업 견갑거근·위쪽 승모근 또는 목 뒤 주변의 지속 수축 부담 가능성. 각각의 자세와 당김 방향을 동작별로 구분한다.",
+    "status": "planning_hypothesis_not_diagnosis"
+  },
+  {
+    "patternId": "P03",
+    "name": "날개뼈를 뒤로 모으고 오래 버팀",
+    "requiredInputSource": "등을 펴려고 날개뼈를 계속 모으는 습관 + 최근 윗등의 긴장 + 앞으로 가볍게 뻗었을 때 편했던 경험",
+    "roleSource": "윗등 앞으로 뻗기를 조건부 검토한다. 추가로 날개뼈를 강하게 모으는 지시는 배정하지 않는다.",
+    "hypothesisSource": "P03 날개뼈를 뒤로 모으고 오래 버팀 견갑골을 뒤로 모으는 근육의 지속 사용 부담 가능성. P01과 같은 등 불편이어도 부담 방향이 다를 수 있다.",
+    "status": "planning_hypothesis_not_diagnosis"
+  },
+  {
+    "patternId": "P04",
+    "name": "고개와 몸통을 앞으로 둔 고정 작업",
+    "requiredInputSource": "노트북·휴대폰·가까운 화면을 오래 봄 + 최근 목 뒤 피로·윗등 굳은 느낌",
+    "roleSource": "가슴·윗등 움직임과 작은 턱 뒤로 이동을 분리해 검토한다.",
+    "hypothesisSource": "P04 고개와 몸통을 앞으로 둔 고정 작업 고개를 유지하는 목 주변의 정적 부담과 흉추 움직임 감소 가능성. 거북목이나 근육 약화 진단으로 저장하지 않는다.",
+    "status": "planning_hypothesis_not_diagnosis"
+  },
+  {
+    "patternId": "P05",
+    "name": "목으로만 방향을 바꾸는 작업",
+    "requiredInputSource": "옆 화면·운전 등 한 방향을 오래 봄 + 최근 몸통 회전의 뻣뻣함 또는 목 회전 제한감",
+    "roleSource": "몸통 회전의 제한감이 있으면 흉추를, 목만 뻣뻣하면 편한 목 회전을 검토한다.",
+    "hypothesisSource": "P05 목으로만 방향을 바꾸는 작업 흉추 회전 참여가 적거나 목 회전이 오래 고정되어 부담이 몰렸을 가능성.",
+    "status": "planning_hypothesis_not_diagnosis"
+  },
+  {
+    "patternId": "P06",
+    "name": "이를 악물거나 턱을 반복해서 씀",
+    "requiredInputSource": "집중할 때 이를 악묾·질긴 음식·반복 씹기 + 최근 턱 옆·관자 주변의 뻐근함",
+    "roleSource": "턱 주변의 부드러운 마사지와 작은 턱 움직임을 별도 후보로 검토한다.",
+    "hypothesisSource": "P06 이를 악물거나 턱을 반복해서 씀 저작근의 반복 수축 부담 가능성. 모든 두통의 원인으로 확대하지 않는다.",
+    "status": "planning_hypothesis_not_diagnosis"
+  },
+  {
+    "patternId": "P07",
+    "name": "팔 올리기에서 겨드랑이 뒤가 뻣뻣함",
+    "requiredInputSource": "팔을 드는 작업·운동 + 최근 겨드랑이 뒤·등 옆 당김과 허리를 젖히는 느낌",
+    "roleSource": "지지한 팔 올리기와 등 옆 움직임을 검토한다. 날개뼈 안쪽 통증만으로 광배근을 늘리지 않는다.",
+    "hypothesisSource": "P07 팔 올리기에서 겨드랑이 뒤가 뻣뻣함 광배근 등 팔 올리기에 연관된 조직의 제한감과 흉추·몸통 보상 가능성. 앞쪽 가슴 고정 P01과 구분한다.",
+    "status": "planning_hypothesis_not_diagnosis"
+  },
+  {
+    "patternId": "P08",
+    "name": "어깨 뒤쪽의 방향 특정 뻣뻣함",
+    "requiredInputSource": "팔을 반복해서 쓰는 활동 + 최근 팔을 가슴 앞으로 가져갈 때 어깨 뒤의 편한 당김",
+    "roleSource": "가슴 앞으로 팔을 가져가는 스트레칭을 조건부 검토한다.",
+    "hypothesisSource": "P08 어깨 뒤쪽의 방향 특정 뻣뻣함 어깨 뒤 조직의 움직임 제한감 가능성. 어깨 앞쪽 압박이나 전인 불편과 구분한다.",
+    "status": "planning_hypothesis_not_diagnosis"
+  },
+  {
+    "patternId": "P09",
+    "name": "오래 앉은 뒤 고관절 앞이 뻣뻣함",
+    "requiredInputSource": "앉기·운전 시간이 김 + 최근 걸을 때 다리를 뒤로 보내기 어렵고 고관절 앞이 당김",
+    "roleSource": "고관절 앞을 편하게 열고, 필요한 목적에서 엉덩이 활성화를 별도 검토한다.",
+    "hypothesisSource": "P09 오래 앉은 뒤 고관절 앞이 뻣뻣함 고관절 폄의 제한감이 몸통·허리 움직임에 부담을 더했을 가능성. 장요근 단축이나 엉덩이 약화는 입력만으로 확정하지 않는다.",
+    "status": "planning_hypothesis_not_diagnosis"
+  },
+  {
+    "patternId": "P10",
+    "name": "앉은 뒤 엉덩이와 고관절 뒤가 뻣뻣함",
+    "requiredInputSource": "장시간 앉기·다리 꼬기 + 최근 엉덩이 당김·고관절 굽힘이나 회전 제한감",
+    "roleSource": "엉덩이·고관절의 편한 굽힘과 회전 범위를 확보할 후보를 검토한다.",
+    "hypothesisSource": "P10 앉은 뒤 엉덩이와 고관절 뒤가 뻣뻣함 고관절 움직임을 몸통과 허리에서 대신할 가능성. 엉덩이 근육의 길이나 특정 신경 압박은 확정하지 않는다.",
+    "status": "planning_hypothesis_not_diagnosis"
+  },
+  {
+    "patternId": "P11",
+    "name": "허벅지 뒤가 당기며 숙임이 제한됨",
+    "requiredInputSource": "앉기·반복 숙이기 맥락 + 최근 골반에서 숙일 때 허벅지 뒤의 국소 당김",
+    "roleSource": "허벅지 뒤 당김이 편한 경우만 검토한다. 이미 계속 늘어진 자세의 피로와 구분한다.",
+    "hypothesisSource": "P11 허벅지 뒤가 당기며 숙임이 제한됨 햄스트링의 움직임 제한감과 허리 굽힘 보상 가능성. 전기처럼 뻗는 느낌은 근육 스트레칭 패턴으로 해석하지 않는다.",
+    "status": "planning_hypothesis_not_diagnosis"
+  },
+  {
+    "patternId": "P12",
+    "name": "서 있거나 일어설 때 허리로 버팀",
+    "requiredInputSource": "오래 서기·허리 젖히기·반복 일어서기 + 최근 엉덩이보다 허리로 힘을 쓰는 느낌",
+    "roleSource": "고관절 앞 제한감이 있으면 P09를 함께 확인하고, 편한 엉덩이 활성화를 검토한다.",
+    "hypothesisSource": "P12 서 있거나 일어설 때 허리로 버팀 고관절과 몸통의 부담 분담 문제 가능성. 느낌만으로 둔근 약화 진단을 내리지 않는다.",
+    "status": "planning_hypothesis_not_diagnosis"
+  },
+  {
+    "patternId": "P13",
+    "name": "한쪽으로 기대거나 비대칭으로 버팀",
+    "requiredInputSource": "한쪽 팔 지지·가방·다리 꼬기·한 발 체중 싣기 + 최근 옆구리나 바깥 고관절의 국소 당김",
+    "roleSource": "실제 당김 방향에 맞는 옆구리·고관절 움직임을 검토한다. 좌우를 수집하지 않으면 비대칭 용량은 배정하지 않는다.",
+    "hypothesisSource": "P13 한쪽으로 기대거나 비대칭으로 버팀 몸통 옆과 고관절 주변의 비대칭 정적 부담 가능성. 더 불편한 쪽이 반드시 더 짧다고 보지 않는다.",
+    "status": "planning_hypothesis_not_diagnosis"
+  },
+  {
+    "patternId": "P14",
+    "name": "고관절을 벌리는 방향이 뻣뻣함",
+    "requiredInputSource": "다리를 모은 앉기·방향 전환 활동 + 최근 허벅지 안쪽의 편한 당김과 다리 벌림 제한감",
+    "roleSource": "허벅지 안쪽을 다루되 무릎을 강하게 벌려 당기지 않는다.",
+    "hypothesisSource": "P14 고관절을 벌리는 방향이 뻣뻣함 고관절 내전근 주변 제한감과 하체 움직임 분담 변화 가능성. 무릎 통증만으로 내전근을 원인으로 선택하지 않는다.",
+    "status": "planning_hypothesis_not_diagnosis"
+  },
+  {
+    "patternId": "P15",
+    "name": "종아리 뒤 당김과 발목 굽힘 제한감",
+    "requiredInputSource": "오래 서기·걷기·러닝 + 최근 종아리 뒤 뻣뻣함과 발목을 앞으로 굽히기 어려운 느낌",
+    "roleSource": "무릎을 편 버전과 굽힌 버전을 목적과 반응으로 구분한다.",
+    "hypothesisSource": "P15 종아리 뒤 당김과 발목 굽힘 제한감 종아리 근육과 발목 움직임이 하체 과제의 부담 분담에 관여할 가능성. 무릎 통증의 원인으로 바로 확정하지 않는다.",
+    "status": "planning_hypothesis_not_diagnosis"
+  },
+  {
+    "patternId": "P16",
+    "name": "발바닥이 뻣뻣하고 발가락 움직임이 제한됨",
+    "requiredInputSource": "오래 걷기·서기 + 최근 발바닥의 국소 당김·발가락 움직임 뻣뻣함",
+    "roleSource": "발가락·발바닥 움직임을 검토하고 종아리 동반 입력이 있으면 P15를 별도 확인한다.",
+    "hypothesisSource": "P16 발바닥이 뻣뻣하고 발가락 움직임이 제한됨 발바닥 조직의 반복 부하와 발가락 움직임 제한감 가능성. 발목만 선택했다는 이유로 족저근막 문제를 진단하지 않는다.",
+    "status": "planning_hypothesis_not_diagnosis"
+  },
+  {
+    "patternId": "P17",
+    "name": "반복 사용 뒤 피로가 주된 느낌",
+    "requiredInputSource": "최근 운동·반복 작업이 늘어남 + 움직임 제한보다 피로·뻐근함이 주된 상태",
+    "roleSource": "부하를 늘리는 동작과 깊은 스트레칭을 우선하지 않는다. 편한 작은 움직임과 사용량 조절을 검토한다.",
+    "hypothesisSource": "P17 반복 사용 뒤 피로가 주된 느낌 사용량 증가에 따른 부담 가능성. 근육이 뻣뻣하다는 느낌과 실제 단축은 다르다.",
+    "status": "planning_hypothesis_not_diagnosis"
+  },
+  {
+    "patternId": "P18",
+    "name": "굽힘은 불편하고 작은 폄은 편했던 경험",
+    "requiredInputSource": "구부린 자세가 오래 이어짐 + 이전 일상에서 숙임은 불편하고 작은 가슴 세우기는 편했다고 보고함",
+    "roleSource": "이미 편했던 폄 방향을 조건부 검토한다. 새로운 통증 유발 시험을 시키지 않는다.",
+    "hypothesisSource": "P18 굽힘은 불편하고 작은 폄은 편했던 경험 특정 방향에 대한 개인 반응을 기록한 패턴. 디스크나 원인 근육 진단으로 해석하지 않는다.",
+    "status": "planning_hypothesis_not_diagnosis"
+  },
+  {
+    "patternId": "P19",
+    "name": "젖힘은 불편하고 편한 굽힘은 가능함",
+    "requiredInputSource": "오래 서거나 허리를 젖힌 뒤 불편 + 이전 일상에서 작은 굽힘·골반 움직임은 편했다고 보고함",
+    "roleSource": "작은 골반 움직임이나 편한 고관절 굽힘을 검토하고 깊은 폄은 배제한다.",
+    "hypothesisSource": "P19 젖힘은 불편하고 편한 굽힘은 가능함 폄 방향의 개인 불편 반응. 고관절 앞 스트레칭도 허리 젖힘을 동반하면 맞지 않을 수 있다.",
+    "status": "planning_hypothesis_not_diagnosis"
+  },
+  {
+    "patternId": "P20",
+    "name": "오래 같은 자세 뒤 작은 움직임이 편함",
+    "requiredInputSource": "오래 움직이지 않음 + 최근 전반적인 굳은 느낌 + 작은 움직임에 불편이 없음",
+    "roleSource": "부담이 적은 가동성 후보를 검토한다. 불편 부위만으로 정적 스트레칭을 기본 배정하지 않는다.",
+    "hypothesisSource": "P20 오래 같은 자세 뒤 작은 움직임이 편함 고정 자세에 따른 움직임 다양성 감소 가능성. 어느 근육이 짧거나 약한지는 추정하지 않는다.",
+    "status": "planning_hypothesis_not_diagnosis"
+  },
+  {
+    "patternId": "P21",
+    "name": "종목에 필요한 움직임을 준비함",
+    "requiredInputSource": "선택한 운동 종목·가능 환경 + 오늘 해당 동작에 불편이 없는 상태",
+    "roleSource": "동적 준비·활성화·종목 움직임의 역할을 구분하고 원문 수행 방식으로 편성한다.",
+    "hypothesisSource": "P21 종목에 필요한 움직임을 준비함 운동에 필요한 관절 범위·협응·부하를 점진적으로 준비하는 목적. 통증 원인 교정 패턴으로 취급하지 않는다.",
+    "status": "planning_hypothesis_not_diagnosis"
+  }
+]

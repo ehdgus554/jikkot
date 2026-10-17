@@ -6,6 +6,13 @@ export type SparkEnv = {
   FIREBASE_SERVICE_ACCOUNT?: string;
   FIREBASE_AUTH_HELPER_HOST?: string;
   ALLOWED_ORIGINS?: string;
+  DEPLOYMENT_STAGE?: string;
+  REVIEW_ENABLED?: string;
+  REVIEW_ALLOWED_UIDS?: string;
+  GROWTH_ENABLED?: string;
+  AI_ENABLED?: string;
+  AI_API_KEY?: string;
+  AI_MODEL?: string;
 };
 type Value = {
   nullValue?: null;
@@ -101,8 +108,9 @@ async function accessToken(env: SparkEnv) {
   return cached.token;
 }
 export class FirestoreError extends Error {
-  constructor(public status: number) {
+  constructor(public status: number, public code?: string) {
     super("Firestore request failed");
+    this.name = "FirestoreError";
   }
 }
 type Write = {
@@ -140,7 +148,10 @@ export class FirestoreRest {
       },
       ...(body === undefined ? {} : { body: JSON.stringify(body) }),
     });
-    if (!response.ok) throw new FirestoreError(response.status);
+    if (!response.ok) {
+      const body = await response.json().catch(() => null) as {error?:{status?:string}} | null;
+      throw new FirestoreError(response.status, body?.error?.status);
+    }
     return response.json();
   }
   doc(path: string) {
@@ -164,7 +175,8 @@ export class FirestoreRest {
       } catch (error) {
         if (
           !(error instanceof FirestoreError) ||
-          ![409, 412].includes(error.status) ||
+          !([409, 412].includes(error.status) ||
+            error.status === 400 && error.code === "FAILED_PRECONDITION") ||
           attempt === 4
         )
           throw error;

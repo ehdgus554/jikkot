@@ -19,6 +19,17 @@
       "name": "jikkot-review",
       "workers_dev": true,
       "preview_urls": true,
+      "vars": {
+        "FIREBASE_AUTH_HELPER_HOST": "jikkot.firebaseapp.com",
+        "FIREBASE_PROJECT_ID": "jikkot",
+        "FIREBASE_WEB_API_KEY": "AIzaSyBJ-p7Tios-w0yy8Y3anfoJrANmQQ-Pbdk",
+        "ALLOWED_ORIGINS": "https://jikkot-review.ehdgus554.workers.dev",
+        "DEPLOYMENT_STAGE": "review",
+        "REVIEW_ENABLED": "true",
+        "REVIEW_ALLOWED_UIDS": "",
+        "GROWTH_ENABLED": "true",
+        "AI_ENABLED": "false"
+      },
       "assets": { "directory": "./dist/client", "binding": "ASSETS" },
     },
   },

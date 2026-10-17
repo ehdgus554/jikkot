@@ -13,7 +13,7 @@ test("guest consent, locked menus, automatic feedback and KST daily quota", asyn
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/");
   await page
-    .getByRole("button", { name: "내 몸 풀어주기", exact: true })
+    .getByRole("button", { name: "불편한 곳 풀기", exact: true })
     .click();
   await page.getByRole("button", { name: "동의하지 않습니다" }).click();
   await expect(
@@ -21,8 +21,8 @@ test("guest consent, locked menus, automatic feedback and KST daily quota", asyn
   ).toBeVisible();
   await page.getByRole("button", { name: "동의 다시 확인" }).click();
   await page.getByRole("button", { name: "이해하고 동의합니다" }).click();
-  await page.getByRole("button", { name: "스트레칭", exact: false }).click();
-  await expect(page.getByRole("dialog")).toContainText("준비 중");
+  await page.getByRole("button", { name: "내 기록", exact: true }).click();
+  await expect(page.getByRole("dialog")).toContainText("로그인");
   await page.keyboard.press("Escape");
   await neckRecommendation(page);
   await expect(
@@ -38,7 +38,7 @@ test("guest consent, locked menus, automatic feedback and KST daily quota", asyn
   );
   await page.getByRole("button", { name: "첫 화면으로", exact: true }).click();
   await page
-    .getByRole("button", { name: "내 몸 풀어주기", exact: true })
+    .getByRole("button", { name: "불편한 곳 풀기", exact: true })
     .click();
   await expect(page.getByRole("dialog")).toContainText(
     "오늘의 체험을 마쳤어요",
@@ -347,7 +347,7 @@ test("standing and lying show unavailable posture before questionnaire without c
       recommendations++;
   });
   await page
-    .getByRole("button", { name: "내 몸 풀어주기", exact: true })
+    .getByRole("button", { name: "불편한 곳 풀기", exact: true })
     .click();
   await page.getByRole("button", { name: "서기", exact: false }).click();
   await page.getByRole("button", { name: "다음", exact: true }).click();

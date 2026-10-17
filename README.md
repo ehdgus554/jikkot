@@ -1,8 +1,10 @@
 # 직꼿 서비스 플로우 시제품
 
+2026-10-16 개인화 개편과 74장 원본 이미지 적용, 검토 권한, 로컬 재현 및 배포 조건은 [개편 인수인계](docs/personalization-handoff-ko.md)를 확인하세요. 새 연결과 묶음은 검토 전용이며 일반 이용에는 기존 승인 추천을 유지합니다.
+
 Firebase 미연결 상태에서는 준비 화면을 먼저 배포할 수 있습니다. Cloudflare 설치 실패 로그의 원인과 버튼 재배포에 사용할 브랜치/명령은 [Cloudflare 배포 수정 안내](docs/cloudflare-build-fix-ko.md)를 확인하세요. 준비 화면 빌드는 `npm run build:preparation`, 전체 준비 화면 배포는 `npm run deploy:preparation`입니다. 공개 Firebase 설정이 모두 없으면 기본 빌드는 문진·추천 화면을 확인할 수 있는 미리보기를 공개합니다. 로그인·저장은 비활성이고 답변을 서버에 저장하지 않습니다.
 
-머리·목·어깨·등·허리 중 불편 부위 → 평소 습관 → 최근 행동의 세 질문을 선택하면 승인된 동작 하나를 바로 추천합니다. 동작을 수행한 뒤 피드백을 남깁니다. Firebase Spark Auth/Firestore가 인증과 데이터를 담당하고 Cloudflare Vinext Worker가 웹과 서버 API를 제공합니다. Functions와 SMS는 사용하지 않습니다. 추천 버전은 `jikkot11-v2-fiveareas`입니다. 승인된 11개 동작의 결정 트리와 원본 정적 PNG 안내 이미지를 사용하며, 기존 MVP 동작은 새 추천에서 제외합니다. 회원 기능은 무료이고 스트레칭/쇼핑은 준비 중입니다.
+머리·목·어깨·등·허리 중 불편 부위 → 평소 습관 → 최근 행동의 세 질문을 선택하면 승인된 동작 하나를 바로 추천합니다. 동작을 수행한 뒤 피드백을 남깁니다. Firebase Spark Auth/Firestore가 인증과 데이터를 담당하고 Cloudflare Vinext Worker가 웹과 서버 API를 제공합니다. Functions와 SMS는 사용하지 않습니다. 추천 버전은 `jikkot11-v2-fiveareas`입니다. 승인된 11개 동작의 결정 트리와 원본 정적 PNG 안내 이미지를 사용하며, 기존 MVP 동작은 새 추천에서 제외합니다. 회원 기능은 무료이며, 새 운동 전 몸풀기·여유롭게 몸풀기는 콘텐츠 검토 전용입니다.
 
 Firebase 실제 연결을 위해 `npm run firebase:connect -- --project jikkot --site https://jikkot.ehdgus554.workers.dev --deploy --prepare-worker-key` 도구를 추가했습니다. 먼저 본인 Firebase 계정 로그인·프로젝트·Spark/인증 설정이 필요합니다. [최소 계정 설정](docs/firebase-quick-connect-ko.md)을 참고하세요.
 

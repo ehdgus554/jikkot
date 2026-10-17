@@ -16,6 +16,7 @@ import {
   type ContentExtensions,
 } from "../lib/service/recommendation.js";
 import { consentPolicy, operationalPolicy } from "../lib/service/policy.js";
+import { registerPersonalization, rememberLegacyReaction } from "./personalization-api";
 
 export type Identity = {
   uid: string;
@@ -75,14 +76,14 @@ export async function verifyFirebaseToken(
     firebase: { sign_in_provider: provider! },
   };
 }
-type ApiRequest = {
+export type ApiRequest = {
   body: Record<string, unknown>;
   params: Record<string, string>;
   query: Record<string, string>;
   path: string;
   bearer?: string;
 };
-type ApiResponse = { json(value: unknown): void };
+export type ApiResponse = { json(value: unknown): void };
 export function createSparkApi(
   env: SparkEnv,
   content: ContentExtensions = extensions,
@@ -425,6 +426,10 @@ export function createSparkApi(
       if (a.kind === "member")
         tx.create(db.doc(`profiles/${a.uid}/records/${b.submissionId}`), value);
     });
+    if(a.kind === "member") {
+      const saved=(await recRef.get()).data()!;
+      await rememberLegacyReaction(db,a.uid,b.submissionId,saved.snapshot.routine.id,b.feedback);
+    }
     res.json({ ok: true });
   });
   route("post", "/next", async (req, res) => {
@@ -522,6 +527,7 @@ export function createSparkApi(
       tx.update(ref, { nextRecommendationId: b.nextRecommendationId });
       return value;
     });
+    await rememberLegacyReaction(db,a.uid,rec.submissionId,rec.snapshot.routine.id,rec.feedback,b.changes);
     res.json({ recommendation: result });
   });
   route("get", "/records", async (req, res) => {
@@ -550,6 +556,7 @@ export function createSparkApi(
     });
   });
 
+  registerPersonalization({route,actor,fail,db,env});
   return async (request: Request): Promise<Response> => {
     const url = new URL(request.url);
     const origin = request.headers.get("Origin");
