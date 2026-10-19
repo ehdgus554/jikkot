@@ -779,34 +779,11 @@ export function registerPersonalization({
         }
         // Bundle positives are intentionally never copied onto individual movements.
       } else if (b.action === "next") {
-        if (session.input.flowVersion !== DAILY_FLOW)
-          fail(409, "UPDATE_REQUIRED", "새 네 단계로 다시 시작해주세요.");
-        if (
-          session.input.purpose !== "daily" ||
-          !session.feedbackSubmitted ||
-          !["same", "worse"].includes(session.feedback ?? "")
-        )
-          fail(409, "NEXT_UNAVAILABLE", "피드백을 기록한 뒤 이어갈 수 있어요.");
-        const decision = decide(session.input, memory, session.visited);
-        session.decision = decision;
-        session.nextState = decision.selected.length ? "ready" : "none";
-        if (decision.selected.length) {
-          const c = catalog.find((c) => c.catalogId === decision.selected[0])!;
-          session.items.push({
-            itemId: crypto.randomUUID(),
-            movement: movement(c),
-            state: "pending",
-            reaction: null,
-            directions: [],
-            steps: [],
-            skipReason: null,
-          });
-          session.visited.push(c.catalogId);
-          session.status = "active";
-          session.feedback = null;
-          session.feedbackSubmitted = false;
-          session.completedAt = null;
-        }
+        fail(
+          409,
+          "ROUTINE_FINISHED",
+          "루틴을 마쳤어요. 새 루틴은 홈에서 시작해주세요.",
+        );
       } else if (b.action === "followup") {
         if (
           !session.feedbackSubmitted ||

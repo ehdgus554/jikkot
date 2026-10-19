@@ -264,3 +264,103 @@ test("purpose publication audit matches its exact gate and sport posture/support
   const variants = catalog.filter((c) => c.catalogId.startsWith("N"));
   assert.equal(new Set(variants.map((c) => c.media.sha256)).size, 19);
 });
+test("sport adverse history replaces the exact floor movement with a tool-free nonlying family and never calls walking alone a full routine", async () => {
+  const { programs } = await import("../../lib/personalization/engine");
+  const input = inputSchema.parse({ purpose: "warmup", sport: "running" }),
+    memory = emptyMemory();
+  memory.constraints = [
+    {
+      catalogId: "W13",
+      directions: [],
+      evidenceIds: ["actual-floor-discomfort"],
+    },
+  ];
+  const d = decide(input, memory);
+  assert.ok(d.selected.length >= 4);
+  assert.ok(!d.selected.includes("W13"));
+  assert.ok(d.selected.includes("W09"));
+  assert.equal(d.program!.partial, true);
+  assert.equal(
+    d.program!.plannedSeconds,
+    d.selected.reduce(
+      (n, id) =>
+        n + catalog.find((c) => c.catalogId === id)!.dose.plannedSeconds,
+      0,
+    ),
+  );
+  memory.constraints = catalog
+    .filter((c) => c.catalogId !== "W11")
+    .map((c) => ({
+      catalogId: c.catalogId,
+      directions: [],
+      evidenceIds: ["actual"],
+    }));
+  assert.equal(decide(input, memory).selected.length, 0);
+  assert.equal(programs.filter((p) => p.purpose === "leisure").length, 24);
+});
+test("repeated same reactions change priority only for the same area, posture, habit and recent action", () => {
+  const input = daily("chair", "neck", "screen", "recent_look_down"),
+    original = decide(input, emptyMemory()),
+    first = original.selected[0],
+    memory = emptyMemory();
+  memory.bundles = [0, 1].map((i) => ({
+    sessionId: String(i),
+    catalogIds: [first],
+    purpose: "daily",
+    reaction: "same",
+    at: Date.now(),
+    patterns: [
+      DAILY_FLOW,
+      "area:neck",
+      "pose:chair",
+      "habit:screen",
+      "action:recent_look_down",
+    ],
+    focus: [],
+    minutes: null,
+  }));
+  assert.notEqual(decide(input, memory).selected[0], first);
+  for (const [from, to] of [
+    ["area:neck", "area:shoulder"],
+    ["pose:chair", "pose:standing"],
+    ["action:recent_look_down", "action:recent_look_up"],
+  ]) {
+    const other = structuredClone(memory);
+    for (const b of other.bundles!)
+      b.patterns = b.patterns.map((p) => (p === from ? to : p));
+    assert.deepEqual(decide(input, other).selected, original.selected);
+  }
+});
+test("two is the default; an extra family is included only as a complementary movement type with current answers", () => {
+  assert.equal(
+    decide(daily("chair", "back"), emptyMemory()).selected.length,
+    2,
+  );
+  const d = decide(
+    daily("chair", "back", "retract", "recent_immobile"),
+    emptyMemory(),
+  );
+  assert.equal(d.selected.length, 3);
+  const cs = d.selected.map((id) => catalog.find((c) => c.catalogId === id)!);
+  assert.ok(cs.slice(0, 2).every((c) => c.movementType !== cs[2].movementType));
+  const i = daily("chair", "back");
+  const memory = emptyMemory(),
+    first = decide(i, memory).selected;
+  memory.bundles = [0, 1].map((n) => ({
+    sessionId: String(n),
+    catalogIds: first,
+    purpose: "daily",
+    reaction: "same",
+    at: Date.now(),
+    patterns: [
+      DAILY_FLOW,
+      "area:back",
+      "pose:chair",
+      "habit:unknown",
+      "action:unknown",
+    ],
+    focus: [],
+    minutes: null,
+  }));
+  assert.equal(decide(i, memory).selected[0], "D27");
+});

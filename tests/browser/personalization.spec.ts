@@ -119,6 +119,12 @@ test("lost recommendation/feedback responses restore fixed IDs without duplicate
   await expect(page.getByRole("alert")).toBeVisible();
   await page.reload();
   await expect(
+    page.getByRole("heading", { name: "오늘의 추천 루틴" }),
+  ).toBeVisible();
+  await page
+    .getByRole("button", { name: "루틴 시작하기", exact: true })
+    .click();
+  await expect(
     page.getByRole("heading", { name: "양손을 앞으로 뻗어 윗등 늘리기" }),
   ).toBeVisible();
   await finishDaily(page);
@@ -166,12 +172,12 @@ test("daily bundle unknown discomfort does not mark every movement as adverse", 
   ).toBeVisible();
   await choose(page, "과정은 정확히 모르겠어요");
   await page.getByRole("button", { name: "느낌 남기기", exact: true }).click();
-  await page
-    .getByRole("button", { name: "다른 동작 살펴보기", exact: true })
-    .click();
   await expect(
-    page.getByText("지금 조건에 맞는 다른 동작이 없어요.", { exact: false }),
+    page.getByRole("heading", { name: "오늘의 느낌을 남겼어요" }),
   ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "다른 동작 살펴보기", exact: true }),
+  ).toHaveCount(0);
 });
 
 test("starting immediately after login waits for the actual consent context", async ({

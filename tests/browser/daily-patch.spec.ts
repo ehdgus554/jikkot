@@ -23,6 +23,10 @@ test("body image surfaces select all ten areas at the active camera scale, with 
         name: r.view === "back" ? "뒤쪽 보기" : "앞쪽 보기",
       })
       .click();
+    await page
+      .locator(`[data-area="${r.id}"] polygon`)
+      .first()
+      .scrollIntoViewIfNeeded();
     const camera = page.locator(".body-camera");
     await expect(camera).toHaveCSS("transition-duration", "0s");
     const box = await camera.boundingBox();
@@ -72,7 +76,9 @@ test("four screens preserve same-value answers, clear only dependent answers and
   await page.getByRole("button", { name: "다음", exact: true }).click();
   await choose(page, "고개를 숙이고 오래 있었어요");
   await page.getByRole("button", { name: "이전 단계", exact: true }).click();
-  await choose(page, "화면을 가까이 봐요");
+  await page
+    .getByRole("button", { name: "화면을 가까이 봐요", exact: true })
+    .click();
   await page.getByRole("button", { name: "다음", exact: true }).click();
   await expect(
     page.getByRole("button", {
@@ -84,7 +90,7 @@ test("four screens preserve same-value answers, clear only dependent answers and
   await expect(
     page.getByRole("heading", { name: "오늘의 추천 루틴" }),
   ).toBeVisible();
-  await expect(page.locator(".release-plan li")).toHaveCount(3);
+  await expect(page.locator(".release-plan li")).toHaveCount(2);
   await expect(
     page.getByRole("button", { name: "루틴 시작하기", exact: true }),
   ).toBeVisible();
@@ -109,4 +115,73 @@ test("records show real empty summary and direct today entry without additional 
   await expect(
     page.getByRole("heading", { name: "지금 어떤 자세로 할 수 있나요?" }),
   ).toBeVisible();
+});
+test("creation retry keeps its ID until an answer changes, then clears dependent answers and uses a new ID", async ({
+  page,
+  request,
+}) => {
+  test.setTimeout(120000);
+  const user = await memberIdentity(request);
+  await login(page, user);
+  await page
+    .getByRole("button", { name: "불편한 곳 풀기", exact: true })
+    .click();
+  await expect(
+    page.getByRole("heading", { name: "지금 어떤 자세로 할 수 있나요?" }),
+  ).toBeVisible();
+  await page.screenshot({
+    path: test.info().outputPath("step-1-posture.png"),
+    fullPage: true,
+  });
+  const payloads: { sessionId: string; input: { habits: string[] } }[] = [];
+  await page.route("**/api/personalization/sessions", async (route) => {
+    payloads.push(route.request().postDataJSON());
+    if (payloads.length < 3)
+      await route.fulfill({
+        status: 503,
+        contentType: "application/json",
+        body: JSON.stringify({
+          error: "연결이 원활하지 않아요. 다시 시도해주세요",
+          code: "UNAVAILABLE",
+        }),
+      });
+    else await route.continue();
+  });
+  const { daily } = await import("./helpers");
+  await daily(page, false);
+  await expect(page.getByRole("alert")).toContainText("연결이 원활하지");
+  await page.getByRole("button", { name: "추천 보기", exact: true }).click();
+  await expect.poll(() => payloads.length).toBe(2);
+  expect(payloads[0].sessionId).toBe(payloads[1].sessionId);
+  await page.getByRole("button", { name: "이전 단계", exact: true }).click();
+  await page.screenshot({
+    path: test.info().outputPath("step-3-habit.png"),
+    fullPage: true,
+  });
+  await page.getByRole("button", { name: "이전 단계", exact: true }).click();
+  await page.screenshot({
+    path: test.info().outputPath("step-2-area.png"),
+    fullPage: true,
+  });
+  await page.getByRole("button", { name: "다음", exact: true }).click();
+  await choose(page, "팔을 앞으로 두고 일해요");
+  await page.getByRole("button", { name: "다음", exact: true }).click();
+  await expect(
+    page.getByRole("button", { name: "추천 보기", exact: true }),
+  ).toBeDisabled();
+  await page.screenshot({
+    path: test.info().outputPath("step-4-recent-action.png"),
+    fullPage: true,
+  });
+  await choose(page, "물건을 들거나 옮겼어요");
+  await page.getByRole("button", { name: "추천 보기", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: "오늘의 추천 루틴" }),
+  ).toBeVisible();
+  expect(payloads[2].sessionId).not.toBe(payloads[0].sessionId);
+  expect(payloads[2].input.habits).toEqual(["arm_front"]);
+  await page.screenshot({
+    path: test.info().outputPath("result-routine.png"),
+    fullPage: true,
+  });
 });

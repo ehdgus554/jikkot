@@ -398,7 +398,9 @@ export function PersonalizedExperience({
                   ? s.feedbackSubmitted
                     ? "complete"
                     : "feedback"
-                  : "perform",
+                  : saved.view === "plan" || saved.request
+                    ? "plan"
+                    : "perform",
             );
           } else if (saved.input) {
             setInput(saved.input);
@@ -1614,24 +1616,6 @@ export function PersonalizedExperience({
               : "오늘의 몸풀기를 마쳤어요"}
           </h1>
           {session.feedback && <p>{feelings[session.feedback]}</p>}
-          {input.purpose === "daily" &&
-            input.flowVersion === DAILY_FLOW &&
-            ["same", "worse"].includes(session.feedback ?? "") &&
-            session.nextState !== "none" && (
-              <button
-                className="secondary"
-                disabled={busy}
-                onClick={() => run(() => event("next"))}
-              >
-                다른 동작 살펴보기
-              </button>
-            )}
-          {session.nextState === "none" && (
-            <p>
-              지금 조건에 맞는 다른 동작이 없어요. 무리해서 이어가지 않아도
-              괜찮아요.
-            </p>
-          )}
           {session.program?.sportSpecificStart && (
             <p>{session.program.sportSpecificStart}</p>
           )}

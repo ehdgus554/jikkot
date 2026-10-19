@@ -68,7 +68,7 @@ for (const p of programs)
       assert.equal(d.program!.distinctMovementCount, new Set(d.selected).size);
     },
   );
-test("daily requires related habits AND actual current clues and movement comfort; selection order is stable", () => {
+test("archived pre-patch daily contract retains its original clues; new sessions use the separate four-answer contract", () => {
   assert.deepEqual(decide(input(), emptyMemory()).selected, ["O02"]);
   assert.equal(
     decide(input({ habits: ["unknown"], current: ["unknown"] }), emptyMemory())
@@ -155,8 +155,22 @@ test("normal lying never expands to floor/quadruped; mixed floor requires explic
     0,
   );
 });
-test("warmup defaults have no chair/tool requirements and retain distinct floor movements",()=>{
- const d=decide(input({purpose:"warmup",sport:"hiking",area:undefined,habits:[],current:[],poses:[],supports:[]}),emptyMemory());assert.ok(d.selected.includes("W13"));assert.ok(!d.selected.includes("D33"));assert.ok(d.selected.length>=4);
+test("warmup defaults have no chair/tool requirements and retain distinct floor movements", () => {
+  const d = decide(
+    input({
+      purpose: "warmup",
+      sport: "hiking",
+      area: undefined,
+      habits: [],
+      current: [],
+      poses: [],
+      supports: [],
+    }),
+    emptyMemory(),
+  );
+  assert.ok(d.selected.includes("W13"));
+  assert.ok(!d.selected.includes("D33"));
+  assert.ok(d.selected.length >= 4);
 });
 test("unavailable supports, towel and W16 head support stay mandatory", () => {
   const m = emptyMemory();

@@ -162,7 +162,13 @@ export function decide(
       ] ?? [];
     const habit = input.habits[0];
     const action = input.current[0];
-    result.patterns = [DAILY_FLOW, `habit:${habit}`, `action:${action}`];
+    result.patterns = [
+      DAILY_FLOW,
+      `area:${input.area}`,
+      `pose:${input.poses[0]}`,
+      `habit:${habit}`,
+      `action:${action}`,
+    ];
     const weights: Record<string, string[]> = {
       screen: ["chin-retraction", "chin-nod", "upper-back-reach"],
       clench: ["jaw-muscle-massage"],
@@ -193,19 +199,18 @@ export function decide(
       const individualSame = memory.experiences.filter(
         (e) =>
           e.purpose === "daily" &&
+          e.performed &&
           e.area === input.area &&
           e.catalogId === c.catalogId &&
           e.reaction === "same" &&
-          e.patterns.includes(DAILY_FLOW) &&
-          e.patterns.includes(`habit:${habit}`),
+          result.patterns.every((p) => e.patterns.includes(p)),
       ).length;
       const bundleSame = (memory.bundles ?? []).filter(
         (b) =>
           b.purpose === "daily" &&
           b.reaction === "same" &&
           b.catalogIds.includes(c.catalogId) &&
-          b.patterns.includes(`habit:${habit}`) &&
-          b.patterns.includes(DAILY_FLOW),
+          result.patterns.every((p) => b.patterns.includes(p)),
       ).length;
       const same = individualSame + bundleSame;
       return (
@@ -227,6 +232,16 @@ export function decide(
       result.selected.push(c.catalogId);
       if (result.selected.length === 3) break;
     }
+    const firstTwo = result.selected
+      .slice(0, 2)
+      .map((id) => catalog.find((c) => c.catalogId === id)!);
+    const third = catalog.find((c) => c.catalogId === result.selected[2]);
+    const complementaryThird =
+      habit !== "unknown" &&
+      action !== "unknown" &&
+      third &&
+      !firstTwo.some((c) => c.movementType === third.movementType);
+    result.selected = result.selected.slice(0, complementaryThird ? 3 : 2);
     result.program = {
       id: `daily:${input.poses[0]}:${input.area}`,
       name: `${regionNames[input.area!]} 가볍게 풀기`,
@@ -258,6 +273,7 @@ export function decide(
           e.catalogId === c.catalogId &&
           e.performed &&
           e.purpose === "daily" &&
+          e.performed &&
           e.area === input.area &&
           e.patterns.some((p) => result.patterns.includes(p)) &&
           e.at > Date.now() - 30 * 86400000,

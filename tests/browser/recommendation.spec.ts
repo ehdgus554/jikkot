@@ -4,7 +4,7 @@ import { createHash } from "node:crypto";
 const manifest = JSON.parse(
   readFileSync("lib/personalization/release/asset-manifest.json", "utf8"),
 ).runtimeImages as { path: string; sha256: string }[];
-test("all 75 independent movement images and 8 UI images are exact versioned assets", async ({
+test("all registered movement images and 8 UI images are exact versioned assets", async ({
   request,
 }) => {
   for (const m of manifest) {

@@ -585,7 +585,7 @@ test("new daily API has only four answers, stores all items and bundle feeling, 
     u,
     daily({ habits: ["unknown"], current: ["unknown"] }),
   );
-  assert.equal(s.items.length, 3);
+  assert.equal(s.items.length, 2);
   const snapshots = structuredClone(
     s.items.map((i: { movement: unknown }) => i.movement),
   );
@@ -741,6 +741,57 @@ test("retry identity is independent of Firestore map key order and changed answe
       await call("/personalization/sessions", u.idToken, {
         sessionId: s.id,
         input: { ...input, habits: ["unknown"] },
+      })
+    ).status,
+    409,
+  );
+});
+test("a fixed daily routine has one final feeling and cannot append a legacy extra movement or consume another guest quota", async () => {
+  const u = await identity("guest"),
+    call = client();
+  await call("/guest/consent", u.idToken, consents);
+  const s = await create(
+    call,
+    u,
+    daily({ habits: ["unknown"], current: ["unknown"] }),
+  );
+  assert.equal(s.items.length, 2);
+  for (const item of s.items)
+    await call(`/personalization/sessions/${s.id}/events`, u.idToken, {
+      eventId: randomUUID(),
+      action: "complete",
+      itemId: item.itemId,
+    });
+  const feel = { eventId: randomUUID(), action: "feedback", reaction: "same" };
+  assert.equal(
+    (await call(`/personalization/sessions/${s.id}/events`, u.idToken, feel))
+      .status,
+    200,
+  );
+  assert.equal(
+    (await call(`/personalization/sessions/${s.id}/events`, u.idToken, feel))
+      .status,
+    200,
+  );
+  assert.equal(
+    (
+      await call(`/personalization/sessions/${s.id}/events`, u.idToken, {
+        eventId: randomUUID(),
+        action: "next",
+      })
+    ).status,
+    409,
+  );
+  assert.equal(
+    (await call(`/personalization/sessions/${s.id}`, u.idToken)).body.items
+      .length,
+    2,
+  );
+  assert.equal(
+    (
+      await call("/personalization/sessions", u.idToken, {
+        sessionId: randomUUID(),
+        input: daily(),
       })
     ).status,
     409,
