@@ -335,7 +335,7 @@ export function registerPersonalization({
     const consent = await currentHealthConsent(db, a.uid, a.kind);
     const memory = consent ? await loadMemory(a, review) : emptyMemory();
     const growth =
-      env.GROWTH_ENABLED === "true" && pref?.showGrowth
+      consent && env.GROWTH_ENABLED === "true" && pref?.showGrowth
         ? (
             await db
               .doc(`${review ? "reviewGrowth" : "personalGrowth"}/${a.uid}`)
@@ -345,7 +345,7 @@ export function registerPersonalization({
     res.json({
       version: VERSION,
       reviewAllowed: await reviewAllowed(a),
-      preferences: pref ?? {},
+      preferences: consent ? (pref ?? {}) : {},
       hasNewSessions: memory.experiences.length > 0 || !!memory.bundles?.length,
       consent,
       consentVersion,

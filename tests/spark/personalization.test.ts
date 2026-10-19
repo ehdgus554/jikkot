@@ -516,3 +516,49 @@ test("withdrawal racing with a new recommendation cannot recreate health data", 
     }
   }
 });
+test("withdrawn consent never returns saved habits while deletion is retrying", async () => {
+  const u = await member(),
+    call = client();
+  await call("/personalization/preferences", u.idToken, {
+    habits: { back: ["retract"] },
+  });
+  await create(call, u);
+  const request = db.request.bind(db);
+  let failed = false;
+  db.request = async (...args: Parameters<typeof db.request>) => {
+    const b = args[1] as { writes?: { delete?: string }[] } | undefined;
+    if (
+      !failed &&
+      b?.writes?.some(
+        (w) => w.delete === db.doc(`personalPreferences/${u.localId}`).name,
+      )
+    ) {
+      failed = true;
+      throw Error("simulated cleanup interruption");
+    }
+    return request(...args);
+  };
+  try {
+    assert.equal(
+      (await call("/account/health/revoke", u.idToken, {})).status,
+      500,
+    );
+    assert.ok(failed);
+    assert.equal(
+      (await db.doc(`personalPreferences/${u.localId}`).get()).exists,
+      true,
+    );
+    const c = await call("/personalization/context", u.idToken);
+    assert.equal(c.status, 200);
+    assert.equal(c.body.consent, false);
+    assert.deepEqual(c.body.preferences, {});
+    assert.equal(c.body.hasNewSessions, false);
+    assert.equal(
+      (await call("/personalization/records", u.idToken)).status,
+      403,
+    );
+  } finally {
+    db.request = request;
+    await call("/account/health/revoke", u.idToken, {});
+  }
+});
