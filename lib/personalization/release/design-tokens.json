@@ -1,0 +1,62 @@
+{
+  "version": "2026-10-17.1",
+  "colors": {
+    "coral": "#EF7564",
+    "indigo": "#252A76",
+    "background": "#FFFAF6",
+    "surface": "#FFFFFF",
+    "selected": "#FCE5E0",
+    "text": "#252A76",
+    "secondaryText": "#656978",
+    "border": "#D9D9E1",
+    "error": "#A3312B",
+    "focus": "#252A76",
+    "textOnCoral": "#212568"
+  },
+  "fonts": {
+    "korean": "LINE Seed KR",
+    "latin": "Nunito",
+    "regular": "assets/fonts/LINESeedKR-Rg.woff2",
+    "bold": "assets/fonts/LINESeedKR-Bd.woff2",
+    "latinFile": "assets/fonts/Nunito-variable.ttf"
+  },
+  "typePx": {
+    "homeTitle": 28,
+    "screenQuestion": 20,
+    "body": 16,
+    "helper": 14,
+    "minimumVisibleText": 12,
+    "button": 17
+  },
+  "spacingPx": [
+    4,
+    8,
+    12,
+    16,
+    20,
+    24,
+    32,
+    40,
+    48
+  ],
+  "pagePaddingPx": 24,
+  "radiusPx": {
+    "button": 18,
+    "card": 18,
+    "segment": 24
+  },
+  "touchTargetMinPx": 48,
+  "primaryButtonHeightPx": 56,
+  "contentWidthMaxPx": 480,
+  "safeArea": "env(safe-area-inset-top) and env(safe-area-inset-bottom)",
+  "bottomNavCount": 4,
+  "shadow": "very subtle only for raised overlay; default cards use a thin border",
+  "motion": {
+    "bodyZoomMs": 450,
+    "buttonMs": 140,
+    "sheetMs": 220,
+    "postureIsAnimated": false,
+    "respectReducedMotion": true
+  },
+  "contrastRule": "일반 텍스트 4.5:1 이상. 코랄 #EF7564 위 주 버튼 글자는 textOnCoral #212568을 사용한다(4.84:1). 기본 브랜드 인디고 #252A76은 유지하며 해당 조합의4.43:1을 작은 텍스트에 통과값으로 쓰지 않는다. 색 외에 텍스트·체크·aria 속성으로 상태를 전달한다."
+}

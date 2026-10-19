@@ -108,7 +108,10 @@ async function accessToken(env: SparkEnv) {
   return cached.token;
 }
 export class FirestoreError extends Error {
-  constructor(public status: number, public code?: string) {
+  constructor(
+    public status: number,
+    public code?: string,
+  ) {
     super("Firestore request failed");
     this.name = "FirestoreError";
   }
@@ -149,7 +152,9 @@ export class FirestoreRest {
       ...(body === undefined ? {} : { body: JSON.stringify(body) }),
     });
     if (!response.ok) {
-      const body = await response.json().catch(() => null) as {error?:{status?:string}} | null;
+      const body = (await response.json().catch(() => null)) as {
+        error?: { status?: string };
+      } | null;
       throw new FirestoreError(response.status, body?.error?.status);
     }
     return response.json();
@@ -175,8 +180,10 @@ export class FirestoreRest {
       } catch (error) {
         if (
           !(error instanceof FirestoreError) ||
-          !([409, 412].includes(error.status) ||
-            error.status === 400 && error.code === "FAILED_PRECONDITION") ||
+          !(
+            [409, 412].includes(error.status) ||
+            (error.status === 400 && error.code === "FAILED_PRECONDITION")
+          ) ||
           attempt === 4
         )
           throw error;
@@ -239,7 +246,7 @@ export class DocumentRef {
     });
   }
 }
-class Transaction {
+export class Transaction {
   readonly writes: Write[] = [];
   private readonly reads = new Map<string, Snapshot>();
   constructor(readonly db: FirestoreRest) {}
@@ -293,6 +300,19 @@ class Transaction {
   }
 }
 class Query {
+  private filters: {
+    field: { fieldPath: string };
+    op: string;
+    value: Value;
+  }[] = [];
+  where(field: string, op: "==" | "<=", value: unknown) {
+    this.filters.push({
+      field: { fieldPath: field },
+      op: op === "==" ? "EQUAL" : "LESS_THAN_OR_EQUAL",
+      value: encode(value),
+    });
+    return this;
+  }
   private orders: { field: { fieldPath: string }; direction: string }[] = [];
   private cursor?: { values: Value[]; before: boolean };
   private count = 100;
@@ -330,6 +350,21 @@ class Query {
     const rows = (await this.db.request(`${parent}:runQuery`, {
       structuredQuery: {
         from: [{ collectionId }],
+        ...(this.filters.length
+          ? {
+              where:
+                this.filters.length === 1
+                  ? { fieldFilter: this.filters[0] }
+                  : {
+                      compositeFilter: {
+                        op: "AND",
+                        filters: this.filters.map((fieldFilter) => ({
+                          fieldFilter,
+                        })),
+                      },
+                    },
+            }
+          : {}),
         orderBy: this.orders,
         limit: this.count,
         ...(this.cursor ? { startAt: this.cursor } : {}),

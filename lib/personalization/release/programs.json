@@ -1,0 +1,1564 @@
+[
+  {
+    "id": "warmup-running",
+    "purpose": "warmup",
+    "name": "러닝 전 가볍게 몸풀기",
+    "sport": "running",
+    "requiredCapabilities": [
+      "balance",
+      "dryFloor",
+      "space",
+      "standing",
+      "wall"
+    ],
+    "conditionalSupportChecks": [],
+    "sportSpecificStart": {
+      "text": "본 운동의 첫 5분은 걷기에서 편한 조깅으로 천천히 연결해요.",
+      "includedInDisplayedDuration": false,
+      "isMedicalClaim": false
+    },
+    "icon": "assets/icons/sport-footprints.svg",
+    "items": [
+      {
+        "catalogId": "W11",
+        "round": 1,
+        "dose": {
+          "kind": "timed",
+          "activeSeconds": 180,
+          "durationPerSideSeconds": 180,
+          "repetitions": 0,
+          "sides": 1,
+          "rounds": 1,
+          "restSeconds": 0,
+          "holdSeconds": 0,
+          "tempoSeconds": 0,
+          "setupSeconds": 10,
+          "sideChangeSeconds": 0,
+          "plannedSeconds": 190,
+          "basis": "직꼿의 보수적인 첫 이용 진행값. 출처의 동작 설명을 참고해 편한 범위로 구성했으며 개인별 의료 처방이나 효능 검증값이 아님.",
+          "timerCompletesPerformance": false,
+          "label": "180초 동안 가볍게"
+        }
+      },
+      {
+        "catalogId": "W18",
+        "round": 1
+      },
+      {
+        "catalogId": "W03",
+        "round": 1
+      },
+      {
+        "catalogId": "W07",
+        "round": 1
+      },
+      {
+        "catalogId": "W12",
+        "round": 1
+      }
+    ],
+    "plannedSeconds": 466
+  },
+  {
+    "id": "warmup-football",
+    "purpose": "warmup",
+    "name": "축구 전 가볍게 몸풀기",
+    "sport": "football",
+    "requiredCapabilities": [
+      "dryFloor",
+      "space",
+      "standing",
+      "wall"
+    ],
+    "conditionalSupportChecks": [],
+    "sportSpecificStart": {
+      "text": "가벼운 조깅과 짧은 패스부터 시작하고, 전력 질주·급회전은 몸이 준비된 뒤 해요.",
+      "includedInDisplayedDuration": false,
+      "isMedicalClaim": false
+    },
+    "icon": "assets/icons/sport-football.svg",
+    "items": [
+      {
+        "catalogId": "W11",
+        "round": 1,
+        "dose": {
+          "kind": "timed",
+          "activeSeconds": 180,
+          "durationPerSideSeconds": 180,
+          "repetitions": 0,
+          "sides": 1,
+          "rounds": 1,
+          "restSeconds": 0,
+          "holdSeconds": 0,
+          "tempoSeconds": 0,
+          "setupSeconds": 10,
+          "sideChangeSeconds": 0,
+          "plannedSeconds": 190,
+          "basis": "직꼿의 보수적인 첫 이용 진행값. 출처의 동작 설명을 참고해 편한 범위로 구성했으며 개인별 의료 처방이나 효능 검증값이 아님.",
+          "timerCompletesPerformance": false,
+          "label": "180초 동안 가볍게"
+        }
+      },
+      {
+        "catalogId": "W03",
+        "round": 1
+      },
+      {
+        "catalogId": "W01",
+        "round": 1
+      },
+      {
+        "catalogId": "W09",
+        "round": 1
+      },
+      {
+        "catalogId": "W10",
+        "round": 1
+      }
+    ],
+    "plannedSeconds": 458
+  },
+  {
+    "id": "warmup-hiking",
+    "purpose": "warmup",
+    "name": "등산 전 가볍게 몸풀기",
+    "sport": "hiking",
+    "requiredCapabilities": [
+      "balance",
+      "dryFloor",
+      "standing",
+      "wall"
+    ],
+    "conditionalSupportChecks": [
+      {
+        "catalogId": "W06",
+        "anyOf": [
+          [
+            "wall"
+          ],
+          [
+            "chair"
+          ]
+        ]
+      }
+    ],
+    "sportSpecificStart": {
+      "text": "출발 뒤 첫 5분은 완만한 곳을 천천히 걷고 보폭과 속도를 조금씩 늘려요.",
+      "includedInDisplayedDuration": false,
+      "isMedicalClaim": false
+    },
+    "icon": "assets/icons/sport-mountain.svg",
+    "items": [
+      {
+        "catalogId": "W11",
+        "round": 1,
+        "dose": {
+          "kind": "timed",
+          "activeSeconds": 180,
+          "durationPerSideSeconds": 180,
+          "repetitions": 0,
+          "sides": 1,
+          "rounds": 1,
+          "restSeconds": 0,
+          "holdSeconds": 0,
+          "tempoSeconds": 0,
+          "setupSeconds": 10,
+          "sideChangeSeconds": 0,
+          "plannedSeconds": 190,
+          "basis": "직꼿의 보수적인 첫 이용 진행값. 출처의 동작 설명을 참고해 편한 범위로 구성했으며 개인별 의료 처방이나 효능 검증값이 아님.",
+          "timerCompletesPerformance": false,
+          "label": "180초 동안 가볍게"
+        }
+      },
+      {
+        "catalogId": "W18",
+        "round": 1
+      },
+      {
+        "catalogId": "W06",
+        "round": 1
+      },
+      {
+        "catalogId": "W05",
+        "round": 1
+      },
+      {
+        "catalogId": "W07",
+        "round": 1
+      }
+    ],
+    "plannedSeconds": 439
+  },
+  {
+    "id": "warmup-gym",
+    "purpose": "warmup",
+    "name": "헬스 전 가볍게 몸풀기",
+    "sport": "gym",
+    "requiredCapabilities": [
+      "balance",
+      "dryFloor",
+      "standing"
+    ],
+    "conditionalSupportChecks": [],
+    "sportSpecificStart": {
+      "text": "첫 종목은 가벼운 무게와 작은 범위의 준비 세트부터 시작해요. 이 묶음이 종목별 준비 세트를 대신하지 않아요.",
+      "includedInDisplayedDuration": false,
+      "isMedicalClaim": false
+    },
+    "icon": "assets/icons/sport-dumbbell.svg",
+    "items": [
+      {
+        "catalogId": "W11",
+        "round": 1,
+        "dose": {
+          "kind": "timed",
+          "activeSeconds": 180,
+          "durationPerSideSeconds": 180,
+          "repetitions": 0,
+          "sides": 1,
+          "rounds": 1,
+          "restSeconds": 0,
+          "holdSeconds": 0,
+          "tempoSeconds": 0,
+          "setupSeconds": 10,
+          "sideChangeSeconds": 0,
+          "plannedSeconds": 190,
+          "basis": "직꼿의 보수적인 첫 이용 진행값. 출처의 동작 설명을 참고해 편한 범위로 구성했으며 개인별 의료 처방이나 효능 검증값이 아님.",
+          "timerCompletesPerformance": false,
+          "label": "180초 동안 가볍게"
+        }
+      },
+      {
+        "catalogId": "W04",
+        "round": 1
+      },
+      {
+        "catalogId": "W02",
+        "round": 1
+      },
+      {
+        "catalogId": "W05",
+        "round": 1
+      },
+      {
+        "catalogId": "W07",
+        "round": 1
+      }
+    ],
+    "plannedSeconds": 440
+  },
+  {
+    "id": "warmup-golf",
+    "purpose": "warmup",
+    "name": "골프 전 가볍게 몸풀기",
+    "sport": "golf",
+    "requiredCapabilities": [
+      "dryFloor",
+      "standing",
+      "wall"
+    ],
+    "conditionalSupportChecks": [],
+    "sportSpecificStart": {
+      "text": "짧고 편한 연습 스윙부터 시작해 점차 평소 스윙으로 연결해요. 처음부터 최대 속도로 휘두르지 않아요.",
+      "includedInDisplayedDuration": false,
+      "isMedicalClaim": false
+    },
+    "icon": "assets/icons/sport-golf.svg",
+    "items": [
+      {
+        "catalogId": "W11",
+        "round": 1,
+        "dose": {
+          "kind": "timed",
+          "activeSeconds": 180,
+          "durationPerSideSeconds": 180,
+          "repetitions": 0,
+          "sides": 1,
+          "rounds": 1,
+          "restSeconds": 0,
+          "holdSeconds": 0,
+          "tempoSeconds": 0,
+          "setupSeconds": 10,
+          "sideChangeSeconds": 0,
+          "plannedSeconds": 190,
+          "basis": "직꼿의 보수적인 첫 이용 진행값. 출처의 동작 설명을 참고해 편한 범위로 구성했으며 개인별 의료 처방이나 효능 검증값이 아님.",
+          "timerCompletesPerformance": false,
+          "label": "180초 동안 가볍게"
+        }
+      },
+      {
+        "catalogId": "W04",
+        "round": 1
+      },
+      {
+        "catalogId": "W02",
+        "round": 1
+      },
+      {
+        "catalogId": "W05",
+        "round": 1
+      },
+      {
+        "catalogId": "W18",
+        "round": 1
+      }
+    ],
+    "plannedSeconds": 440
+  },
+  {
+    "id": "warmup-tennis",
+    "purpose": "warmup",
+    "name": "테니스 전 가볍게 몸풀기",
+    "sport": "tennis",
+    "requiredCapabilities": [
+      "dryFloor",
+      "space",
+      "standing"
+    ],
+    "conditionalSupportChecks": [],
+    "sportSpecificStart": {
+      "text": "짧은 거리의 가벼운 랠리와 작은 스윙으로 시작하고 이동 범위를 조금씩 넓혀요.",
+      "includedInDisplayedDuration": false,
+      "isMedicalClaim": false
+    },
+    "icon": "assets/icons/sport-racket.svg",
+    "items": [
+      {
+        "catalogId": "W11",
+        "round": 1,
+        "dose": {
+          "kind": "timed",
+          "activeSeconds": 180,
+          "durationPerSideSeconds": 180,
+          "repetitions": 0,
+          "sides": 1,
+          "rounds": 1,
+          "restSeconds": 0,
+          "holdSeconds": 0,
+          "tempoSeconds": 0,
+          "setupSeconds": 10,
+          "sideChangeSeconds": 0,
+          "plannedSeconds": 190,
+          "basis": "직꼿의 보수적인 첫 이용 진행값. 출처의 동작 설명을 참고해 편한 범위로 구성했으며 개인별 의료 처방이나 효능 검증값이 아님.",
+          "timerCompletesPerformance": false,
+          "label": "180초 동안 가볍게"
+        }
+      },
+      {
+        "catalogId": "W04",
+        "round": 1
+      },
+      {
+        "catalogId": "W02",
+        "round": 1
+      },
+      {
+        "catalogId": "W09",
+        "round": 1
+      },
+      {
+        "catalogId": "W10",
+        "round": 1
+      }
+    ],
+    "plannedSeconds": 430
+  },
+  {
+    "id": "warmup-swimming",
+    "purpose": "warmup",
+    "name": "수영 전 가볍게 몸풀기",
+    "sport": "swimming",
+    "requiredCapabilities": [
+      "dryFloor",
+      "space",
+      "standing"
+    ],
+    "conditionalSupportChecks": [],
+    "sportSpecificStart": {
+      "text": "마른 공간에서 몸을 푼 뒤, 물에서는 익숙한 영법으로 천천히 시작해요. 미끄러운 풀 가장자리에서는 하지 않아요.",
+      "includedInDisplayedDuration": false,
+      "isMedicalClaim": false
+    },
+    "icon": "assets/icons/sport-waves.svg",
+    "items": [
+      {
+        "catalogId": "W11",
+        "round": 1,
+        "dose": {
+          "kind": "timed",
+          "activeSeconds": 180,
+          "durationPerSideSeconds": 180,
+          "repetitions": 0,
+          "sides": 1,
+          "rounds": 1,
+          "restSeconds": 0,
+          "holdSeconds": 0,
+          "tempoSeconds": 0,
+          "setupSeconds": 10,
+          "sideChangeSeconds": 0,
+          "plannedSeconds": 190,
+          "basis": "직꼿의 보수적인 첫 이용 진행값. 출처의 동작 설명을 참고해 편한 범위로 구성했으며 개인별 의료 처방이나 효능 검증값이 아님.",
+          "timerCompletesPerformance": false,
+          "label": "180초 동안 가볍게"
+        }
+      },
+      {
+        "catalogId": "W04",
+        "round": 1
+      },
+      {
+        "catalogId": "W02",
+        "round": 1
+      },
+      {
+        "catalogId": "W05",
+        "round": 1
+      },
+      {
+        "catalogId": "W10",
+        "round": 1
+      }
+    ],
+    "plannedSeconds": 417
+  },
+  {
+    "id": "warmup-cycling",
+    "purpose": "warmup",
+    "name": "자전거 전 가볍게 몸풀기",
+    "sport": "cycling",
+    "requiredCapabilities": [
+      "dryFloor",
+      "standing",
+      "wall"
+    ],
+    "conditionalSupportChecks": [
+      {
+        "catalogId": "W06",
+        "anyOf": [
+          [
+            "wall"
+          ],
+          [
+            "chair"
+          ]
+        ]
+      }
+    ],
+    "sportSpecificStart": {
+      "text": "자전거에 오른 뒤 첫 5~10분은 가벼운 저항으로 편하게 페달을 돌려요. 높은 강도의 라이딩은 그 뒤 시작해요.",
+      "includedInDisplayedDuration": false,
+      "isMedicalClaim": false
+    },
+    "icon": "assets/icons/sport-bike.svg",
+    "items": [
+      {
+        "catalogId": "W11",
+        "round": 1,
+        "dose": {
+          "kind": "timed",
+          "activeSeconds": 180,
+          "durationPerSideSeconds": 180,
+          "repetitions": 0,
+          "sides": 1,
+          "rounds": 1,
+          "restSeconds": 0,
+          "holdSeconds": 0,
+          "tempoSeconds": 0,
+          "setupSeconds": 10,
+          "sideChangeSeconds": 0,
+          "plannedSeconds": 190,
+          "basis": "직꼿의 보수적인 첫 이용 진행값. 출처의 동작 설명을 참고해 편한 범위로 구성했으며 개인별 의료 처방이나 효능 검증값이 아님.",
+          "timerCompletesPerformance": false,
+          "label": "180초 동안 가볍게"
+        }
+      },
+      {
+        "catalogId": "W18",
+        "round": 1
+      },
+      {
+        "catalogId": "W06",
+        "round": 1
+      },
+      {
+        "catalogId": "W05",
+        "round": 1
+      },
+      {
+        "catalogId": "W04",
+        "round": 1
+      }
+    ],
+    "plannedSeconds": 423
+  },
+  {
+    "id": "leisure-chair-5-all",
+    "purpose": "leisure",
+    "name": "의자에서 편하게",
+    "profile": "chair",
+    "minutesChoice": 5,
+    "focus": "all",
+    "requiredCapabilities": [
+      "chair"
+    ],
+    "conditionalSupportChecks": [],
+    "items": [
+      {
+        "catalogId": "D27",
+        "round": 1
+      },
+      {
+        "catalogId": "D19",
+        "round": 1
+      },
+      {
+        "catalogId": "O06",
+        "round": 1
+      },
+      {
+        "catalogId": "D24",
+        "round": 1
+      },
+      {
+        "catalogId": "D25",
+        "round": 1
+      }
+    ],
+    "plannedSeconds": 290
+  },
+  {
+    "id": "leisure-chair-5-upper",
+    "purpose": "leisure",
+    "name": "의자에서 편하게",
+    "profile": "chair",
+    "minutesChoice": 5,
+    "focus": "upper",
+    "requiredCapabilities": [
+      "chair"
+    ],
+    "conditionalSupportChecks": [],
+    "items": [
+      {
+        "catalogId": "D27",
+        "round": 1
+      },
+      {
+        "catalogId": "D19",
+        "round": 1
+      },
+      {
+        "catalogId": "O06",
+        "round": 1
+      },
+      {
+        "catalogId": "D21",
+        "round": 1
+      },
+      {
+        "catalogId": "D24",
+        "round": 1
+      }
+    ],
+    "plannedSeconds": 310
+  },
+  {
+    "id": "leisure-chair-5-lower",
+    "purpose": "leisure",
+    "name": "의자에서 편하게",
+    "profile": "chair",
+    "minutesChoice": 5,
+    "focus": "lower",
+    "requiredCapabilities": [
+      "chair"
+    ],
+    "conditionalSupportChecks": [],
+    "items": [
+      {
+        "catalogId": "D26",
+        "round": 1
+      },
+      {
+        "catalogId": "D05",
+        "round": 1
+      },
+      {
+        "catalogId": "D28",
+        "round": 1
+      },
+      {
+        "catalogId": "D33",
+        "round": 1
+      }
+    ],
+    "plannedSeconds": 314
+  },
+  {
+    "id": "leisure-chair-10-all",
+    "purpose": "leisure",
+    "name": "의자에서 편하게",
+    "profile": "chair",
+    "minutesChoice": 10,
+    "focus": "all",
+    "requiredCapabilities": [
+      "chair"
+    ],
+    "conditionalSupportChecks": [],
+    "items": [
+      {
+        "catalogId": "D27",
+        "round": 1
+      },
+      {
+        "catalogId": "D19",
+        "round": 1
+      },
+      {
+        "catalogId": "O06",
+        "round": 1
+      },
+      {
+        "catalogId": "D24",
+        "round": 1
+      },
+      {
+        "catalogId": "D25",
+        "round": 1
+      },
+      {
+        "catalogId": "D26",
+        "round": 1
+      },
+      {
+        "catalogId": "D05",
+        "round": 1
+      },
+      {
+        "catalogId": "D28",
+        "round": 1
+      },
+      {
+        "catalogId": "D33",
+        "round": 1
+      }
+    ],
+    "plannedSeconds": 577
+  },
+  {
+    "id": "leisure-chair-10-upper",
+    "purpose": "leisure",
+    "name": "의자에서 편하게",
+    "profile": "chair",
+    "minutesChoice": 10,
+    "focus": "upper",
+    "requiredCapabilities": [
+      "chair"
+    ],
+    "conditionalSupportChecks": [],
+    "items": [
+      {
+        "catalogId": "D27",
+        "round": 1
+      },
+      {
+        "catalogId": "D19",
+        "round": 1
+      },
+      {
+        "catalogId": "O06",
+        "round": 1
+      },
+      {
+        "catalogId": "D24",
+        "round": 1
+      },
+      {
+        "catalogId": "D25",
+        "round": 1
+      },
+      {
+        "catalogId": "D21",
+        "round": 1
+      },
+      {
+        "catalogId": "D22",
+        "round": 1
+      },
+      {
+        "catalogId": "D18",
+        "round": 1
+      },
+      {
+        "catalogId": "D33",
+        "round": 1
+      }
+    ],
+    "plannedSeconds": 565
+  },
+  {
+    "id": "leisure-chair-10-lower",
+    "purpose": "leisure",
+    "name": "의자에서 편하게",
+    "profile": "chair",
+    "minutesChoice": 10,
+    "focus": "lower",
+    "requiredCapabilities": [
+      "chair"
+    ],
+    "conditionalSupportChecks": [],
+    "items": [
+      {
+        "catalogId": "D26",
+        "round": 1
+      },
+      {
+        "catalogId": "D05",
+        "round": 1
+      },
+      {
+        "catalogId": "D28",
+        "round": 1
+      },
+      {
+        "catalogId": "D33",
+        "round": 1
+      },
+      {
+        "catalogId": "D29",
+        "round": 1
+      },
+      {
+        "catalogId": "D27",
+        "round": 1
+      },
+      {
+        "catalogId": "D25",
+        "round": 1
+      },
+      {
+        "catalogId": "O06",
+        "round": 1
+      },
+      {
+        "catalogId": "D19",
+        "round": 1
+      }
+    ],
+    "plannedSeconds": 577
+  },
+  {
+    "id": "leisure-standing-5-all",
+    "purpose": "leisure",
+    "name": "서서 가볍게",
+    "profile": "standing",
+    "minutesChoice": 5,
+    "focus": "all",
+    "requiredCapabilities": [
+      "balance",
+      "dryFloor",
+      "standing",
+      "wall"
+    ],
+    "conditionalSupportChecks": [],
+    "items": [
+      {
+        "catalogId": "W04",
+        "round": 1
+      },
+      {
+        "catalogId": "W02",
+        "round": 1
+      },
+      {
+        "catalogId": "D07",
+        "round": 1
+      },
+      {
+        "catalogId": "D08",
+        "round": 1
+      }
+    ],
+    "plannedSeconds": 287
+  },
+  {
+    "id": "leisure-standing-5-upper",
+    "purpose": "leisure",
+    "name": "서서 가볍게",
+    "profile": "standing",
+    "minutesChoice": 5,
+    "focus": "upper",
+    "requiredCapabilities": [
+      "dryFloor",
+      "standing",
+      "wall"
+    ],
+    "conditionalSupportChecks": [],
+    "items": [
+      {
+        "catalogId": "W04",
+        "round": 1
+      },
+      {
+        "catalogId": "W02",
+        "round": 1
+      },
+      {
+        "catalogId": "D07",
+        "round": 1
+      },
+      {
+        "catalogId": "D07",
+        "round": 2
+      }
+    ],
+    "plannedSeconds": 267
+  },
+  {
+    "id": "leisure-standing-5-lower",
+    "purpose": "leisure",
+    "name": "서서 가볍게",
+    "profile": "standing",
+    "minutesChoice": 5,
+    "focus": "lower",
+    "requiredCapabilities": [
+      "balance",
+      "dryFloor",
+      "standing",
+      "wall"
+    ],
+    "conditionalSupportChecks": [
+      {
+        "catalogId": "W06",
+        "anyOf": [
+          [
+            "wall"
+          ],
+          [
+            "chair"
+          ]
+        ]
+      }
+    ],
+    "items": [
+      {
+        "catalogId": "W06",
+        "round": 1
+      },
+      {
+        "catalogId": "D08",
+        "round": 1
+      },
+      {
+        "catalogId": "D09",
+        "round": 1
+      },
+      {
+        "catalogId": "D10",
+        "round": 1
+      }
+    ],
+    "plannedSeconds": 318
+  },
+  {
+    "id": "leisure-standing-10-all",
+    "purpose": "leisure",
+    "name": "서서 가볍게",
+    "profile": "standing",
+    "minutesChoice": 10,
+    "focus": "all",
+    "requiredCapabilities": [
+      "balance",
+      "dryFloor",
+      "standing",
+      "wall"
+    ],
+    "conditionalSupportChecks": [
+      {
+        "catalogId": "W06",
+        "anyOf": [
+          [
+            "wall"
+          ],
+          [
+            "chair"
+          ]
+        ]
+      }
+    ],
+    "items": [
+      {
+        "catalogId": "W04",
+        "round": 1
+      },
+      {
+        "catalogId": "W02",
+        "round": 1
+      },
+      {
+        "catalogId": "D07",
+        "round": 1
+      },
+      {
+        "catalogId": "D08",
+        "round": 1
+      },
+      {
+        "catalogId": "D09",
+        "round": 1
+      },
+      {
+        "catalogId": "D10",
+        "round": 1
+      },
+      {
+        "catalogId": "W06",
+        "round": 1
+      },
+      {
+        "catalogId": "W18",
+        "round": 1
+      }
+    ],
+    "plannedSeconds": 566
+  },
+  {
+    "id": "leisure-standing-10-upper",
+    "purpose": "leisure",
+    "name": "서서 가볍게",
+    "profile": "standing",
+    "minutesChoice": 10,
+    "focus": "upper",
+    "requiredCapabilities": [
+      "dryFloor",
+      "standing",
+      "wall"
+    ],
+    "conditionalSupportChecks": [
+      {
+        "catalogId": "W06",
+        "anyOf": [
+          [
+            "wall"
+          ],
+          [
+            "chair"
+          ]
+        ]
+      }
+    ],
+    "items": [
+      {
+        "catalogId": "W04",
+        "round": 1
+      },
+      {
+        "catalogId": "W02",
+        "round": 1
+      },
+      {
+        "catalogId": "D07",
+        "round": 1
+      },
+      {
+        "catalogId": "W04",
+        "round": 2
+      },
+      {
+        "catalogId": "W02",
+        "round": 2
+      },
+      {
+        "catalogId": "D07",
+        "round": 2
+      },
+      {
+        "catalogId": "W06",
+        "round": 1
+      },
+      {
+        "catalogId": "W18",
+        "round": 1
+      },
+      {
+        "catalogId": "W04",
+        "round": 3
+      }
+    ],
+    "plannedSeconds": 549
+  },
+  {
+    "id": "leisure-standing-10-lower",
+    "purpose": "leisure",
+    "name": "서서 가볍게",
+    "profile": "standing",
+    "minutesChoice": 10,
+    "focus": "lower",
+    "requiredCapabilities": [
+      "balance",
+      "dryFloor",
+      "standing",
+      "wall"
+    ],
+    "conditionalSupportChecks": [
+      {
+        "catalogId": "W06",
+        "anyOf": [
+          [
+            "wall"
+          ],
+          [
+            "chair"
+          ]
+        ]
+      }
+    ],
+    "items": [
+      {
+        "catalogId": "W06",
+        "round": 1
+      },
+      {
+        "catalogId": "W18",
+        "round": 1
+      },
+      {
+        "catalogId": "D08",
+        "round": 1
+      },
+      {
+        "catalogId": "D09",
+        "round": 1
+      },
+      {
+        "catalogId": "D10",
+        "round": 1
+      },
+      {
+        "catalogId": "W05",
+        "round": 1
+      },
+      {
+        "catalogId": "W02",
+        "round": 1
+      },
+      {
+        "catalogId": "W04",
+        "round": 1
+      }
+    ],
+    "plannedSeconds": 553
+  },
+  {
+    "id": "leisure-lying-5-all",
+    "purpose": "leisure",
+    "name": "누워서 느긋하게",
+    "profile": "lying",
+    "minutesChoice": 5,
+    "focus": "all",
+    "requiredCapabilities": [
+      "dryFloor",
+      "supine"
+    ],
+    "conditionalSupportChecks": [],
+    "items": [
+      {
+        "catalogId": "W17",
+        "round": 1
+      },
+      {
+        "catalogId": "D12",
+        "round": 1
+      },
+      {
+        "catalogId": "Y09",
+        "round": 1
+      },
+      {
+        "catalogId": "Y10",
+        "round": 1
+      }
+    ],
+    "plannedSeconds": 319
+  },
+  {
+    "id": "leisure-lying-5-upper",
+    "purpose": "leisure",
+    "name": "누워서 느긋하게",
+    "profile": "lying",
+    "minutesChoice": 5,
+    "focus": "upper",
+    "requiredCapabilities": [
+      "dryFloor",
+      "supine"
+    ],
+    "conditionalSupportChecks": [],
+    "items": [
+      {
+        "catalogId": "W17",
+        "round": 1
+      },
+      {
+        "catalogId": "Y10",
+        "round": 1
+      },
+      {
+        "catalogId": "Y09",
+        "round": 1
+      },
+      {
+        "catalogId": "W17",
+        "round": 2
+      }
+    ],
+    "plannedSeconds": 319
+  },
+  {
+    "id": "leisure-lying-5-lower",
+    "purpose": "leisure",
+    "name": "누워서 느긋하게",
+    "profile": "lying",
+    "minutesChoice": 5,
+    "focus": "lower",
+    "requiredCapabilities": [
+      "dryFloor",
+      "supine"
+    ],
+    "conditionalSupportChecks": [],
+    "items": [
+      {
+        "catalogId": "D12",
+        "round": 1
+      },
+      {
+        "catalogId": "Y08",
+        "round": 1
+      },
+      {
+        "catalogId": "Y12",
+        "round": 1
+      },
+      {
+        "catalogId": "Y09",
+        "round": 1
+      }
+    ],
+    "plannedSeconds": 290
+  },
+  {
+    "id": "leisure-lying-10-all",
+    "purpose": "leisure",
+    "name": "누워서 느긋하게",
+    "profile": "lying",
+    "minutesChoice": 10,
+    "focus": "all",
+    "requiredCapabilities": [
+      "dryFloor",
+      "supine"
+    ],
+    "conditionalSupportChecks": [],
+    "items": [
+      {
+        "catalogId": "W17",
+        "round": 1
+      },
+      {
+        "catalogId": "D12",
+        "round": 1
+      },
+      {
+        "catalogId": "Y09",
+        "round": 1
+      },
+      {
+        "catalogId": "Y10",
+        "round": 1
+      },
+      {
+        "catalogId": "Y08",
+        "round": 1
+      },
+      {
+        "catalogId": "Y12",
+        "round": 1
+      },
+      {
+        "catalogId": "Y09",
+        "round": 2
+      },
+      {
+        "catalogId": "Y10",
+        "round": 2
+      }
+    ],
+    "plannedSeconds": 562
+  },
+  {
+    "id": "leisure-lying-10-upper",
+    "purpose": "leisure",
+    "name": "누워서 느긋하게",
+    "profile": "lying",
+    "minutesChoice": 10,
+    "focus": "upper",
+    "requiredCapabilities": [
+      "dryFloor",
+      "supine"
+    ],
+    "conditionalSupportChecks": [],
+    "items": [
+      {
+        "catalogId": "W17",
+        "round": 1
+      },
+      {
+        "catalogId": "Y10",
+        "round": 1
+      },
+      {
+        "catalogId": "Y09",
+        "round": 1
+      },
+      {
+        "catalogId": "W17",
+        "round": 2
+      },
+      {
+        "catalogId": "Y10",
+        "round": 2
+      },
+      {
+        "catalogId": "Y09",
+        "round": 2
+      },
+      {
+        "catalogId": "Y10",
+        "round": 3
+      },
+      {
+        "catalogId": "Y09",
+        "round": 3
+      }
+    ],
+    "plannedSeconds": 571
+  },
+  {
+    "id": "leisure-lying-10-lower",
+    "purpose": "leisure",
+    "name": "누워서 느긋하게",
+    "profile": "lying",
+    "minutesChoice": 10,
+    "focus": "lower",
+    "requiredCapabilities": [
+      "dryFloor",
+      "supine"
+    ],
+    "conditionalSupportChecks": [],
+    "items": [
+      {
+        "catalogId": "D12",
+        "round": 1
+      },
+      {
+        "catalogId": "Y08",
+        "round": 1
+      },
+      {
+        "catalogId": "Y12",
+        "round": 1
+      },
+      {
+        "catalogId": "Y09",
+        "round": 1
+      },
+      {
+        "catalogId": "D12",
+        "round": 2
+      },
+      {
+        "catalogId": "Y08",
+        "round": 2
+      },
+      {
+        "catalogId": "Y12",
+        "round": 2
+      },
+      {
+        "catalogId": "Y09",
+        "round": 2
+      }
+    ],
+    "plannedSeconds": 553
+  },
+  {
+    "id": "leisure-mixedFloor-5-all",
+    "purpose": "leisure",
+    "name": "매트에서 천천히",
+    "profile": "mixedFloor",
+    "minutesChoice": 5,
+    "focus": "all",
+    "requiredCapabilities": [
+      "dryFloor",
+      "floor",
+      "halfKneel",
+      "knee",
+      "quadruped",
+      "wrist"
+    ],
+    "conditionalSupportChecks": [],
+    "items": [
+      {
+        "catalogId": "Y02",
+        "round": 1
+      },
+      {
+        "catalogId": "Y06",
+        "round": 1
+      },
+      {
+        "catalogId": "Y07",
+        "round": 1
+      },
+      {
+        "catalogId": "Y04",
+        "round": 1
+      }
+    ],
+    "plannedSeconds": 270
+  },
+  {
+    "id": "leisure-mixedFloor-5-upper",
+    "purpose": "leisure",
+    "name": "매트에서 천천히",
+    "profile": "mixedFloor",
+    "minutesChoice": 5,
+    "focus": "upper",
+    "requiredCapabilities": [
+      "dryFloor",
+      "floor",
+      "knee",
+      "quadruped",
+      "wrist"
+    ],
+    "conditionalSupportChecks": [],
+    "items": [
+      {
+        "catalogId": "Y02",
+        "round": 1
+      },
+      {
+        "catalogId": "Y04",
+        "round": 1
+      },
+      {
+        "catalogId": "Y05",
+        "round": 1
+      },
+      {
+        "catalogId": "Y03",
+        "round": 1
+      }
+    ],
+    "plannedSeconds": 270
+  },
+  {
+    "id": "leisure-mixedFloor-5-lower",
+    "purpose": "leisure",
+    "name": "매트에서 천천히",
+    "profile": "mixedFloor",
+    "minutesChoice": 5,
+    "focus": "lower",
+    "requiredCapabilities": [
+      "dryFloor",
+      "floor",
+      "halfKneel",
+      "knee",
+      "quadruped",
+      "supine",
+      "wrist"
+    ],
+    "conditionalSupportChecks": [],
+    "items": [
+      {
+        "catalogId": "Y02",
+        "round": 1
+      },
+      {
+        "catalogId": "Y06",
+        "round": 1
+      },
+      {
+        "catalogId": "Y07",
+        "round": 1
+      },
+      {
+        "catalogId": "Y08",
+        "round": 1
+      }
+    ],
+    "plannedSeconds": 270
+  },
+  {
+    "id": "leisure-mixedFloor-10-all",
+    "purpose": "leisure",
+    "name": "매트에서 천천히",
+    "profile": "mixedFloor",
+    "minutesChoice": 10,
+    "focus": "all",
+    "requiredCapabilities": [
+      "dryFloor",
+      "floor",
+      "halfKneel",
+      "knee",
+      "quadruped",
+      "supine",
+      "wrist"
+    ],
+    "conditionalSupportChecks": [],
+    "items": [
+      {
+        "catalogId": "Y02",
+        "round": 1
+      },
+      {
+        "catalogId": "Y06",
+        "round": 1
+      },
+      {
+        "catalogId": "Y07",
+        "round": 1
+      },
+      {
+        "catalogId": "Y04",
+        "round": 1
+      },
+      {
+        "catalogId": "Y08",
+        "round": 1
+      },
+      {
+        "catalogId": "Y12",
+        "round": 1
+      },
+      {
+        "catalogId": "Y05",
+        "round": 1
+      },
+      {
+        "catalogId": "Y09",
+        "round": 1
+      },
+      {
+        "catalogId": "Y02",
+        "round": 2
+      }
+    ],
+    "plannedSeconds": 567
+  },
+  {
+    "id": "leisure-mixedFloor-10-upper",
+    "purpose": "leisure",
+    "name": "매트에서 천천히",
+    "profile": "mixedFloor",
+    "minutesChoice": 10,
+    "focus": "upper",
+    "requiredCapabilities": [
+      "dryFloor",
+      "floor",
+      "knee",
+      "quadruped",
+      "supine",
+      "wrist"
+    ],
+    "conditionalSupportChecks": [],
+    "items": [
+      {
+        "catalogId": "Y02",
+        "round": 1
+      },
+      {
+        "catalogId": "Y04",
+        "round": 1
+      },
+      {
+        "catalogId": "Y05",
+        "round": 1
+      },
+      {
+        "catalogId": "Y03",
+        "round": 1
+      },
+      {
+        "catalogId": "Y09",
+        "round": 1
+      },
+      {
+        "catalogId": "Y02",
+        "round": 2
+      },
+      {
+        "catalogId": "Y12",
+        "round": 1
+      },
+      {
+        "catalogId": "W17",
+        "round": 1
+      }
+    ],
+    "plannedSeconds": 524
+  },
+  {
+    "id": "leisure-mixedFloor-10-lower",
+    "purpose": "leisure",
+    "name": "매트에서 천천히",
+    "profile": "mixedFloor",
+    "minutesChoice": 10,
+    "focus": "lower",
+    "requiredCapabilities": [
+      "dryFloor",
+      "floor",
+      "halfKneel",
+      "knee",
+      "quadruped",
+      "supine",
+      "wrist"
+    ],
+    "conditionalSupportChecks": [],
+    "items": [
+      {
+        "catalogId": "Y02",
+        "round": 1
+      },
+      {
+        "catalogId": "Y06",
+        "round": 1
+      },
+      {
+        "catalogId": "Y07",
+        "round": 1
+      },
+      {
+        "catalogId": "Y08",
+        "round": 1
+      },
+      {
+        "catalogId": "Y12",
+        "round": 1
+      },
+      {
+        "catalogId": "Y09",
+        "round": 1
+      },
+      {
+        "catalogId": "Y06",
+        "round": 2
+      },
+      {
+        "catalogId": "Y07",
+        "round": 2
+      },
+      {
+        "catalogId": "Y12",
+        "round": 2
+      }
+    ],
+    "plannedSeconds": 567
+  }
+]

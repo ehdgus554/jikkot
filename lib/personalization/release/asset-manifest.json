@@ -1,0 +1,1006 @@
+{
+  "version": "2026-10-17.1",
+  "movementCount": 75,
+  "runtimeImages": [
+    {
+      "path": "assets/movements/o01.webp",
+      "source": "assets/source-originals/001_O01_male.png",
+      "sha256": "09d2d3520293d7fa405854f1cc67adbdbe567bf66d185370ae26be94609aa898",
+      "bytes": 888106,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/o02.webp",
+      "source": "assets/source-originals/002_O02_female.png",
+      "sha256": "fb7f5c81c198ced2cc7c5948547201902c6cc56448cff222b70499ac040a4823",
+      "bytes": 448798,
+      "dimensions": [
+        1312,
+        1199
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/o03.webp",
+      "source": "assets/source-originals/003_O03_male.png",
+      "sha256": "5308978575890d9458e9a031c40fa166d7889320f6cb841f8c3533c7b40cb620",
+      "bytes": 916850,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/o04.webp",
+      "source": "assets/source-originals/004_O04_female.png",
+      "sha256": "86110b528be4cb8182edf28a579c16ed70db68d57f9ac6761f72d29c8943f1e4",
+      "bytes": 905794,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/o05.webp",
+      "source": "assets/source-originals/005_O05_male.png",
+      "sha256": "1942f91ce08f91d4e080c9e0714589f0baa4d64ebf2d008816048fc5d05a5fb7",
+      "bytes": 911924,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/o06.webp",
+      "source": "assets/source-originals/006_O06_female.png",
+      "sha256": "71e2bd03ba12f253d70f52228c956ab7e19edbf52f0605a694f964aa52e31ace",
+      "bytes": 886562,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/o07.webp",
+      "source": "assets/source-originals/007_O07_male.png",
+      "sha256": "ea17082ddbb416fb79d50bb8172efd56e5ab2b7e53e479e13cfecc22deaa398f",
+      "bytes": 429348,
+      "dimensions": [
+        1312,
+        1199
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/o08.webp",
+      "source": "assets/source-originals/008_O08_female.png",
+      "sha256": "8dab5798f3ea242371f0d008c7587afbdfc19c76826a61c5a31c80fed17f848e",
+      "bytes": 936928,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/o09.webp",
+      "source": "assets/source-originals/009_O09_male.png",
+      "sha256": "0aa78c23e6c6d93d3923f4f9a4d51448ae7a701d12fa2c27d8f29ab29bde7d66",
+      "bytes": 466308,
+      "dimensions": [
+        1312,
+        1199
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/o10.webp",
+      "source": "assets/source-originals/010_O10_female.png",
+      "sha256": "37872708692c34f1a93208b12a40260d7c8363e2740056da0dd3c30c765d283a",
+      "bytes": 571354,
+      "dimensions": [
+        1331,
+        1182
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/o11.webp",
+      "source": "assets/source-originals/011_O11_male.png",
+      "sha256": "238ce7b1bfa116fb67a8596892163e1646eb7308405484b38e876bdd0ad11bb0",
+      "bytes": 462298,
+      "dimensions": [
+        1374,
+        1145
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d01.webp",
+      "source": "assets/source-originals/012_D01_female.png",
+      "sha256": "65e629434913cb18b300bf59fa1bba689d1a3f430beb46483ac3c81d4c6d18d1",
+      "bytes": 871432,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d02.webp",
+      "source": "assets/source-originals/013_D02_male.png",
+      "sha256": "d178a43373f08900bc69f19440e134a3047aac83e189031867536cfdbeeef19a",
+      "bytes": 834200,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d03.webp",
+      "source": "assets/source-originals/014_D03_female.png",
+      "sha256": "d2405e761084b68afc5ed278639a203bf32b443328184be428217b4cf96ed5ba",
+      "bytes": 424382,
+      "dimensions": [
+        1295,
+        1214
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d04.webp",
+      "source": "assets/revised/movement-d04-r2.png",
+      "sha256": "12b8bac327b35787eb2de51d5080885a06a4d970d1145875670d46dac11ec3fd",
+      "bytes": 888412,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d05.webp",
+      "source": "assets/source-originals/016_D05_female.png",
+      "sha256": "2183612be72bd34a194760411119d381d9f5501cb05c5c1691ba00d8ec093af1",
+      "bytes": 479176,
+      "dimensions": [
+        1222,
+        1287
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d06.webp",
+      "source": "assets/source-originals/017_D06_male.png",
+      "sha256": "2dabfc32e43fe6bc7d55fd38ec9f7df6a22a1b296e1405a77ba4f6743dcb7d69",
+      "bytes": 876904,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d14.webp",
+      "source": "assets/source-originals/018_D14_female.png",
+      "sha256": "067dd1d7587a028e9bc79b65f0b60c08c1c538fab58dd49b13c5911618b47d5a",
+      "bytes": 484892,
+      "dimensions": [
+        1310,
+        1200
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d15.webp",
+      "source": "assets/source-originals/019_D15_male.png",
+      "sha256": "0a041430fe90cd6e0b72f2c541c332c7f6824256df9401ff03d68688caf250a9",
+      "bytes": 558078,
+      "dimensions": [
+        1159,
+        1358
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d16.webp",
+      "source": "assets/source-originals/020_D16_female.png",
+      "sha256": "ba9f140a383280d0252d0dc785c64f8c104e7c41c834f58e6c6926ea62955d65",
+      "bytes": 515150,
+      "dimensions": [
+        1312,
+        1199
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d17.webp",
+      "source": "assets/source-originals/021_D17_male.png",
+      "sha256": "059a359ec9c152b1218c3e7d8d25d70546da6896669f0a80878b7944e7e77751",
+      "bytes": 936526,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d18.webp",
+      "source": "assets/source-originals/022_D18_female.png",
+      "sha256": "a53bbdda3cc118527c7b68f700754a3db26c5712b217b78ef0528332f53c0341",
+      "bytes": 357752,
+      "dimensions": [
+        1312,
+        1199
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d19.webp",
+      "source": "assets/source-originals/023_D19_male.png",
+      "sha256": "4f811f81a2c8d38b9b913daef2c7fabb0628b2a9183a8dc27f7f9fb45f7e5230",
+      "bytes": 881492,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d20.webp",
+      "source": "assets/source-originals/024_D20_female.png",
+      "sha256": "51762ab12013c8354b425765e21257647687ef49574c0599fb704381c18eec7d",
+      "bytes": 874542,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d21.webp",
+      "source": "assets/source-originals/025_D21_male.png",
+      "sha256": "1405ef6d94aeae36bba8cb594aae10f8fd50522ad018d10598dcfd381bbb61fe",
+      "bytes": 930526,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d22.webp",
+      "source": "assets/source-originals/026_D22_female.png",
+      "sha256": "8b6564648509829801547447f34f235d1169ac2418a84eaa508c1c60fc8ebe52",
+      "bytes": 903980,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d23.webp",
+      "source": "assets/source-originals/027_D23_male.png",
+      "sha256": "2fcf049396ef35cbf370b8a6887bb93052fef42e0c4c2a18d1f2bda08f4061d0",
+      "bytes": 890242,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d24.webp",
+      "source": "assets/source-originals/028_D24_female.png",
+      "sha256": "ff631d5de8c187054b10f1eeae459d1bccfafc3f484ed8d22a8b72a174661e6f",
+      "bytes": 424558,
+      "dimensions": [
+        1312,
+        1199
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d25.webp",
+      "source": "assets/source-originals/029_D25_male.png",
+      "sha256": "cab8ef5924eae91a5a3a6ec966fa95b838a7faba37c675e70e3bef3de3fd4f67",
+      "bytes": 841256,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d26.webp",
+      "source": "assets/source-originals/030_D26_female.png",
+      "sha256": "6fddabbf68e7fe6663bac26aa074eec2bda696b6b4a88b7951590aa9941876cf",
+      "bytes": 365142,
+      "dimensions": [
+        1294,
+        1216
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d27.webp",
+      "source": "assets/source-originals/031_D27_male.png",
+      "sha256": "1919e49ffdb2c3c9ac77edeeab87ba5180cf04fe30ab9dce5fd5edd0b4ed92b4",
+      "bytes": 420016,
+      "dimensions": [
+        1267,
+        1241
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d28.webp",
+      "source": "assets/source-originals/032_D28_female.png",
+      "sha256": "3a4b176946aa613c099a27634d8e08d3c503778f89a894c2c1c720d5b7d6d7a1",
+      "bytes": 928340,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d29.webp",
+      "source": "assets/source-originals/033_D29_male.png",
+      "sha256": "b724fad689f91dbb049ab70beff549e204071e206f83fbc68891ea908fc3a7b4",
+      "bytes": 881276,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d30.webp",
+      "source": "assets/source-originals/034_D30_female.png",
+      "sha256": "3e5ee6e6a7048ea8faa33a61ed96ecbe7a09e39af8ef5f7583865c2a96833a78",
+      "bytes": 490320,
+      "dimensions": [
+        1312,
+        1199
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d31.webp",
+      "source": "assets/source-originals/035_D31_male.png",
+      "sha256": "742a079cd41cbf358fae65ded8718e1d64b20b6a243c62b0a465a4038c81b47d",
+      "bytes": 922678,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d32.webp",
+      "source": "assets/source-originals/036_D32_female.png",
+      "sha256": "8e1a44c4dc27567205d05e7d5eddabd65cf72054f7c113adc1dcc3a6fbe76bb6",
+      "bytes": 955214,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d33.webp",
+      "source": "assets/source-originals/037_D33_male.png",
+      "sha256": "f24636952c053bfce3bd853853bbcce7881738f70995e5bb9381851dec21284f",
+      "bytes": 854900,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/y05.webp",
+      "source": "assets/source-originals/038_Y05_female.png",
+      "sha256": "89b3654f359f265f31d48043b69519b5b4bea7757fb04520ac27221d5538f410",
+      "bytes": 483130,
+      "dimensions": [
+        1275,
+        1234
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/y07.webp",
+      "source": "assets/source-originals/039_Y07_male.png",
+      "sha256": "90b2a15d1f61ec9ce85e1e0d82af7ff5c0076a3b7d3b20620cf328e486dbc9b9",
+      "bytes": 868664,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d07.webp",
+      "source": "assets/source-originals/040_D07_female.png",
+      "sha256": "02e48d260f16a0b5afb6797924a52356f6d0d32e13bb017fd1d97685049c70df",
+      "bytes": 852572,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d08.webp",
+      "source": "assets/source-originals/041_D08_male.png",
+      "sha256": "773c09e81dc9850e2bad099462694982e33a185a2f88b93b0a19f0ef4a44a2f0",
+      "bytes": 857334,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d09.webp",
+      "source": "assets/source-originals/042_D09_female.png",
+      "sha256": "730ac32b0a6924c5d599b2c418ac6a6ec1db4afce87f5a763ff7b614b27adfc5",
+      "bytes": 841140,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d10.webp",
+      "source": "assets/source-originals/043_D10_male.png",
+      "sha256": "820df0cdc014cf0605491dff886b79713c019418a1419175f946f8874ce44b39",
+      "bytes": 816054,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/w01.webp",
+      "source": "assets/source-originals/044_W01_female.png",
+      "sha256": "a65776fb9c5c574091841944cb681766153688a0a9918bab2eabb3e65a65069f",
+      "bytes": 363530,
+      "dimensions": [
+        1312,
+        1199
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/w02.webp",
+      "source": "assets/source-originals/045_W02_male.png",
+      "sha256": "0c26f8e5af61e8b515395d559817f1ee24bd4d377cbf4c1487b5141dba07fc89",
+      "bytes": 811462,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/w03.webp",
+      "source": "assets/source-originals/046_W03_female.png",
+      "sha256": "a5f3bcfa5e53698fed548bc837467499937f68d56d9051e67a0eac738a5c0216",
+      "bytes": 791672,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/w04.webp",
+      "source": "assets/source-originals/047_W04_male.png",
+      "sha256": "257b4520dc11c0262513c085e6ff0efdb62619cf3c853b681dc53c385059a665",
+      "bytes": 798044,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/w05.webp",
+      "source": "assets/source-originals/048_W05_female.png",
+      "sha256": "842008a3f8739bdc7a2f86e73ebf56bd1b6f8e73205f067be390eb9203f14f83",
+      "bytes": 818392,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/w06.webp",
+      "source": "assets/source-originals/049_W06_male.png",
+      "sha256": "95a0fd71a8f08a7bc3baae9e62f820ca14e273504d84d7388d1ef54ce3f8ba8d",
+      "bytes": 835126,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/w07.webp",
+      "source": "assets/source-originals/050_W07_female.png",
+      "sha256": "e10bf75ef6690de3840657618f048161e0f9528a909bf6ec4aac4a0e1ca94e6e",
+      "bytes": 745546,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/w08.webp",
+      "source": "assets/source-originals/051_W08_male.png",
+      "sha256": "044fd79e402c2024fb1d48e8421f209341bc5660696b508aeca36ec0287d1b2a",
+      "bytes": 714614,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/w09.webp",
+      "source": "assets/source-originals/052_W09_female.png",
+      "sha256": "0169dfb4a2988be95998f237ba250a0e2756656471662d5c337f14566e84e644",
+      "bytes": 333542,
+      "dimensions": [
+        1374,
+        1145
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/w10.webp",
+      "source": "assets/source-originals/053_W10_male.png",
+      "sha256": "516d3b96b872f12776e62ca6d58d2a64744c6080da432ebcee53c2f7f8e39ee4",
+      "bytes": 822708,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/w11.webp",
+      "source": "assets/revised/movement-w11-r2.png",
+      "sha256": "7782cbbbf5832af0a823da37786294b71e290e603af215b0fffce0e4c9cd7433",
+      "bytes": 809504,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/w12.webp",
+      "source": "assets/source-originals/055_W12_male.png",
+      "sha256": "0728d15ec3244694f5c236be63cb3aecb6a003861ef509d7712ac0b19242b8a7",
+      "bytes": 757426,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d11.webp",
+      "source": "assets/source-originals/056_D11_female.png",
+      "sha256": "7bda3c957c9071b8eb18307c7eb4882d6a112941955858da73e5a03d9fdd2c11",
+      "bytes": 410004,
+      "dimensions": [
+        1774,
+        887
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d12.webp",
+      "source": "assets/revised/movement-d12-r2.png",
+      "sha256": "7394ed4e33d57b919dfa1da6d680ac2e0f2b0ce13bb7e9939fef1f5fa0676a94",
+      "bytes": 787692,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/d13.webp",
+      "source": "assets/source-originals/058_D13_female.png",
+      "sha256": "592b29a297993379c39808fe7115765f8fe3c126aed7ebfa925f5f326eff9721",
+      "bytes": 807816,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/y08.webp",
+      "source": "assets/revised/movement-y08-r2.png",
+      "sha256": "4ad3a2b81f04f9d83252dcab2af15383a0dc092ab26641961ed245647dd895cb",
+      "bytes": 954142,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/y09.webp",
+      "source": "assets/revised/movement-y09-r2.png",
+      "sha256": "d1ef45292e9ce46117abe3b0c8af4558cfec11f209e91e0e1fd578f154f1e12c",
+      "bytes": 954694,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/y10.webp",
+      "source": "assets/source-originals/061_Y10_male.png",
+      "sha256": "fec990e6363e081923aa51782590e6b514825ac5d26ecea47f68beda0194374c",
+      "bytes": 862588,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/y11.webp",
+      "source": "assets/source-originals/062_Y11_female.png",
+      "sha256": "26959f7e0f872b649c279b748657e5542ae5e24b75b2afae5c3edb3f7baf35a3",
+      "bytes": 363652,
+      "dimensions": [
+        1774,
+        887
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/y12.webp",
+      "source": "assets/source-originals/063_Y12_male.png",
+      "sha256": "59bf9f9419e7f8635f6fe4dcbd74c18ed44fb58d2b14b7831aeb85fc2d40a3d4",
+      "bytes": 794696,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/w16.webp",
+      "source": "assets/revised/movement-w16-r3.png",
+      "sha256": "671578800d45e326ceaba0964562cb0dd5992a15305f464e2587a33d277e19a9",
+      "bytes": 846974,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/w17.webp",
+      "source": "assets/revised/movement-w17-r2.png",
+      "sha256": "6d9c9402ffa732e8013548b7e638acbbfd52a208152d6d3842c1ff3a0e74e7e8",
+      "bytes": 924786,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/y01.webp",
+      "source": "assets/source-originals/066_Y01_female.png",
+      "sha256": "e50e506f895c4bc8498766fbd8efd45e6a4f03e2f59a471ab048aa4d9ea7ab62",
+      "bytes": 714812,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/y02.webp",
+      "source": "assets/source-originals/067_Y02_male.png",
+      "sha256": "17bda52e2b2a687428b80fa55f5f1119049f361cd25e177ee2515c0599a909f4",
+      "bytes": 823822,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/y03.webp",
+      "source": "assets/source-originals/068_Y03_female.png",
+      "sha256": "8aca0f8f085ca9eaef79cb061a318ee49f67e0c1bfc8f7aec3852ca11ed388b3",
+      "bytes": 722620,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/y04.webp",
+      "source": "assets/source-originals/069_Y04_male.png",
+      "sha256": "9f8fa38ec0d34146126eb50b26466e42971e7639a8b01ac930c69524b29cc61f",
+      "bytes": 742700,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/y06.webp",
+      "source": "assets/source-originals/070_Y06_female.png",
+      "sha256": "78d8cc456b397ae354bf63785e44cd7bea2c8c78ab7e00a8b07052c376689795",
+      "bytes": 777752,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/y13.webp",
+      "source": "assets/source-originals/071_Y13_male.png",
+      "sha256": "08fc0a994505947f6c043acda23a32d9f04a8bc2983242f7ab7c67dcc42d8466",
+      "bytes": 776210,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/w13.webp",
+      "source": "assets/source-originals/072_W13_female.png",
+      "sha256": "67cd1ae4bf8c496252cffdf8c9ef23c3b1c340ff9b4f5cdec0aa12c014601a98",
+      "bytes": 811570,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/w14.webp",
+      "source": "assets/source-originals/073_W14_male.png",
+      "sha256": "c972d0bc9a2cbe6b7c27697e9b4d2b9677901677c44085a1485ab93682bbabe4",
+      "bytes": 685820,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/w15.webp",
+      "source": "assets/source-originals/074_W15_female.png",
+      "sha256": "bd56fd8d2f6ecef92c9947c7be89a70302b6b7f5755c4d0b4a7149f66fd57715",
+      "bytes": 753366,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/w18.webp",
+      "source": "assets/revised/movement-w18.png",
+      "sha256": "d854dfa302f51bc4cb62ba079e10915f2d969ce7e6131695a0123b2a0314a0a8",
+      "bytes": 844064,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/ui/posture-sitting.webp",
+      "source": "assets/ui/posture-sitting.png",
+      "sha256": "fe08ff9e758d1287b8fc070e6982ffa20057a3b9b8496bd716dcfdbd7666a14a",
+      "bytes": 911512,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/ui/turtle-records.webp",
+      "source": "assets/ui/turtle-records.png",
+      "sha256": "5f95692a9734087a4f9546ec7eb39e47cbef79d344ff5dd0dbc79577a4a64faa",
+      "bytes": 640860,
+      "dimensions": [
+        1175,
+        1338
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/ui/posture-lying.webp",
+      "source": "assets/ui/posture-lying.png",
+      "sha256": "e22186e9e2ae3f07893d9f3081d8762acd7fd84790caaa224fca49de8d26803c",
+      "bytes": 857988,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/ui/posture-standing.webp",
+      "source": "assets/ui/posture-standing.png",
+      "sha256": "10cb60f1888b9bbf6be7d851f3c5bfc86dc660a79fbf34906622108a714e29a9",
+      "bytes": 806950,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/ui/turtle-waiting.webp",
+      "source": "assets/ui/turtle-waiting.png",
+      "sha256": "a2283d9c3609f347087238c0a4c19649c69ccdf90d2d0241b02542efffacb04b",
+      "bytes": 519720,
+      "dimensions": [
+        1175,
+        1338
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/ui/body-back.webp",
+      "source": "assets/ui/body-back.png",
+      "sha256": "698b43b2e3565f9b6bd188596d2cc061a24c3e2e5a3c9ce0a6ba5082850ac631",
+      "bytes": 739264,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/ui/turtle-complete.webp",
+      "source": "assets/ui/turtle-complete.png",
+      "sha256": "557f7cbf773e70aaab819f6f92a98c7f72dae6c7fe8cfa9761bd029707340fb4",
+      "bytes": 512252,
+      "dimensions": [
+        1175,
+        1338
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/ui/body-front.webp",
+      "source": "assets/brand/body-soft-sketch.jpg",
+      "sha256": "7f87b84ccd3ca1af42e7a537af93385cf9ae4c813a26eb8950ae7a37c07a4077",
+      "bytes": 124172,
+      "dimensions": [
+        640,
+        960
+      ],
+      "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    }
+  ],
+  "generatedFinal": [
+    {
+      "id": "posture-sitting",
+      "deliveryPath": "assets/ui/posture-sitting.png"
+    },
+    {
+      "id": "posture-standing",
+      "deliveryPath": "assets/ui/posture-standing.png"
+    },
+    {
+      "id": "posture-lying",
+      "deliveryPath": "assets/ui/posture-lying.png"
+    },
+    {
+      "id": "movement-d04-r2",
+      "deliveryPath": "assets/revised/movement-d04-r2.png"
+    },
+    {
+      "id": "movement-d12-r2",
+      "deliveryPath": "assets/revised/movement-d12-r2.png"
+    },
+    {
+      "id": "movement-y09-r2",
+      "deliveryPath": "assets/revised/movement-y09-r2.png"
+    },
+    {
+      "id": "movement-w18",
+      "deliveryPath": "assets/revised/movement-w18.png"
+    },
+    {
+      "id": "body-back",
+      "deliveryPath": "assets/ui/body-back.png"
+    },
+    {
+      "id": "turtle-complete",
+      "deliveryPath": "assets/ui/turtle-complete.png"
+    },
+    {
+      "id": "turtle-records",
+      "deliveryPath": "assets/ui/turtle-records.png"
+    },
+    {
+      "id": "turtle-waiting",
+      "deliveryPath": "assets/ui/turtle-waiting.png"
+    },
+    {
+      "id": "movement-w16-r3",
+      "deliveryPath": "assets/revised/movement-w16-r3.png"
+    },
+    {
+      "id": "board-release-entry",
+      "deliveryPath": "reference/screens/board-release-entry.png"
+    },
+    {
+      "id": "board-release-programs",
+      "deliveryPath": "reference/screens/board-release-programs.png"
+    },
+    {
+      "id": "board-release-previews-r2",
+      "deliveryPath": "reference/screens/board-release-previews-r2.png"
+    },
+    {
+      "id": "movement-w11-r2",
+      "deliveryPath": "assets/revised/movement-w11-r2.png"
+    },
+    {
+      "id": "movement-y08-r2",
+      "deliveryPath": "assets/revised/movement-y08-r2.png"
+    },
+    {
+      "id": "movement-w17-r2",
+      "deliveryPath": "assets/revised/movement-w17-r2.png"
+    }
+  ],
+  "sourceOriginalCount": 74,
+  "icons": [
+    "footprints",
+    "football",
+    "mountain",
+    "dumbbell",
+    "golf",
+    "racket",
+    "waves",
+    "bike"
+  ],
+  "publicAssetPrefix": "/assets/jikkot-release/2026-10-17/",
+  "installRule": "assets/ 아래 구조를 위 prefix에 복사한다. content JSON의 assets/ 접두사를 해당 경로에 매핑한다. 원본·reference·qa·docs는 public에 복사하지 않는다."
+}

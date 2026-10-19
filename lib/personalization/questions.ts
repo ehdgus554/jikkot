@@ -305,8 +305,8 @@ export const currentChoices: Question[] = [
     all,
     [],
   ),
-  q("radiating", "전기처럼 찌릿하게 다리로 뻗는 느낌이 있어요", lower, []),
-  q("dizzy", "움직일 때 어지럽거나 찌릿한 느낌이 있어요", upper, []),
+  q("radiating", "전기처럼 찌릿하게 팔다리로 뻗는 느낌이 있어요", all, []),
+  q("dizzy", "움직일 때 어지럽거나 찌릿한 느낌이 있어요", all, []),
   { ...q("none", "특별한 최근 행동·느낌이 없어요", all, []), exclusive: true },
   {
     ...q("unknown", "최근 상태가 기억나지 않거나 잘 모르겠어요", all, []),

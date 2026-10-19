@@ -1,0 +1,656 @@
+[
+  {
+    "id": "warmup-running",
+    "name": "러닝 전 가볍게 몸풀기",
+    "sport": "running",
+    "purpose": "warmup",
+    "icon": "assets/icons/sport-footprints.svg",
+    "requiredCapabilities": [
+      "balance",
+      "dryFloor",
+      "space",
+      "standing",
+      "wall"
+    ],
+    "conditionalSupportChecks": [],
+    "supportOptions": [
+      "balance",
+      "dryFloor",
+      "space",
+      "wall"
+    ]
+  },
+  {
+    "id": "warmup-football",
+    "name": "축구 전 가볍게 몸풀기",
+    "sport": "football",
+    "purpose": "warmup",
+    "icon": "assets/icons/sport-football.svg",
+    "requiredCapabilities": [
+      "dryFloor",
+      "space",
+      "standing",
+      "wall"
+    ],
+    "conditionalSupportChecks": [],
+    "supportOptions": [
+      "dryFloor",
+      "space",
+      "wall"
+    ]
+  },
+  {
+    "id": "warmup-hiking",
+    "name": "등산 전 가볍게 몸풀기",
+    "sport": "hiking",
+    "purpose": "warmup",
+    "icon": "assets/icons/sport-mountain.svg",
+    "requiredCapabilities": [
+      "balance",
+      "dryFloor",
+      "standing",
+      "wall"
+    ],
+    "conditionalSupportChecks": [
+      {
+        "catalogId": "W06",
+        "anyOf": [
+          [
+            "wall"
+          ],
+          [
+            "chair"
+          ]
+        ]
+      }
+    ],
+    "supportOptions": [
+      "balance",
+      "chair",
+      "dryFloor",
+      "wall"
+    ]
+  },
+  {
+    "id": "warmup-gym",
+    "name": "헬스 전 가볍게 몸풀기",
+    "sport": "gym",
+    "purpose": "warmup",
+    "icon": "assets/icons/sport-dumbbell.svg",
+    "requiredCapabilities": [
+      "balance",
+      "dryFloor",
+      "standing"
+    ],
+    "conditionalSupportChecks": [],
+    "supportOptions": [
+      "balance"
+    ]
+  },
+  {
+    "id": "warmup-golf",
+    "name": "골프 전 가볍게 몸풀기",
+    "sport": "golf",
+    "purpose": "warmup",
+    "icon": "assets/icons/sport-golf.svg",
+    "requiredCapabilities": [
+      "dryFloor",
+      "standing",
+      "wall"
+    ],
+    "conditionalSupportChecks": [],
+    "supportOptions": [
+      "dryFloor",
+      "wall"
+    ]
+  },
+  {
+    "id": "warmup-tennis",
+    "name": "테니스 전 가볍게 몸풀기",
+    "sport": "tennis",
+    "purpose": "warmup",
+    "icon": "assets/icons/sport-racket.svg",
+    "requiredCapabilities": [
+      "dryFloor",
+      "space",
+      "standing"
+    ],
+    "conditionalSupportChecks": [],
+    "supportOptions": [
+      "dryFloor",
+      "space"
+    ]
+  },
+  {
+    "id": "warmup-swimming",
+    "name": "수영 전 가볍게 몸풀기",
+    "sport": "swimming",
+    "purpose": "warmup",
+    "icon": "assets/icons/sport-waves.svg",
+    "requiredCapabilities": [
+      "dryFloor",
+      "space",
+      "standing"
+    ],
+    "conditionalSupportChecks": [],
+    "supportOptions": [
+      "dryFloor",
+      "space"
+    ]
+  },
+  {
+    "id": "warmup-cycling",
+    "name": "자전거 전 가볍게 몸풀기",
+    "sport": "cycling",
+    "purpose": "warmup",
+    "icon": "assets/icons/sport-bike.svg",
+    "requiredCapabilities": [
+      "dryFloor",
+      "standing",
+      "wall"
+    ],
+    "conditionalSupportChecks": [
+      {
+        "catalogId": "W06",
+        "anyOf": [
+          [
+            "wall"
+          ],
+          [
+            "chair"
+          ]
+        ]
+      }
+    ],
+    "supportOptions": [
+      "chair",
+      "dryFloor",
+      "wall"
+    ]
+  },
+  {
+    "id": "leisure-chair-5-all",
+    "name": "의자에서 편하게",
+    "profile": "chair",
+    "minutesChoice": 5,
+    "focus": "all",
+    "purpose": "leisure",
+    "requiredCapabilities": [
+      "chair"
+    ],
+    "conditionalSupportChecks": [],
+    "supportOptions": [
+      "chair"
+    ]
+  },
+  {
+    "id": "leisure-chair-5-upper",
+    "name": "의자에서 편하게",
+    "profile": "chair",
+    "minutesChoice": 5,
+    "focus": "upper",
+    "purpose": "leisure",
+    "requiredCapabilities": [
+      "chair"
+    ],
+    "conditionalSupportChecks": [],
+    "supportOptions": [
+      "chair"
+    ]
+  },
+  {
+    "id": "leisure-chair-5-lower",
+    "name": "의자에서 편하게",
+    "profile": "chair",
+    "minutesChoice": 5,
+    "focus": "lower",
+    "purpose": "leisure",
+    "requiredCapabilities": [
+      "chair"
+    ],
+    "conditionalSupportChecks": [],
+    "supportOptions": [
+      "chair"
+    ]
+  },
+  {
+    "id": "leisure-chair-10-all",
+    "name": "의자에서 편하게",
+    "profile": "chair",
+    "minutesChoice": 10,
+    "focus": "all",
+    "purpose": "leisure",
+    "requiredCapabilities": [
+      "chair"
+    ],
+    "conditionalSupportChecks": [],
+    "supportOptions": [
+      "chair"
+    ]
+  },
+  {
+    "id": "leisure-chair-10-upper",
+    "name": "의자에서 편하게",
+    "profile": "chair",
+    "minutesChoice": 10,
+    "focus": "upper",
+    "purpose": "leisure",
+    "requiredCapabilities": [
+      "chair"
+    ],
+    "conditionalSupportChecks": [],
+    "supportOptions": [
+      "chair"
+    ]
+  },
+  {
+    "id": "leisure-chair-10-lower",
+    "name": "의자에서 편하게",
+    "profile": "chair",
+    "minutesChoice": 10,
+    "focus": "lower",
+    "purpose": "leisure",
+    "requiredCapabilities": [
+      "chair"
+    ],
+    "conditionalSupportChecks": [],
+    "supportOptions": [
+      "chair"
+    ]
+  },
+  {
+    "id": "leisure-standing-5-all",
+    "name": "서서 가볍게",
+    "profile": "standing",
+    "minutesChoice": 5,
+    "focus": "all",
+    "purpose": "leisure",
+    "requiredCapabilities": [
+      "balance",
+      "dryFloor",
+      "standing",
+      "wall"
+    ],
+    "conditionalSupportChecks": [],
+    "supportOptions": [
+      "balance",
+      "wall"
+    ]
+  },
+  {
+    "id": "leisure-standing-5-upper",
+    "name": "서서 가볍게",
+    "profile": "standing",
+    "minutesChoice": 5,
+    "focus": "upper",
+    "purpose": "leisure",
+    "requiredCapabilities": [
+      "dryFloor",
+      "standing",
+      "wall"
+    ],
+    "conditionalSupportChecks": [],
+    "supportOptions": [
+      "wall"
+    ]
+  },
+  {
+    "id": "leisure-standing-5-lower",
+    "name": "서서 가볍게",
+    "profile": "standing",
+    "minutesChoice": 5,
+    "focus": "lower",
+    "purpose": "leisure",
+    "requiredCapabilities": [
+      "balance",
+      "dryFloor",
+      "standing",
+      "wall"
+    ],
+    "conditionalSupportChecks": [
+      {
+        "catalogId": "W06",
+        "anyOf": [
+          [
+            "wall"
+          ],
+          [
+            "chair"
+          ]
+        ]
+      }
+    ],
+    "supportOptions": [
+      "balance",
+      "chair",
+      "wall"
+    ]
+  },
+  {
+    "id": "leisure-standing-10-all",
+    "name": "서서 가볍게",
+    "profile": "standing",
+    "minutesChoice": 10,
+    "focus": "all",
+    "purpose": "leisure",
+    "requiredCapabilities": [
+      "balance",
+      "dryFloor",
+      "standing",
+      "wall"
+    ],
+    "conditionalSupportChecks": [
+      {
+        "catalogId": "W06",
+        "anyOf": [
+          [
+            "wall"
+          ],
+          [
+            "chair"
+          ]
+        ]
+      }
+    ],
+    "supportOptions": [
+      "balance",
+      "chair",
+      "dryFloor",
+      "wall"
+    ]
+  },
+  {
+    "id": "leisure-standing-10-upper",
+    "name": "서서 가볍게",
+    "profile": "standing",
+    "minutesChoice": 10,
+    "focus": "upper",
+    "purpose": "leisure",
+    "requiredCapabilities": [
+      "dryFloor",
+      "standing",
+      "wall"
+    ],
+    "conditionalSupportChecks": [
+      {
+        "catalogId": "W06",
+        "anyOf": [
+          [
+            "wall"
+          ],
+          [
+            "chair"
+          ]
+        ]
+      }
+    ],
+    "supportOptions": [
+      "chair",
+      "dryFloor",
+      "wall"
+    ]
+  },
+  {
+    "id": "leisure-standing-10-lower",
+    "name": "서서 가볍게",
+    "profile": "standing",
+    "minutesChoice": 10,
+    "focus": "lower",
+    "purpose": "leisure",
+    "requiredCapabilities": [
+      "balance",
+      "dryFloor",
+      "standing",
+      "wall"
+    ],
+    "conditionalSupportChecks": [
+      {
+        "catalogId": "W06",
+        "anyOf": [
+          [
+            "wall"
+          ],
+          [
+            "chair"
+          ]
+        ]
+      }
+    ],
+    "supportOptions": [
+      "balance",
+      "chair",
+      "dryFloor",
+      "wall"
+    ]
+  },
+  {
+    "id": "leisure-lying-5-all",
+    "name": "누워서 느긋하게",
+    "profile": "lying",
+    "minutesChoice": 5,
+    "focus": "all",
+    "purpose": "leisure",
+    "requiredCapabilities": [
+      "dryFloor",
+      "supine"
+    ],
+    "conditionalSupportChecks": [],
+    "supportOptions": [
+      "dryFloor"
+    ]
+  },
+  {
+    "id": "leisure-lying-5-upper",
+    "name": "누워서 느긋하게",
+    "profile": "lying",
+    "minutesChoice": 5,
+    "focus": "upper",
+    "purpose": "leisure",
+    "requiredCapabilities": [
+      "dryFloor",
+      "supine"
+    ],
+    "conditionalSupportChecks": [],
+    "supportOptions": [
+      "dryFloor"
+    ]
+  },
+  {
+    "id": "leisure-lying-5-lower",
+    "name": "누워서 느긋하게",
+    "profile": "lying",
+    "minutesChoice": 5,
+    "focus": "lower",
+    "purpose": "leisure",
+    "requiredCapabilities": [
+      "dryFloor",
+      "supine"
+    ],
+    "conditionalSupportChecks": [],
+    "supportOptions": [
+      "dryFloor"
+    ]
+  },
+  {
+    "id": "leisure-lying-10-all",
+    "name": "누워서 느긋하게",
+    "profile": "lying",
+    "minutesChoice": 10,
+    "focus": "all",
+    "purpose": "leisure",
+    "requiredCapabilities": [
+      "dryFloor",
+      "supine"
+    ],
+    "conditionalSupportChecks": [],
+    "supportOptions": [
+      "dryFloor"
+    ]
+  },
+  {
+    "id": "leisure-lying-10-upper",
+    "name": "누워서 느긋하게",
+    "profile": "lying",
+    "minutesChoice": 10,
+    "focus": "upper",
+    "purpose": "leisure",
+    "requiredCapabilities": [
+      "dryFloor",
+      "supine"
+    ],
+    "conditionalSupportChecks": [],
+    "supportOptions": [
+      "dryFloor"
+    ]
+  },
+  {
+    "id": "leisure-lying-10-lower",
+    "name": "누워서 느긋하게",
+    "profile": "lying",
+    "minutesChoice": 10,
+    "focus": "lower",
+    "purpose": "leisure",
+    "requiredCapabilities": [
+      "dryFloor",
+      "supine"
+    ],
+    "conditionalSupportChecks": [],
+    "supportOptions": [
+      "dryFloor"
+    ]
+  },
+  {
+    "id": "leisure-mixedFloor-5-all",
+    "name": "매트에서 천천히",
+    "profile": "mixedFloor",
+    "minutesChoice": 5,
+    "focus": "all",
+    "purpose": "leisure",
+    "requiredCapabilities": [
+      "dryFloor",
+      "floor",
+      "halfKneel",
+      "knee",
+      "quadruped",
+      "wrist"
+    ],
+    "conditionalSupportChecks": [],
+    "supportOptions": [
+      "dryFloor",
+      "knee",
+      "wrist"
+    ]
+  },
+  {
+    "id": "leisure-mixedFloor-5-upper",
+    "name": "매트에서 천천히",
+    "profile": "mixedFloor",
+    "minutesChoice": 5,
+    "focus": "upper",
+    "purpose": "leisure",
+    "requiredCapabilities": [
+      "dryFloor",
+      "floor",
+      "knee",
+      "quadruped",
+      "wrist"
+    ],
+    "conditionalSupportChecks": [],
+    "supportOptions": [
+      "dryFloor",
+      "knee",
+      "wrist"
+    ]
+  },
+  {
+    "id": "leisure-mixedFloor-5-lower",
+    "name": "매트에서 천천히",
+    "profile": "mixedFloor",
+    "minutesChoice": 5,
+    "focus": "lower",
+    "purpose": "leisure",
+    "requiredCapabilities": [
+      "dryFloor",
+      "floor",
+      "halfKneel",
+      "knee",
+      "quadruped",
+      "supine",
+      "wrist"
+    ],
+    "conditionalSupportChecks": [],
+    "supportOptions": [
+      "dryFloor",
+      "knee",
+      "wrist"
+    ]
+  },
+  {
+    "id": "leisure-mixedFloor-10-all",
+    "name": "매트에서 천천히",
+    "profile": "mixedFloor",
+    "minutesChoice": 10,
+    "focus": "all",
+    "purpose": "leisure",
+    "requiredCapabilities": [
+      "dryFloor",
+      "floor",
+      "halfKneel",
+      "knee",
+      "quadruped",
+      "supine",
+      "wrist"
+    ],
+    "conditionalSupportChecks": [],
+    "supportOptions": [
+      "dryFloor",
+      "knee",
+      "wrist"
+    ]
+  },
+  {
+    "id": "leisure-mixedFloor-10-upper",
+    "name": "매트에서 천천히",
+    "profile": "mixedFloor",
+    "minutesChoice": 10,
+    "focus": "upper",
+    "purpose": "leisure",
+    "requiredCapabilities": [
+      "dryFloor",
+      "floor",
+      "knee",
+      "quadruped",
+      "supine",
+      "wrist"
+    ],
+    "conditionalSupportChecks": [],
+    "supportOptions": [
+      "dryFloor",
+      "knee",
+      "wrist"
+    ]
+  },
+  {
+    "id": "leisure-mixedFloor-10-lower",
+    "name": "매트에서 천천히",
+    "profile": "mixedFloor",
+    "minutesChoice": 10,
+    "focus": "lower",
+    "purpose": "leisure",
+    "requiredCapabilities": [
+      "dryFloor",
+      "floor",
+      "halfKneel",
+      "knee",
+      "quadruped",
+      "supine",
+      "wrist"
+    ],
+    "conditionalSupportChecks": [],
+    "supportOptions": [
+      "dryFloor",
+      "knee",
+      "wrist"
+    ]
+  }
+]

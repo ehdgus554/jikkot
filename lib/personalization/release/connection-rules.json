@@ -1,0 +1,512 @@
+{
+  "version": "2026-10-17.1",
+  "rules": [
+    {
+      "id": "P01",
+      "habits": [
+        "arm_front"
+      ],
+      "current": [
+        "chest_stiff"
+      ],
+      "purpose": "daily",
+      "version": "2026-10-17.1",
+      "state": "reviewed_product_rule",
+      "candidates": [
+        "O04",
+        "O06",
+        "O07",
+        "O08",
+        "O11",
+        "D03",
+        "D22",
+        "D07",
+        "D13"
+      ],
+      "matching": "habits 는 OR, current 는 AND, anyCurrent 는 OR. 후보별 requiresComfortForDaily 는 모두 확인. 누락을 긍정으로 대체하지 않음.",
+      "priority": 1,
+      "customerExplanationVisible": false
+    },
+    {
+      "id": "P02",
+      "habits": [
+        "shrug",
+        "look_up"
+      ],
+      "current": [],
+      "anyCurrent": [
+        "neck_side",
+        "neck_back"
+      ],
+      "purpose": "daily",
+      "version": "2026-10-17.1",
+      "state": "reviewed_product_rule",
+      "candidates": [
+        "O03",
+        "D01",
+        "D17",
+        "D20"
+      ],
+      "matching": "habits 는 OR, current 는 AND, anyCurrent 는 OR. 후보별 requiresComfortForDaily 는 모두 확인. 누락을 긍정으로 대체하지 않음.",
+      "priority": 2,
+      "customerExplanationVisible": false
+    },
+    {
+      "id": "P03",
+      "habits": [
+        "retract"
+      ],
+      "current": [
+        "upper_back",
+        "reach_comfort"
+      ],
+      "purpose": "daily",
+      "version": "2026-10-17.1",
+      "state": "reviewed_product_rule",
+      "candidates": [
+        "O02",
+        "D24"
+      ],
+      "matching": "habits 는 OR, current 는 AND, anyCurrent 는 OR. 후보별 requiresComfortForDaily 는 모두 확인. 누락을 긍정으로 대체하지 않음.",
+      "priority": 3,
+      "customerExplanationVisible": false
+    },
+    {
+      "id": "P04",
+      "habits": [
+        "screen"
+      ],
+      "current": [],
+      "anyCurrent": [
+        "neck_fatigue",
+        "upper_back"
+      ],
+      "purpose": "daily",
+      "version": "2026-10-17.1",
+      "state": "reviewed_product_rule",
+      "candidates": [
+        "O06",
+        "O07",
+        "O08",
+        "D02",
+        "D03",
+        "D18",
+        "D22",
+        "D27",
+        "D13"
+      ],
+      "matching": "habits 는 OR, current 는 AND, anyCurrent 는 OR. 후보별 requiresComfortForDaily 는 모두 확인. 누락을 긍정으로 대체하지 않음.",
+      "priority": 4,
+      "customerExplanationVisible": false
+    },
+    {
+      "id": "P05",
+      "habits": [
+        "one_direction",
+        "screen"
+      ],
+      "current": [],
+      "anyCurrent": [
+        "torso_limited",
+        "neck_limited"
+      ],
+      "purpose": "daily",
+      "version": "2026-10-17.1",
+      "state": "reviewed_product_rule",
+      "candidates": [
+        "D02",
+        "D19",
+        "D13"
+      ],
+      "matching": "habits 는 OR, current 는 AND, anyCurrent 는 OR. 후보별 requiresComfortForDaily 는 모두 확인. 누락을 긍정으로 대체하지 않음.",
+      "priority": 5,
+      "customerExplanationVisible": false
+    },
+    {
+      "id": "P06",
+      "habits": [
+        "clench"
+      ],
+      "current": [
+        "jaw_stiff"
+      ],
+      "purpose": "daily",
+      "version": "2026-10-17.1",
+      "state": "reviewed_product_rule",
+      "candidates": [
+        "O10",
+        "D15",
+        "D16"
+      ],
+      "matching": "habits 는 OR, current 는 AND, anyCurrent 는 OR. 후보별 requiresComfortForDaily 는 모두 확인. 누락을 긍정으로 대체하지 않음.",
+      "priority": 6,
+      "customerExplanationVisible": false
+    },
+    {
+      "id": "P07",
+      "habits": [
+        "arms_up"
+      ],
+      "current": [
+        "lat_stiff"
+      ],
+      "purpose": "daily",
+      "version": "2026-10-17.1",
+      "state": "reviewed_product_rule",
+      "candidates": [
+        "O05",
+        "D23"
+      ],
+      "matching": "habits 는 OR, current 는 AND, anyCurrent 는 OR. 후보별 requiresComfortForDaily 는 모두 확인. 누락을 긍정으로 대체하지 않음.",
+      "priority": 7,
+      "customerExplanationVisible": false
+    },
+    {
+      "id": "P08",
+      "habits": [
+        "arms_up"
+      ],
+      "current": [
+        "shoulder_back"
+      ],
+      "purpose": "daily",
+      "version": "2026-10-17.1",
+      "state": "reviewed_product_rule",
+      "candidates": [
+        "D21"
+      ],
+      "matching": "habits 는 OR, current 는 AND, anyCurrent 는 OR. 후보별 requiresComfortForDaily 는 모두 확인. 누락을 긍정으로 대체하지 않음.",
+      "priority": 8,
+      "customerExplanationVisible": false
+    },
+    {
+      "id": "P09",
+      "habits": [
+        "sitting",
+        "stairs"
+      ],
+      "current": [
+        "hip_front"
+      ],
+      "purpose": "daily",
+      "version": "2026-10-17.1",
+      "state": "reviewed_product_rule",
+      "candidates": [
+        "D04",
+        "D11"
+      ],
+      "matching": "habits 는 OR, current 는 AND, anyCurrent 는 OR. 후보별 requiresComfortForDaily 는 모두 확인. 누락을 긍정으로 대체하지 않음.",
+      "priority": 9,
+      "customerExplanationVisible": false
+    },
+    {
+      "id": "P10",
+      "habits": [
+        "sitting",
+        "cross_legs"
+      ],
+      "current": [
+        "hip_back"
+      ],
+      "purpose": "daily",
+      "version": "2026-10-17.1",
+      "state": "reviewed_product_rule",
+      "candidates": [
+        "O01",
+        "D06",
+        "D28"
+      ],
+      "matching": "habits 는 OR, current 는 AND, anyCurrent 는 OR. 후보별 requiresComfortForDaily 는 모두 확인. 누락을 긍정으로 대체하지 않음.",
+      "priority": 10,
+      "customerExplanationVisible": false
+    },
+    {
+      "id": "P11",
+      "habits": [
+        "sitting",
+        "bending"
+      ],
+      "current": [
+        "hamstring_local"
+      ],
+      "purpose": "daily",
+      "version": "2026-10-17.1",
+      "state": "reviewed_product_rule",
+      "candidates": [
+        "D05",
+        "D12"
+      ],
+      "matching": "habits 는 OR, current 는 AND, anyCurrent 는 OR. 후보별 requiresComfortForDaily 는 모두 확인. 누락을 긍정으로 대체하지 않음.",
+      "priority": 11,
+      "customerExplanationVisible": false
+    },
+    {
+      "id": "P12",
+      "habits": [
+        "standing"
+      ],
+      "current": [
+        "waist_effort"
+      ],
+      "purpose": "daily",
+      "version": "2026-10-17.1",
+      "state": "reviewed_product_rule",
+      "candidates": [
+        "D04"
+      ],
+      "matching": "habits 는 OR, current 는 AND, anyCurrent 는 OR. 후보별 requiresComfortForDaily 는 모두 확인. 누락을 긍정으로 대체하지 않음.",
+      "priority": 12,
+      "customerExplanationVisible": false
+    },
+    {
+      "id": "P13",
+      "habits": [
+        "one_side",
+        "cross_legs"
+      ],
+      "current": [
+        "side_local"
+      ],
+      "purpose": "daily",
+      "version": "2026-10-17.1",
+      "state": "reviewed_product_rule",
+      "candidates": [
+        "D25",
+        "D08"
+      ],
+      "matching": "habits 는 OR, current 는 AND, anyCurrent 는 OR. 후보별 requiresComfortForDaily 는 모두 확인. 누락을 긍정으로 대체하지 않음.",
+      "priority": 13,
+      "customerExplanationVisible": false
+    },
+    {
+      "id": "P14",
+      "habits": [
+        "legs_together"
+      ],
+      "current": [
+        "inner_thigh"
+      ],
+      "purpose": "daily",
+      "version": "2026-10-17.1",
+      "state": "reviewed_product_rule",
+      "candidates": [
+        "D14",
+        "D29"
+      ],
+      "matching": "habits 는 OR, current 는 AND, anyCurrent 는 OR. 후보별 requiresComfortForDaily 는 모두 확인. 누락을 긍정으로 대체하지 않음.",
+      "priority": 14,
+      "customerExplanationVisible": false
+    },
+    {
+      "id": "P15",
+      "habits": [
+        "standing",
+        "walking"
+      ],
+      "current": [
+        "calf_limited"
+      ],
+      "purpose": "daily",
+      "version": "2026-10-17.1",
+      "state": "reviewed_product_rule",
+      "candidates": [
+        "D30",
+        "D31",
+        "D09",
+        "D10"
+      ],
+      "matching": "habits 는 OR, current 는 AND, anyCurrent 는 OR. 후보별 requiresComfortForDaily 는 모두 확인. 누락을 긍정으로 대체하지 않음.",
+      "priority": 15,
+      "customerExplanationVisible": false
+    },
+    {
+      "id": "P16",
+      "habits": [
+        "standing",
+        "walking"
+      ],
+      "current": [
+        "plantar_local"
+      ],
+      "purpose": "daily",
+      "version": "2026-10-17.1",
+      "state": "reviewed_product_rule",
+      "candidates": [
+        "D32"
+      ],
+      "matching": "habits 는 OR, current 는 AND, anyCurrent 는 OR. 후보별 requiresComfortForDaily 는 모두 확인. 누락을 긍정으로 대체하지 않음.",
+      "priority": 16,
+      "customerExplanationVisible": false
+    },
+    {
+      "id": "P17",
+      "habits": [
+        "increased_load",
+        "walking"
+      ],
+      "current": [
+        "fatigue"
+      ],
+      "purpose": "daily",
+      "version": "2026-10-17.1",
+      "state": "reviewed_product_rule",
+      "candidates": [
+        "D33"
+      ],
+      "matching": "habits 는 OR, current 는 AND, anyCurrent 는 OR. 후보별 requiresComfortForDaily 는 모두 확인. 누락을 긍정으로 대체하지 않음.",
+      "priority": 17,
+      "customerExplanationVisible": false
+    },
+    {
+      "id": "P18",
+      "habits": [
+        "bending",
+        "sitting"
+      ],
+      "current": [
+        "flex_bad_ext_good"
+      ],
+      "purpose": "daily",
+      "version": "2026-10-17.1",
+      "state": "exclusion_clue_only",
+      "candidates": [],
+      "matching": "habits 는 OR, current 는 AND, anyCurrent 는 OR. 후보별 requiresComfortForDaily 는 모두 확인. 누락을 긍정으로 대체하지 않음.",
+      "priority": 18,
+      "customerExplanationVisible": false
+    },
+    {
+      "id": "P19",
+      "habits": [
+        "standing"
+      ],
+      "current": [
+        "ext_bad_flex_good"
+      ],
+      "purpose": "daily",
+      "version": "2026-10-17.1",
+      "state": "exclusion_clue_only",
+      "candidates": [],
+      "matching": "habits 는 OR, current 는 AND, anyCurrent 는 OR. 후보별 requiresComfortForDaily 는 모두 확인. 누락을 긍정으로 대체하지 않음.",
+      "priority": 19,
+      "customerExplanationVisible": false
+    },
+    {
+      "id": "P20",
+      "habits": [
+        "immobile",
+        "sitting",
+        "standing"
+      ],
+      "current": [
+        "stiff",
+        "small_comfort"
+      ],
+      "purpose": "daily",
+      "version": "2026-10-17.1",
+      "state": "reviewed_product_rule",
+      "candidates": [
+        "D19",
+        "D26",
+        "D27",
+        "D33"
+      ],
+      "matching": "habits 는 OR, current 는 AND, anyCurrent 는 OR. 후보별 requiresComfortForDaily 는 모두 확인. 누락을 긍정으로 대체하지 않음.",
+      "priority": 20,
+      "customerExplanationVisible": false
+    },
+    {
+      "id": "P21",
+      "purpose": "warmup",
+      "version": "2026-10-17.1",
+      "state": "preparation_role_only",
+      "habits": [],
+      "current": [
+        "prep_comfort"
+      ],
+      "candidates": [
+        "D33",
+        "W01",
+        "W02",
+        "W03",
+        "W04",
+        "W05",
+        "W06",
+        "W07",
+        "W08",
+        "W09",
+        "W10",
+        "W11",
+        "W12",
+        "W16",
+        "W17",
+        "W13",
+        "W14",
+        "W15",
+        "W18"
+      ],
+      "priority": 21,
+      "customerExplanationVisible": false,
+      "matching": "선택한 운동 종목과 실제 환경 안에서 준비 역할로 편성. 통증 원인·치료 패턴으로 사용하지 않음."
+    }
+  ],
+  "selectionOrder": [
+    "purpose_approval",
+    "actual_pose_and_support",
+    "current_and_past_adverse_constraints",
+    "required_clues",
+    "same_context_reaction",
+    "deterministic_priority"
+  ],
+  "sameFamilyOverrides": {
+    "O01": "figure-four",
+    "D28": "figure-four",
+    "O02": "upper-back-reach",
+    "D24": "upper-back-reach",
+    "O03": "diagonal-neck",
+    "D17": "diagonal-neck",
+    "O04": "chest-open",
+    "O07": "chest-open",
+    "O08": "chest-open",
+    "D07": "chest-open",
+    "D22": "chest-open",
+    "O05": "lat-reach",
+    "D23": "lat-reach",
+    "D12": "hamstring-length",
+    "D05": "hamstring-length",
+    "Y07": "hamstring-length",
+    "W16": "hamstring-length",
+    "D02": "trunk-rotation",
+    "D13": "trunk-rotation",
+    "Y04": "trunk-rotation",
+    "W14": "trunk-rotation",
+    "W02": "trunk-rotation",
+    "D27": "cat-cow",
+    "Y02": "cat-cow",
+    "D04": "hip-flexor",
+    "Y06": "hip-flexor",
+    "D25": "sidebend",
+    "Y05": "sidebend",
+    "Y10": "sidebend",
+    "D14": "adductor-open",
+    "D29": "adductor-open",
+    "Y09": "adductor-open",
+    "D09": "calf-straight",
+    "D30": "calf-straight",
+    "D10": "calf-bent",
+    "D31": "calf-bent"
+  },
+  "noRandomFallback": true,
+  "noLegacyEngineFallbackForNewSessions": true,
+  "negativeFeedbackPolicy": {
+    "firstAdverseReactionApplies": true,
+    "excludeSameMovement": true,
+    "excludeSameFamily": true,
+    "excludeConfirmedDirectionOnly": true,
+    "neverInferAllDirectionsFromOneReaction": true,
+    "recalculateAfterRecordDeletion": true
+  },
+  "sameReactionPolicy": {
+    "sameContextTwoOrMore": "가능한 다른 계열·역할 후보를 먼저 확인. 같은 범위를 강하게 하거나 유지 시간을 늘리지 않음.",
+    "noAlternative": "추가 동작 없음 상태로 종료하고 기존 기록 보존."
+  }
+}

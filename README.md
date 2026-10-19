@@ -1,70 +1,46 @@
-# 직꼿 서비스 플로우 시제품
+# 직꼿
 
-2026-10-16 개인화 개편과 74장 원본 이미지 적용, 검토 권한, 로컬 재현 및 배포 조건은 [개편 인수인계](docs/personalization-handoff-ko.md)를 확인하세요. 새 연결과 묶음은 검토 전용이며 일반 이용에는 기존 승인 추천을 유지합니다.
+일상에서 불편한 곳에 맞는 동작 하나, 운동 전 8종목 몸풀기, 여유롭게 몸풀기 24개 구성을 제공하는 웹앱입니다. 홈의 주 진입은 ‘불편한 곳 풀기’ 하나이며, 두 묶음 기능은 몸풀기 탭의 회원 기능입니다.
 
-Firebase 미연결 상태에서는 준비 화면을 먼저 배포할 수 있습니다. Cloudflare 설치 실패 로그의 원인과 버튼 재배포에 사용할 브랜치/명령은 [Cloudflare 배포 수정 안내](docs/cloudflare-build-fix-ko.md)를 확인하세요. 준비 화면 빌드는 `npm run build:preparation`, 전체 준비 화면 배포는 `npm run deploy:preparation`입니다. 공개 Firebase 설정이 모두 없으면 기본 빌드는 문진·추천 화면을 확인할 수 있는 미리보기를 공개합니다. 로그인·저장은 비활성이고 답변을 서버에 저장하지 않습니다.
+2026-10-19 확정사항과 `2026-10-17.1` 콘텐츠를 반영했습니다. 등록 75개 중 O09는 새 추천에서 제외하고 과거 기록·이미지를 보존합니다. 공개 연결은 daily 43 / warmup 19 / leisure 63개입니다. 자세·실제 지지물·현재 제한·과거 불편 반응을 확인하며, 맞는 후보가 없으면 임의의 구형 동작으로 대체하지 않습니다. 정지 그림과 단계·실시량을 제공하며 타이머는 수행을 자동 완료하지 않습니다.
 
-머리·목·어깨·등·허리 중 불편 부위 → 평소 습관 → 최근 행동의 세 질문을 선택하면 승인된 동작 하나를 바로 추천합니다. 동작을 수행한 뒤 피드백을 남깁니다. Firebase Spark Auth/Firestore가 인증과 데이터를 담당하고 Cloudflare Vinext Worker가 웹과 서버 API를 제공합니다. Functions와 SMS는 사용하지 않습니다. 추천 버전은 `jikkot11-v2-fiveareas`입니다. 승인된 11개 동작의 결정 트리와 원본 정적 PNG 안내 이미지를 사용하며, 기존 MVP 동작은 새 추천에서 제외합니다. 회원 기능은 무료이며, 새 운동 전 몸풀기·여유롭게 몸풀기는 콘텐츠 검토 전용입니다.
+운영 주소: https://jikkot.ehdgus554.workers.dev
 
-Firebase 실제 연결을 위해 `npm run firebase:connect -- --project jikkot --site https://jikkot.ehdgus554.workers.dev --deploy --prepare-worker-key` 도구를 추가했습니다. 먼저 본인 Firebase 계정 로그인·프로젝트·Spark/인증 설정이 필요합니다. [최소 계정 설정](docs/firebase-quick-connect-ko.md)을 참고하세요.
+구현·보관·검증·배포 확인 방법은 [이번 출시 인수 문서](docs/public-release-2026-10-19.md), 콘텐츠 범위는 [콘텐츠 안내](docs/content-gaps.md)를 확인하세요. 이전 날짜의 문서는 당시 구현·실행의 이력이며 이번 출시의 승인 범위와 테스트 결과를 대신하지 않습니다.
 
-실제 `jikkot` 웹 앱의 공개 설정은 `config/firebase-web.json`에 연결했습니다. Authentication·승인 도메인·익명/이메일 인증은 확인했고, 사용자가 Cloud Shell 서버 설정 완료와 Cloudflare Secret 등록을 확인한 뒤 운영 빌드의 연결 설정을 활성화했습니다. 다른 채팅 없이 [Cloud Shell 자동 설정](docs/firebase-quick-connect-ko.md)의 한 줄 명령으로 서버 계정·규칙·키를 준비할 수 있습니다. 운영 로그인·저장 확인은 배포 이후 별도로 진행하며 [현재 연결 상태와 남은 설정](docs/firebase-connection-status-ko.md)을 참고하세요.
+## 구성
 
-## 로컬 실행
+Firebase Spark Authentication/Firestore와 기존 Cloudflare Vinext Worker를 사용합니다. 이메일/비밀번호와 Google 가입 모두 본인이 정한 2–20글자 닉네임과 세 가지 별도 동의가 필요합니다. 새 가입에는 username을 요구하지 않습니다. 닉네임이 없는 기존 계정은 기록을 유지하고 보완 입력을 받습니다.
 
-Node 22.13 이상(권장 22), Java 21 이상이 필요합니다.
+비회원 이용 횟수·기록은 이용일 다음 00:00 KST에 만료됩니다. 서버가 조회·복원·반응을 차단하고 기존 Worker의 10분 주기 작업이 실제 삭제와 재시도를 처리합니다. 회원 기록은 직접 삭제·동의 철회·탈퇴까지 보관합니다. 외부 AI와 성장 기능은 기본 비활성입니다. Functions·SMS·새 유료 인프라는 추가하지 않았습니다.
+
+## 로컬 실행과 검증
+
+Node 22.13 이상, Java 21 이상이 필요합니다.
 
 ```bash
 npm ci
-cp .env.example .env.local
-# .env.local에 다음 로컬 값 입력:
-# VITE_FIREBASE_API_KEY=demo-key
-# VITE_FIREBASE_AUTH_DOMAIN=demo-jikkot.firebaseapp.com
-# VITE_FIREBASE_PROJECT_ID=demo-jikkot
-# VITE_FIREBASE_APP_ID=demo-jikkot-app
-# VITE_API_URL=http://127.0.0.1:5002/api
-# VITE_USE_FIREBASE_EMULATORS=true
-npm run emulators
+cp .env.example .env.development.local
 ```
 
-다른 터미널에서 `npm run dev:api`, 또 다른 터미널에서 `npm run dev -- --port 5173 --strictPort`를 실행합니다. 실제 SMS나 실사용 데이터는 사용하지 않습니다. Firebase 연결이 없으면 앱은 연결 준비 상태를 안내하며 가짜 회원/기록으로 대체하지 않습니다.
+로컬 파일에 `VITE_FIREBASE_API_KEY=demo-key`, `VITE_FIREBASE_AUTH_DOMAIN=demo-jikkot.firebaseapp.com`, `VITE_FIREBASE_PROJECT_ID=demo-jikkot`, `VITE_FIREBASE_APP_ID=demo-jikkot-app`, `VITE_API_URL=http://127.0.0.1:5002/api`, `VITE_USE_FIREBASE_EMULATORS=true`를 설정합니다. 각각 별도 터미널에서 실행합니다.
 
 ```bash
-npm test                 # 42,544개 조합 검사 + 빌드 + UI/추천/복원 + 원본 PNG 검증
+npm run emulators
+npm run dev:api
+npm run dev -- --port 5173
+```
+
+```bash
+npm test
 npm run typecheck
 npm run lint
-npm run test:emulators   # 에뮬레이터를 새로 시작해 실제 Auth/Firestore 에뮬레이터와 Spark API/rules 검증
-# 이미 에뮬레이터가 실행 중이면 npm run test:integration
-# Vite·로컬 Spark API·에뮬레이터 실행 상태에서:
-npx playwright install chromium
-npm run test:browser
-# 시스템 Chromium을 쓰는 환경: CHROMIUM_PATH=/usr/bin/chromium npm run test:browser
+npm run test:spark
+CHROMIUM_PATH=/usr/bin/chromium npm run test:browser
 ```
 
-`npm run build:local-worker`는 로컬 Worker 에뮬레이터 검증 전용 개발 빌드입니다. 운영/검토 배포는 별도 Firebase 환경변수를 설정하고 `npm run deploy:preview`/`npm run deploy`를 사용합니다. 배포 guard가 demo 프로젝트와 emulator/HTTP 설정을 거절합니다. 운영에 개발 빌드를 올리지 마세요.
+브라우저 검사는 실제 로컬 Auth/Firestore 에뮬레이터와 API를 사용하며 다섯 화면 크기에서 실행합니다. Google 검사는 에뮬레이터 자격 증명을 사용합니다. 실제 계정의 Google OAuth 팝업·모바일 기기 검사를 대신하지 않습니다.
 
-로컬 Worker 자체 검증(에뮬레이터 실행 상태):
+## 운영 배포
 
-```bash
-npm run build:local-worker
-XDG_CONFIG_HOME=/tmp/jikkot-wrangler WRANGLER_SEND_METRICS=false npx wrangler dev --config dist/server/wrangler.json --port 8787 --local
-# 다른 터미널:
-CHROMIUM_PATH=/usr/bin/chromium npm run test:worker
-# Wrangler 종료 후 배포용 번들 복원:
-npm run build
-```
-
-## 문서
-
-- [서비스 플로우 원문](docs/service-flow.md), [구현 지시서](docs/implementation-request.md)
-- [요구사항별 구현·검증](docs/implementation-checklist.md)
-- [다섯 부위 추천 콘텐츠·검증](docs/five-areas-validation.md), [콘텐츠 범위](docs/content-gaps.md)
-- [인증·한도·저장 설계](docs/auth-design.md)
-- [Firebase Spark·Google·Cloudflare 연결](docs/deployment-guide-ko.md)
-- [실행 검증 결과](docs/validation.md)
-
-D1 의존성은 새 앱에서 제거했지만 기존 Cloudflare 자원·실데이터는 삭제하지 않았습니다. 가입 동의 문안과 운영 보관 정책은 개발 초안이며 출시 전에 확정해야 합니다.
-
-## 확정 UIUX · 2026-10-13
-
-첨부 워드마크·거북이·스케치 인체, LINE Seed KR/Nunito와 원본 PNG 11개를 공통 UI에 적용했습니다. 공유 제목은 **직꼿**입니다. [구현·검증 및 준비 상태](docs/uiux-2026-10-13/implementation-report.md)를 참고하세요. 시안의 로그인/기록 스텁은 사용하지 않습니다. 현재 실제 이메일/Google 인증을 유지하고, 아이디 로그인·휴대폰·카카오·네이버 및 미확정 운영 약관은 준비 상태로 표시합니다. 승인된 대체 매핑이 없으면 추가 동작 없이 종료합니다.
+기존 GitHub `main` → Cloudflare `Workers Builds: jikkot` 연결을 사용합니다. 빌드는 `npm run build`, 게시 명령은 `npx wrangler deploy --config dist/server/wrangler.json`입니다. CI 성공뿐 아니라 운영 버전 100% 적용, 새 자산 해시, 실제 인증·저장·기록 재조회와 삭제 작업 시각을 확인합니다. 서버 키는 기존 `FIREBASE_SERVICE_ACCOUNT` Secret을 사용하고 저장소에 포함하지 않습니다.

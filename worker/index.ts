@@ -1,6 +1,8 @@
 /** Spark deployment: web, same-domain Auth helper and data API on Workers. */
 import handler from "vinext/server/app-router-entry";
 import { createSparkApi } from "./spark-api";
+import { FirestoreRest } from "./firestore-rest";
+import { cleanupExpiredGuests } from "./retention";
 import type { SparkEnv } from "./firestore-rest";
 interface Env extends SparkEnv {
   ASSETS: { fetch(request: Request): Promise<Response> };
@@ -11,6 +13,9 @@ interface ExecutionContext {
   passThroughOnException(): void;
 }
 const worker = {
+  async scheduled(_controller: unknown, env: Env, ctx: ExecutionContext) {
+    ctx.waitUntil(cleanupExpiredGuests(new FirestoreRest(env)));
+  },
   async fetch(request: Request, env: Env, ctx: ExecutionContext) {
     const url = new URL(request.url);
     if (url.pathname === "/api" || url.pathname.startsWith("/api/")) {

@@ -35,7 +35,9 @@ export function firebaseAuth() {
 }
 export const apiBase = __JIKKOT_PREPARATION__
   ? undefined
-  : import.meta.env.VITE_API_URL;
+  : import.meta.env.DEV || __JIKKOT_LOCAL_WORKER__
+    ? import.meta.env.VITE_API_URL
+    : "/api";
 export async function api<T = Record<string, unknown>>(
   path: string,
   body?: unknown,

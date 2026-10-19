@@ -1,50 +1,55 @@
 "use client";
-/* eslint-disable @next/next/no-img-element -- Original supplied illustrations retain their natural aspect ratio. */
+/* eslint-disable @next/next/no-img-element -- Versioned, supplied static illustrations. */
 import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  Home as HomeIcon,
+  PersonStanding,
+  BarChart3,
+  UserRound,
+} from "lucide-react";
 import { api } from "../lib/firebase-client";
 import {
   areas,
-  poses,
-  supports,
   sports,
+  supports,
   VERSION,
   type Session,
   type SessionInput,
-  type Reaction,
   type Purpose,
+  type Reaction,
 } from "../lib/personalization/types";
 import {
   questions,
   toggleChoice,
   habitChoices,
   currentChoices,
+  type Question,
 } from "../lib/personalization/questions";
-import { Header, Home, PrimaryButton } from "./jikkot-ui";
+import programOptions from "../lib/personalization/release/program-options.json";
+import dailySupports from "../lib/personalization/release/daily-supports.json";
+import { guestRetentionCopy } from "../lib/service/policy";
+import { Logo, PrimaryButton } from "./jikkot-ui";
 import { BodyRegionSelector } from "./body-region-selector";
-import { levels } from "../lib/personalization/growth";
-
+import { Dialog, DialogContent, DialogTitle } from "./ui/dialog";
 type PublicSession = Omit<Session, "owner" | "decision" | "visited">;
 type Context = {
-  reviewAllowed: boolean;
   consent: boolean;
-  consentVersion: string;
-  preferences: {
-    habits?: Record<string, string[]>;
-    showGrowth?: boolean;
-    sport?: string;
-  };
-  growthAvailable: boolean;
-  growth: { xp: number; badges: string[] } | null;
-  aiAvailable: boolean;
-  hasNewSessions: boolean;
+  reviewAllowed: boolean;
+  serverNow: number;
+  expiresAt: number | null;
+  preferences: { habits?: Record<string, string[]>; reducedMotion?: boolean };
+  summary: { sevenDays: number; thirtyDays: number } | null;
 };
 type View =
   | "home"
-  | "setup"
-  | "environment"
+  | "hub"
+  | "sport"
+  | "time"
+  | "posture"
   | "area"
   | "habits"
   | "current"
+  | "support"
   | "plan"
   | "perform"
   | "feedback"
@@ -52,33 +57,17 @@ type View =
   | "records"
   | "settings"
   | "review";
-type ReviewContent = {
-  catalogId: string;
-  name: string;
-  actualPose: string;
-  imageFileName: string;
-  imageSha256: string;
-  steps: string[];
-  reviewReasons: string[];
-  media: { installed: boolean; path: string };
-  publicationApproval: string;
-  dosage: unknown;
-  mappingSource: Record<string, string>;
+type Legacy = {
+  id: string;
+  createdAt: number;
+  feedback: string;
+  snapshot: {
+    routine: { name: string; image: string; steps?: string[]; dose?: string };
+    area: { label: string };
+  };
 };
-const names = {
-  daily: "불편한 곳 풀기",
-  warmup: "운동 전 몸풀기",
-  leisure: "여유롭게 몸풀기",
-};
-const labels: Record<Reaction, string> = {
-  better: "편해졌어요",
-  same: "비슷해요",
-  worse: "불편했어요",
-  ready: "준비됐어요",
-  insufficient: "조금 부족해요",
-  refreshed: "개운해요",
-};
-const initialInput = (purpose: Purpose): SessionInput => ({
+const asset = "/assets/jikkot-release/2026-10-17/";
+const initial = (purpose: Purpose): SessionInput => ({
   purpose,
   habits: [],
   current: [],
@@ -88,165 +77,298 @@ const initialInput = (purpose: Purpose): SessionInput => ({
   confirmedAt: Date.now(),
   review: false,
   growth: false,
+  preference: "all",
+  avoidDirections: [],
 });
-function errorText(e: unknown) {
-  return e instanceof Error ? e.message : "연결을 확인한 뒤 다시 시도해주세요.";
-}
-function Select({
+const titles: Record<Purpose, string> = {
+  daily: "불편한 곳 풀기",
+  warmup: "운동 전 몸풀기",
+  leisure: "여유롭게 몸풀기",
+};
+const feelings: Record<Reaction, string> = {
+  better: "개운해요",
+  refreshed: "개운해요",
+  same: "비슷해요",
+  worse: "더 불편해요",
+  ready: "준비됐어요",
+  insufficient: "조금 부족해요",
+};
+const supportNames: Record<string, string> = {
+  chairPose: "의자에 앉아서도 움직일 수 있어요",
+  ...Object.fromEntries(supports),
+  standing: "서서 움직일 수 있어요",
+  supine: "바로 누울 수 있어요",
+  floor: "바닥에 앉을 수 있어요",
+  halfKneel: "한쪽 무릎을 바닥에 댈 수 있어요",
+  quadruped: "네발 자세가 가능해요",
+};
+const directionChoices = [
+  ["spine_flexion", "몸통 굽히기"],
+  ["spine_extension", "몸통 뒤로 젖히기"],
+  ["torso_rotation", "몸통 돌리기"],
+  ["arm_overhead", "팔 위로 올리기"],
+  ["hip_hinge", "몸을 숙이며 고관절 접기"],
+  ["knee_extension", "무릎 펴기"],
+  ["neck_rotation", "고개 돌리기"],
+];
+function Choice({
   label,
   selected,
   onClick,
   disabled = false,
-  children,
 }: {
   label: string;
   selected: boolean;
   onClick: () => void;
   disabled?: boolean;
-  children?: React.ReactNode;
 }) {
   return (
     <button
       type="button"
-      className={`personal-choice ${selected ? "selected" : ""}`}
+      className={"release-choice " + (selected ? "selected" : "")}
       aria-pressed={selected}
       onClick={onClick}
       disabled={disabled}
     >
       <span>{label}</span>
       {selected && <span aria-hidden="true">✓</span>}
-      {children}
     </button>
+  );
+}
+function Timer({ seconds, running }: { seconds: number; running: boolean }) {
+  const [elapsed, setElapsed] = useState(0),
+    [started, setStarted] = useState(false),
+    [visible, setVisible] = useState(true);
+  useEffect(() => {
+    const update = () => setVisible(document.visibilityState === "visible");
+    document.addEventListener("visibilitychange", update);
+    return () => document.removeEventListener("visibilitychange", update);
+  }, []);
+  useEffect(() => {
+    if (!started || !running || !visible || elapsed >= seconds) return;
+    const id = setInterval(
+      () => setElapsed((t) => Math.min(seconds, t + 1)),
+      1000,
+    );
+    return () => clearInterval(id);
+  }, [started, running, visible, elapsed, seconds]);
+  const left = Math.max(0, seconds - elapsed);
+  return (
+    <div className="release-timer">
+      <span role="timer" aria-label="남은 보조 시간">
+        {Math.floor(left / 60)}:{String(left % 60).padStart(2, "0")}
+      </span>
+      <button
+        type="button"
+        onClick={() => setStarted((v) => !v)}
+        disabled={!running || !left}
+      >
+        {started ? "타이머 멈춤" : "보조 타이머 시작"}
+      </button>
+      <p className="note">
+        {left
+          ? "시간은 참고용이에요. 직접 수행을 확인해주세요."
+          : "시간이 끝났어요. 수행 완료는 직접 선택해주세요."}
+      </p>
+    </div>
   );
 }
 export function PersonalizedExperience({
   uid,
   memberName,
-  initialPurpose,
   onLogin,
+  onGuestConsent,
   onLogout,
-  onExistingDaily,
-  onExistingRecords,
+  onPolicy,
+  onDeleteAccount,
+  initialPurpose,
+  onIntentConsumed,
 }: {
   uid: string;
-  memberName?: string;
-  initialPurpose?: Purpose | null;
-  onLogin: () => void;
+  memberName: string | null;
+  onLogin: (purpose?: Purpose) => void;
+  initialPurpose?: Purpose;
+  onIntentConsumed: () => void;
+  onGuestConsent: () => void;
   onLogout: () => void;
-  onExistingDaily: () => void;
-  onExistingRecords: () => void;
+  onPolicy: () => void;
+  onDeleteAccount: () => void;
 }) {
-  const [context, setContext] = useState<Context | null>(null);
-  const [view, setView] = useState<View>(
-    initialPurpose
-      ? initialPurpose === "daily"
-        ? "environment"
-        : "setup"
-      : "home",
-  );
-  const [input, setInput] = useState<SessionInput>(() =>
-    initialInput(initialPurpose ?? "daily"),
-  );
-  const [session, setSession] = useState<PublicSession | null>(null),
-    [index, setIndex] = useState(0);
-  const [busy, setBusy] = useState(false),
-    [error, setError] = useState("");
-  const [personalConsent, setPersonalConsent] = useState(false),
-    [aiConsent, setAiConsent] = useState(false);
-  const [reaction, setReaction] = useState<Reaction | null>(null),
+  const [editingHabits, setEditingHabits] = useState(false);
+  const [view, setView] = useState<View>("home"),
+    [input, setInput] = useState<SessionInput>(initial("daily")),
+    [context, setContext] = useState<Context | null>(null),
+    [session, setSession] = useState<PublicSession | null>(null),
+    [index, setIndex] = useState(0),
+    [busy, setBusy] = useState(false),
+    [error, setError] = useState(""),
+    [notice, setNotice] = useState("");
+  const [page, setPage] = useState(0),
+    [bodySection, setBodySection] = useState<"upper" | "lower">("upper"),
+    [bodyBack, setBodyBack] = useState(false),
+    [posture, setPosture] = useState<"chair" | "standing" | "lying" | null>(
+      null,
+    ),
+    [reaction, setReaction] = useState<Reaction | null>(null),
+    [painItem, setPainItem] = useState(""),
     [painSteps, setPainSteps] = useState<number[]>([]),
-    [unknownStep, setUnknownStep] = useState(false),
-    [painItem, setPainItem] = useState("");
-  const [skip, setSkip] = useState(false),
-    [reviewItems, setReviewItems] = useState<ReviewContent[]>([]),
-    [reviewCode, setReviewCode] = useState("");
+    [unknownSteps, setUnknownSteps] = useState(false);
   const [records, setRecords] = useState<PublicSession[]>([]),
-    [legacy, setLegacy] = useState<
-      {
-        id: string;
-        createdAt: number;
-        feedback: string;
-        snapshot: {
-          routine: { name: string };
-          area: { label: string };
-          habits: { label: string }[];
-          recent: { label: string }[];
-        };
-      }[]
-    >([]);
-  const [cursor, setCursor] = useState<{
+    [legacy, setLegacy] = useState<Legacy[]>([]),
+    [cursor, setCursor] = useState<{ createdAt: number; id: string } | null>(
+      null,
+    ),
+    [legacyCursor, setLegacyCursor] = useState<{
       createdAt: number;
       id: string;
     } | null>(null),
-    [reviewDecision, setReviewDecision] = useState<unknown>(null);
-  const [region, setRegion] = useState<"upper" | "lower">("upper"),
-    [back, setBack] = useState(false),
-    [elapsed, setElapsed] = useState(0);
-  const request = useRef<{ sessionId: string; input: SessionInput } | null>(
-    null,
+    [zoom, setZoom] = useState(false),
+    [exit, setExit] = useState<View | null>(null),
+    [skip, setSkip] = useState(false),
+    [reduced, setReduced] = useState(false),
+    [reviewRows, setReviewRows] = useState<
+      {
+        catalogId: string;
+        name: string;
+        steps: string[];
+        media: { path: string };
+      }[]
+    >([]),
+    [sportSearch, setSportSearch] = useState("");
+  const inFlight = useRef(false),
+    pendingCreate = useRef<{ sessionId: string; input: SessionInput } | null>(
+      null,
+    ),
+    pendingEvent = useRef<Record<string, unknown> | null>(null),
+    restored = useRef(false),
+    sessionRef = useRef<PublicSession | null>(null);
+  const key = "jikkot.release." + uid;
+  const go = useCallback(
+    (next: View, replace = false) => {
+      setError("");
+      setPage(0);
+      setView(next);
+      const state = { jikkot: true, view: next, owner: uid };
+      if (replace) history.replaceState(state, "", "#" + next);
+      else history.pushState(state, "", "#" + next);
+      window.scrollTo({ top: 0, behavior: "instant" });
+    },
+    [uid],
   );
-  const pendingEvent = useRef<{
-    sessionId: string;
-    body: Record<string, unknown>;
-  } | null>(null);
-  const lastAction = useRef<null | (() => Promise<void>)>(null),
-    inFlight = useRef(false),
-    restored = useRef(false);
-  const storageKey = `jikkot.personal.${uid}`;
-  const run = useCallback(async (fn: () => Promise<void>) => {
+  const resetExpired = useCallback(() => {
+    restored.current = false;
+    pendingCreate.current = null;
+    pendingEvent.current = null;
+    sessionStorage.removeItem(key);
+    setSession(null);
+    setInput(initial("daily"));
+    setView("home");
+    setNotice(
+      "한국 시간 자정이 지나 이전 비회원 이용이 만료됐어요. 새 날짜로 시작해주세요.",
+    );
+  }, [key]);
+  const run = async (fn: () => Promise<void>) => {
     if (inFlight.current) return;
     inFlight.current = true;
     setBusy(true);
     setError("");
-    lastAction.current = fn;
     try {
       await fn();
     } catch (e) {
-      setError(errorText(e));
+      const code = (e as { code?: string }).code;
+      if (code === "SESSION_EXPIRED") {
+        resetExpired();
+        setContext((c) => (c ? { ...c, consent: false } : c));
+      } else if (code === "CONSENT_REQUIRED") {
+        onGuestConsent();
+      } else if (code === "AUTH_EXPIRED" || code === "AUTH_REQUIRED") {
+        onLogin();
+      } else if (code === "DAILY_LIMIT") {
+        setError(
+          "오늘 체험을 마쳤어요. 한국 시간 자정 이후 다시 이용할 수 있어요.",
+        );
+      } else
+        setError(
+          e instanceof Error ? e.message : "연결을 확인하고 다시 시도해주세요.",
+        );
     } finally {
       inFlight.current = false;
       setBusy(false);
     }
-  }, []);
-  const persist = useCallback(
-    (value: unknown) => {
-      sessionStorage.setItem(
-        storageKey,
-        JSON.stringify({ version: VERSION, uid, ...(value as object) }),
-      );
-    },
-    [storageKey, uid],
-  );
+  };
   useEffect(() => {
+    sessionRef.current = session;
+  }, [session]);
+  useEffect(() => {
+    const pop = (event: PopStateEvent) => {
+      const next = event.state?.owner === uid ? event.state.view : "home";
+      if (
+        sessionRef.current &&
+        sessionRef.current.status === "active" &&
+        ["home", "hub", "records", "settings"].includes(next)
+      ) {
+        setExit(next);
+        return;
+      }
+      setPage(0);
+      setView(next ?? "home");
+    };
+    window.addEventListener("popstate", pop);
+    return () => window.removeEventListener("popstate", pop);
+  }, [uid]);
+  useEffect(() => {
+    if (!uid) {
+      restored.current = true;
+      return;
+    }
     let active = true;
     void api<Context>("/personalization/context")
       .then(async (c) => {
         if (!active) return;
         setContext(c);
+        setReduced(
+          !!c.preferences.reducedMotion ||
+            (!memberName &&
+              localStorage.getItem("jikkot.reduced-motion") === "true"),
+        );
         if (restored.current) return;
         restored.current = true;
-        const raw = sessionStorage.getItem(storageKey);
+        const raw = sessionStorage.getItem(key);
         if (!raw) return;
         try {
           const saved = JSON.parse(raw);
           if (saved.uid !== uid || saved.version !== VERSION) return;
-          request.current = saved.request ?? null;
-          pendingEvent.current = saved.pendingEvent ?? null;
-          if (saved.input?.review || saved.request?.input?.review) {
-            const reviewContext = await api<Context>(
-              "/personalization/context?review=true",
-            );
-            if (!active) return;
-            setContext(reviewContext);
+          pendingCreate.current = saved.request ?? null;
+          pendingEvent.current = saved.event ?? null;
+          if (saved.input) {
+            setInput(saved.input);
+            setView(saved.view ?? "home");
           }
-          const id = saved.sessionId ?? saved.request?.sessionId;
-          if (id) {
-            const s = await api<PublicSession>(
-              `/personalization/sessions/${id}`,
+          const savedId = saved.sessionId ?? saved.request?.sessionId;
+          if (savedId) {
+            let s = await api<PublicSession>(
+              "/personalization/sessions/" + savedId,
             );
+            if (saved.event) {
+              s = await api<PublicSession>(
+                `/personalization/sessions/${savedId}/events`,
+                saved.event,
+              );
+              pendingEvent.current = null;
+            }
+            pendingCreate.current = null;
             if (!active) return;
-            setInput(s.input);
             setSession(s);
+            setInput(s.input);
+            setPosture(
+              s.input.profile === "standing"
+                ? "standing"
+                : s.input.profile === "chair"
+                  ? "chair"
+                  : s.input.poses.includes("supine")
+                    ? "lying"
+                    : "chair",
+            );
             setIndex(
               Math.max(
                 0,
@@ -264,507 +386,616 @@ export function PersonalizedExperience({
             );
           } else if (saved.input) {
             setInput(saved.input);
-            setView(saved.view ?? "environment");
+            setView(saved.view ?? "home");
           }
-        } catch {
-          if (active)
+        } catch (e) {
+          if ((e as { code?: string }).code === "SESSION_EXPIRED")
+            resetExpired();
+          else if (active)
             setError(
               "진행 상태를 복원하지 못했어요. 연결을 확인하고 다시 시도해주세요.",
             );
         }
       })
       .catch((e) => {
-        if (active) setError(errorText(e));
+        if (active) setError(e.message);
       });
     return () => {
       active = false;
     };
-  }, [storageKey, uid]);
+  }, [uid, key, resetExpired, memberName]);
   useEffect(() => {
-    if (!restored.current) return;
-    persist({
-      input,
-      view,
-      sessionId: session?.id ?? null,
-      request: request.current,
-      pendingEvent: pendingEvent.current,
-    });
-  }, [input, view, session, persist]);
+    if (!uid || !restored.current) return;
+    sessionStorage.setItem(
+      key,
+      JSON.stringify({
+        version: VERSION,
+        uid,
+        input,
+        view,
+        sessionId: session?.id,
+        request: pendingCreate.current,
+        event: pendingEvent.current,
+      }),
+    );
+  }, [uid, key, input, view, session, busy]);
   useEffect(() => {
-    if (view !== "perform" || session?.status !== "active") return;
-    const timer = setInterval(() => setElapsed((n) => n + 1), 1000);
-    return () => clearInterval(timer);
-  }, [view, session?.status]);
-  const change = (patch: Partial<SessionInput>) => {
-    request.current = null;
-    setInput((prev) => ({ ...prev, ...patch }));
-    setError("");
-  };
-  const begin = (purpose: Purpose) => {
-    if (pendingEvent.current) {
-      setError("앞선 저장을 먼저 다시 시도해주세요.");
-      return;
-    }
-    if (purpose === "daily" && !input.review) {
-      onExistingDaily();
-      return;
-    }
-    if (!memberName && purpose !== "daily") {
-      onLogin();
-      return;
-    }
-    if (purpose !== "daily" && !input.review) {
-      setError("이 콘텐츠는 수행 방법과 구성 검토를 마친 뒤 이용할 수 있어요.");
-      return;
-    }
-    request.current = null;
-    pendingEvent.current = null;
-    setSession(null);
-    setElapsed(0);
-    setReaction(null);
-    setPainSteps([]);
-    setUnknownStep(false);
-    setError("");
-    setInput({
-      ...initialInput(purpose),
-      review: input.review,
-      growth: context?.preferences.showGrowth ?? false,
-    });
-    setView(purpose === "daily" ? "environment" : "setup");
-  };
-  const home = () => {
-    setView("home");
-    setError("");
-  };
-  const afterSession = (s: PublicSession) => {
-    setSession(s);
-    setInput(s.input);
-    if (s.status === "completed" || s.status === "stopped")
-      setView(s.feedbackSubmitted ? "complete" : "feedback");
-    else {
-      setView("perform");
-      const next = s.items.findIndex((i) => i.state === "pending");
-      if (next >= 0) setIndex(next);
-    }
-  };
-  const generate = () =>
-    run(async () => {
-      if (memberName && !context?.consent) {
-        if (!personalConsent)
-          throw new Error("개인화 기록 이용 안내를 확인해주세요.");
-        await api("/personalization/consent", {
-          version: context?.consentVersion ?? "personalization-draft-v1",
-          personalization: true,
-          ai: aiConsent,
-        });
-        setContext((c) => (c ? { ...c, consent: true } : c));
+    if (memberName || !context?.expiresAt) return;
+    const offset = context.serverNow - Date.now();
+    const remaining = context.expiresAt - (Date.now() + offset);
+    const id = setTimeout(
+      () => {
+        resetExpired();
+        setContext((c) => (c ? { ...c, consent: false } : c));
+      },
+      Math.max(0, remaining),
+    );
+    const visible = () => {
+      if (
+        document.visibilityState === "visible" &&
+        Date.now() + offset >= context.expiresAt!
+      ) {
+        resetExpired();
+        setContext((c) => (c ? { ...c, consent: false } : c));
       }
-      if (!request.current)
-        request.current = {
-          sessionId: crypto.randomUUID(),
-          input: { ...input, confirmedAt: Date.now() },
+    };
+    document.addEventListener("visibilitychange", visible);
+    return () => {
+      clearTimeout(id);
+      document.removeEventListener("visibilitychange", visible);
+    };
+  }, [memberName, context?.expiresAt, context?.serverNow, resetExpired]);
+  const requireStart = useCallback(
+    (purpose: Purpose) => {
+      if (purpose !== "daily" && !memberName) {
+        onLogin(purpose);
+        return;
+      }
+      if (!uid || !context?.consent) {
+        onGuestConsent();
+        return;
+      }
+      pendingCreate.current = null;
+      pendingEvent.current = null;
+      setSession(null);
+      setReaction(null);
+      setPosture(null);
+      setEditingHabits(false);
+      setInput(initial(purpose));
+      go(
+        purpose === "warmup"
+          ? "sport"
+          : purpose === "leisure"
+            ? "time"
+            : "posture",
+      );
+    },
+    [uid, memberName, context?.consent, onLogin, onGuestConsent, go],
+  );
+  useEffect(() => {
+    if (initialPurpose && context?.consent) {
+      queueMicrotask(() => {
+        requireStart(initialPurpose);
+        onIntentConsumed();
+      });
+    }
+  }, [initialPurpose, context?.consent, requireStart, onIntentConsumed]);
+  const choosePose = (p: "chair" | "standing" | "lying") => {
+    setPosture(p);
+    setInput((old) => ({
+      ...old,
+      profile: p,
+      poses: [p === "lying" ? "supine" : p],
+      supports: [],
+    }));
+  };
+  const selectedProgram = programOptions.find(
+    (p) =>
+      p.purpose === input.purpose &&
+      (input.purpose === "warmup"
+        ? p.sport === input.sport
+        : p.profile === input.profile &&
+          p.minutesChoice === input.minutes &&
+          p.focus === input.preference),
+  );
+  const capabilityKeys =
+    input.purpose === "daily"
+      ? ((dailySupports[input.area ?? "back"] as Record<string, string[]>)[
+          input.poses[0]
+        ] ?? [])
+      : [
+          ...new Set([
+            ...(selectedProgram?.requiredCapabilities ?? []),
+            ...(selectedProgram?.supportOptions ?? []),
+          ]),
+        ];
+  const caps = [
+    ...new Set([
+      ...capabilityKeys,
+      ...(input.purpose === "warmup" ? ["chair", "chairPose"] : []),
+    ]),
+  ];
+  const hasCap = (id: string) =>
+    (id === "chairPose" ? input.poses.includes("chair") : false) ||
+    input.poses.includes(id as never) ||
+    input.supports.includes(id as never);
+  const toggleCap = (id: string) =>
+    setInput((old) => {
+      if (id === "chairPose")
+        return {
+          ...old,
+          poses: old.poses.includes("chair")
+            ? old.poses.filter((p) => p !== "chair")
+            : [...old.poses, "chair"],
         };
-      persist({ input, view, request: request.current });
+      if (
+        ["floor", "halfKneel", "quadruped", "supine", "standing"].includes(id)
+      )
+        return {
+          ...old,
+          poses: old.poses.includes(id as never)
+            ? old.poses.filter((p) => p !== id)
+            : [...old.poses, id as never],
+        };
+      return {
+        ...old,
+        supports: old.supports.includes(id as never)
+          ? old.supports.filter((s) => s !== id)
+          : [...old.supports, id as never],
+      };
+    });
+  const selectedPatterns = habitChoices
+    .filter((q) => input.habits.includes(q.id))
+    .flatMap((q) => q.patterns);
+  const questionList: Question[] =
+    view === "habits"
+      ? questions("habits", input.area)
+      : questions("current", input.area, input.habits).filter(
+          (q) =>
+            q.exclusive ||
+            ["sudden_worse", "radiating", "dizzy"].includes(q.id) ||
+            q.patterns.some((p) => selectedPatterns.includes(p)),
+        );
+  const visibleQuestions = questionList.slice(page * 6, page * 6 + 6);
+  const updateAnswer = (kind: "habits" | "current", id: string) =>
+    setInput((old) => ({
+      ...old,
+      [kind]: toggleChoice(old[kind], id),
+      ...(kind === "habits" ? { current: [] } : {}),
+    }));
+  const create = () =>
+    run(async () => {
+      pendingCreate.current ??= {
+        sessionId: crypto.randomUUID(),
+        input: { ...input, confirmedAt: Date.now() },
+      };
       const s = await api<PublicSession>(
         "/personalization/sessions",
-        request.current,
+        pendingCreate.current,
       );
       setSession(s);
       setInput(s.input);
       setIndex(0);
-      setView(input.purpose === "daily" ? "perform" : "plan");
-      if (memberName && input.purpose === "daily" && input.area) {
-        const habits = {
-          ...context?.preferences.habits,
-          [input.area]: input.habits,
-        };
-        // Recommendation success is not rolled back if the reusable-preference write fails.
-        await api("/personalization/preferences", {
-          habits,
-          showGrowth: context?.preferences.showGrowth ?? false,
-          review: input.review,
-          sport: input.sport ?? context?.preferences.sport ?? null,
-        })
-          .then(() =>
-            setContext((c) =>
-              c ? { ...c, preferences: { ...c.preferences, habits } } : c,
-            ),
-          )
-          .catch(() =>
-            setError(
-              "동작은 저장됐지만, 다음 방문을 위한 습관 설정을 저장하지 못했어요.",
-            ),
-          );
-      }
+      pendingCreate.current = null;
+      go(s.input.purpose === "daily" ? "perform" : "plan");
     });
-  const event = (action: string, extra: Record<string, unknown> = {}) =>
-    run(async () => {
-      if (!session) return;
-      const body = { eventId: crypto.randomUUID(), action, ...extra };
-      if (pendingEvent.current && pendingEvent.current.body.action !== action)
-        throw new Error("앞선 저장을 먼저 다시 시도해주세요.");
-      if (!pendingEvent.current)
-        pendingEvent.current = { sessionId: session.id, body };
-      persist({
-        input,
-        view,
-        sessionId: session.id,
-        request: request.current,
-        pendingEvent: pendingEvent.current,
-      });
-      const s = await api<PublicSession>(
-        `/personalization/sessions/${session.id}/events`,
-        pendingEvent.current.body,
-      );
-      pendingEvent.current = null;
-      setSkip(false);
+  const event = async (
+    action: string,
+    fields: Record<string, unknown> = {},
+  ) => {
+    if (!session) return;
+    pendingEvent.current ??= {
+      eventId: crypto.randomUUID(),
+      action,
+      ...fields,
+    };
+    const s = await api<PublicSession>(
+      `/personalization/sessions/${session.id}/events`,
+      pendingEvent.current,
+    );
+    pendingEvent.current = null;
+    setSession(s);
+    setSkip(false);
+    if (s.status === "completed" || s.status === "stopped") {
       setReaction(null);
       setPainSteps([]);
-      setUnknownStep(false);
-      afterSession(s);
-      persist({
-        input: s.input,
-        view: s.feedbackSubmitted ? "complete" : "perform",
-        sessionId: s.id,
-        request: request.current,
-        pendingEvent: null,
-      });
-    });
-  const loadRecords = (more = false) =>
-    run(async () => {
-      if (!memberName || (!input.review && !context?.hasNewSessions)) {
-        onExistingRecords();
-        return;
-      }
-      const query =
-        more && cursor ? `?after=${cursor.createdAt}&afterId=${cursor.id}` : "";
-      const r = await api<{
-        records: PublicSession[];
-        reviewRecords: PublicSession[];
-        nextCursor: typeof cursor;
-      }>("/personalization/records" + query);
-      setRecords((prev) =>
-        more
-          ? [...prev, ...r.records, ...(input.review ? r.reviewRecords : [])]
-          : [...r.records, ...(input.review ? r.reviewRecords : [])],
+      setUnknownSteps(false);
+      setPainItem(s.input.purpose === "daily" ? s.items.at(-1)!.itemId : "");
+      go(s.feedbackSubmitted ? "complete" : "feedback");
+    } else {
+      setIndex(
+        Math.max(
+          0,
+          s.items.findIndex((i) => i.state === "pending"),
+        ),
       );
-      setCursor(r.nextCursor);
-      if (!more) {
-        const old = await api<{ records: typeof legacy }>("/records");
-        setLegacy(old.records);
-      }
-      setView("records");
-    });
-  const currentItem = session?.items[index];
-  const currentRegion = input.area;
-  const currentQuestions =
-    input.purpose === "daily"
-      ? questions("current", currentRegion, input.habits)
-      : currentChoices.filter(
-          (q) =>
-            [
-              "today_ok",
-              "prep_comfort",
-              "sudden_worse",
-              "unknown",
-              "none",
-              "stiff",
-              "small_comfort",
-              "both_directions_comfort",
-            ].includes(q.id) || input.focus.some((a) => q.areas.includes(a)),
-        );
-  const startCurrent = () => {
-    setView("current");
-    setError("");
+      go("perform");
+    }
   };
-  const loadReview = () =>
-    run(async () => {
-      const r = await api<{ items: ReviewContent[] }>("/review/catalog");
-      setReviewItems(r.items);
-      setView("review");
-    });
-  const switchReview = () =>
-    run(async () => {
-      const review = !input.review;
-      const c = await api<Context>(
-        "/personalization/context" + (review ? "?review=true" : ""),
-      );
-      change({ review });
-      setContext(c);
-    });
-  const title =
-    view === "environment"
-      ? "지금 가능한 자세와 환경을 알려주세요"
-      : view === "area"
-        ? "어디가 불편한가요?"
-        : view === "habits"
-          ? "평소 어떤 습관이 있나요?"
-          : view === "current"
-            ? "최근 행동과 오늘 느낌은 어떤가요?"
-            : view === "setup"
-              ? names[input.purpose]
-              : view === "plan"
-                ? "이 순서로 가볍게 움직여볼까요?"
-                : view === "feedback"
-                  ? "마친 뒤 어떤 느낌인가요?"
-                  : view === "complete"
-                    ? "오늘의 몸풀기를 마쳤어요"
-                    : view === "records"
-                      ? "내 기록"
-                      : view === "settings"
-                        ? "내 이용 설정"
-                        : view === "review"
-                          ? "콘텐츠 검토"
-                          : "";
-  if (view === "home")
-    return (
-      <>
-        {input.review && (
-          <p className="review-banner" role="status">
-            검토 전용 · 초안 콘텐츠
-          </p>
-        )}
-        <Home
-          memberName={memberName}
-          busy={busy}
-          begin={() => begin("daily")}
-          warmup={() => begin("warmup")}
-          leisure={() => begin("leisure")}
-          bundlesReady={input.review && !!context?.reviewAllowed}
-          login={onLogin}
-          records={() => loadRecords()}
-          comingSoon={() => {}}
-        />
-        {session && ["active", "paused"].includes(session.status) && (
-          <PrimaryButton secondary onClick={() => setView("perform")}>
-            진행 중인 몸풀기 이어하기
-          </PrimaryButton>
-        )}
-        <div className="personal-secondary">
-          <button
-            type="button"
-            className="text-button"
-            onClick={() =>
-              run(async () => {
-                setContext(
-                  await api<Context>(
-                    "/personalization/context" +
-                      (input.review ? "?review=true" : ""),
-                  ),
-                );
-                setView("settings");
-              })
-            }
-          >
-            내 이용 설정
-          </button>
-          {context?.reviewAllowed && (
-            <button type="button" className="text-button" onClick={loadReview}>
-              콘텐츠 검토
-            </button>
-          )}
-        </div>
-        {error && (
-          <p role="alert" className="error-panel">
-            {error}
-          </p>
-        )}
-        {!context && !error && (
-          <p role="status">이용 설정을 확인하고 있어요.</p>
-        )}
-      </>
+  const loadRecords = async (more = false) => {
+    if (!uid) {
+      onLogin();
+      return;
+    }
+    const suffix =
+      more && cursor ? `?after=${cursor.createdAt}&afterId=${cursor.id}` : "";
+    const fresh = await api<{
+      records: PublicSession[];
+      reviewRecords: PublicSession[];
+      nextCursor: typeof cursor;
+    }>("/personalization/records" + suffix);
+    setRecords((old) =>
+      more
+        ? [...old, ...fresh.records, ...fresh.reviewRecords]
+        : [...fresh.records, ...fresh.reviewRecords],
     );
+    setCursor(fresh.nextCursor);
+    if (memberName && (!more || legacyCursor)) {
+      const suffix =
+        more && legacyCursor
+          ? `?after=${legacyCursor.createdAt}&afterId=${legacyCursor.id}`
+          : "";
+      const old = await api<{
+        records: Legacy[];
+        nextCursor: typeof legacyCursor;
+      }>("/records" + suffix);
+      setLegacy((xs) => (more ? [...xs, ...old.records] : old.records));
+      setLegacyCursor(old.nextCursor);
+    } else if (!memberName) setLegacy([]);
+    go("records");
+  };
+  const navigate = (next: View) => {
+    if (session && session.status === "active" && next !== view) {
+      setExit(next);
+      return;
+    }
+    if (next === "records") {
+      void run(() => loadRecords());
+      return;
+    }
+    go(next);
+  };
+  const current = session?.items[index];
+  const nextImage = session?.items[index + 1]?.movement.media.src;
+  useEffect(() => {
+    if (!nextImage || view !== "perform") return;
+    const image = new Image();
+    image.src = nextImage;
+    return () => image.removeAttribute("src");
+  }, [nextImage, view]);
+  const finishFeedback = () =>
+    run(() =>
+      event("feedback", {
+        reaction,
+        ...(painItem ? { itemId: painItem } : {}),
+        steps: painSteps,
+        stepsState: unknownSteps
+          ? "unknown"
+          : painSteps.length
+            ? "selected"
+            : "unanswered",
+      }),
+    );
+  const nav = [
+    ["home", "홈", HomeIcon],
+    ["hub", "몸풀기", PersonStanding],
+    ["records", "내 기록", BarChart3],
+    ["settings", "마이", UserRound],
+  ] as const;
+  const rootView = ["home", "hub", "records", "settings", "review"].includes(
+    view,
+  );
+  useEffect(() => {
+    const screen = document.querySelector<HTMLElement>(".release-app");
+    const nav = document.querySelector<HTMLElement>(".release-nav");
+    if (!screen || !nav) return;
+    const observer = new ResizeObserver(() =>
+      screen.style.setProperty(
+        "--nav-height",
+        `${nav.getBoundingClientRect().height}px`,
+      ),
+    );
+    observer.observe(nav);
+    return () => observer.disconnect();
+  }, [rootView]);
+  const back = () => {
+    if (editingHabits) {
+      setEditingHabits(false);
+      go("settings");
+      return;
+    }
+    if (page > 0) {
+      setPage((p) => p - 1);
+      return;
+    }
+    const routes: Partial<Record<View, View>> = {
+      sport: "hub",
+      time: "hub",
+      posture: input.purpose === "daily" ? "home" : "time",
+      area: "posture",
+      habits: "area",
+      current: input.purpose === "daily" ? "habits" : "support",
+      support:
+        input.purpose === "daily"
+          ? "current"
+          : input.purpose === "warmup"
+            ? "sport"
+            : "posture",
+      plan: input.purpose === "daily" ? "support" : "current",
+    };
+    go(routes[view] ?? "home");
+  };
   return (
-    <section className="personal-experience" aria-busy={busy}>
-      <Header
-        back={() => {
-          if (view === "area") setView("environment");
-          else if (view === "habits") setView("area");
-          else if (view === "current")
-            setView(input.purpose === "daily" ? "habits" : "environment");
-          else home();
-        }}
-        busy={busy}
-        right={
+    <div
+      className="release-experience"
+      data-view={view}
+      data-reduced-motion={reduced}
+    >
+      {rootView ? (
+        <header className="release-top">
+          <Logo />
+          {!uid ? (
+            <button className="text-button" onClick={() => onLogin()}>
+              로그인 · 회원가입
+            </button>
+          ) : null}
+        </header>
+      ) : (
+        <header className="flow-header">
           <button
             type="button"
-            className="text-button"
+            onClick={back}
             disabled={busy}
-            onClick={home}
+            aria-label="이전 단계"
           >
-            홈
+            ‹ 이전
           </button>
-        }
-      />
-      {input.review && (
-        <p className="review-banner" role="status">
-          검토 전용 · 초안 콘텐츠와 미확정 실시량을 포함합니다
-        </p>
+          <span>{titles[input.purpose]}</span>
+          <button
+            type="button"
+            onClick={() => navigate("home")}
+            disabled={busy}
+            aria-label="진행 나가기"
+          >
+            닫기
+          </button>
+        </header>
       )}
       {error && (
-        <div className="error-panel" role="alert">
-          <p>{error}</p>
-          <button
-            type="button"
-            disabled={busy}
-            onClick={() => {
-              if (lastAction.current) void run(lastAction.current);
-              else window.location.reload();
-            }}
-          >
-            저장 다시 시도
-          </button>
-        </div>
-      )}
-      {busy && (
-        <p role="status" className="note">
-          요청을 확인하고 있어요. 잠시 기다려주세요.
+        <p className="error" role="alert">
+          {error}
         </p>
       )}
-      {title && <h1>{title}</h1>}
-      {view === "setup" && (
+      {notice && (
+        <p className="note" role="status">
+          {notice}
+        </p>
+      )}
+      {busy && (
+        <p className="note" role="status">
+          요청을 처리하고 있어요.
+        </p>
+      )}
+      {view === "home" && (
         <>
-          <p className="sub">
-            오늘의 선택으로 시작해요. 예전 기록을 오늘 상태로 간주하지 않아요.
-          </p>
-          {input.purpose === "warmup" ? (
-            <>
-              <div className="personal-grid">
-                {sports.map(([id, label]) => (
-                  <Select
-                    key={id}
-                    label={label}
-                    selected={input.sport === id}
-                    onClick={() =>
-                      change({ sport: id, current: [], focus: [] })
-                    }
-                  />
-                ))}
-              </div>
-              {input.sport === "gym" && (
-                <fieldset>
-                  <legend>오늘 할 헬스 운동</legend>
-                  {(
-                    [
-                      ["upper", "상체"],
-                      ["lower", "하체"],
-                      ["whole", "전신"],
-                    ] as const
-                  ).map(([id, label]) => (
-                    <Select
-                      key={id}
-                      label={label}
-                      selected={input.gymFocus === id}
-                      onClick={() => change({ gymFocus: id })}
-                    />
-                  ))}
-                </fieldset>
+          <div className="release-home">
+            <h1>
+              {memberName ? (
+                "오늘도, 가볍게 풀어볼까요?"
+              ) : (
+                <>
+                  잠깐,
+                  <br />
+                  몸도 쉬어갈까요?
+                </>
               )}
-            </>
-          ) : (
-            <div className="personal-grid">
-              {([5, 10] as const).map((n) => (
-                <Select
-                  key={n}
-                  label={`${n}분 여유`}
-                  selected={input.minutes === n}
-                  onClick={() => change({ minutes: n })}
-                />
-              ))}
-            </div>
+            </h1>
+            <p>어디가 불편한지 알려주세요.</p>
+            <img
+              className="release-mascot"
+              src={asset + "brand/turtle-home.png"}
+              width={684}
+              height={823}
+              alt=""
+            />
+            <PrimaryButton
+              disabled={busy}
+              onClick={() => requireStart("daily")}
+            >
+              불편한 곳 풀기
+            </PrimaryButton>
+            {!memberName && (
+              <p className="note">비회원은 하루 한 번 체험할 수 있어요.</p>
+            )}
+          </div>
+          {session && ["active", "paused"].includes(session.status) && (
+            <button className="secondary" onClick={() => go("perform")}>
+              진행 중인 몸풀기 이어서 하기
+            </button>
           )}
-          <p className="note">
-            여유 시간에 맞춰 구성해요. 미확정 동작의 정확한 총 수행 시간은 검토
-            후 안내합니다.
-          </p>
-          <fieldset>
-            <legend>
-              {input.purpose === "leisure"
-                ? "집중하고 싶은 곳 · 선택하지 않으면 전신, 최대 두 곳"
-                : "오늘 불편한 곳이 있다면 · 최대 두 곳"}
-            </legend>
-            <div className="personal-grid">
-              {areas.map(([id, label]) => (
-                <Select
-                  key={id}
-                  label={label}
-                  selected={input.focus.includes(id)}
-                  onClick={() =>
-                    change({
-                      focus: input.focus.includes(id)
-                        ? input.focus.filter((x) => x !== id)
-                        : input.focus.length < 2
-                          ? [...input.focus, id]
-                          : input.focus,
-                      current: [],
-                    })
-                  }
-                />
-              ))}
-            </div>
-          </fieldset>
+        </>
+      )}
+      {view === "hub" && (
+        <>
+          <h1>오늘은 어떻게 풀까요?</h1>
+          {(["warmup", "leisure"] as const).map((p) => (
+            <button
+              type="button"
+              className="release-hub-card"
+              key={p}
+              onClick={() => requireStart(p)}
+            >
+              <img
+                src={
+                  asset +
+                  "movements/" +
+                  (p === "warmup" ? "w11" : "d25") +
+                  ".webp"
+                }
+                width={128}
+                height={160}
+                alt=""
+                loading="lazy"
+              />
+              <span>
+                <strong>{titles[p]}</strong>
+                <small>
+                  {p === "warmup"
+                    ? "운동 전에 천천히 준비해요"
+                    : "5분·10분, 내 여유에 맞춰요"}
+                </small>
+              </span>
+              <span aria-hidden="true">›</span>
+            </button>
+          ))}
+          {!memberName && (
+            <p className="note">
+              몸풀기 두 메뉴는 로그인 후 무료로 이용할 수 있어요.
+            </p>
+          )}
+        </>
+      )}
+      {view === "sport" && (
+        <>
+          <h1>어떤 운동을 할까요?</h1>
+          <label className="sr-only" htmlFor="sport-search">
+            운동 찾기
+          </label>
+          <input
+            id="sport-search"
+            type="search"
+            value={sportSearch}
+            onChange={(e) => setSportSearch(e.target.value)}
+            placeholder="운동 찾기"
+          />
+          <div className="sport-grid">
+            {sports
+              .filter(([, label]) => label.includes(sportSearch))
+              .map(([id, label]) => {
+                const p = programOptions.find((p) => p.sport === id);
+                return (
+                  <button
+                    type="button"
+                    key={id}
+                    aria-pressed={input.sport === id}
+                    className={
+                      "release-choice " + (input.sport === id ? "selected" : "")
+                    }
+                    onClick={() =>
+                      setInput((old) => ({
+                        ...old,
+                        sport: id,
+                        poses: [],
+                        supports: [],
+                        current: [],
+                        profile: "standing",
+                      }))
+                    }
+                  >
+                    <img
+                      src={(p?.icon ?? "").replace("assets/", asset)}
+                      width={40}
+                      height={40}
+                      alt=""
+                    />
+                    {label}
+                  </button>
+                );
+              })}
+          </div>
+          {!sports.some(([, label]) => label.includes(sportSearch)) && (
+            <p>
+              찾는 운동이 없어요.{" "}
+              <button onClick={() => setSportSearch("")}>검색 지우기</button>
+            </p>
+          )}
           <PrimaryButton
-            disabled={
-              !context ||
-              (!input.sport && input.purpose === "warmup") ||
-              (input.sport === "gym" && !input.gymFocus) ||
-              (input.purpose === "leisure" && !input.minutes)
-            }
-            onClick={() => setView("environment")}
+            disabled={!input.sport || busy}
+            onClick={() => go("support")}
           >
             다음
           </PrimaryButton>
         </>
       )}
-      {view === "environment" && (
+      {view === "time" && (
         <>
-          <p className="sub">
-            실제로 가능한 항목만 골라주세요. 고른 자세는 이번 이용에서 다시 묻지
-            않아요.
-          </p>
-          <fieldset>
-            <legend>가능한 자세 · 여러 개 선택 가능</legend>
-            <div className="personal-grid">
-              {poses.map(([id, label]) => (
-                <Select
-                  key={id}
-                  label={label}
-                  selected={input.poses.includes(id)}
-                  onClick={() =>
-                    change({
-                      poses: input.poses.includes(id)
-                        ? input.poses.filter((x) => x !== id)
-                        : [...input.poses, id],
-                    })
-                  }
-                />
-              ))}
-            </div>
-          </fieldset>
-          <fieldset>
-            <legend>이용할 수 있는 지지와 공간</legend>
-            <div className="personal-grid">
-              {supports.map(([id, label]) => (
-                <Select
-                  key={id}
-                  label={label}
-                  selected={input.supports.includes(id)}
-                  onClick={() =>
-                    change({
-                      supports: input.supports.includes(id)
-                        ? input.supports.filter((x) => x !== id)
-                        : [...input.supports, id],
-                    })
-                  }
-                />
-              ))}
-            </div>
-          </fieldset>
+          <h1>얼마나 여유가 있나요?</h1>
+          <div className="release-choices">
+            {([5, 10] as const).map((n) => (
+              <Choice
+                key={n}
+                label={n + "분"}
+                selected={input.minutes === n}
+                onClick={() => setInput((old) => ({ ...old, minutes: n }))}
+              />
+            ))}
+          </div>
           <PrimaryButton
-            disabled={busy || !input.poses.length}
-            onClick={() =>
-              input.purpose === "daily" ? setView("area") : startCurrent()
-            }
+            disabled={!input.minutes}
+            onClick={() => go("posture")}
+          >
+            다음
+          </PrimaryButton>
+        </>
+      )}
+      {view === "posture" && (
+        <>
+          <h1>지금 어떤 상태인가요?</h1>
+          <p>지금 할 수 있는 자세를 골라주세요.</p>
+          <div
+            className="posture-cards"
+            role="radiogroup"
+            aria-label="가능한 자세"
+          >
+            {(
+              [
+                ["chair", "앉기", "의자에 앉아서", "sitting"],
+                ["standing", "서기", "서 있는 상태에서", "standing"],
+                ["lying", "눕기", "마른 매트에 누워서", "lying"],
+              ] as const
+            ).map(([id, label, desc, file]) => (
+              <button
+                key={id}
+                type="button"
+                role="radio"
+                aria-checked={posture === id}
+                className={"posture-card " + (posture === id ? "selected" : "")}
+                onClick={() => choosePose(id)}
+              >
+                <img
+                  src={asset + "ui/posture-" + file + ".webp"}
+                  width={144}
+                  height={144}
+                  alt=""
+                />
+                <span>
+                  <strong>{label}</strong>
+                  <small>{desc}</small>
+                </span>
+                <span className="posture-tick" aria-hidden="true">
+                  {posture === id ? "✓" : "○"}
+                </span>
+              </button>
+            ))}
+          </div>
+          {input.purpose === "leisure" && posture === "lying" && (
+            <Choice
+              label="바닥 앉기·네발 자세 등 자세 전환도 가능해요"
+              selected={input.profile === "mixedFloor"}
+              onClick={() =>
+                setInput((old) => ({
+                  ...old,
+                  profile:
+                    old.profile === "mixedFloor" ? "lying" : "mixedFloor",
+                  poses: ["supine"],
+                  supports: [],
+                }))
+              }
+            />
+          )}
+          <PrimaryButton
+            disabled={!posture}
+            onClick={() => go(input.purpose === "daily" ? "area" : "support")}
           >
             다음
           </PrimaryButton>
@@ -772,303 +1003,473 @@ export function PersonalizedExperience({
       )}
       {view === "area" && (
         <>
-          <p className="eyebrow">1 / 3 · 불편 부위</p>
-          <p className="sub">
-            한 곳을 골라주세요. 그림 또는 아래의 큰 버튼을 이용할 수 있어요.
-          </p>
-          <div className="personal-grid">
-            <Select
-              label="상체"
-              selected={region === "upper"}
-              onClick={() => {
-                if (region !== "upper") {
-                  setRegion("upper");
-                  change({ area: undefined, habits: [], current: [] });
-                }
-              }}
-            />
-            <Select
-              label="하체"
-              selected={region === "lower"}
-              onClick={() => {
-                if (region !== "lower") {
-                  setRegion("lower");
-                  change({ area: undefined, habits: [], current: [] });
-                }
-              }}
-            />
+          <h1>어디가 불편하세요?</h1>
+          <div className="release-segments">
+            {(["upper", "lower"] as const).map((x) => (
+              <button
+                type="button"
+                key={x}
+                aria-pressed={bodySection === x}
+                onClick={() => setBodySection(x)}
+              >
+                {x === "upper" ? "상체" : "하체"}
+              </button>
+            ))}
           </div>
-          <button
-            type="button"
-            className="text-button"
-            aria-pressed={back}
-            onClick={() => setBack(!back)}
-          >
-            {back ? "앞으로 전환" : "뒤로 전환"}
-          </button>
           <BodyRegionSelector
-            region={region}
-            back={back}
+            region={bodySection}
+            back={bodyBack}
             selected={input.area}
-            onSelect={(id) =>
-              change({
-                area: id,
-                habits: context?.preferences.habits?.[id] ?? [],
+            reducedMotion={reduced}
+            onViewChange={setBodyBack}
+            onSelect={(area) => {
+              setBodyBack(
+                ["back", "lower", "hamstring", "calf"].includes(area),
+              );
+              setInput((old) => ({
+                ...old,
+                area,
+                habits: context?.preferences.habits?.[area] ?? [],
                 current: [],
-              })
-            }
+              }));
+            }}
           />
-          <div className="personal-grid">
+          <div className="body-chips" role="radiogroup" aria-label="불편 부위">
             {areas
-              .filter((_, i) => (region === "upper" ? i < 5 : i >= 5))
+              .filter((_, i) => (bodySection === "upper" ? i < 5 : i >= 5))
               .map(([id, label]) => (
-                <Select
+                <button
+                  type="button"
+                  role="radio"
                   key={id}
-                  label={label}
-                  selected={input.area === id}
-                  onClick={() =>
-                    change({
+                  aria-checked={input.area === id}
+                  onClick={() => {
+                    setBodyBack(
+                      ["back", "lower", "hamstring", "calf"].includes(id),
+                    );
+                    setInput((old) => ({
+                      ...old,
                       area: id,
                       habits: context?.preferences.habits?.[id] ?? [],
                       current: [],
-                    })
-                  }
+                    }));
+                  }}
+                >
+                  {input.area === id && <span aria-hidden="true">✓ </span>}
+                  {label}
+                </button>
+              ))}
+          </div>
+          <PrimaryButton disabled={!input.area} onClick={() => go("habits")}>
+            다음
+          </PrimaryButton>
+        </>
+      )}
+      {(view === "habits" ||
+        (view === "current" && input.purpose === "daily")) && (
+        <>
+          <h1>
+            {view === "habits"
+              ? "평소엔 어떤 시간이 많나요?"
+              : "최근엔 어떤 느낌이었나요?"}
+          </h1>
+          {view === "habits" && editingHabits && (
+            <label>
+              습관을 바꿀 부위
+              <select
+                value={input.area}
+                onChange={(e) => {
+                  const area = e.target.value as SessionInput["area"];
+                  setInput((old) => ({
+                    ...old,
+                    area,
+                    habits: context?.preferences.habits?.[area!] ?? [],
+                    current: [],
+                  }));
+                  setPage(0);
+                }}
+              >
+                {areas.map(([id, label]) => (
+                  <option key={id} value={id}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
+          <p className="note">
+            {view === "habits"
+              ? "여러 개 골라도 괜찮아요. 지난 답변을 바꿀 수 있어요."
+              : "이미 기억나는 편한 움직임만 골라주세요. 불편한 움직임을 시험하지 마세요."}
+          </p>
+          <div className="release-choices">
+            {visibleQuestions.map((q) => (
+              <Choice
+                key={q.id}
+                label={q.label}
+                selected={input[
+                  view === "habits" ? "habits" : "current"
+                ].includes(q.id)}
+                onClick={() =>
+                  updateAnswer(view === "habits" ? "habits" : "current", q.id)
+                }
+              />
+            ))}
+          </div>
+          <p className="note">
+            {page + 1} / {Math.ceil(questionList.length / 6)}
+          </p>
+          <PrimaryButton
+            disabled={
+              !input[view === "habits" ? "habits" : "current"].length || busy
+            }
+            onClick={() => {
+              if ((page + 1) * 6 < questionList.length) {
+                setPage((p) => p + 1);
+                window.scrollTo(0, 0);
+              } else if (view === "habits") {
+                if (memberName)
+                  void run(async () => {
+                    await api("/personalization/preferences", {
+                      habits: {
+                        ...context?.preferences.habits,
+                        [input.area!]: input.habits,
+                      },
+                      review: false,
+                    });
+                    setContext((c) =>
+                      c
+                        ? {
+                            ...c,
+                            preferences: {
+                              ...c.preferences,
+                              habits: {
+                                ...c.preferences.habits,
+                                [input.area!]: input.habits,
+                              },
+                            },
+                          }
+                        : c,
+                    );
+                    if (editingHabits) {
+                      setEditingHabits(false);
+                      setNotice("평소 습관을 저장했어요.");
+                      go("settings");
+                    } else go("current");
+                  });
+                else go("current");
+              } else go("support");
+            }}
+          >
+            {(page + 1) * 6 < questionList.length ? "계속" : "다음"}
+          </PrimaryButton>
+        </>
+      )}
+      {view === "support" && (
+        <>
+          <h1>
+            {input.purpose === "warmup"
+              ? "편하게 준비할 수 있나요?"
+              : "필요한 지지를 확인해요"}
+          </h1>
+          <p className="note">
+            실제로 가능한 조건만 선택해주세요. 없거나 모르면 선택하지 않아도
+            돼요.
+          </p>
+          <div className="release-choices">
+            {caps
+              .filter(
+                (c) =>
+                  !(
+                    ["standing", "supine"].includes(c) &&
+                    input.purpose !== "warmup"
+                  ),
+              )
+              .slice(page * 6, page * 6 + 6)
+              .map((c) => (
+                <Choice
+                  key={c}
+                  label={supportNames[c] ?? c}
+                  selected={hasCap(c)}
+                  onClick={() => toggleCap(c)}
                 />
               ))}
           </div>
+          {!caps.filter(
+            (c) =>
+              !(
+                ["standing", "supine"].includes(c) && input.purpose !== "warmup"
+              ),
+          ).length && <p>추가 지지 도구가 필요하지 않아요.</p>}
           <PrimaryButton
-            disabled={busy || !input.area}
-            onClick={() => setView("habits")}
+            disabled={busy}
+            onClick={() => {
+              if (
+                (page + 1) * 6 <
+                caps.filter(
+                  (c) =>
+                    !(
+                      ["standing", "supine"].includes(c) &&
+                      input.purpose !== "warmup"
+                    ),
+                ).length
+              )
+                setPage((p) => p + 1);
+              else if (input.purpose === "daily") create();
+              else go("current");
+            }}
           >
-            다음
+            {(page + 1) * 6 <
+            caps.filter(
+              (c) =>
+                !(
+                  ["standing", "supine"].includes(c) &&
+                  input.purpose !== "warmup"
+                ),
+            ).length
+              ? "계속"
+              : input.purpose === "daily"
+                ? "동작 보기"
+                : "다음"}
           </PrimaryButton>
         </>
       )}
-      {view === "habits" && (
+      {view === "current" && input.purpose !== "daily" && (
         <>
-          <p className="eyebrow">2 / 3 · 평소 습관</p>
-          <p className="sub">
-            여러 개 골라도 괜찮아요. 지난 습관은 확인한 뒤 수정할 수 있어요.
-          </p>
-          <div className="personal-choices">
-            {questions("habits", currentRegion).map((q) => (
-              <Select
-                key={q.id}
-                label={q.label}
-                selected={input.habits.includes(q.id)}
-                onClick={() =>
-                  change({
-                    habits: toggleChoice(input.habits, q.id),
-                    current: [],
-                  })
-                }
-              />
-            ))}
-          </div>
-          <PrimaryButton
-            disabled={busy || !input.habits.length}
-            onClick={startCurrent}
-          >
-            다음
-          </PrimaryButton>
-        </>
-      )}
-      {view === "current" && (
-        <>
-          <p className="eyebrow">
-            {input.purpose === "daily" ? "3 / 3 · " : ""}이번 상태 확인
-          </p>
-          <p className="sub">
-            최근 며칠의 실제 경험만 골라주세요. 지금 새로 불편한 동작을 시험할
-            필요는 없어요.
-          </p>
-          {input.purpose !== "daily" && (
-            <details>
-              <summary>관련 평소 습관 확인 · 필요한 경우만</summary>
-              <div className="personal-choices">
-                {habitChoices
-                  .filter((q) =>
-                    [
-                      "immobile",
-                      "sitting",
-                      "standing",
-                      "screen",
-                      "arms_up",
-                      "clench",
-                      "walking",
-                      "bending",
-                      "retract",
-                      "arm_front",
-                      "one_direction",
-                      "stairs",
-                      "one_side",
-                      "legs_together",
-                      "increased_load",
-                    ].includes(q.id),
-                  )
-                  .map((q) => (
-                    <Select
-                      key={q.id}
-                      label={q.label}
-                      selected={input.habits.includes(q.id)}
-                      onClick={() =>
-                        change({ habits: toggleChoice(input.habits, q.id) })
-                      }
-                    />
-                  ))}
-              </div>
-            </details>
-          )}
-          <div className="personal-choices">
-            {currentQuestions.map((q) => (
-              <Select
-                key={q.id}
-                label={q.label}
-                selected={input.current.includes(q.id)}
-                onClick={() =>
-                  change({ current: toggleChoice(input.current, q.id) })
-                }
-              />
-            ))}
-          </div>
-          {memberName && !context?.consent && (
-            <div className="personal-consent">
-              <p>
-                습관·이번 상태·수행 반응을 회원 기록에 저장하고 다음 추천에
-                사용해요. 운영자·보관·문의 정책은 아직 검토 중인 초안이에요.
-              </p>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={personalConsent}
-                  onChange={(e) => setPersonalConsent(e.target.checked)}
-                />
-                개인화 기록 이용에 동의해요
-              </label>
-              {context?.aiAvailable && (
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={aiConsent}
-                    onChange={(e) => setAiConsent(e.target.checked)}
-                  />
-                  선택: 식별 정보를 제외한 반응 요약의 외부 AI 전송에 동의해요
-                </label>
-              )}
-            </div>
-          )}
-          <PrimaryButton
-            disabled={
-              busy ||
-              !context ||
-              !input.current.length ||
-              (!!memberName && !context.consent && !personalConsent)
+          <h1>
+            {input.purpose === "warmup"
+              ? "오늘은 편하게 움직일 수 있나요?"
+              : "편한 범위만 알려주세요"}
+          </h1>
+          <p>아픈 곳이나 불편한 습관을 만들 필요는 없어요.</p>
+          <Choice
+            label={
+              input.purpose === "warmup"
+                ? "준비 움직임을 편한 범위에서 할 수 있어요"
+                : "오늘 특별한 불편이 없고 작은 움직임은 편해요"
             }
-            onClick={generate}
+            selected={input.current.includes(
+              input.purpose === "warmup" ? "prep_comfort" : "today_ok",
+            )}
+            onClick={() =>
+              setInput((old) => ({
+                ...old,
+                current: old.current.includes(
+                  old.purpose === "warmup" ? "prep_comfort" : "today_ok",
+                )
+                  ? []
+                  : [old.purpose === "warmup" ? "prep_comfort" : "today_ok"],
+              }))
+            }
+          />
+          <details>
+            <summary>오늘 피할 움직임이 있어요</summary>
+            {directionChoices.map(([id, label]) => (
+              <Choice
+                key={id}
+                label={label}
+                selected={input.avoidDirections.includes(id)}
+                onClick={() =>
+                  setInput((old) => ({
+                    ...old,
+                    avoidDirections: old.avoidDirections.includes(id)
+                      ? old.avoidDirections.filter((d) => d !== id)
+                      : [...old.avoidDirections, id],
+                  }))
+                }
+              />
+            ))}
+          </details>
+          <details>
+            <summary>새롭게 심한 불편이나 어지러움이 있어요</summary>
+            {currentChoices
+              .filter((q) =>
+                ["sudden_worse", "radiating", "dizzy"].includes(q.id),
+              )
+              .map((q) => (
+                <Choice
+                  key={q.id}
+                  label={q.label}
+                  selected={input.current.includes(q.id)}
+                  onClick={() =>
+                    setInput((old) => ({
+                      ...old,
+                      current: toggleChoice(old.current, q.id),
+                    }))
+                  }
+                />
+              ))}
+          </details>
+          {input.purpose === "leisure" && (
+            <fieldset>
+              <legend>어디를 더 풀고 싶나요? · 선택</legend>
+              <div className="release-segments">
+                {(
+                  [
+                    ["all", "전신"],
+                    ["upper", "상체"],
+                    ["lower", "하체"],
+                  ] as const
+                ).map(([id, label]) => (
+                  <button
+                    type="button"
+                    key={id}
+                    aria-pressed={input.preference === id}
+                    onClick={() => {
+                      setInput((old) => ({ ...old, preference: id }));
+                      go("support");
+                    }}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </fieldset>
+          )}
+          <PrimaryButton
+            disabled={!input.current.length || busy}
+            onClick={create}
           >
-            {input.purpose === "daily" ? "내 동작 보기" : "루틴 구성하기"}
+            순서 확인
           </PrimaryButton>
         </>
       )}
       {view === "plan" && session && (
         <>
-          <p className="sub">
-            {names[session.input.purpose]} · {session.items.length}개 동작
+          <h1>
+            {session.input.purpose === "warmup"
+              ? "운동 전에 가볍게"
+              : "내 여유에 맞는 몸풀기"}
+          </h1>
+          <p>
+            {session.program?.name} · 약{" "}
+            {Math.round((session.program?.plannedSeconds ?? 0) / 60)}분
           </p>
           <p className="note">
-            실시량과 전환 시간을 아직 확정하지 않은 묶음이에요. 시간을 맞추려고
-            빠르게 하거나 오래 버티지 않아요.
+            {session.items.length}단계 ·{" "}
+            {new Set(session.items.map((i) => i.movement.catalogId)).size}개
+            동작. 진행량과 자세 전환을 더한 예상 시간이에요.
           </p>
-          <ol className="personal-plan">
-            {session.items.map((i) => (
+          {session.program?.partial && (
+            <p className="note">
+              지금 조건에 맞춰 일부 단계를 바꿨거나 제외했어요. 종목의 모든
+              준비를 대신하지 않아요.
+            </p>
+          )}
+          <ol className="release-plan">
+            {session.items.map((i, n) => (
               <li key={i.itemId}>
-                <strong>{i.movement.name}</strong>
-                <span>{poses.find((p) => p[0] === i.movement.pose)?.[1]}</span>
+                <span>{n + 1}</span>
+                <div>
+                  <strong>
+                    {i.movement.name}
+                    {(i.movement.round ?? 1) > 1
+                      ? ` · ${i.movement.round}회차`
+                      : ""}
+                  </strong>
+                  <small>{i.movement.dose}</small>
+                </div>
               </li>
             ))}
           </ol>
-          <PrimaryButton onClick={() => setView("perform")}>
-            순서대로 시작하기
+          {session.program?.sportSpecificStart && (
+            <p className="note">
+              몸풀기 후: {session.program.sportSpecificStart} 이 안내는 위
+              시간에 포함되지 않아요.
+            </p>
+          )}
+          <PrimaryButton onClick={() => go("perform")}>
+            몸풀기 시작
           </PrimaryButton>
         </>
       )}
-      {view === "perform" && session && currentItem && (
+      {view === "perform" && session && current && (
         <>
-          {session.input.purpose !== "daily" && (
-            <p className="eyebrow">
-              {index + 1} / {session.items.length}
-            </p>
-          )}
-          <h1>{currentItem.movement.name}</h1>
-          <MovementMedia
-            key={currentItem.itemId}
-            movement={currentItem.movement}
-          />
-          <ol className="personal-steps">
-            {currentItem.movement.steps.map((step, i) => (
-              <li key={i}>{step}</li>
+          <p className="note">
+            {index + 1} / {session.items.length}단계
+            {session.status === "paused" ? " · 잠시 멈춤" : ""}
+          </p>
+          <h1>{current.movement.name}</h1>
+          <button
+            className="movement-image-button"
+            type="button"
+            onClick={() => setZoom(true)}
+            aria-label="동작 그림 크게 보기"
+          >
+            <img
+              className="release-movement"
+              src={current.movement.media.src}
+              width={current.movement.media.width}
+              height={current.movement.media.height}
+              alt={current.movement.name}
+            />
+          </button>
+          <p className="release-dose">{current.movement.dose}</p>
+          <ol className="movement-steps">
+            {current.movement.steps.map((s, i) => (
+              <li key={i}>{s}</li>
             ))}
           </ol>
-          {currentItem.movement.dose ? (
-            <p>{currentItem.movement.dose}</p>
-          ) : (
-            <p className="note">
-              시간·횟수는 아직 확정되지 않았어요. 수행 방법과 편한 범위를 먼저
-              확인해주세요.
-            </p>
+          {current.movement.cue && (
+            <p className="note">{current.movement.cue}</p>
           )}
-          <p className="note">정적 안내 이미지 · 직접 시연 영상이 아닙니다</p>
-          <p role="status">
-            {session.status === "paused"
-              ? "잠시 멈췄어요"
-              : `진행 시간 ${Math.floor(elapsed / 60)}분 ${elapsed % 60}초`}
-          </p>
-          <div className="personal-actions">
+          {session.input.purpose !== "daily" &&
+            current.movement.dosage?.kind === "timed" && (
+              <Timer
+                key={current.itemId}
+                seconds={current.movement.dosage.activeSeconds}
+                running={session.status === "active"}
+              />
+            )}
+          <div className="release-actions">
             <button
               type="button"
+              disabled={busy}
               onClick={() =>
-                event(session.status === "paused" ? "resume" : "pause")
+                run(() =>
+                  event(session.status === "paused" ? "resume" : "pause"),
+                )
               }
-              disabled={busy || !["active", "paused"].includes(session.status)}
             >
               {session.status === "paused" ? "재개" : "잠시 멈춤"}
             </button>
             <button
               type="button"
-              onClick={() => setSkip(true)}
               disabled={busy || session.status !== "active"}
+              onClick={() => setSkip(true)}
             >
               동작 넘기기
             </button>
             <button
               type="button"
-              onClick={() => event("stop", { itemId: currentItem.itemId })}
               disabled={busy}
+              onClick={() =>
+                run(() => event("stop", { itemId: current.itemId }))
+              }
             >
               중단하기
             </button>
           </div>
           {skip && (
             <fieldset>
-              <legend>어떤 이유로 넘기나요?</legend>
+              <legend>어떤 이유로 넘길까요? · 선택</legend>
               {(
                 [
-                  ["space", "공간이 부족해요"],
-                  ["support", "자세·지지가 어려워요"],
-                  ["time", "시간이 부족해요"],
-                  ["other", "다른 이유예요"],
+                  ["discomfort", "불편했어요"],
+                  ["support", "자세나 도구가 어려워요"],
+                  ["time", "지금은 쉬고 싶어요"],
+                  ["other", "이유 없이 넘기기"],
                 ] as const
               ).map(([id, label]) => (
                 <button
                   type="button"
                   key={id}
+                  className="secondary"
                   onClick={() =>
-                    event("skip", {
-                      itemId: currentItem.itemId,
-                      skipReason: id,
-                    })
+                    run(() =>
+                      event("skip", { itemId: current.itemId, skipReason: id }),
+                    )
                   }
-                  disabled={busy}
                 >
                   {label}
                 </button>
@@ -1076,271 +1477,224 @@ export function PersonalizedExperience({
             </fieldset>
           )}
           <PrimaryButton
-            disabled={busy || session.status !== "active"}
-            onClick={() => event("complete", { itemId: currentItem.itemId })}
+            disabled={
+              busy || session.status !== "active" || current.state !== "pending"
+            }
+            onClick={() =>
+              run(() => event("complete", { itemId: current.itemId }))
+            }
           >
-            {session.input.purpose === "daily"
-              ? "마쳤어요"
-              : "이 동작을 수행했어요"}
+            {input.purpose === "daily" ? "마쳤어요" : "이 동작 마쳤어요"}
           </PrimaryButton>
-          <div className="personal-actions">
+          <div className="release-actions">
             <button
-              type="button"
               disabled={index === 0 || busy}
-              onClick={() => setIndex(index - 1)}
+              onClick={() => setIndex((i) => i - 1)}
             >
-              이전 동작
+              이전 동작 보기
             </button>
             <button
-              type="button"
-              disabled={index === session.items.length - 1 || busy}
-              onClick={() => setIndex(index + 1)}
+              disabled={index >= session.items.length - 1 || busy}
+              onClick={() => setIndex((i) => i + 1)}
             >
               다음 동작 보기
             </button>
           </div>
           <p className="note">
-            이미지를 보거나 시간이 지나는 것만으로 수행 완료를 기록하지 않아요.
+            그림이나 경과 시간만으로 수행 완료를 기록하지 않아요.
           </p>
         </>
       )}
-      {view === "feedback" &&
-        session &&
-        !session.items.some((i) =>
-          ["completed", "stopped"].includes(i.state),
-        ) && (
-          <>
-            <p className="sub">
-              수행한 동작이 없어 느낌은 기록하지 않아요. 넘긴 이유는 이용 기록에
-              남겨뒀어요.
-            </p>
-            <PrimaryButton onClick={home}>첫 화면으로</PrimaryButton>
-          </>
-        )}
-      {view === "feedback" &&
-        session &&
-        session.items.some((i) =>
-          ["completed", "stopped"].includes(i.state),
-        ) && (
-          <>
-            <p className="sub">
-              {session.input.purpose === "daily"
-                ? "실제로 수행한 동작의 느낌을 남겨주세요."
-                : "묶음 전체의 느낌이에요. 개별 동작의 효과로 나누어 저장하지 않아요."}
-            </p>
-            <div className="personal-choices">
-              {(session.input.purpose === "daily"
-                ? ["better", "same", "worse"]
-                : session.input.purpose === "warmup"
-                  ? ["ready", "insufficient", "worse"]
-                  : ["refreshed", "same", "worse"]
-              ).map((id) => (
-                <Select
-                  key={id}
-                  label={labels[id as Reaction]}
-                  selected={reaction === id}
-                  onClick={() => {
-                    setReaction(id as Reaction);
-                    setPainSteps([]);
-                    setUnknownStep(false);
-                    setPainItem(
-                      session.input.purpose === "daily"
-                        ? session.items.at(-1)!.itemId
-                        : "",
-                    );
-                  }}
-                />
-              ))}
-            </div>
-            {reaction === "worse" && (
-              <fieldset>
-                <legend>어느 과정에서 불편했나요?</legend>
-                {session.input.purpose !== "daily" && (
-                  <>
+      {view === "feedback" && session && (
+        <>
+          {session.items.some((i) =>
+            ["completed", "stopped"].includes(i.state),
+          ) ? (
+            <>
+              <h1>하고 나니 어떤가요?</h1>
+              <p className="note">
+                {input.purpose === "daily"
+                  ? "실제로 수행한 동작의 느낌이에요."
+                  : "묶음 전체의 느낌을 한 번만 남겨요."}
+              </p>
+              <div className="release-choices">
+                {(
+                  (input.purpose === "daily"
+                    ? ["better", "same", "worse"]
+                    : input.purpose === "warmup"
+                      ? ["ready", "insufficient", "worse"]
+                      : ["refreshed", "same", "worse"]) as Reaction[]
+                ).map((r) => (
+                  <Choice
+                    key={r}
+                    label={feelings[r]}
+                    selected={reaction === r}
+                    onClick={() => setReaction(r)}
+                  />
+                ))}
+              </div>
+              {reaction === "worse" && (
+                <fieldset>
+                  <legend>어느 과정에서 불편했나요?</legend>
+                  {input.purpose !== "daily" && (
                     <label>
-                      불편했던 동작 · 특정할 수 있을 때만
+                      불편했던 동작
                       <select
                         value={painItem}
                         onChange={(e) => {
                           setPainItem(e.target.value);
                           setPainSteps([]);
-                          setUnknownStep(false);
                         }}
                       >
-                        <option value="">특정하기 어려워요</option>
+                        <option value="">정확히 모르겠어요</option>
                         {session.items
                           .filter((i) =>
                             ["completed", "stopped"].includes(i.state),
                           )
                           .map((i) => (
-                            <option key={i.itemId} value={i.itemId}>
+                            <option value={i.itemId} key={i.itemId}>
                               {i.movement.name}
                             </option>
                           ))}
                       </select>
                     </label>
-                  </>
-                )}
-                {session.items
-                  .find((i) => i.itemId === painItem)
-                  ?.movement.steps.map((s, i) => (
-                    <Select
-                      key={i}
-                      label={s}
-                      selected={painSteps.includes(i)}
-                      onClick={() => {
-                        setUnknownStep(false);
-                        setPainSteps(
-                          painSteps.includes(i)
-                            ? painSteps.filter((x) => x !== i)
-                            : [...painSteps, i],
-                        );
-                      }}
-                    />
-                  ))}
-                <Select
-                  label="과정은 잘 모르겠어요"
-                  selected={unknownStep}
-                  onClick={() => {
-                    setUnknownStep(!unknownStep);
-                    setPainSteps([]);
-                  }}
-                />
-              </fieldset>
-            )}
-            <PrimaryButton
-              disabled={
-                busy ||
-                !reaction ||
-                (reaction === "worse" && !painSteps.length && !unknownStep)
-              }
-              onClick={() =>
-                event("feedback", {
-                  reaction,
-                  itemId: painItem || undefined,
-                  steps: painSteps,
-                  stepsState: unknownStep
-                    ? "unknown"
-                    : painSteps.length
-                      ? "selected"
-                      : "unanswered",
-                })
-              }
-            >
-              느낌 저장하기
-            </PrimaryButton>
-            {session.input.purpose !== "daily" && (
-              <button
-                type="button"
-                className="text-button"
-                onClick={() => setView("complete")}
+                  )}
+                  {session.items
+                    .find((i) => i.itemId === painItem)
+                    ?.movement.steps.map((s, n) => (
+                      <Choice
+                        key={n}
+                        label={s}
+                        selected={painSteps.includes(n)}
+                        onClick={() => {
+                          setUnknownSteps(false);
+                          setPainSteps((xs) =>
+                            xs.includes(n)
+                              ? xs.filter((x) => x !== n)
+                              : [...xs, n],
+                          );
+                        }}
+                      />
+                    ))}
+                  <Choice
+                    label="과정은 정확히 모르겠어요"
+                    selected={unknownSteps}
+                    onClick={() => {
+                      setUnknownSteps((v) => !v);
+                      setPainSteps([]);
+                    }}
+                  />
+                </fieldset>
+              )}
+              <PrimaryButton
+                disabled={!reaction || busy}
+                onClick={finishFeedback}
               >
-                느낌 기록 건너뛰기
-              </button>
-            )}
-          </>
-        )}
+                느낌 남기기
+              </PrimaryButton>
+              {input.purpose !== "daily" && (
+                <button className="text-button" onClick={() => go("complete")}>
+                  느낌은 다음에 남길게요
+                </button>
+              )}
+            </>
+          ) : (
+            <>
+              <h1>이번에는 쉬어가요</h1>
+              <p>
+                수행한 동작이 없어 느낌은 기록하지 않아요. 넘긴 이유만 남겼어요.
+              </p>
+              <PrimaryButton onClick={() => go("home")}>홈으로</PrimaryButton>
+            </>
+          )}
+        </>
+      )}
       {view === "complete" && session && (
         <>
           <img
-            className="personal-complete-mascot"
-            src="/assets/brand/turtle-home.png"
-            alt="쉬고 있는 직꼿 거북이"
+            className="release-companion"
+            src={asset + "ui/turtle-complete.webp"}
+            width={180}
+            height={180}
+            alt=""
           />
-          {session.nextState === "none" && <h2>추가로 안내할 동작이 없어요</h2>}
-          <p className="sub">
-            {session.status === "stopped"
-              ? "중단한 상태를 기록했어요."
-              : "직접 수행한 상태를 기록했어요."}
-          </p>
-          <p>
-            {session.feedback
-              ? labels[session.feedback]
-              : "느낌은 아직 남기지 않았어요."}
-          </p>
-          {session.input.purpose === "daily" &&
+          <h1>
+            {session.feedbackSubmitted
+              ? "오늘의 느낌을 남겼어요"
+              : "오늘의 몸풀기를 마쳤어요"}
+          </h1>
+          {session.feedback && <p>{feelings[session.feedback]}</p>}
+          {input.purpose === "daily" &&
             ["same", "worse"].includes(session.feedback ?? "") &&
             session.nextState !== "none" && (
-              <PrimaryButton disabled={busy} onClick={() => event("next")}>
-                조건에 맞는 다른 동작 확인
-              </PrimaryButton>
+              <button
+                className="secondary"
+                disabled={busy}
+                onClick={() => run(() => event("next"))}
+              >
+                다른 동작 살펴보기
+              </button>
             )}
-          {session.input.purpose === "daily" &&
-            session.feedbackSubmitted &&
-            session.items.at(-1)?.reaction && (
-              <p className="note">
-                적합한 대안이 없다면 추가 동작 없이 마무리해요.
-              </p>
-            )}
-          <PrimaryButton
-            secondary
-            onClick={() =>
-              session.input.purpose === "warmup" ? begin("warmup") : home()
-            }
+          {session.nextState === "none" && (
+            <p>
+              지금 조건에 맞는 다른 동작이 없어요. 무리해서 이어가지 않아도
+              괜찮아요.
+            </p>
+          )}
+          {session.program?.sportSpecificStart && (
+            <p>{session.program.sportSpecificStart}</p>
+          )}
+          {!memberName && (
+            <p className="note">
+              {guestRetentionCopy} 가입해도 비회원 기록은 이전되지 않아요.
+            </p>
+          )}
+          <PrimaryButton onClick={() => go("home")}>홈으로</PrimaryButton>
+          <button
+            className="text-button"
+            onClick={() => run(() => loadRecords())}
           >
-            {session.input.purpose === "warmup"
-              ? "운동 선택으로"
-              : "첫 화면으로"}
-          </PrimaryButton>
-          {memberName && (
-            <button
-              type="button"
-              className="text-button"
-              onClick={() => loadRecords()}
-            >
-              내 기록 확인
-            </button>
-          )}
-          {context?.reviewAllowed && session.review && (
-            <button
-              type="button"
-              className="text-button"
-              onClick={() =>
-                run(async () =>
-                  setReviewDecision(
-                    await api(`/review/sessions/${session.id}`),
-                  ),
-                )
-              }
-            >
-              내부 추천 근거 확인
-            </button>
-          )}
-          {reviewDecision !== null && (
-            <pre className="review-json">
-              {JSON.stringify(reviewDecision, null, 2)}
-            </pre>
-          )}
+            내 기록 보기
+          </button>
         </>
       )}
       {view === "records" && (
         <>
+          <h1>내 기록</h1>
           {!records.length && !legacy.length && (
-            <p className="sub">
-              아직 기록이 없어요. 직접 수행한 경험부터 차근차근 남겨보세요.
-            </p>
+            <>
+              <img
+                className="release-companion"
+                src={asset + "ui/turtle-records.webp"}
+                width={180}
+                height={180}
+                alt=""
+              />
+              <p>아직 기록이 없어요. 내 속도로 시작해보세요.</p>
+            </>
           )}
+          {!memberName && <p className="note">{guestRetentionCopy}</p>}
           {records.map((r) => (
-            <details key={r.id} className="personal-record">
+            <details className="release-record" key={r.id}>
               <summary>
                 <time>
                   {new Date(r.createdAt).toLocaleDateString("ko-KR", {
                     timeZone: "Asia/Seoul",
                   })}
                 </time>
-                <strong>{names[r.input.purpose]}</strong>
+                <strong>{titles[r.input.purpose]}</strong>
                 <span>
                   {r.feedback
-                    ? labels[r.feedback]
+                    ? feelings[r.feedback]
                     : r.status === "active"
                       ? "진행 중"
                       : "느낌 미응답"}
                 </span>
               </summary>
-              <ul>
+              <ol>
                 {r.items.map((i) => (
                   <li key={i.itemId}>
-                    {i.movement.name} ·{" "}
+                    {i.movement.name} · {i.movement.dose} ·{" "}
                     {i.state === "completed"
                       ? "수행"
                       : i.state === "skipped"
@@ -1348,12 +1702,27 @@ export function PersonalizedExperience({
                         : i.state === "stopped"
                           ? "중단"
                           : "미완료"}
-                    {i.skipReason === "space" ? " · 공간 부족" : ""}
+                    <details>
+                      <summary>당시 동작 안내</summary>
+                      <img
+                        loading="lazy"
+                        src={i.movement.media.src}
+                        alt={i.movement.name}
+                        width={i.movement.media.width}
+                        height={i.movement.media.height}
+                        className="movement-image"
+                      />
+                      <ol>
+                        {i.movement.steps.map((step, index) => (
+                          <li key={index}>{step}</li>
+                        ))}
+                      </ol>
+                    </details>
                   </li>
                 ))}
-              </ul>
+              </ol>
               <button
-                type="button"
+                className="secondary"
                 onClick={() => {
                   setSession(r);
                   setInput(r.input);
@@ -1363,8 +1732,8 @@ export function PersonalizedExperience({
                       r.items.findIndex((i) => i.state === "pending"),
                     ),
                   );
-                  setView(
-                    r.status === "active" || r.status === "paused"
+                  go(
+                    ["active", "paused"].includes(r.status)
                       ? "perform"
                       : r.feedbackSubmitted
                         ? "complete"
@@ -1374,330 +1743,359 @@ export function PersonalizedExperience({
               >
                 이용 상태 열기
               </button>
+              {memberName && r.feedbackSubmitted && (
+                <details>
+                  <summary>당시 느낌 정정</summary>
+                  <p className="note">지금의 후속 느낌과 구분해요.</p>
+                  {(
+                    (r.input.purpose === "daily"
+                      ? ["better", "same", "worse"]
+                      : r.input.purpose === "warmup"
+                        ? ["ready", "insufficient", "worse"]
+                        : ["refreshed", "same", "worse"]) as Reaction[]
+                  ).map((reaction) => (
+                    <button
+                      className="secondary"
+                      key={reaction}
+                      onClick={() =>
+                        run(async () => {
+                          const updated = await api<PublicSession>(
+                            `/personalization/sessions/${r.id}/events`,
+                            {
+                              eventId: crypto.randomUUID(),
+                              action: "correct",
+                              reaction,
+                              ...(r.input.purpose === "daily"
+                                ? { itemId: r.items.at(-1)!.itemId }
+                                : {}),
+                              steps: [],
+                              stepsState: "unanswered",
+                            },
+                          );
+                          setRecords((xs) =>
+                            xs.map((x) => (x.id === r.id ? updated : x)),
+                          );
+                          if (session?.id === r.id) setSession(updated);
+                        })
+                      }
+                    >
+                      {feelings[reaction]}로 정정
+                    </button>
+                  ))}
+                </details>
+              )}
+              {memberName && r.feedbackSubmitted && !r.followup && (
+                <details>
+                  <summary>그 뒤의 느낌 · 선택</summary>
+                  {(
+                    [
+                      ["continued_comfort", "편함이 이어졌어요"],
+                      ["same", "비슷해요"],
+                      ["uncomfortable", "불편했어요"],
+                      ["unknown", "잘 모르겠어요"],
+                    ] as const
+                  ).map(([id, label]) => (
+                    <button
+                      className="secondary"
+                      key={id}
+                      onClick={() =>
+                        run(async () => {
+                          const updated = await api<PublicSession>(
+                            `/personalization/sessions/${r.id}/events`,
+                            {
+                              eventId: crypto.randomUUID(),
+                              action: "followup",
+                              followup: id,
+                            },
+                          );
+                          setRecords((xs) =>
+                            xs.map((x) => (x.id === r.id ? updated : x)),
+                          );
+                        })
+                      }
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </details>
+              )}
+              {memberName && (
+                <button
+                  className="text-button"
+                  onClick={() =>
+                    run(async () => {
+                      await api(`/personalization/sessions/${r.id}/delete`, {});
+                      setRecords((xs) => xs.filter((x) => x.id !== r.id));
+                      if (session?.id === r.id) {
+                        setSession(null);
+                        sessionStorage.removeItem(key);
+                      }
+                    })
+                  }
+                >
+                  이 기록 삭제
+                </button>
+              )}
+            </details>
+          ))}
+          {legacy.length > 0 && <h2>이전 동작 기록</h2>}
+          {legacy.map((r) => (
+            <details className="release-record" key={r.id}>
+              <summary>
+                {r.snapshot.routine.name} ·{" "}
+                {new Date(r.createdAt).toLocaleDateString("ko-KR", {
+                  timeZone: "Asia/Seoul",
+                })}
+              </summary>
+              <img
+                className="release-movement"
+                loading="lazy"
+                src={r.snapshot.routine.image}
+                alt={r.snapshot.routine.name}
+              />
+              <ol>
+                {r.snapshot.routine.steps?.map((s, i) => (
+                  <li key={i}>{s}</li>
+                ))}
+              </ol>
+              <p>{r.snapshot.routine.dose}</p>
               <button
-                type="button"
-                disabled={busy}
+                className="text-button"
                 onClick={() =>
                   run(async () => {
-                    await api(`/personalization/sessions/${r.id}/delete`, {});
-                    setRecords((x) => x.filter((s) => s.id !== r.id));
-                    if (session?.id === r.id) {
-                      setSession(null);
-                      request.current = null;
-                      pendingEvent.current = null;
-                      sessionStorage.removeItem(storageKey);
-                    }
+                    await api(`/records/${r.id}/delete`, {});
+                    setLegacy((xs) => xs.filter((x) => x.id !== r.id));
                   })
                 }
               >
-                이 기록 삭제
+                이전 기록 삭제
               </button>
-              {r.feedbackSubmitted &&
-                ["completed", "stopped"].includes(r.status) && (
-                  <details>
-                    <summary>
-                      {r.input.purpose === "daily"
-                        ? "기록한 느낌 정정"
-                        : "묶음 느낌 정정"}
-                    </summary>
-                    <p className="note">
-                      지금의 후속 느낌은 아래에 따로 남길 수 있어요. 정정은 당시
-                      잘못 기록한 느낌을 바꿔요.
-                    </p>
-                    <div className="personal-actions">
-                      {(
-                        (r.input.purpose === "daily"
-                          ? ["better", "same", "worse"]
-                          : r.input.purpose === "warmup"
-                            ? ["ready", "insufficient", "worse"]
-                            : ["refreshed", "same", "worse"]) as Reaction[]
-                      ).map((reaction) => (
-                        <button
-                          type="button"
-                          key={reaction}
-                          disabled={busy}
-                          onClick={() =>
-                            run(async () => {
-                              const updated = await api<PublicSession>(
-                                `/personalization/sessions/${r.id}/events`,
-                                {
-                                  eventId: crypto.randomUUID(),
-                                  action: "correct",
-                                  reaction,
-                                  ...(r.input.purpose === "daily"
-                                    ? { itemId: r.items.at(-1)!.itemId }
-                                    : {}),
-                                  steps: [],
-                                  stepsState: "unanswered",
-                                },
-                              );
-                              setRecords((rows) =>
-                                rows.map((row) =>
-                                  row.id === r.id ? updated : row,
-                                ),
-                              );
-                              if (session?.id === r.id) setSession(updated);
-                            })
-                          }
-                        >
-                          {labels[reaction]}로 정정
-                        </button>
-                      ))}
-                    </div>
-                  </details>
-                )}
-              {r.feedbackSubmitted &&
-                !r.followup &&
-                ["completed", "stopped"].includes(r.status) && (
-                  <div className="personal-actions">
-                    <span>그 뒤의 느낌 · 선택</span>
-                    {(
-                      [
-                        ["continued_comfort", "편한 상태가 이어졌어요"],
-                        ["same", "비슷해요"],
-                        ["uncomfortable", "불편했어요"],
-                      ] as const
-                    ).map(([id, label]) => (
-                      <button
-                        key={id}
-                        type="button"
-                        disabled={busy}
-                        onClick={() => {
-                          setSession(r);
-                          void run(async () => {
-                            await api(
-                              `/personalization/sessions/${r.id}/events`,
-                              {
-                                eventId: crypto.randomUUID(),
-                                action: "followup",
-                                followup: id,
-                              },
-                            );
-                            setRecords((x) =>
-                              x.map((s) =>
-                                s.id === r.id
-                                  ? Object.assign(
-                                      { ...s },
-                                      {
-                                        followup: { value: id, at: Date.now() },
-                                      },
-                                    )
-                                  : s,
-                              ),
-                            );
-                          });
-                        }}
-                      >
-                        {label}
-                      </button>
-                    ))}
-                  </div>
-                )}
             </details>
           ))}
-          {cursor && (
+          {(cursor || legacyCursor) && (
             <button
-              type="button"
+              className="secondary"
               disabled={busy}
-              onClick={() => loadRecords(true)}
+              onClick={() => run(() => loadRecords(true))}
             >
               기록 더 보기
             </button>
           )}
-          {legacy.length > 0 && <h2>이전 동작 기록</h2>}
-          {legacy.map((r) => (
-            <details key={r.id} className="personal-record">
-              <summary>
-                {new Date(r.createdAt).toLocaleDateString("ko-KR", {
-                  timeZone: "Asia/Seoul",
-                })}{" "}
-                · {r.snapshot.area.label} · {r.snapshot.routine.name}
-              </summary>
-              <p>{labels[r.feedback as Reaction] ?? r.feedback}</p>
-              <ul>
-                {r.snapshot.habits?.map((h, i) => (
-                  <li key={`h-${i}`}>{h.label}</li>
-                ))}
-                {r.snapshot.recent?.map((h, i) => (
-                  <li key={`r-${i}`}>{h.label}</li>
-                ))}
-              </ul>
-            </details>
-          ))}
         </>
       )}
       {view === "settings" && (
         <>
-          <p className="sub">
-            현재 상태는 이용할 때마다 새로 확인해요. 지난 습관은 다음 방문에
-            불러와 수정할 수 있어요.
-          </p>
-          {context?.reviewAllowed && (
-            <Select
-              label="검토 전용 초안 모드"
-              selected={input.review}
-              onClick={switchReview}
-            />
+          <h1>{memberName ? memberName + "님의 마이" : "마이"}</h1>
+          {memberName ? (
+            <>
+              <p>회원 이용은 무료이며 횟수 제한이 없어요.</p>
+              <button
+                className="secondary"
+                onClick={() => {
+                  setEditingHabits(true);
+                  setInput({
+                    ...initial("daily"),
+                    area: "back",
+                    habits: context?.preferences.habits?.back ?? [],
+                  });
+                  go("habits");
+                }}
+              >
+                평소 습관 수정
+              </button>
+              <button className="secondary" onClick={onLogout}>
+                로그아웃
+              </button>
+              <button
+                className="secondary"
+                onClick={() =>
+                  run(async () => {
+                    for (let i = 0; i < 100; i++) {
+                      const r = await api<{ complete: boolean }>(
+                        "/account/health/revoke",
+                        {},
+                      );
+                      if (r.complete) {
+                        setSession(null);
+                        sessionStorage.removeItem(key);
+                        setContext((c) => (c ? { ...c, consent: false } : c));
+                        setNotice(
+                          "건강 관련 이용 기록과 개인화 정보를 삭제했어요.",
+                        );
+                        return;
+                      }
+                    }
+                    throw Error("삭제 작업이 남아 있어요. 다시 시도해주세요.");
+                  })
+                }
+              >
+                건강 관련 동의 철회·기록 삭제
+              </button>
+              <button className="text-button" onClick={onDeleteAccount}>
+                회원 탈퇴
+              </button>
+            </>
+          ) : (
+            <>
+              <p>{guestRetentionCopy}</p>
+              {uid && (
+                <button
+                  className="secondary"
+                  onClick={() =>
+                    run(async () => {
+                      for (let i = 0; i < 100; i++) {
+                        const r = await api<{ complete: boolean }>(
+                          "/guest/consent/revoke",
+                          {},
+                        );
+                        if (r.complete) {
+                          setSession(null);
+                          sessionStorage.removeItem(key);
+                          setContext((c) => (c ? { ...c, consent: false } : c));
+                          setNotice(
+                            "비회원 건강 관련 이용 정보를 삭제했어요. 당일 이용 여부는 자정까지 유지돼요.",
+                          );
+                          return;
+                        }
+                      }
+                      throw Error(
+                        "삭제 작업이 남아 있어요. 다시 시도해주세요.",
+                      );
+                    })
+                  }
+                >
+                  비회원 동의 철회·기록 삭제
+                </button>
+              )}
+              <button className="secondary" onClick={() => onLogin()}>
+                로그인 · 회원가입
+              </button>
+            </>
           )}
-          {context?.growthAvailable && memberName && (
-            <Select
-              label="선택: 성장 표시 보기"
-              selected={context.preferences.showGrowth ?? false}
+          <label className="release-check">
+            <input
+              type="checkbox"
+              checked={reduced}
+              onChange={(e) => {
+                const value = e.target.checked;
+                setReduced(value);
+                localStorage.setItem("jikkot.reduced-motion", String(value));
+                if (memberName)
+                  void run(() =>
+                    api("/personalization/preferences", {
+                      habits: context?.preferences.habits ?? {},
+                      reducedMotion: value,
+                      review: false,
+                    }).then(() => {}),
+                  );
+              }}
+            />
+            움직임 줄이기
+          </label>
+          <button className="secondary" onClick={onPolicy}>
+            이용 안내와 개인정보
+          </button>
+          <a className="secondary" href="mailto:ehdgus554@gmail.com">
+            문의하기
+          </a>
+          {context?.reviewAllowed && (
+            <button
+              className="text-button"
               onClick={() =>
                 run(async () => {
-                  const showGrowth = !context.preferences.showGrowth;
-                  await api("/personalization/preferences", {
-                    habits: context.preferences.habits ?? {},
-                    showGrowth,
-                    sport: context.preferences.sport ?? null,
-                    review: input.review,
-                  });
-                  setContext({
-                    ...context,
-                    preferences: { ...context.preferences, showGrowth },
-                  });
-                  change({ growth: showGrowth });
+                  const r = await api<{ items: typeof reviewRows }>(
+                    "/review/catalog",
+                  );
+                  setReviewRows(r.items);
+                  go("review");
                 })
               }
-            />
-          )}
-          {context?.growth && (
-            <div className="summary">
-              <p>
-                {
-                  [...levels]
-                    .reverse()
-                    .find(([min]) => context.growth!.xp >= min)?.[1]
-                }{" "}
-                · {context.growth.xp} XP
-              </p>
-              <ul>
-                {context.growth.badges
-                  .map(
-                    (id) =>
-                      ({
-                        "first-completion": "첫 묶음 완료",
-                        "three-weeks": "서로 다른 3주 완료",
-                        "five-feelings": "서로 다른 5회 느낌 기록",
-                      })[id],
-                  )
-                  .filter(Boolean)
-                  .map((label) => (
-                    <li key={label}>{label}</li>
-                  ))}
-              </ul>
-              <p>
-                경험치는 건강 점수가 아니며 동작 난도·실시량을 바꾸지 않아요.
-              </p>
-            </div>
-          )}
-          {context?.aiAvailable && (
-            <p className="note">
-              AI는 별도 동의와 서버 설정이 있을 때만 내부 요약을 보조해요.
-              추천은 규칙과 실제 반응을 사용해요.
-            </p>
-          )}
-          <p className="note">
-            회원 기능은 무료예요. 운영 동의·보관 정책은 검토 중인 초안이에요.
-          </p>
-          {memberName ? (
-            <button type="button" className="text-button" onClick={onLogout}>
-              로그아웃
+            >
+              내부 콘텐츠 검토
             </button>
-          ) : (
-            <PrimaryButton onClick={onLogin}>로그인 · 회원가입</PrimaryButton>
           )}
         </>
       )}
-      {view === "review" && context?.reviewAllowed && (
+      {view === "review" && (
         <>
-          <p className="sub">
-            총 {reviewItems.length}개 등록 · 신규 항목의 공개 승인과 실시량은
-            별도 검토합니다.
-          </p>
-          <label>
-            콘텐츠 찾기
-            <input
-              value={reviewCode}
-              onChange={(e) => setReviewCode(e.target.value)}
-              placeholder="이름 또는 관리 코드"
-            />
-          </label>
-          <Select
-            label="세 콘텐츠를 초안 모드로 실행"
-            selected={input.review}
-            onClick={switchReview}
-          />
-          <div className="review-catalog">
-            {reviewItems
-              .filter((i) => `${i.catalogId} ${i.name}`.includes(reviewCode))
-              .map((i) => (
-                <details key={i.catalogId}>
-                  <summary>
-                    {i.catalogId} · {i.name}
-                  </summary>
-                  <p>{i.actualPose}</p>
-                  {i.media.installed ? (
-                    <img loading="lazy" src={i.media.path} alt={i.name} />
-                  ) : (
-                    <p role="status">새 PNG 원본 연결 대기</p>
-                  )}
-                  <ul>
-                    {i.reviewReasons.map((s) => (
-                      <li key={s}>{s}</li>
-                    ))}
-                  </ul>
-                  <ol>
-                    {i.steps.map((s) => (
-                      <li key={s}>{s}</li>
-                    ))}
-                  </ol>
-                  <dl>
-                    {Object.entries(i.mappingSource).map(([k, v]) => (
-                      <div key={k}>
-                        <dt>{k}</dt>
-                        <dd>{v}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                  <p>SHA-256: {i.imageSha256}</p>
-                </details>
-              ))}
-          </div>
+          <h1>보호된 콘텐츠 검토</h1>
+          {reviewRows.map((r) => (
+            <details key={r.catalogId}>
+              <summary>
+                {r.catalogId} · {r.name}
+              </summary>
+              <img
+                className="release-movement"
+                src={r.media.path}
+                loading="lazy"
+                alt={r.name}
+              />
+              <ol>
+                {r.steps.map((s, i) => (
+                  <li key={i}>{s}</li>
+                ))}
+              </ol>
+            </details>
+          ))}
         </>
       )}
-    </section>
-  );
-}
-function MovementMedia({
-  movement,
-}: {
-  movement: PublicSession["items"][number]["movement"];
-}) {
-  const [failed, setFailed] = useState(false);
-  if (movement.media.type === "video")
-    return (
-      <video
-        className="personal-media"
-        controls
-        playsInline
-        preload="metadata"
-        src={movement.media.src}
-        aria-label={movement.name}
-      />
-    );
-  return failed || movement.media.version === "awaiting-original" ? (
-    <div className="personal-media missing" role="status">
-      이 동작의 새 안내 이미지를 연결하고 있어요. 아래 수행 방법을 확인해주세요.
+      {rootView && (
+        <nav className="release-nav" aria-label="주 메뉴">
+          {nav.map(([id, label, Icon]) => (
+            <button
+              type="button"
+              key={id}
+              aria-current={view === id ? "page" : undefined}
+              onClick={() => navigate(id)}
+              disabled={busy}
+            >
+              <Icon size={23} aria-hidden="true" />
+              {label}
+            </button>
+          ))}
+        </nav>
+      )}
+      <Dialog open={zoom} onOpenChange={setZoom}>
+        <DialogContent className="movement-zoom">
+          <DialogTitle>동작 그림 크게 보기</DialogTitle>
+          {current && (
+            <img
+              src={current.movement.media.src}
+              width={current.movement.media.width}
+              height={current.movement.media.height}
+              alt={current.movement.name}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
+      <Dialog
+        open={exit !== null}
+        onOpenChange={(v) => {
+          if (!v) setExit(null);
+        }}
+      >
+        <DialogContent>
+          <DialogTitle>잠깐 쉬어갈까요?</DialogTitle>
+          <p>진행을 잠시 멈추고 나갈 수 있어요. 자동으로 완료하지 않아요.</p>
+          <button className="secondary" onClick={() => setExit(null)}>
+            계속하기
+          </button>
+          <PrimaryButton
+            disabled={busy}
+            onClick={() =>
+              run(async () => {
+                const target = exit!;
+                if (session?.status === "active") await event("pause");
+                setExit(null);
+                if (target === "records") await loadRecords();
+                else go(target);
+              })
+            }
+          >
+            잠시 멈추고 나가기
+          </PrimaryButton>
+        </DialogContent>
+      </Dialog>
     </div>
-  ) : (
-    <img
-      className="personal-media"
-      src={movement.media.src}
-      width={movement.media.width}
-      height={movement.media.height}
-      alt={`${movement.name} 정적 안내 이미지`}
-      onError={() => setFailed(true)}
-    />
   );
 }

@@ -1,471 +1,518 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { kstWeek } from "../../lib/personalization/growth";
-import { randomUUID } from "node:crypto";
-import { createSparkApi } from "../../worker/spark-api";
-import { FirestoreRest } from "../../worker/firestore-rest";
-import { emulatorIdentity } from "../../scripts/spark-emulator-identity";
+import { randomUUID, createHash } from "node:crypto";
 import {
-  inputSchema,
-  type SessionInput,
-} from "../../lib/personalization/types";
-const env = {
-  FIREBASE_PROJECT_ID: "demo-jikkot",
-  FIREBASE_WEB_API_KEY: "demo-key",
-  DEPLOYMENT_STAGE: "review",
-  REVIEW_ENABLED: "true",
-  GROWTH_ENABLED: "true",
-};
-const db = new FirestoreRest(env, "http://127.0.0.1:8080");
-async function user(guest = false) {
-  const r = await fetch(
-    "http://127.0.0.1:9099/identitytoolkit.googleapis.com/v1/accounts:signUp?key=demo-key",
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...(guest
-          ? {}
-          : {
-              email: `p-${randomUUID()}@example.test`,
-              password: randomUUID(),
-            }),
-        returnSecureToken: true,
-      }),
-    },
-  );
-  assert.equal(r.status, 200);
-  return (await r.json()) as { idToken: string; localId: string };
-}
-function client(uid: string, stage = "review") {
-  const api = createSparkApi(
-    { ...env, DEPLOYMENT_STAGE: stage, REVIEW_ALLOWED_UIDS: uid },
-    undefined,
-    { db, verify: emulatorIdentity },
-  );
-  return async (path: string, token: string, body?: unknown) => {
-    const r = await api(
-      new Request("https://test.example/api" + path, {
-        method: body === undefined ? "GET" : "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          ...(body === undefined ? {} : { "Content-Type": "application/json" }),
-        },
-        ...(body === undefined ? {} : { body: JSON.stringify(body) }),
-      }),
-    );
-    return { status: r.status, body: await r.json() };
-  };
-}
-async function activate(
-  call: ReturnType<typeof client>,
-  u: Awaited<ReturnType<typeof user>>,
-) {
-  const suffix = randomUUID().slice(0, 8);
+  db,
+  client,
+  member,
+  identity,
+  consents,
+  create,
+  daily,
+} from "./fixtures";
+import { cleanupExpiredGuests, nextMidnightKST } from "../../worker/retention";
+const hash = (s: string) => createHash("sha256").update(s).digest("hex");
+test("published daily and member programmes work while review metadata stays UID/stage protected", async () => {
+  const u = await member(),
+    call = client();
+  const s = await create(call, u);
+  assert.equal(s.items[0].movement.catalogId, "O02");
+  assert.equal(s.items[0].movement.dosage.label, "20초씩 2회");
+  assert.equal("decision" in s, false);
+  assert.deepEqual(s.items[0].directions, []);
+  assert.equal((await call("/review/catalog", u.idToken)).status, 403);
   assert.equal(
-    (
-      await call("/signup", u.idToken, {
-        username: `p_${suffix}`,
-        nickname: `p_${suffix}`,
-        consents: { privacy: true, nonMedical: true, version: "draft-v1" },
-      })
-    ).status,
-    200,
+    (await client(u.localId)("/review/catalog", u.idToken)).body.items.length,
+    75,
   );
+  const other = await member();
   assert.equal(
-    (
-      await call("/personalization/consent", u.idToken, {
-        version: "personalization-draft-v1",
-        personalization: true,
-        ai: false,
-      })
-    ).status,
-    200,
-  );
-}
-const daily = (patch: Partial<SessionInput> = {}) =>
-  inputSchema.parse({
-    purpose: "daily",
-    area: "back",
-    habits: ["retract"],
-    current: ["upper_back", "reach_comfort"],
-    poses: ["chair"],
-    supports: ["chair"],
-    focus: [],
-    review: true,
-    growth: false,
-    confirmedAt: Date.now(),
-    ...patch,
-  });
-test("server restricts review by member UID and deployment stage, and customer snapshots omit decision evidence", async () => {
-  const a = await user(),
-    b = await user();
-  const call = client(a.localId);
-  await activate(call, a);
-  await activate(call, b);
-  assert.equal(
-    (await call("/review/catalog", a.idToken)).body.items.length,
-    74,
-  );
-  assert.equal((await call("/review/catalog", b.idToken)).status, 403);
-  assert.equal(
-    (await client(a.localId, "production")("/review/catalog", a.idToken))
-      .status,
-    403,
-  );
-  assert.equal(
-    (
-      await call("/personalization/sessions", b.idToken, {
-        sessionId: randomUUID(),
-        input: daily(),
-      })
-    ).status,
-    403,
-  );
-  assert.equal(
-    (await call("/personalization/preferences", b.idToken, { review: true }))
-      .status,
-    403,
-  );
-  assert.equal(
-    (
-      await call("/personalization/preferences", a.idToken, {
-        review: true,
-        habits: { back: ["retract"] },
-      })
-    ).status,
-    200,
-  );
-  assert.deepEqual(
-    (await call("/personalization/context", a.idToken)).body.preferences
-      .habits ?? {},
-    {},
-  );
-  assert.deepEqual(
-    (await call("/personalization/context?review=true", a.idToken)).body
-      .preferences.habits,
-    { back: ["retract"] },
-  );
-  const sid = randomUUID();
-  const r = await call("/personalization/sessions", a.idToken, {
-    sessionId: sid,
-    input: daily(),
-  });
-  assert.equal(r.status, 200);
-  assert.equal("decision" in r.body, false);
-  assert.equal("owner" in r.body, false);
-  assert.equal(
-    (await call(`/personalization/sessions/${sid}`, b.idToken)).status,
+    (await call(`/personalization/sessions/${s.id}`, other.idToken)).status,
     404,
   );
-  assert.equal(
-    (await call(`/review/sessions/${sid}`, a.idToken)).body.decision
-      .selected[0],
-    "O02",
-  );
 });
-test("one adverse item changes the next identical input; concurrent fixed event retries create one fact and deletion removes its evidence", async () => {
-  const u = await user();
-  const call = client(u.localId);
-  await activate(call, u);
-  const sid = randomUUID(),
-    input = daily();
-  const r = await call("/personalization/sessions", u.idToken, {
-    sessionId: sid,
-    input,
+test("parallel creation/event retries keep one session and one adverse fact; deletion clears evidence and receipts", async () => {
+  const u = await member(),
+    call = client(),
+    id = randomUUID(),
+    body = { sessionId: id, input: daily() };
+  const creation = await Promise.all([
+    call("/personalization/sessions", u.idToken, body),
+    call("/personalization/sessions", u.idToken, body),
+  ]);
+  assert.ok(creation.every((x) => x.status === 200));
+  const s = creation[0].body,
+    item = s.items[0];
+  await call(`/personalization/sessions/${id}/events`, u.idToken, {
+    eventId: randomUUID(),
+    action: "complete",
+    itemId: item.itemId,
   });
-  assert.equal(r.status, 200);
-  const item = r.body.items[0];
-  assert.equal(
-    (
-      await call(`/personalization/sessions/${sid}/events`, u.idToken, {
-        eventId: randomUUID(),
-        action: "followup",
-        followup: "uncomfortable",
-      })
-    ).status,
-    409,
-  );
-  assert.equal(
-    (
-      await call(`/personalization/sessions/${sid}/events`, u.idToken, {
-        eventId: randomUUID(),
-        action: "complete",
-        itemId: item.itemId,
-      })
-    ).status,
-    200,
-  );
-  const body = {
+  const event = {
     eventId: randomUUID(),
     action: "feedback",
-    reaction: "worse",
     itemId: item.itemId,
+    reaction: "worse",
     steps: [0],
   };
-  const replies = await Promise.all([
-    call(`/personalization/sessions/${sid}/events`, u.idToken, body),
-    call(`/personalization/sessions/${sid}/events`, u.idToken, body),
+  const r = await Promise.all([
+    call(`/personalization/sessions/${id}/events`, u.idToken, event),
+    call(`/personalization/sessions/${id}/events`, u.idToken, event),
   ]);
-  assert.ok(replies.every((r) => r.status === 200));
-  assert.equal(
-    (
-      await call(`/personalization/sessions/${sid}/events`, u.idToken, {
-        eventId: randomUUID(),
-        action: "stop",
-        itemId: item.itemId,
-      })
-    ).status,
-    409,
-  );
-  const memory = (await db.doc(`reviewMemory/${u.localId}`).get()).data()!;
-  assert.equal(memory.constraints.length, 1);
-  assert.equal(memory.experiences.length, 1);
-  assert.equal(
-    (
-      await call(`/personalization/sessions/${sid}/events`, u.idToken, {
-        ...body,
-        reaction: "better",
-      })
-    ).status,
-    409,
-  );
-  const next = await call("/personalization/sessions", u.idToken, {
-    sessionId: randomUUID(),
-    input: daily(),
-  });
-  assert.equal(next.status, 422);
-  assert.deepEqual(replies[0].body.items[0].directions, []);
-  const corrected = await call(
-    `/personalization/sessions/${sid}/events`,
-    u.idToken,
-    {
-      eventId: randomUUID(),
-      action: "correct",
-      itemId: item.itemId,
-      reaction: "better",
-    },
-  );
-  assert.equal(corrected.status, 200);
-  assert.deepEqual(
-    (await db.doc(`reviewMemory/${u.localId}`).get()).data()!.constraints,
-    [],
-  );
-  assert.equal(
-    (await db.doc(`reviewMemory/${u.localId}`).get()).data()!.experiences[0]
-      .reaction,
-    "better",
-  );
-  assert.equal(
-    (
-      await call(`/personalization/sessions/${sid}/events`, u.idToken, {
-        eventId: randomUUID(),
-        action: "correct",
-        itemId: item.itemId,
-        reaction: "worse",
-        steps: [0],
-      })
-    ).status,
-    200,
-  );
-  assert.equal(
-    (await call(`/personalization/sessions/${sid}/delete`, u.idToken, {}))
-      .status,
-    200,
-  );
-  const cleared = (await db.doc(`reviewMemory/${u.localId}`).get()).data()!;
-  assert.deepEqual(cleared.constraints, []);
-  assert.deepEqual(cleared.experiences, []);
+  assert.ok(r.every((x) => x.status === 200));
+  const m = (await db.doc(`personalMemory/${u.localId}`).get()).data()!;
+  assert.equal(m.constraints.length, 1);
+  assert.equal(m.experiences.length, 1);
   assert.equal(
     (
       await call("/personalization/sessions", u.idToken, {
         sessionId: randomUUID(),
         input: daily(),
-      })
-    ).status,
-    200,
-  );
-});
-test("unapproved v2 connections never consume a guest quota; legacy successful creation and retries keep the KST rule", async () => {
-  const u = await user(true);
-  const call = client("");
-  assert.equal(
-    (
-      await call("/guest/consent", u.idToken, {
-        nonMedical: true,
-        version: "draft-v1",
-      })
-    ).status,
-    200,
-  );
-  assert.equal(
-    (
-      await call("/personalization/sessions", u.idToken, {
-        sessionId: randomUUID(),
-        input: daily({ review: false }),
       })
     ).status,
     422,
   );
-  assert.equal((await call("/eligibility", u.idToken)).body.allowed, true);
-  const sid = randomUUID();
-  const answers = {
-    mode: "seated",
-    area: "neck",
-    habits: ["H_SHRUG", "H_SIDE_SCREEN", "H_CARRY"],
-    recent: ["R_HEAD_TURN", "R_HOLD_LOAD", "R_COMPUTER_BOTH"],
-  };
-  const payload = { recommendationId: sid, answers };
   assert.equal(
-    (await call("/recommendations", u.idToken, payload)).status,
+    (await call(`/personalization/sessions/${id}/delete`, u.idToken, {}))
+      .status,
     200,
   );
   assert.equal(
-    (await call("/recommendations", u.idToken, payload)).status,
-    200,
+    (await db.doc(`personalMemory/${u.localId}`).get()).data()!.constraints
+      .length,
+    0,
   );
-  assert.equal((await call("/eligibility", u.idToken)).body.allowed, false);
   assert.equal(
     (
-      await call("/recommendations", u.idToken, {
-        ...payload,
-        recommendationId: randomUUID(),
+      await db
+        .collection("personalSubmissions")
+        .where("sessionId", "==", id)
+        .get()
+    ).docs.length,
+    0,
+  );
+  await create(call, u);
+});
+test("correcting a feedback removes the old adverse constraint without creating duplicate experience", async () => {
+  const u = await member(),
+    call = client(),
+    s = await create(call, u),
+    item = s.items[0];
+  for (const b of [
+    { action: "complete", itemId: item.itemId },
+    { action: "feedback", itemId: item.itemId, reaction: "worse", steps: [] },
+    { action: "correct", itemId: item.itemId, reaction: "better", steps: [] },
+  ])
+    assert.equal(
+      (
+        await call(`/personalization/sessions/${s.id}/events`, u.idToken, {
+          eventId: randomUUID(),
+          ...b,
+        })
+      ).status,
+      200,
+    );
+  const m = (await db.doc(`personalMemory/${u.localId}`).get()).data()!;
+  assert.equal(m.constraints.length, 0);
+  assert.equal(m.experiences.length, 1);
+  assert.equal(m.experiences[0].reaction, "better");
+});
+test("guest consent is separate and successful recommendation alone consumes the day; retry/revoke never resets its usage", async () => {
+  const u = await identity("guest"),
+    call = client();
+  assert.equal(
+    (
+      await call("/personalization/sessions", u.idToken, {
+        sessionId: randomUUID(),
+        input: daily(),
+      })
+    ).status,
+    403,
+  );
+  assert.equal(
+    (
+      await call("/guest/consent", u.idToken, {
+        ...consents,
+        healthPersonalization: false,
+      })
+    ).status,
+    400,
+  );
+  await call("/guest/consent", u.idToken, consents);
+  assert.equal(
+    (
+      await call("/personalization/sessions", u.idToken, {
+        sessionId: randomUUID(),
+        input: daily({ habits: ["unknown"], current: ["unknown"] }),
+      })
+    ).status,
+    422,
+  );
+  const id = randomUUID(),
+    body = { sessionId: id, input: daily() };
+  assert.equal(
+    (await call("/personalization/sessions", u.idToken, body)).status,
+    200,
+  );
+  assert.equal(
+    (await call("/personalization/sessions", u.idToken, body)).status,
+    200,
+  );
+  assert.equal(
+    (
+      await call("/personalization/sessions", u.idToken, {
+        ...body,
+        sessionId: randomUUID(),
       })
     ).status,
     409,
   );
-  assert.equal((await call("/personalization/records", u.idToken)).status, 403);
+  assert.equal(
+    (await call("/guest/consent/revoke", u.idToken, {})).body.complete,
+    true,
+  );
+  assert.equal(
+    (await db.collection(`guestSessions/${u.localId}/sessions`).get()).docs
+      .length,
+    0,
+  );
+  await call("/guest/consent", u.idToken, consents);
+  assert.equal(
+    (
+      await call("/personalization/sessions", u.idToken, {
+        ...body,
+        sessionId: randomUUID(),
+      })
+    ).status,
+    409,
+  );
+  assert.equal(
+    (
+      await db
+        .doc(`cleanupJobs/${hash(u.localId + ":" + nextMidnightKST())}`)
+        .get()
+    ).exists,
+    true,
+  );
+});
+test("KST midnight rejects active guest reads, restoration and events; cleanup retries delete only new-policy expired data", async (t) => {
+  const u = await identity("guest"),
+    call = client();
+  const expiry = Date.parse("2026-10-20T15:00:00Z");
+  t.mock.timers.enable({ apis: ["Date"], now: expiry - 600000 });
+  await call("/guest/consent", u.idToken, consents);
+  const s = await create(call, u);
+  assert.equal(s.expiresAt, expiry);
+  const oldId = randomUUID();
+  await db.doc(`recommendations/${oldId}`).set({
+    owner: u.localId,
+    kind: "guest",
+    createdAt: Date.now() - 86400000,
+    snapshot: { routine: { name: "old protected retention" } },
+  });
+  t.mock.timers.setTime(expiry - 1);
+  assert.equal(
+    (await call(`/personalization/sessions/${s.id}`, u.idToken)).status,
+    200,
+  );
+  t.mock.timers.setTime(expiry);
+  for (const path of [
+    `/personalization/sessions/${s.id}`,
+    "/personalization/records",
+  ])
+    assert.ok([403, 410].includes((await call(path, u.idToken)).status));
+  assert.equal(
+    (
+      await call(`/personalization/sessions/${s.id}/events`, u.idToken, {
+        eventId: randomUUID(),
+        action: "complete",
+        itemId: s.items[0].itemId,
+      })
+    ).status,
+    410,
+  );
+  const request = db.request.bind(db);
+  let fail = true;
+  db.request = async (...args: Parameters<typeof db.request>) => {
+    const body = args[1] as { writes?: { delete?: string }[] } | undefined;
+    if (
+      fail &&
+      body?.writes?.some((w) =>
+        w.delete?.includes(`/guestSessions/${u.localId}/`),
+      )
+    ) {
+      fail = false;
+      throw Error("simulated transient delete failure");
+    }
+    return request(...args);
+  };
+  try {
+    let failures = 0;
+    for (let i = 0; i < 100 && !failures; i++)
+      failures += (await cleanupExpiredGuests(db, expiry)).failed;
+    assert.equal(failures, 1);
+    assert.equal(
+      (await db.doc(`guestSessions/${u.localId}/sessions/${s.id}`).get())
+        .exists,
+      true,
+    );
+    t.mock.timers.setTime(expiry + 120000);
+    for (
+      let i = 0;
+      i < 10 &&
+      (await db.doc(`guestSessions/${u.localId}/sessions/${s.id}`).get())
+        .exists;
+      i++
+    )
+      await cleanupExpiredGuests(db, Date.now());
+    assert.equal(
+      (await db.doc(`guestSessions/${u.localId}/sessions/${s.id}`).get())
+        .exists,
+      false,
+    );
+    assert.equal((await db.doc(`recommendations/${oldId}`).get()).exists, true);
+    await call("/guest/consent", u.idToken, consents);
+    assert.equal(
+      (
+        await call("/personalization/sessions", u.idToken, {
+          sessionId: randomUUID(),
+          input: daily(),
+        })
+      ).status,
+      200,
+    );
+  } finally {
+    db.request = request;
+    t.mock.timers.reset();
+  }
+});
+test("guest records expire rather than transferring to a separately activated member", async () => {
+  const guest = await identity("guest"),
+    call = client();
+  await call("/guest/consent", guest.idToken, consents);
+  await create(call, guest);
+  const m = await member();
+  assert.equal(
+    (await call("/personalization/records", m.idToken)).body.records.length,
+    0,
+  );
+  assert.equal(
+    (await call("/personalization/records", guest.idToken)).body.records.length,
+    1,
+  );
+});
+test("healthy warmup/leisure preserve actual completion, skip reasons, pause/resume and bundle-only feelings", async () => {
+  const u = await member(),
+    call = client();
+  for (const purpose of ["warmup", "leisure"] as const) {
+    const s = await create(
+      call,
+      u,
+      daily({
+        purpose,
+        area: undefined,
+        habits: [],
+        current: [purpose === "warmup" ? "prep_comfort" : "today_ok"],
+        sport: "swimming",
+        minutes: 5,
+        profile: purpose === "warmup" ? "standing" : "chair",
+        poses: purpose === "warmup" ? ["standing"] : ["chair"],
+        supports: purpose === "warmup" ? ["dryFloor", "space"] : ["chair"],
+      }),
+    );
+    assert.equal(s.items.length, 5);
+    const event = async (b: object) =>
+      call(`/personalization/sessions/${s.id}/events`, u.idToken, {
+        eventId: randomUUID(),
+        ...b,
+      });
+    assert.equal((await event({ action: "pause" })).status, 200);
+    assert.equal(
+      (await event({ action: "complete", itemId: s.items[0].itemId })).status,
+      409,
+    );
+    await event({ action: "resume" });
+    await event({
+      action: "skip",
+      itemId: s.items[0].itemId,
+      skipReason: "space",
+    });
+    for (const i of s.items.slice(1))
+      await event({ action: "complete", itemId: i.itemId });
+    const feeling = await event({
+      action: "feedback",
+      reaction: purpose === "warmup" ? "ready" : "refreshed",
+    });
+    assert.equal(feeling.status, 200);
+    assert.ok(
+      feeling.body.items.every(
+        (i: { reaction: unknown }) => i.reaction === null,
+      ),
+    );
+    const memory = (await db.doc(`personalMemory/${u.localId}`).get()).data()!;
+    assert.equal(memory.constraints.length, 0);
+    assert.ok(
+      memory.bundles.some((b: { sessionId: string }) => b.sessionId === s.id),
+    );
+    assert.equal((await event({ action: "stop" })).status, 409);
+  }
+});
+test("skipping every item never creates a performed feeling; specific discomfort skips create a first adverse memory", async () => {
+  const u = await member(),
+    call = client();
+  const input = daily({
+    purpose: "leisure",
+    area: undefined,
+    habits: [],
+    current: ["today_ok"],
+    minutes: 5,
+    profile: "chair",
+    poses: ["chair"],
+    supports: ["chair"],
+  });
+  let s = await create(call, u, input);
+  for (const item of s.items)
+    await call(`/personalization/sessions/${s.id}/events`, u.idToken, {
+      eventId: randomUUID(),
+      action: "skip",
+      itemId: item.itemId,
+      skipReason: "time",
+    });
+  assert.equal(
+    (
+      await call(`/personalization/sessions/${s.id}/events`, u.idToken, {
+        eventId: randomUUID(),
+        action: "feedback",
+        reaction: "refreshed",
+      })
+    ).status,
+    409,
+  );
+  s = await create(call, u, input);
+  await call(`/personalization/sessions/${s.id}/events`, u.idToken, {
+    eventId: randomUUID(),
+    action: "skip",
+    itemId: s.items[0].itemId,
+    skipReason: "discomfort",
+  });
+  assert.equal(
+    (await db.doc(`personalMemory/${u.localId}`).get()).data()!.constraints
+      .length,
+    1,
+  );
+});
+test("legacy record deletion removes owned copies and its adverse bootstrap memory, preserving another record", async () => {
+  const u = await member(),
+    call = client(),
+    id = randomUUID(),
+    other = randomUUID(),
+    rid = randomUUID();
+  const row = {
+    owner: u.localId,
+    kind: "member",
+    feedback: "worse",
+    recommendationId: rid,
+    createdAt: Date.now(),
+    snapshot: { routine: { id: "jikkot11-r02", name: "unchanged" } },
+  };
+  for (const p of [
+    `profiles/${u.localId}/records/${id}`,
+    `submissions/${id}`,
+    `operations/${id}`,
+    `recommendations/${rid}`,
+  ])
+    await db.doc(p).set(row);
+  await db
+    .doc(`profiles/${u.localId}/records/${other}`)
+    .set({ ...row, feedback: "same" });
+  await call("/personalization/context", u.idToken);
+  assert.equal(
+    (await db.doc(`personalMemory/${u.localId}`).get()).data()!.constraints
+      .length,
+    1,
+  );
+  assert.equal(
+    (await call(`/records/${id}/delete`, u.idToken, {})).status,
+    200,
+  );
+  assert.equal(
+    (await db.doc(`personalMemory/${u.localId}`).get()).data()!.constraints
+      .length,
+    0,
+  );
+  assert.equal((await db.doc(`operations/${id}`).get()).exists, false);
+  assert.equal(
+    (await db.doc(`profiles/${u.localId}/records/${other}`).get()).exists,
+    true,
+  );
+});
+test("health consent withdrawal deletes all owned health/derived data but leaves the member account and fails closed on retry", async () => {
+  const u = await member(),
+    call = client();
+  await create(call, u);
+  const r = await call("/account/health/revoke", u.idToken, {});
+  assert.equal(r.body.complete, true);
   assert.equal(
     (await db.doc(`personalMemory/${u.localId}`).get()).exists,
     false,
   );
-});
-
-test("bundle feeling stays at bundle scope, spatial skips do not become adverse constraints, and weekly growth is atomic", async () => {
-  const u = await user();
-  const call = client(u.localId);
-  await activate(call, u);
-  const input = daily({
-    purpose: "leisure",
-    area: undefined,
-    minutes: 5,
-    habits: ["sitting", "immobile"],
-    current: [
-      "hip_back",
-      "knee_hug_comfort",
-      "stiff",
-      "small_comfort",
-      "both_directions_comfort",
-    ],
-    poses: ["chair"],
-    supports: ["chair"],
-    growth: true,
-  });
-  const sid = randomUUID();
-  let r = await call("/personalization/sessions", u.idToken, {
-    sessionId: sid,
-    input,
-  });
-  assert.equal(r.status, 200);
-  const first = r.body.items[0];
-  r = await call(`/personalization/sessions/${sid}/events`, u.idToken, {
-    eventId: randomUUID(),
-    action: "skip",
-    itemId: first.itemId,
-    skipReason: "space",
-  });
-  assert.equal(r.status, 200);
-  for (const item of r.body.items.filter(
-    (i: { state: string }) => i.state === "pending",
-  )) {
-    r = await call(`/personalization/sessions/${sid}/events`, u.idToken, {
-      eventId: randomUUID(),
-      action: "complete",
-      itemId: item.itemId,
-    });
-    assert.equal(r.status, 200);
-  }
-  const feedback = {
-    eventId: randomUUID(),
-    action: "feedback",
-    reaction: "refreshed",
-  };
-  const results = await Promise.all([
-    call(`/personalization/sessions/${sid}/events`, u.idToken, feedback),
-    call(`/personalization/sessions/${sid}/events`, u.idToken, feedback),
-  ]);
-  assert.ok(results.every((r) => r.status === 200));
-  assert.ok(
-    results[0].body.items.every(
-      (i: { reaction: unknown }) => i.reaction === null,
-    ),
-  );
-  const memory = (await db.doc(`reviewMemory/${u.localId}`).get()).data()!;
-  assert.equal(memory.constraints.length, 0);
   assert.equal(
-    memory.experiences.find(
-      (e: { catalogId: string }) => e.catalogId === first.movement.catalogId,
-    ).environmentSkip,
-    true,
+    (await db.collection(`profiles/${u.localId}/sessions`).get()).docs.length,
+    0,
   );
-  const growth = (await db.doc(`reviewGrowth/${u.localId}`).get()).data()!;
-  assert.equal(growth.xp, 60);
-  // Simulate the next week by clearing its award ledger. Old followups must not
-  // retroactively award completion or feeling points into an empty week.
-  const weekRef = db.doc(
-    `reviewGrowth/${u.localId}/weeks/${kstWeek(Date.now())}`,
-  );
-  await weekRef.delete();
-  const followup = await call(
-    `/personalization/sessions/${sid}/events`,
-    u.idToken,
-    {
-      eventId: randomUUID(),
-      action: "followup",
-      followup: "same",
-    },
-  );
-  assert.equal(followup.status, 200);
+  assert.equal((await call("/me", u.idToken)).body.member.needsConsent, true);
   assert.equal(
-    (await db.doc(`reviewGrowth/${u.localId}`).get()).data()!.xp,
-    60,
+    (
+      await call("/personalization/sessions", u.idToken, {
+        sessionId: randomUUID(),
+        input: daily(),
+      })
+    ).status,
+    403,
   );
-  assert.equal((await weekRef.get()).exists, false);
-  const skippedId = randomUUID();
-  const skipped = await call("/personalization/sessions", u.idToken, {sessionId: skippedId, input});
-  assert.equal(skipped.status, 200);
-  for (const entry of skipped.body.items) {
-    assert.equal((await call(`/personalization/sessions/${skippedId}/events`, u.idToken, {
-      eventId: randomUUID(), action: "skip", itemId: entry.itemId, skipReason: "space",
-    })).status, 200);
-  }
-  assert.equal((await call(`/personalization/sessions/${skippedId}/events`, u.idToken, {
-    eventId: randomUUID(), action: "feedback", reaction: "refreshed",
-  })).status, 409);
-  assert.equal((await db.doc(`reviewGrowth/${u.localId}`).get()).data()!.xp, 60);
 });
-test("legacy adverse record snapshots are preserved and conservatively constrain first production personalization", async () => {
-  const u = await user();
-  const call = client(u.localId);
-  await activate(call, u);
-  const oldId = randomUUID();
-  const old = {
-    createdAt: Date.now(),
-    feedback: "worse",
-    snapshot: {
-      routine: { id: "jikkot11-r02", name: "unchanged-original" },
-      contentVersion: "old-version",
-    },
-    changes: [{ id: "step-1", label: "original-stage" }],
-  };
-  await db.doc(`profiles/${u.localId}/records/${oldId}`).set(old);
-  const response = await call("/personalization/sessions", u.idToken, {
-    sessionId: randomUUID(),
-    input: daily({ review: false }),
-  });
-  assert.equal(response.status, 422);
-  assert.deepEqual(
-    (await db.doc(`profiles/${u.localId}/records/${oldId}`).get()).data(),
-    old,
-  );
+test("withdrawal racing with a new recommendation cannot recreate health data", async () => {
+  for (const kind of ["member", "guest"] as const) {
+    const u = kind === "member" ? await member() : await identity("guest");
+    const call = client();
+    if (kind === "guest") await call("/guest/consent", u.idToken, consents);
+    const id = randomUUID();
+    const path = `${kind === "member" ? "profiles" : "guestSessions"}/${u.localId}/sessions/${id}`;
+    const request = db.request.bind(db);
+    let intercepted = false;
+    db.request = async (...args: Parameters<typeof db.request>) => {
+      const b = args[1] as
+        { writes?: { update?: { name: string } }[] } | undefined;
+      if (
+        !intercepted &&
+        b?.writes?.some((w) => w.update?.name === db.doc(path).name)
+      ) {
+        intercepted = true;
+        const revoked = await call(
+          kind === "member"
+            ? "/account/health/revoke"
+            : "/guest/consent/revoke",
+          u.idToken,
+          {},
+        );
+        assert.equal(revoked.status, 200);
+      }
+      return request(...args);
+    };
+    try {
+      const result = await call("/personalization/sessions", u.idToken, {
+        sessionId: id,
+        input: daily(),
+      });
+      assert.equal(result.status, 403);
+      assert.ok(intercepted);
+      assert.equal((await db.doc(path).get()).exists, false);
+      assert.equal(
+        (await db.doc(`personalMemory/${u.localId}`).get()).exists,
+        false,
+      );
+    } finally {
+      db.request = request;
+    }
+  }
 });

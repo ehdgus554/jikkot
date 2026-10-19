@@ -1,22 +1,31 @@
 import { createHash } from "node:crypto";
+import { VERSION } from "../lib/personalization/types";
 import { createRemoteJWKSet, jwtVerify } from "jose";
 import { z } from "zod";
 import { FirestoreRest, type SparkEnv } from "./firestore-rest";
 import {
-  CONTENT_VERSION,
-  validateAnswers,
-  makeRecommendation,
-  snapshot,
-  nextRecommendation,
-  recommendationReason,
   kstDate,
   extensions,
-  type Answers,
-  type Feedback,
   type ContentExtensions,
 } from "../lib/service/recommendation.js";
 import { consentPolicy, operationalPolicy } from "../lib/service/policy.js";
-import { registerPersonalization, rememberLegacyReaction } from "./personalization-api";
+import {
+  registerAccount,
+  nicknameSchema,
+  validConsents,
+  currentHealthConsent,
+} from "./account-api";
+import {
+  nextMidnightKST,
+  currentKSTDay,
+  trackGuest,
+  deleteHealthData,
+  isExpired,
+} from "./retention";
+import {
+  registerPersonalization,
+  rememberLegacyReaction,
+} from "./personalization-api";
 
 export type Identity = {
   uid: string;
@@ -93,6 +102,7 @@ export function createSparkApi(
   } = {},
 ) {
   const db = options.db ?? new FirestoreRest(env);
+  void content; // Historical API signature; new recommendations use the release engine.
   const handlers: {
     method: string;
     pattern: string;
@@ -118,17 +128,8 @@ export function createSparkApi(
   const hash = (s: string) => createHash("sha256").update(s).digest("hex");
   const id = z.string().uuid();
   const username = z.string().regex(/^[a-z0-9_]{4,20}$/);
-  const nickname = z
-    .string()
-    .trim()
-    .min(2)
-    .max(20)
-    .regex(/^[가-힣a-zA-Z0-9_]+$/);
-  const consents = z.object({
-    privacy: z.literal(true),
-    nonMedical: z.literal(true),
-    version: z.literal(consentPolicy.version),
-  });
+  const nickname = nicknameSchema;
+  const consents = validConsents;
   const normalNickname = (s: string) =>
     s.normalize("NFKC").toLocaleLowerCase("ko");
 
@@ -147,7 +148,7 @@ export function createSparkApi(
     }
   }
   route("get", "/health", async (_req, res) =>
-    res.json({ ok: true, plan: "spark", contentVersion: CONTENT_VERSION }),
+    res.json({ ok: true, plan: "spark", contentVersion: VERSION }),
   );
   route("get", "/providers", async (_req, res) =>
     res.json({ google: true, kakao: false, naver: false }),
@@ -182,14 +183,24 @@ export function createSparkApi(
       );
     res.json({
       member: p?.active
-        ? { uid: t.uid, username: p.username, nickname: p.nickname }
+        ? {
+            uid: t.uid,
+            username: p.username,
+            nickname: p.nickname,
+            needsNickname: !p.nickname,
+            needsConsent:
+              p.consents?.version !== consentPolicy.version ||
+              !p.consents?.healthPersonalization,
+          }
         : null,
       kind: p?.active
         ? "member"
         : t.firebase.sign_in_provider === "anonymous"
           ? "guest"
           : "pending",
-      guestConsent: (await db.doc(`guestConsents/${t.uid}`).get()).exists,
+      guestConsent: await currentHealthConsent(db, t.uid, "guest"),
+      serverNow: Date.now(),
+      day: currentKSTDay(),
     });
   });
   route("post", "/availability", async (req, res) => {
@@ -228,7 +239,7 @@ export function createSparkApi(
       );
     const b = z
       .object({
-        username: social ? username.optional() : username,
+        username: username.optional(),
         nickname,
         consents,
       })
@@ -247,6 +258,17 @@ export function createSparkApi(
             "LOGIN_METHOD_MISMATCH",
             "이미 가입한 계정의 로그인 방법을 사용해주세요.",
           );
+        if (!old.nickname) {
+          const reservation = await tx.get(refs[0]);
+          if (reservation.exists && reservation.data()?.uid !== t.uid)
+            fail(409, "DUPLICATE", "이미 사용 중인 닉네임이에요.");
+          tx.set(profile, {
+            ...old,
+            nickname: b.nickname,
+            consents: { ...b.consents, at: Date.now() },
+          });
+          tx.set(refs[0], { uid: t.uid, active: true });
+        }
         return;
       }
       const reserved = await Promise.all(refs.map((ref) => tx.get(ref)));
@@ -272,21 +294,29 @@ export function createSparkApi(
     const a = await actor(req);
     if (a.kind !== "guest")
       fail(403, "GUEST_REQUIRED", "비회원 전용 요청입니다.");
-    z.object({
-      nonMedical: z.literal(true),
-      version: z.literal(consentPolicy.version),
-    }).parse(req.body);
-    await db
-      .doc(`guestConsents/${a.uid}`)
-      .set({ version: consentPolicy.version, at: Date.now() });
-    res.json({ ok: true });
+    const c = validConsents.parse(req.body);
+    const expiresAt = nextMidnightKST();
+    await db.runTransaction(async (tx) => {
+      const ref = db.doc(`guestConsents/${a.uid}`);
+      const track = await trackGuest(tx, db, a.uid, expiresAt, [ref.path]);
+      track();
+      tx.set(ref, {
+        ...c,
+        owner: a.uid,
+        policyVersion: consentPolicy.version,
+        at: Date.now(),
+        expiresAt,
+      });
+    });
+    res.json({ ok: true, expiresAt });
   });
   route("post", "/guest/consent/revoke", async (req, res) => {
     const a = await actor(req);
     if (a.kind !== "guest")
-      fail(403, "GUEST_REQUIRED", "비회원 전용 요청입니다.");
+      fail(403, "GUEST_REQUIRED", "비회원 전용 요청이에요.");
     await db.doc(`guestConsents/${a.uid}`).delete();
-    res.json({ ok: true });
+    const complete = await deleteHealthData(db, a.uid, false);
+    res.json({ ok: complete, complete });
   });
   route("get", "/eligibility", async (req, res) => {
     const a = await actor(req);
@@ -304,63 +334,8 @@ export function createSparkApi(
       recommendationId: usage?.recommendationId ?? null,
     });
   });
-  route("post", "/recommendations", async (req, res) => {
-    const a = await actor(req);
-    const rid = id.parse(req.body.recommendationId);
-    let answers: Answers;
-    try {
-      answers = validateAnswers(req.body.answers, content);
-    } catch (e) {
-      fail(
-        400,
-        "INVALID_ANSWERS",
-        e instanceof Error ? e.message : "문진을 확인해주세요.",
-      );
-    }
-    if (
-      a.kind === "guest" &&
-      !(await db.doc(`guestConsents/${a.uid}`).get()).exists
-    )
-      fail(403, "CONSENT_REQUIRED", "비의료 서비스 동의가 필요합니다.");
-    const rec = makeRecommendation(answers!);
-    const ref = db.doc(`recommendations/${rid}`);
-    const day = kstDate();
-    const dayRef = db.doc(`guestDays/${hash(a.uid + ":" + day)}`);
-    const result = await db.runTransaction(async (tx) => {
-      const existing = await tx.get(ref);
-      if (existing.exists) {
-        const r = existing.data()!;
-        if (r.owner !== a.uid || r.kind !== a.kind)
-          fail(403, "OWNER_MISMATCH", "조회할 수 없는 추천입니다.");
-        if (JSON.stringify(r.snapshot.answers) !== JSON.stringify(answers))
-          fail(409, "ID_REUSE", "새 추천을 시작해주세요.");
-        return r;
-      }
-      if (a.kind === "guest") {
-        const usage = await tx.get(dayRef);
-        if (usage.exists) fail(409, "DAILY_LIMIT", "오늘 체험 완료");
-      }
-      const value = {
-        owner: a.uid,
-        kind: a.kind,
-        recommendationId: rid,
-        reason: rec.reason,
-        visitedRoutineIds: [rec.routine.id],
-        snapshot: snapshot(answers!, rec.routine, rec.pattern, content),
-        date: day,
-        createdAt: Date.now(),
-      };
-      tx.create(ref, value);
-      if (a.kind === "guest")
-        tx.create(dayRef, {
-          owner: a.uid,
-          recommendationId: rid,
-          date: day,
-          consumedAt: Date.now(),
-        });
-      return value;
-    });
-    res.json(result);
+  route("post", "/recommendations", async () => {
+    fail(409, "UPDATE_REQUIRED", "새 화면으로 다시 시작해주세요.");
   });
   route("get", "/recommendations/:id", async (req, res) => {
     const a = await actor(req);
@@ -369,10 +344,16 @@ export function createSparkApi(
     ).data();
     if (!r || r.owner !== a.uid || r.kind !== a.kind)
       fail(404, "NOT_FOUND", "추천을 찾을 수 없습니다.");
+    if (a.kind === "guest" && isExpired(r))
+      fail(410, "SESSION_EXPIRED", "이전 날짜의 비회원 기록이 만료됐어요.");
     res.json(r);
   });
   route("post", "/feedback", async (req, res) => {
     const a = await actor(req);
+    if (!(await currentHealthConsent(db, a.uid, a.kind)))
+      fail(403, "CONSENT_REQUIRED", "새 이용 안내에 동의해주세요.");
+    if (a.kind === "guest")
+      fail(409, "UPDATE_REQUIRED", "새 안내로 다시 시작해주세요.");
     const b = z
       .object({
         recommendationId: id,
@@ -426,112 +407,25 @@ export function createSparkApi(
       if (a.kind === "member")
         tx.create(db.doc(`profiles/${a.uid}/records/${b.submissionId}`), value);
     });
-    if(a.kind === "member") {
-      const saved=(await recRef.get()).data()!;
-      await rememberLegacyReaction(db,a.uid,b.submissionId,saved.snapshot.routine.id,b.feedback);
+    if (a.kind === "member") {
+      const saved = (await recRef.get()).data()!;
+      await rememberLegacyReaction(
+        db,
+        a.uid,
+        b.submissionId,
+        saved.snapshot.routine.id,
+        b.feedback,
+      );
     }
     res.json({ ok: true });
   });
-  route("post", "/next", async (req, res) => {
-    const a = await actor(req, true);
-    const b = z
-      .object({
-        recommendationId: id,
-        nextRecommendationId: id,
-        changes: z.array(z.string()).max(20),
-      })
-      .parse(req.body);
-    const ref = db.doc(`recommendations/${b.recommendationId}`);
-    const rec = (await ref.get()).data();
-    if (
-      !rec ||
-      rec.owner !== a.uid ||
-      rec.kind !== "member" ||
-      !rec.submissionId
-    )
-      fail(
-        403,
-        "OWNER_MISMATCH",
-        "피드백을 저장한 본인의 추천만 이어갈 수 있습니다.",
-      );
-    const choices = content.changes?.[rec.snapshot.routine.id] ?? [];
-    if (
-      b.changes.some((c) => !choices.some((q) => q.id === c)) ||
-      new Set(b.changes).size !== b.changes.length ||
-      (b.changes.includes("unknown") && b.changes.length > 1) ||
-      (rec.feedback === "worse" && choices.length > 0 && b.changes.length === 0)
-    )
-      fail(400, "INVALID_CHANGES", "변화 항목을 선택해주세요.");
-    if (rec.snapshot.contentVersion !== CONTENT_VERSION) {
-      res.json({ recommendation: null });
-      return;
-    }
-    const visited = Array.isArray(rec.visitedRoutineIds)
-      ? rec.visitedRoutineIds.filter(
-          (id: unknown): id is string => typeof id === "string",
-        )
-      : [rec.snapshot.routine.id];
-    const next = nextRecommendation(
-      rec.snapshot.answers,
-      rec.snapshot.routine.id,
-      rec.snapshot.pattern,
-      rec.feedback as Feedback,
-      b.changes,
-      content,
-      visited,
-    );
-    const newRef = db.doc(`recommendations/${b.nextRecommendationId}`);
-    const result = await db.runTransaction(async (tx) => {
-      const current = (await tx.get(ref)).data()!;
-      const existing = (await tx.get(newRef)).data();
-      if (
-        current.nextRecommendationId &&
-        current.nextRecommendationId !== b.nextRecommendationId
-      )
-        fail(409, "NEXT_EXISTS", "이미 다음 추천이 저장되어 있습니다.");
-      if (
-        existing &&
-        (existing.owner !== a.uid || existing.parentId !== b.recommendationId)
-      )
-        fail(403, "OWNER_MISMATCH", "추천 식별자를 확인해주세요.");
-      const changeSnapshots = choices
-        .filter((q) => b.changes.includes(q.id))
-        .map((q) => ({ id: q.id, label: q.label }));
-      tx.update(db.doc(`profiles/${a.uid}/records/${rec.submissionId}`), {
-        changes: changeSnapshots,
-      });
-      tx.update(db.doc(`operations/${rec.submissionId}`), {
-        changes: changeSnapshots,
-      });
-      tx.update(db.doc(`submissions/${rec.submissionId}`), {
-        changes: changeSnapshots,
-      });
-      if (!next) return null;
-      const value = existing ?? {
-        owner: a.uid,
-        kind: "member",
-        recommendationId: b.nextRecommendationId,
-        parentId: b.recommendationId,
-        reason: recommendationReason(rec.snapshot.answers.area, next),
-        visitedRoutineIds: [...new Set([...visited, next.id])],
-        snapshot: snapshot(
-          rec.snapshot.answers,
-          next,
-          `${CONTENT_VERSION}:alternative:${next.id}`,
-          content,
-        ),
-        date: kstDate(),
-        createdAt: Date.now(),
-      };
-      if (!existing) tx.create(newRef, value);
-      tx.update(ref, { nextRecommendationId: b.nextRecommendationId });
-      return value;
-    });
-    await rememberLegacyReaction(db,a.uid,rec.submissionId,rec.snapshot.routine.id,rec.feedback,b.changes);
-    res.json({ recommendation: result });
+  route("post", "/next", async () => {
+    fail(409, "UPDATE_REQUIRED", "새 화면으로 다시 시작해주세요.");
   });
   route("get", "/records", async (req, res) => {
     const a = await actor(req, true);
+    if (!(await currentHealthConsent(db, a.uid, a.kind)))
+      fail(403, "CONSENT_REQUIRED", "새 이용 안내에 동의해주세요.");
     let query = db
       .collection(`profiles/${a.uid}/records`)
       .orderBy("createdAt", "desc")
@@ -556,7 +450,8 @@ export function createSparkApi(
     });
   });
 
-  registerPersonalization({route,actor,fail,db,env});
+  registerPersonalization({ route, actor, fail, db, env });
+  registerAccount({ route, token, db, fail, env });
   return async (request: Request): Promise<Response> => {
     const url = new URL(request.url);
     const origin = request.headers.get("Origin");

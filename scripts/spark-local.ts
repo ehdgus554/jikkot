@@ -8,7 +8,7 @@ const env = {
   DEPLOYMENT_STAGE: "review",
   REVIEW_ENABLED: "true",
   REVIEW_ALLOWED_UIDS: process.env.JIKKOT_REVIEW_UIDS ?? "",
-  GROWTH_ENABLED: "true",
+  GROWTH_ENABLED: "false",
   ALLOWED_ORIGINS:
     "http://127.0.0.1:5173,http://localhost:5173,http://127.0.0.1:8787,http://localhost:8787",
 };

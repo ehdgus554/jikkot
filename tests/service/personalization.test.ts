@@ -1,110 +1,90 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { decide, summarize, warmups } from "../../lib/personalization/engine";
-import { catalog, canonicalFamilies } from "../../lib/personalization/catalog";
+import { catalog } from "../../lib/personalization/catalog";
 import {
-  emptyMemory,
+  decide,
+  programs,
+  approvedConnectionIds,
+  summarize,
+} from "../../lib/personalization/engine";
+import {
   inputSchema,
-  type SessionInput,
+  emptyMemory,
   poses,
   supports,
+  type SessionInput,
 } from "../../lib/personalization/types";
 import { safeSummary } from "../../lib/personalization/ai";
 import {
-  awardGrowth,
-  kstWeek,
-  newGrowth,
-  newWeekly,
-} from "../../lib/personalization/growth";
-const input = (patch: Partial<SessionInput> = {}): SessionInput => ({
-  purpose: "daily",
-  area: "back",
-  habits: ["retract"],
-  current: ["upper_back", "reach_comfort"],
-  poses: poses.map((x) => x[0]),
-  supports: supports.map((x) => x[0]),
-  focus: [],
-  review: true,
-  growth: false,
-  confirmedAt: Date.now(),
-  ...patch,
-});
-test("same back region follows two explicit habit/current conditions, not shared area tags", () => {
-  assert.deepEqual(decide(input(), emptyMemory()).selected, ["O02"]);
-  const p01 = input({
-    habits: ["arm_front"],
-    current: [
-      "chest_stiff",
-      "chest_open_comfort",
-      "external_comfort",
-      "touch_comfort",
-    ],
+  nextMidnightKST,
+  currentKSTDay,
+  isExpired,
+} from "../../worker/retention";
+import { nicknameSchema } from "../../lib/service/nickname";
+const input = (patch: Partial<SessionInput> = {}) =>
+  inputSchema.parse({
+    purpose: "daily",
+    area: "back",
+    habits: ["retract"],
+    current: ["upper_back", "reach_comfort"],
+    poses: poses.map((x) => x[0]),
+    supports: supports.map((x) => x[0]),
+    confirmedAt: Date.now(),
+    ...patch,
   });
-  assert.deepEqual(decide(p01, emptyMemory()).selected, ["O04"]);
-  assert.deepEqual(
-    decide(input({ habits: ["unknown"], current: ["unknown"] }), emptyMemory())
-      .selected,
-    [],
+test("75 registrations and exact 125 purpose approvals exclude O09 from all new recommendations", () => {
+  assert.equal(catalog.length, 75);
+  assert.equal(approvedConnectionIds.length, 125);
+  assert.equal(
+    approvedConnectionIds.filter((s) => s.startsWith("daily:")).length,
+    43,
   );
+  assert.ok(!approvedConnectionIds.some((s) => s.endsWith(":O09")));
+  assert.equal(catalog.find((c) => c.catalogId === "D31")!.pose, "chair");
 });
-test("one adverse reaction immediately excludes forward-reaching alternatives without banning unrelated rotations", () => {
-  const memory = emptyMemory();
-  memory.constraints = [
-    {
-      catalogId: "O02",
-      directions: ["reach_forward"],
-      evidenceIds: ["one:O02"],
+for (const p of programs)
+  test(
+    "real engine composes " + p.id + " without invented pain patterns",
+    () => {
+      const d = decide(
+        input({
+          purpose: p.purpose as SessionInput["purpose"],
+          area: undefined,
+          habits: [],
+          current: [p.purpose === "warmup" ? "prep_comfort" : "today_ok"],
+          sport: p.sport as SessionInput["sport"],
+          profile: p.profile as SessionInput["profile"],
+          minutes: p.minutesChoice as 5 | 10 | undefined,
+          preference: (p.focus as SessionInput["preference"]) ?? "all",
+        }),
+        emptyMemory(),
+      );
+      assert.deepEqual(
+        d.selected,
+        p.items.map((i) => i.catalogId),
+      );
+      assert.equal(d.program!.plannedSeconds, p.plannedSeconds);
+      assert.equal(d.program!.stepCount, p.items.length);
+      assert.equal(d.program!.distinctMovementCount, new Set(d.selected).size);
     },
-  ];
-  const d = decide(input(), memory);
-  assert.ok(!d.selected.includes("O02") && !d.selected.includes("D24"));
-  for (const id of ["O02", "D24", "O05", "D23", "Y01", "Y03"])
-    assert.equal(
-      d.excluded.find((x) => x.id === id)?.reason,
-      "adverse-history",
-    );
-  const rotation = decide(
-    input({
-      habits: ["one_direction"],
-      current: ["torso_limited", "rotation_comfort"],
-    }),
-    memory,
   );
-  assert.ok(rotation.selected.some((id) => ["D02", "D13"].includes(id)));
-});
-test("required current clues and movement-specific comfortable experience cannot be inferred from sitting or missing answers", () => {
-  const noClue = decide(
-    input({ area: "lower", habits: ["sitting"], current: ["none"] }),
-    emptyMemory(),
+test("daily requires related habits AND actual current clues and movement comfort; selection order is stable", () => {
+  assert.deepEqual(decide(input(), emptyMemory()).selected, ["O02"]);
+  assert.equal(
+    decide(input({ habits: ["unknown"], current: ["unknown"] }), emptyMemory())
+      .selected.length,
+    0,
   );
-  assert.equal(noClue.selected.length, 0);
-  const noComfort = decide(
-    input({ habits: ["arm_front"], current: ["chest_stiff"] }),
-    emptyMemory(),
+  assert.equal(
+    decide(input({ current: ["upper_back"] }), emptyMemory()).selected.length,
+    0,
   );
-  assert.equal(noComfort.selected.length, 0);
-  const none = inputSchema.parse(
-    input({ habits: ["none"], current: ["none"] }),
-  );
-  const unknown = inputSchema.parse(
-    input({ habits: ["unknown"], current: ["unknown"] }),
-  );
-  const unanswered = inputSchema.parse(input({ habits: [], current: [] }));
-  assert.notDeepEqual(none, unknown);
-  assert.notDeepEqual(unknown, unanswered);
-});
-test("multi-select order is deterministic and exclusive/contradictory answers are rejected", () => {
   const a = input({
-    habits: ["arm_front", "screen"],
-    current: [
-      "chest_stiff",
-      "upper_back",
-      "chest_open_comfort",
-      "extension_comfort",
-    ],
+    habits: ["retract", "screen"],
+    current: ["upper_back", "reach_comfort", "neck_fatigue"],
   });
   assert.deepEqual(
-    decide(a, emptyMemory()),
+    decide(a, emptyMemory()).selected,
     decide(
       {
         ...a,
@@ -112,235 +92,190 @@ test("multi-select order is deterministic and exclusive/contradictory answers ar
         current: [...a.current].reverse(),
       },
       emptyMemory(),
-    ),
-  );
-  assert.throws(() =>
-    decide(input({ habits: ["none", "screen"] }), emptyMemory()),
-  );
-  assert.throws(() =>
-    decide(input({ current: ["today_ok", "chest_stiff"] }), emptyMemory()),
+    ).selected,
   );
 });
-test("positive observations only rank context-matched candidates after adverse constraints", () => {
-  const a = input({
-    habits: ["arm_front"],
-    current: [
-      "chest_stiff",
-      "chest_open_comfort",
-      "external_comfort",
-      "touch_comfort",
-    ],
-  });
-  const memory = emptyMemory();
-  memory.experiences = [
-    {
-      sessionId: "positive",
-      catalogId: "O11",
-      at: Date.now(),
-      purpose: "daily",
-      area: "back",
-      patterns: ["P01"],
-      reaction: "better",
-      directions: [],
-      performed: true,
-    },
-  ];
-  assert.deepEqual(decide(a, memory).selected, ["O11"]);
-  memory.constraints = [
-    { catalogId: "O11", directions: [], evidenceIds: ["older-worse"] },
-  ];
-  assert.ok(!decide(a, memory).selected.includes("O11"));
-});
-test("soccer today okay keeps sport roles and never forces two additions from historic shoulder visits", () => {
-  const a = input({
-    purpose: "warmup",
-    sport: "football",
-    area: undefined,
-    habits: [],
-    current: ["today_ok", "prep_comfort"],
-    poses: ["standing"],
-  });
-  const memory = emptyMemory();
-  memory.experiences = Array.from({ length: 10 }, (_, i) => ({
-    sessionId: `old-${i}`,
-    catalogId: "O04",
-    at: Date.now(),
-    purpose: "daily",
-    area: "shoulder",
-    patterns: ["P01"],
-    reaction: "better",
-    directions: [],
-    performed: true,
-  }));
-  assert.deepEqual(decide(a, memory).selected, warmups.football);
-});
-test("swimming without floor support returns a real unsupported result instead of inventing a standing replacement", () => {
-  const d = decide(
+test("first adverse reaction excludes aliases; an unknown direction does not ban all unrelated movements", () => {
+  const m = emptyMemory();
+  m.constraints = [{ catalogId: "O02", directions: [], evidenceIds: ["one"] }];
+  const d = decide(input(), m);
+  assert.ok(!d.selected.some((id) => ["O02", "D24"].includes(id)));
+  const rotation = decide(
     input({
-      purpose: "warmup",
-      sport: "swimming",
-      area: undefined,
-      habits: [],
-      current: ["today_ok", "prep_comfort"],
-      poses: ["standing"],
+      habits: ["one_direction"],
+      current: ["torso_limited", "rotation_comfort"],
     }),
-    emptyMemory(),
+    m,
   );
-  assert.equal(d.selected.length, 0);
-  for (const id of warmups.swimming)
+  assert.ok(rotation.selected.length);
+});
+test("visited families cannot masquerade as new alternatives and repeated same never increases dosage", () => {
+  const first = decide(input(), emptyMemory());
+  assert.equal(
+    decide(input(), emptyMemory(), first.selected).selected.length,
+    0,
+  );
+  const c = catalog.find((c) => c.catalogId === "O02")!;
+  assert.ok(c.dose.holdSeconds <= 30);
+});
+test("P18/P19 alone never prescribe an opposite direction as pain treatment", () => {
+  for (const token of ["flex_bad_ext_good", "ext_bad_flex_good"])
     assert.equal(
-      d.excluded.find((x) => x.id === id)?.reason,
-      "posture-unavailable",
+      decide(
+        input({
+          area: "lower",
+          habits: ["sitting", "standing"],
+          current: [token],
+        }),
+        emptyMemory(),
+      ).selected.length,
+      0,
     );
 });
-const broad = (): SessionInput =>
-  input({
+test("normal lying never expands to floor/quadruped; mixed floor requires explicit wrist and knee support", () => {
+  const plain = input({
     purpose: "leisure",
     area: undefined,
+    habits: [],
+    current: ["today_ok"],
+    profile: "lying",
     minutes: 10,
-    habits: [
-      "arm_front",
-      "screen",
-      "one_direction",
-      "sitting",
-      "standing",
-      "legs_together",
-      "immobile",
-      "one_side",
-      "retract",
-      "arms_up",
-    ],
-    current: [
-      "chest_stiff",
-      "chest_open_comfort",
-      "external_comfort",
-      "touch_comfort",
-      "upper_back",
-      "extension_comfort",
-      "torso_limited",
-      "rotation_comfort",
-      "hip_front",
-      "hip_extend_comfort",
-      "hip_back",
-      "knee_hug_comfort",
-      "cross_comfort",
-      "hamstring_local",
-      "hamstring_comfort",
-      "inner_thigh",
-      "abduct_comfort",
-      "side_local",
-      "sidebend_comfort",
-      "arm_raise_comfort",
-      "stiff",
-      "small_comfort",
-      "both_directions_comfort",
-      "reach_comfort",
-      "lat_stiff",
-    ],
+    poses: ["supine"],
+    supports: ["dryFloor"],
   });
-test("leisure durations produce different bounded compositions, no family duplication or invented approved time", () => {
-  const a = broad();
-  const five = decide({ ...a, minutes: 5 }, emptyMemory()),
-    ten = decide(a, emptyMemory());
-  assert.equal(five.selected.length, 4);
-  assert.ok(ten.selected.length > five.selected.length);
-  const families = ten.selected.map(
-    (id) => catalog.find((x) => x.catalogId === id)!.family,
-  );
-  assert.equal(new Set(families).size, families.length);
-  assert.equal(canonicalFamilies.D12, canonicalFamilies.W16);
-  assert.equal(canonicalFamilies.Y04, canonicalFamilies.W14);
-});
-test("lying-only and unsupported wrists never receive standing/quadruped content; D31 remains excluded even in review", () => {
-  const a = { ...broad(), poses: ["supine" as const], supports: [] };
-  const d = decide(a, emptyMemory());
-  assert.ok(d.selected.length > 0);
+  const d = decide(plain, emptyMemory());
+  assert.ok(d.selected.length);
   assert.ok(
     d.selected.every(
       (id) => catalog.find((c) => c.catalogId === id)!.pose === "supine",
     ),
   );
   assert.equal(
-    d.excluded.find((c) => c.id === "D31")?.reason,
-    "support-unconfirmed",
+    decide({ ...plain, profile: "mixedFloor" }, emptyMemory()).selected.length,
+    0,
   );
 });
-test("draft warmups cannot become production-approved and all paths obey the sudden deterioration gate", () => {
+test("wall OR chair is accepted for W06 without inferring seated capability for D33", () => {
   const a = input({
     purpose: "warmup",
-    sport: "running",
+    sport: "hiking",
     area: undefined,
-    current: ["prep_comfort"],
     habits: [],
-    review: false,
+    current: ["prep_comfort"],
+    poses: ["standing"],
+    supports: ["dryFloor", "balance", "chair"],
   });
-  assert.equal(decide(a, emptyMemory()).selected.length, 0);
-  for (const purpose of ["daily", "warmup", "leisure"] as const)
-    assert.equal(
-      decide(
-        input({
-          purpose,
-          sport: "running",
-          minutes: 5,
-          current: ["sudden_worse"],
-        }),
-        emptyMemory(),
-      ).reason,
-      "blocked",
-    );
-});
-test("alternatives retain applicable filters and never repeat visited families", () => {
-  const a = input({
-    habits: ["arm_front"],
-    current: [
-      "chest_stiff",
-      "chest_open_comfort",
-      "external_comfort",
-      "touch_comfort",
-    ],
-  });
-  const d = decide(a, emptyMemory(), ["O04", "O06", "O07", "O08", "O11"]);
+  const d = decide(a, emptyMemory());
+  assert.ok(d.selected.includes("W06"));
+  assert.ok(!d.selected.includes("D33"));
+  const noChair = decide(
+    { ...a, supports: ["dryFloor", "balance"] },
+    emptyMemory(),
+  );
   assert.ok(
-    !d.selected.some((id) => ["O04", "O06", "O07", "O08", "O11"].includes(id)),
+    !noChair.selected.includes("W06") && !noChair.selected.includes("D33"),
   );
 });
-test("summary counts sessions and different KST days rather than multiplying alternative items", () => {
-  const memory = emptyMemory();
-  memory.experiences = ["O04", "O06", "O11"].map((catalogId) => ({
-    sessionId: "one",
-    catalogId,
-    at: Date.now(),
-    purpose: "daily",
-    area: "back",
-    patterns: ["P01"],
-    reaction: "same",
-    directions: [],
-    performed: true,
-  }));
-  const summary = summarize(memory);
-  assert.equal(summary.sevenDays.sessions, 1);
-  assert.equal(summary.sevenDays.days, 1);
+test("unavailable supports, towel and W16 head support stay mandatory", () => {
+  const m = emptyMemory();
+  const d = decide(
+    input({
+      area: "calf",
+      habits: ["standing"],
+      current: ["calf_limited", "calf_bent_comfort"],
+      poses: ["chair"],
+      supports: ["chair"],
+    }),
+    m,
+  );
+  assert.ok(!d.selected.includes("D31"));
+  const withTowel = decide(
+    input({
+      area: "calf",
+      habits: ["standing"],
+      current: ["calf_limited", "calf_bent_comfort"],
+      poses: ["chair"],
+      supports: ["chair", "towel"],
+    }),
+    m,
+  );
+  assert.ok(withTowel.selected.includes("D31"));
+  const warm = decide(
+    input({
+      purpose: "warmup",
+      sport: "swimming",
+      current: ["prep_comfort"],
+      habits: [],
+      poses: ["standing"],
+      supports: ["dryFloor", "space"],
+    }),
+    m,
+  );
+  assert.equal(warm.selected.length, 5);
 });
-test("AI absent, wrong evidence, extra prescriptions and timeouts always fall back to rules", async () => {
-  const ctx = {
-    patterns: ["P01"],
-    evidence: [{ id: "one", reaction: "worse", purpose: "daily" }],
-  };
-  assert.equal((await safeSummary(undefined, ctx, true)).aiUsed, false);
-  assert.equal(
-    (
-      await safeSummary(
-        {
-          summarize: async () => ({
-            tags: ["P02"],
-            observations: [],
-            evidenceIds: ["one"],
+test("all purposes stop on sudden deterioration, radiation or dizziness", () => {
+  for (const purpose of ["daily", "warmup", "leisure"] as const)
+    for (const token of ["sudden_worse", "radiating", "dizzy"])
+      assert.equal(
+        decide(
+          input({
+            purpose,
+            area: purpose === "daily" ? "lower" : undefined,
+            sport: "running",
+            habits: purpose === "daily" ? ["sitting"] : [],
+            minutes: 5,
+            current: [token],
           }),
-        },
-        ctx,
-        true,
-      )
-    ).aiUsed,
+          emptyMemory(),
+        ).reason,
+        "blocked",
+      );
+});
+test("none/unknown conflicts and cross-area injected answers are rejected server side", () => {
+  assert.throws(() =>
+    decide(input({ habits: ["none", "retract"] }), emptyMemory()),
+  );
+  assert.throws(() =>
+    decide(input({ area: "ankle", habits: ["clench"] }), emptyMemory()),
+  );
+});
+test("KST expiry is next midnight for both 00:10 and 23:50, including exact boundary", () => {
+  const expected = Date.parse("2026-10-19T15:00:00Z");
+  for (const t of ["2026-10-18T15:10:00Z", "2026-10-19T14:50:00Z"])
+    assert.equal(nextMidnightKST(Date.parse(t)), expected);
+  assert.equal(currentKSTDay(expected - 1), "2026-10-19");
+  assert.equal(currentKSTDay(expected), "2026-10-20");
+  assert.ok(!isExpired({ expiresAt: expected }, expected - 1));
+  assert.ok(isExpired({ expiresAt: expected }, expected));
+  assert.equal(nextMidnightKST(expected), expected + 86400000);
+});
+test("nickname trims and counts visible characters, requires 2, and preserves existing character policy", () => {
+  for (const v of ["", " ", "가", "a", "😀😀"])
+    assert.equal(nicknameSchema.safeParse(v).success, false);
+  assert.equal(nicknameSchema.parse("  두글  "), "두글");
+  assert.ok(nicknameSchema.safeParse("가".repeat(20)).success);
+  assert.equal(nicknameSchema.safeParse("가".repeat(21)).success, false);
+});
+test("session summaries deduplicate alternative items and keep bundle feelings at one experience", () => {
+  const m = emptyMemory();
+  m.bundles = [
+    {
+      sessionId: "one",
+      catalogIds: ["W01", "W02"],
+      purpose: "warmup",
+      reaction: "ready",
+      at: Date.now(),
+      patterns: ["P21"],
+      focus: [],
+      minutes: null,
+    },
+  ];
+  assert.equal(summarize(m).sevenDays.sessions, 1);
+});
+test("AI remains optional and invalid prescriptions/evidence/timeouts fall back without changing rules", async () => {
+  assert.equal(
+    (await safeSummary(undefined, { patterns: [], evidence: [] }, false))
+      .aiUsed,
     false,
   );
   assert.equal(
@@ -348,13 +283,12 @@ test("AI absent, wrong evidence, extra prescriptions and timeouts always fall ba
       await safeSummary(
         {
           summarize: async () => ({
-            tags: ["P01"],
+            tags: ["P99"],
             observations: [],
-            evidenceIds: ["one"],
-            movement: "new",
+            evidenceIds: [],
           }),
         },
-        ctx,
+        { patterns: ["P01"], evidence: [] },
         true,
       )
     ).aiUsed,
@@ -364,40 +298,11 @@ test("AI absent, wrong evidence, extra prescriptions and timeouts always fall ba
     (
       await safeSummary(
         { summarize: async () => new Promise(() => {}) },
-        ctx,
+        { patterns: [], evidence: [] },
         true,
         10,
       )
     ).aiUsed,
     false,
   );
-  assert.equal(
-    (
-      await safeSummary(
-        {
-          summarize: async () => ({
-            tags: ["P01"],
-            observations: ["adverse_history"],
-            evidenceIds: ["one"],
-          }),
-        },
-        ctx,
-        true,
-      )
-    ).aiUsed,
-    true,
-  );
-});
-test("growth rewards are 50 plus 10 per KST week, independent of feedback valence, and stopping can precede completion", () => {
-  const week = "2026-10-12";
-  let g = awardGrowth(newGrowth(), newWeekly(), "stopped", week, false, true);
-  assert.equal(g.added, 10);
-  g = awardGrowth(g.state, g.weekly, "completed", week, true, true);
-  assert.equal(g.added, 50);
-  assert.equal(g.state.xp, 60);
-  g = awardGrowth(g.state, g.weekly, "repeated", week, true, true);
-  assert.equal(g.added, 0);
-  assert.equal(g.weekly.xp, 60);
-  assert.equal(kstWeek(Date.parse("2026-10-18T14:59:59Z")), "2026-10-12");
-  assert.equal(kstWeek(Date.parse("2026-10-18T15:00:00Z")), "2026-10-19");
 });

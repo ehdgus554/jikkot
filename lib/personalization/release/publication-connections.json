@@ -1,0 +1,1261 @@
+{
+  "version": "2026-10-17.1",
+  "approvedConnectionIds": [
+    "daily:O01",
+    "leisure:O01",
+    "daily:O02",
+    "leisure:O02",
+    "daily:O03",
+    "leisure:O03",
+    "daily:O04",
+    "leisure:O04",
+    "daily:O05",
+    "leisure:O05",
+    "daily:O06",
+    "leisure:O06",
+    "daily:O07",
+    "leisure:O07",
+    "daily:O08",
+    "leisure:O08",
+    "daily:O10",
+    "leisure:O10",
+    "daily:O11",
+    "leisure:O11",
+    "daily:D01",
+    "leisure:D01",
+    "daily:D02",
+    "leisure:D02",
+    "daily:D03",
+    "leisure:D03",
+    "daily:D04",
+    "leisure:D04",
+    "daily:D05",
+    "leisure:D05",
+    "daily:D06",
+    "leisure:D06",
+    "daily:D14",
+    "leisure:D14",
+    "daily:D15",
+    "leisure:D15",
+    "daily:D16",
+    "leisure:D16",
+    "daily:D17",
+    "leisure:D17",
+    "daily:D18",
+    "leisure:D18",
+    "daily:D19",
+    "leisure:D19",
+    "daily:D20",
+    "leisure:D20",
+    "daily:D21",
+    "leisure:D21",
+    "daily:D22",
+    "leisure:D22",
+    "daily:D23",
+    "leisure:D23",
+    "daily:D24",
+    "leisure:D24",
+    "daily:D25",
+    "leisure:D25",
+    "daily:D26",
+    "leisure:D26",
+    "daily:D27",
+    "leisure:D27",
+    "daily:D28",
+    "leisure:D28",
+    "daily:D29",
+    "leisure:D29",
+    "daily:D30",
+    "leisure:D30",
+    "daily:D31",
+    "leisure:D31",
+    "daily:D32",
+    "leisure:D32",
+    "daily:D33",
+    "leisure:D33",
+    "warmup:D33",
+    "leisure:Y05",
+    "leisure:Y07",
+    "daily:D07",
+    "leisure:D07",
+    "daily:D08",
+    "leisure:D08",
+    "daily:D09",
+    "leisure:D09",
+    "daily:D10",
+    "leisure:D10",
+    "warmup:W01",
+    "warmup:W02",
+    "leisure:W02",
+    "warmup:W03",
+    "warmup:W04",
+    "leisure:W04",
+    "warmup:W05",
+    "leisure:W05",
+    "warmup:W06",
+    "leisure:W06",
+    "warmup:W07",
+    "warmup:W08",
+    "warmup:W09",
+    "warmup:W10",
+    "warmup:W11",
+    "warmup:W12",
+    "daily:D11",
+    "leisure:D11",
+    "daily:D12",
+    "leisure:D12",
+    "daily:D13",
+    "leisure:D13",
+    "leisure:Y08",
+    "leisure:Y09",
+    "leisure:Y10",
+    "leisure:Y11",
+    "leisure:Y12",
+    "warmup:W16",
+    "leisure:W16",
+    "warmup:W17",
+    "leisure:W17",
+    "leisure:Y01",
+    "leisure:Y02",
+    "leisure:Y03",
+    "leisure:Y04",
+    "leisure:Y06",
+    "leisure:Y13",
+    "warmup:W13",
+    "warmup:W14",
+    "warmup:W15",
+    "warmup:W18",
+    "leisure:W18"
+  ],
+  "connections": [
+    {
+      "connectionId": "daily:O01",
+      "catalogId": "O01",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:O01",
+      "catalogId": "O01",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:O02",
+      "catalogId": "O02",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:O02",
+      "catalogId": "O02",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:O03",
+      "catalogId": "O03",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:O03",
+      "catalogId": "O03",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:O04",
+      "catalogId": "O04",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:O04",
+      "catalogId": "O04",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:O05",
+      "catalogId": "O05",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:O05",
+      "catalogId": "O05",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:O06",
+      "catalogId": "O06",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:O06",
+      "catalogId": "O06",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:O07",
+      "catalogId": "O07",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:O07",
+      "catalogId": "O07",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:O08",
+      "catalogId": "O08",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:O08",
+      "catalogId": "O08",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:O10",
+      "catalogId": "O10",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:O10",
+      "catalogId": "O10",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:O11",
+      "catalogId": "O11",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:O11",
+      "catalogId": "O11",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D01",
+      "catalogId": "D01",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D01",
+      "catalogId": "D01",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D02",
+      "catalogId": "D02",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D02",
+      "catalogId": "D02",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D03",
+      "catalogId": "D03",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D03",
+      "catalogId": "D03",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D04",
+      "catalogId": "D04",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D04",
+      "catalogId": "D04",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D05",
+      "catalogId": "D05",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D05",
+      "catalogId": "D05",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D06",
+      "catalogId": "D06",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D06",
+      "catalogId": "D06",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D14",
+      "catalogId": "D14",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D14",
+      "catalogId": "D14",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D15",
+      "catalogId": "D15",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D15",
+      "catalogId": "D15",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D16",
+      "catalogId": "D16",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D16",
+      "catalogId": "D16",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D17",
+      "catalogId": "D17",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D17",
+      "catalogId": "D17",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D18",
+      "catalogId": "D18",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D18",
+      "catalogId": "D18",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D19",
+      "catalogId": "D19",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D19",
+      "catalogId": "D19",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D20",
+      "catalogId": "D20",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D20",
+      "catalogId": "D20",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D21",
+      "catalogId": "D21",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D21",
+      "catalogId": "D21",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D22",
+      "catalogId": "D22",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D22",
+      "catalogId": "D22",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D23",
+      "catalogId": "D23",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D23",
+      "catalogId": "D23",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D24",
+      "catalogId": "D24",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D24",
+      "catalogId": "D24",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D25",
+      "catalogId": "D25",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D25",
+      "catalogId": "D25",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D26",
+      "catalogId": "D26",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D26",
+      "catalogId": "D26",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D27",
+      "catalogId": "D27",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D27",
+      "catalogId": "D27",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D28",
+      "catalogId": "D28",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D28",
+      "catalogId": "D28",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D29",
+      "catalogId": "D29",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D29",
+      "catalogId": "D29",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D30",
+      "catalogId": "D30",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D30",
+      "catalogId": "D30",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D31",
+      "catalogId": "D31",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D31",
+      "catalogId": "D31",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D32",
+      "catalogId": "D32",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D32",
+      "catalogId": "D32",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D33",
+      "catalogId": "D33",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D33",
+      "catalogId": "D33",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "warmup:D33",
+      "catalogId": "D33",
+      "purpose": "warmup",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:Y05",
+      "catalogId": "Y05",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:Y07",
+      "catalogId": "Y07",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D07",
+      "catalogId": "D07",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D07",
+      "catalogId": "D07",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D08",
+      "catalogId": "D08",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D08",
+      "catalogId": "D08",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D09",
+      "catalogId": "D09",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D09",
+      "catalogId": "D09",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D10",
+      "catalogId": "D10",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D10",
+      "catalogId": "D10",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "warmup:W01",
+      "catalogId": "W01",
+      "purpose": "warmup",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "warmup:W02",
+      "catalogId": "W02",
+      "purpose": "warmup",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:W02",
+      "catalogId": "W02",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "warmup:W03",
+      "catalogId": "W03",
+      "purpose": "warmup",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "warmup:W04",
+      "catalogId": "W04",
+      "purpose": "warmup",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:W04",
+      "catalogId": "W04",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "warmup:W05",
+      "catalogId": "W05",
+      "purpose": "warmup",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:W05",
+      "catalogId": "W05",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "warmup:W06",
+      "catalogId": "W06",
+      "purpose": "warmup",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:W06",
+      "catalogId": "W06",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "warmup:W07",
+      "catalogId": "W07",
+      "purpose": "warmup",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "warmup:W08",
+      "catalogId": "W08",
+      "purpose": "warmup",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "warmup:W09",
+      "catalogId": "W09",
+      "purpose": "warmup",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "warmup:W10",
+      "catalogId": "W10",
+      "purpose": "warmup",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "warmup:W11",
+      "catalogId": "W11",
+      "purpose": "warmup",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "warmup:W12",
+      "catalogId": "W12",
+      "purpose": "warmup",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D11",
+      "catalogId": "D11",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D11",
+      "catalogId": "D11",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D12",
+      "catalogId": "D12",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D12",
+      "catalogId": "D12",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:D13",
+      "catalogId": "D13",
+      "purpose": "daily",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:D13",
+      "catalogId": "D13",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:Y08",
+      "catalogId": "Y08",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:Y09",
+      "catalogId": "Y09",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:Y10",
+      "catalogId": "Y10",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:Y11",
+      "catalogId": "Y11",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:Y12",
+      "catalogId": "Y12",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "warmup:W16",
+      "catalogId": "W16",
+      "purpose": "warmup",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:W16",
+      "catalogId": "W16",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "warmup:W17",
+      "catalogId": "W17",
+      "purpose": "warmup",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:W17",
+      "catalogId": "W17",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:Y01",
+      "catalogId": "Y01",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:Y02",
+      "catalogId": "Y02",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:Y03",
+      "catalogId": "Y03",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:Y04",
+      "catalogId": "Y04",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:Y06",
+      "catalogId": "Y06",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:Y13",
+      "catalogId": "Y13",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "warmup:W13",
+      "catalogId": "W13",
+      "purpose": "warmup",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "warmup:W14",
+      "catalogId": "W14",
+      "purpose": "warmup",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "warmup:W15",
+      "catalogId": "W15",
+      "purpose": "warmup",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "warmup:W18",
+      "catalogId": "W18",
+      "purpose": "warmup",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "leisure:W18",
+      "catalogId": "W18",
+      "purpose": "leisure",
+      "contentVersion": "2026-10-17.1",
+      "reviewedAt": "2026-10-17",
+      "basis": "출처·그림·공개 편집 및 조건 대조",
+      "clinicalApprovalClaimed": false
+    }
+  ],
+  "retiredForNewSessions": [
+    "O09"
+  ],
+  "requirements": "기존 공개 승인 게이트에 이 목록을 명시적으로 연결한다. 콘텐츠 승인과 개별 사용자 조건 검증은 각각 수행한다. 배열 전체 허용이나 review 권한 제거로 대체하지 않는다."
+}

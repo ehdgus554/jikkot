@@ -24,6 +24,9 @@ import {
   type WeeklyGrowth,
 } from "../lib/personalization/growth";
 import { openAiAdapter, safeSummary } from "../lib/personalization/ai";
+import { consentPolicy } from "../lib/service/policy";
+import { currentHealthConsent, validConsents } from "./account-api";
+import { isExpired, nextMidnightKST, trackGuest } from "./retention";
 import { kstDate } from "../lib/service/recommendation";
 import type { ApiRequest, ApiResponse } from "./spark-api";
 import type { FirestoreRest, SparkEnv } from "./firestore-rest";
@@ -37,7 +40,7 @@ type Route = (
 type Fail = (status: number, code: string, message: string) => never;
 const uuid = z.string().uuid();
 const hash = (s: string) => createHash("sha256").update(s).digest("hex");
-const consentVersion = "personalization-draft-v1";
+const consentVersion = consentPolicy.version;
 const eventSchema = z
   .object({
     eventId: uuid,
@@ -58,7 +61,9 @@ const eventSchema = z
       .optional(),
     steps: z.array(z.number().int().min(0).max(20)).max(20).default([]),
     stepsState: z.enum(["selected", "unknown", "unanswered"]).optional(),
-    skipReason: z.enum(["space", "support", "time", "other"]).optional(),
+    skipReason: z
+      .enum(["space", "support", "time", "other", "discomfort"])
+      .optional(),
     followup: z
       .enum(["continued_comfort", "same", "uncomfortable", "unknown"])
       .optional(),
@@ -88,6 +93,9 @@ function publicSession(session: Session) {
     nextState: session.nextState ?? null,
     followup: session.followup ?? null,
     feedbackAt: session.feedbackAt ?? null,
+    expiresAt: session.expiresAt ?? null,
+    policyVersion: session.policyVersion,
+    program: session.program ?? null,
     items: session.items.map((item) => ({
       ...item,
       directions: [],
@@ -95,8 +103,9 @@ function publicSession(session: Session) {
     })),
   };
 }
-function directionsFor(id: string, steps: number[]) {
-  const item = catalog.find((c) => c.catalogId === id)!;
+function directionsFor(id: string, steps: number[], legacy = false) {
+  // Current illustrations do not justify inferring a direction from an uncertain stage.
+  if (!legacy) return [];
   if (!steps.length) return [];
   if (id === "O02")
     return [
@@ -110,7 +119,7 @@ function directionsFor(id: string, steps: number[]) {
         steps.flatMap((i) => (i === 0 ? ["arm_behind"] : ["torso_rotation"])),
       ),
     ];
-  return item.directions;
+  return [];
 }
 function remember(memory: Memory, session: Session) {
   memory.experiences = memory.experiences.filter(
@@ -189,7 +198,7 @@ function remember(memory: Memory, session: Session) {
   }
   memory.revision++;
 }
-/** Keep new memory current while the approved legacy daily flow remains public. */
+/** Apply corrections to historical single-movement records without changing their snapshots. */
 export async function rememberLegacyReaction(
   db: FirestoreRest,
   uid: string,
@@ -221,7 +230,7 @@ export async function rememberLegacyReaction(
         .filter((i) => i >= 0 && i < item.steps.length);
       memory.constraints.push({
         catalogId: item.catalogId,
-        directions: directionsFor(item.catalogId, steps),
+        directions: directionsFor(item.catalogId, steps, true),
         evidenceIds: [evidence],
       });
     }
@@ -290,7 +299,7 @@ export function registerPersonalization({
             .filter((x: number) => x >= 0 && x < c.steps.length);
           memory.constraints.push({
             catalogId: c.catalogId,
-            directions: directionsFor(c.catalogId, steps),
+            directions: directionsFor(c.catalogId, steps, true),
             evidenceIds: [`legacy:${row.id}`],
           });
         }
@@ -300,6 +309,8 @@ export function registerPersonalization({
       }
     }
     return db.runTransaction(async (tx) => {
+      if (!(await currentHealthConsent(db, a.uid, a.kind, tx)))
+        fail(403, "CONSENT_REQUIRED", "이용 동의를 확인해주세요.");
       const ref = memoryRef(a, review);
       const existing = (await tx.get(ref)).data() as Memory | undefined;
       if (existing) return existing;
@@ -321,11 +332,8 @@ export function registerPersonalization({
               .get()
           ).data()
         : null;
-    const memory = await loadMemory(a, review);
-    const consent =
-      a.kind === "member"
-        ? (await db.doc(`personalConsents/${a.uid}`).get()).exists
-        : true;
+    const consent = await currentHealthConsent(db, a.uid, a.kind);
+    const memory = consent ? await loadMemory(a, review) : emptyMemory();
     const growth =
       env.GROWTH_ENABLED === "true" && pref?.showGrowth
         ? (
@@ -341,6 +349,8 @@ export function registerPersonalization({
       hasNewSessions: memory.experiences.length > 0 || !!memory.bundles?.length,
       consent,
       consentVersion,
+      serverNow: Date.now(),
+      expiresAt: a.kind === "guest" ? nextMidnightKST() : null,
       summary:
         a.kind === "member"
           ? {
@@ -359,24 +369,21 @@ export function registerPersonalization({
   });
   route("post", "/personalization/consent", async (req, res) => {
     const a = await actor(req, true);
-    z.object({
-      version: z.literal(consentVersion),
-      personalization: z.literal(true),
-      ai: z.boolean().default(false),
-    })
-      .strict()
-      .parse(req.body);
-    await db
-      .doc(`personalConsents/${a.uid}`)
-      .set({ ...req.body, confirmedAt: Date.now(), policyReviewed: false });
+    const c = validConsents.parse(req.body);
+    const ref = db.doc(`profiles/${a.uid}`);
+    const p = (await ref.get()).data()!;
+    await ref.set({ ...p, consents: { ...c, at: Date.now() } });
     res.json({ ok: true });
   });
   route("post", "/personalization/preferences", async (req, res) => {
     const a = await actor(req, true);
+    if (!(await currentHealthConsent(db, a.uid, a.kind)))
+      fail(403, "CONSENT_REQUIRED", "이용 동의를 확인해주세요.");
     const b = z
       .object({
         habits: z.record(z.array(z.string()).max(30)).default({}),
         showGrowth: z.boolean().default(false),
+        reducedMotion: z.boolean().default(false),
         sport: z.string().max(30).nullable().default(null),
         review: z.boolean().default(false),
       })
@@ -395,9 +402,16 @@ export function registerPersonalization({
         .some((id) => !habitChoices.some((q) => q.id === id))
     )
       fail(400, "INVALID_INPUT", "습관 선택을 확인해주세요.");
-    await db
-      .doc(`${b.review ? "reviewPreferences" : "personalPreferences"}/${a.uid}`)
-      .set({ ...b, version: VERSION, confirmedAt: Date.now() });
+    await db.runTransaction(async (tx) => {
+      if (!(await currentHealthConsent(db, a.uid, a.kind, tx)))
+        fail(403, "CONSENT_REQUIRED", "이용 동의를 확인해주세요.");
+      tx.set(
+        db.doc(
+          `${b.review ? "reviewPreferences" : "personalPreferences"}/${a.uid}`,
+        ),
+        { ...b, version: VERSION, confirmedAt: Date.now() },
+      );
+    });
     res.json({ ok: true });
   });
   route("get", "/review/catalog", async (req, res) => {
@@ -415,33 +429,34 @@ export function registerPersonalization({
       .object({ sessionId: uuid, input: inputSchema })
       .strict()
       .parse(req.body);
-    const input = normalizeInput(b.input);
+    let input: ReturnType<typeof normalizeInput>;
+    try {
+      input = normalizeInput(b.input);
+    } catch {
+      return fail(
+        400,
+        "INVALID_INPUT",
+        "입력한 자세와 현재 상태를 다시 확인해주세요.",
+      );
+    }
     if (input.review) await requireReview(a);
     if (a.kind === "guest" && input.purpose !== "daily")
       fail(403, "MEMBER_REQUIRED", "이 콘텐츠는 로그인 후 이용할 수 있어요.");
-    if (
-      a.kind === "guest" &&
-      !(await db.doc(`guestConsents/${a.uid}`).get()).exists
-    )
-      fail(403, "CONSENT_REQUIRED", "서비스 안내에 동의해주세요.");
-    if (
-      a.kind === "member" &&
-      !(await db.doc(`personalConsents/${a.uid}`).get()).exists
-    )
-      fail(
-        403,
-        "PERSONALIZATION_CONSENT",
-        "개인화 기록 이용 안내를 확인해주세요.",
-      );
+    if (!(await currentHealthConsent(db, a.uid, a.kind)))
+      fail(403, "CONSENT_REQUIRED", "건강 관련 입력 처리 안내에 동의해주세요.");
     const initial = await loadMemory(a, input.review);
     const ref = sessionRef(a, b.sessionId);
     const memoryDoc = memoryRef(a, input.review);
     const dayRef = db.doc(`guestDays/${hash(a.uid + ":" + kstDate())}`);
     const result = await db.runTransaction(async (tx) => {
+      if (!(await currentHealthConsent(db, a.uid, a.kind, tx)))
+        fail(403, "CONSENT_REQUIRED", "이용 동의를 확인해주세요.");
       const existing = (await tx.get(ref)).data() as Session | undefined;
       const stored = (await tx.get(memoryDoc)).data() as Memory | undefined;
       const usage = a.kind === "guest" ? (await tx.get(dayRef)).data() : null;
       if (existing) {
+        if (a.kind === "guest" && isExpired(existing))
+          fail(410, "SESSION_EXPIRED", "이전 날짜의 이용이 만료됐어요.");
         if (existing.owner !== a.uid || existing.kind !== a.kind)
           fail(403, "OWNER_MISMATCH", "본인의 세션만 이용할 수 있어요.");
         if (JSON.stringify(existing.input) !== JSON.stringify(input))
@@ -468,9 +483,17 @@ export function registerPersonalization({
           "오늘의 체험을 마쳤어요. 내일 다시 이용해주세요.",
         );
       const now = Date.now();
+      const expiresAt = nextMidnightKST(now);
+      const track =
+        a.kind === "guest"
+          ? await trackGuest(tx, db, a.uid, expiresAt, [ref.path, dayRef.path])
+          : null;
       const session: Session = {
         id: b.sessionId,
         owner: a.uid,
+        policyVersion: consentPolicy.version,
+        ...(a.kind === "guest" ? { expiresAt } : {}),
+        ...(decision.program ? { program: decision.program } : {}),
         kind: a.kind,
         review: input.review,
         input,
@@ -478,9 +501,13 @@ export function registerPersonalization({
         updatedAt: now,
         status: "active",
         completedAt: null,
-        items: decision.selected.map((id) => ({
+        items: decision.selected.map((id, index) => ({
           itemId: crypto.randomUUID(),
-          movement: movement(catalog.find((c) => c.catalogId === id)!),
+          movement: movement(
+            catalog.find((c) => c.catalogId === id)!,
+            decision.sequence?.[index]?.dose,
+            decision.sequence?.[index]?.round,
+          ),
           state: "pending",
           reaction: null,
           directions: [],
@@ -492,6 +519,7 @@ export function registerPersonalization({
         visited: decision.selected,
         decision,
       };
+      track?.();
       tx.create(ref, session);
       if (a.kind === "member" && !stored) tx.set(memoryDoc, initial);
       if (a.kind === "guest")
@@ -501,6 +529,8 @@ export function registerPersonalization({
           sessionId: b.sessionId,
           date: kstDate(),
           consumedAt: now,
+          policyVersion: consentPolicy.version,
+          expiresAt,
         });
       return session;
     });
@@ -509,10 +539,18 @@ export function registerPersonalization({
   route("get", "/personalization/sessions/:id", async (req, res) => {
     const a = await actor(req);
     const s = (await sessionRef(a, uuid.parse(req.params.id)).get()).data() as
-      | Session
-      | undefined;
+      Session | undefined;
     if (!s || s.owner !== a.uid || s.kind !== a.kind)
       return fail(404, "NOT_FOUND", "이용 기록을 찾을 수 없어요.");
+    if (a.kind === "guest" && isExpired(s))
+      fail(410, "SESSION_EXPIRED", "이전 날짜의 비회원 이용이 만료됐어요.");
+    if (!(await currentHealthConsent(db, a.uid, a.kind)))
+      fail(403, "CONSENT_REQUIRED", "이용 동의를 확인해주세요.");
+    if (
+      s.decision.version !== VERSION &&
+      ["active", "paused"].includes(s.status)
+    )
+      fail(409, "UPDATE_REQUIRED", "새 버전에서 다시 시작해주세요.");
     if (s.review) await requireReview(a);
     res.json(publicSession(s));
   });
@@ -520,8 +558,7 @@ export function registerPersonalization({
     const a = await actor(req, true);
     await requireReview(a);
     const s = (await sessionRef(a, uuid.parse(req.params.id)).get()).data() as
-      | Session
-      | undefined;
+      Session | undefined;
     if (!s || s.owner !== a.uid)
       fail(404, "NOT_FOUND", "본인의 검토 기록만 확인할 수 있어요.");
     res.json(s);
@@ -534,6 +571,15 @@ export function registerPersonalization({
     const base = (await ref.get()).data() as Session | undefined;
     if (!base || base.owner !== a.uid || base.kind !== a.kind)
       return fail(404, "NOT_FOUND", "본인의 이용 기록만 변경할 수 있어요.");
+    if (a.kind === "guest" && isExpired(base))
+      fail(410, "SESSION_EXPIRED", "이전 날짜의 비회원 이용이 만료됐어요.");
+    if (!(await currentHealthConsent(db, a.uid, a.kind)))
+      fail(403, "CONSENT_REQUIRED", "이용 동의를 확인해주세요.");
+    if (
+      ["active", "paused"].includes(base.status) &&
+      base.decision.version !== VERSION
+    )
+      fail(409, "UPDATE_REQUIRED", "새 안내로 다시 시작해주세요.");
     if (base.review) await requireReview(a);
     const memoryDoc = memoryRef(a, base.review);
     const initial = await loadMemory(a, base.review);
@@ -544,7 +590,11 @@ export function registerPersonalization({
       weekRef = db.doc(`${growthPrefix}/${a.uid}/weeks/${week}`);
     const eventHash = hash(JSON.stringify(b));
     const result = await db.runTransaction(async (tx) => {
+      if (!(await currentHealthConsent(db, a.uid, a.kind, tx)))
+        fail(403, "CONSENT_REQUIRED", "이용 동의를 확인해주세요.");
       const session = (await tx.get(ref)).data() as Session;
+      if (a.kind === "guest" && isExpired(session))
+        fail(410, "SESSION_EXPIRED", "이전 날짜의 이용이 만료됐어요.");
       const old = (await tx.get(eventRef)).data();
       const memory = ((await tx.get(memoryDoc)).data() ??
         structuredClone(initial)) as Memory;
@@ -561,6 +611,15 @@ export function registerPersonalization({
           fail(409, "SUBMISSION_CONFLICT", "이미 사용한 제출 번호예요.");
         return session;
       }
+      if (a.kind === "guest" && isExpired(session))
+        fail(410, "SESSION_EXPIRED", "이전 날짜의 이용이 만료됐어요.");
+      const track =
+        a.kind === "guest"
+          ? await trackGuest(tx, db, a.uid, session.expiresAt!, [
+              ref.path,
+              eventRef.path,
+            ])
+          : null;
       if (a.kind === "guest") remember(memory, session);
       const item = b.itemId
         ? session.items.find((i) => i.itemId === b.itemId)
@@ -570,7 +629,14 @@ export function registerPersonalization({
         if (!item || session.status !== "active")
           return fail(409, "NOT_ACTIVE", "진행 중인 동작을 확인해주세요.");
         if (item.state === "pending") {
-          item.state = b.action === "complete" ? "completed" : "skipped";
+          item.state =
+            b.action === "complete"
+              ? "completed"
+              : b.skipReason === "discomfort"
+                ? "stopped"
+                : "skipped";
+          if (b.action === "skip" && b.skipReason === "discomfort")
+            item.reaction = "worse";
           item.skipReason = b.skipReason ?? null;
           item.performedAt = Date.now();
         }
@@ -705,12 +771,19 @@ export function registerPersonalization({
       }
       session.updatedAt = Date.now();
       remember(memory, session);
+      track?.();
       tx.set(ref, session);
       tx.create(eventRef, {
         owner: a.uid,
         kind: a.kind,
         sessionId: sid,
         hash: eventHash,
+        ...(a.kind === "guest"
+          ? {
+              policyVersion: consentPolicy.version,
+              expiresAt: session.expiresAt,
+            }
+          : {}),
         createdAt: Date.now(),
       });
       // Guest memory stays within the session; it never becomes a long-term profile.
@@ -739,9 +812,13 @@ export function registerPersonalization({
     res.json(publicSession(result));
   });
   route("get", "/personalization/records", async (req, res) => {
-    const a = await actor(req, true);
+    const a = await actor(req);
+    if (!(await currentHealthConsent(db, a.uid, a.kind)))
+      fail(403, "CONSENT_REQUIRED", "이용 동의를 확인해주세요.");
     let query = db
-      .collection(`profiles/${a.uid}/sessions`)
+      .collection(
+        `${a.kind === "member" ? "profiles" : "guestSessions"}/${a.uid}/sessions`,
+      )
       .orderBy("createdAt", "desc")
       .orderBy("__name__", "desc");
     if (req.query.after !== undefined || req.query.afterId !== undefined) {
@@ -753,7 +830,9 @@ export function registerPersonalization({
     const data = await query.limit(21).get();
     const rows = data.docs
       .slice(0, 20)
-      .map((d) => publicSession(d.data() as Session));
+      .map((d) => d.data() as Session)
+      .filter((s) => a.kind === "member" || !isExpired(s))
+      .map(publicSession);
     const last = data.docs[19];
     res.json({
       records: rows.filter((s) => !s.review),
@@ -771,6 +850,19 @@ export function registerPersonalization({
     const sid = uuid.parse(req.params.id);
     const ref = sessionRef(a, sid);
     const session = (await ref.get()).data() as Session | undefined;
+    // Receipts contain no answers, but remove their ownership links with the record.
+    for (;;) {
+      const receipts = await db
+        .collection("personalSubmissions")
+        .where("sessionId", "==", sid)
+        .where("owner", "==", a.uid)
+        .limit(80)
+        .get();
+      if (!receipts.docs.length) break;
+      await db.request("/documents:commit", {
+        writes: receipts.docs.map((r) => ({ delete: r.ref.name })),
+      });
+    }
     if (!session) {
       res.json({ ok: true });
       return;

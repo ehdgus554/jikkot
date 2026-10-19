@@ -1,14 +1,14 @@
 import { z } from "zod";
 
-export const VERSION = "jikkot-personal-2026-10-16-v1";
+export const VERSION = "2026-10-17.1";
 export const areas = [
   ["head", "머리"],
   ["neck", "목"],
   ["shoulder", "어깨"],
   ["back", "등"],
   ["lower", "허리"],
-  ["thigh", "허벅지"],
-  ["hamstring", "햄스트링(허벅지 뒤쪽)"],
+  ["thigh", "허벅지 앞"],
+  ["hamstring", "허벅지 뒤쪽"],
   ["knee", "무릎"],
   ["calf", "종아리"],
   ["ankle", "발목"],
@@ -36,6 +36,8 @@ export const supports = [
   ["space", "다리를 펼치거나 옆으로 움직일 공간"],
   ["dryFloor", "마르고 미끄럽지 않은 바닥"],
   ["experienced", "손발 지지·한 발 지지 수행 경험"],
+  ["headSupport", "낮은 머리 받침"],
+  ["headDownComfort", "머리를 낮추는 자세가 편함"],
 ] as const;
 export type Area = (typeof areas)[number][0];
 export type Pose = (typeof poses)[number][0];
@@ -65,7 +67,7 @@ export const inputSchema = z
       .refine(unique),
     supports: z
       .array(z.enum(supports.map((x) => x[0]) as [Support, ...Support[]]))
-      .max(11)
+      .max(13)
       .refine(unique),
     sport: z
       .enum(
@@ -80,6 +82,13 @@ export const inputSchema = z
     focus: z
       .array(z.enum(areas.map((x) => x[0]) as [Area, ...Area[]]))
       .max(2)
+      .refine(unique)
+      .default([]),
+    profile: z.enum(["chair", "standing", "lying", "mixedFloor"]).optional(),
+    preference: z.enum(["all", "upper", "lower"]).default("all"),
+    avoidDirections: z
+      .array(z.string().max(40))
+      .max(20)
       .refine(unique)
       .default([]),
     confirmedAt: z.number().int().min(0),
@@ -132,6 +141,32 @@ export const emptyMemory = (): Memory => ({
   constraints: [],
   revision: 0,
 });
+export type Dose = {
+  kind: string;
+  label: string;
+  plannedSeconds: number;
+  activeSeconds: number;
+  holdSeconds: number;
+  repetitions: number;
+  sides: number;
+  rounds: number;
+  tempoSeconds: number;
+  restSeconds: number;
+  setupSeconds: number;
+  sideChangeSeconds: number;
+  countAxis?: string;
+  durationPerSideSeconds?: number;
+  timerCompletesPerformance: boolean;
+};
+export type ProgramSummary = {
+  id: string;
+  name: string;
+  plannedSeconds: number;
+  stepCount: number;
+  distinctMovementCount: number;
+  partial: boolean;
+  sportSpecificStart?: string;
+};
 export type CustomerMovement = {
   id: string;
   catalogId: string;
@@ -148,6 +183,10 @@ export type CustomerMovement = {
   dose: string | null;
   doseStatus: "existing" | "unconfirmed";
   directions: string[];
+  dosage?: Dose;
+  cautions?: string[];
+  cue?: string;
+  round?: number;
 };
 export type Decision = {
   version: string;
@@ -156,11 +195,16 @@ export type Decision = {
   excluded: { id: string; reason: string; evidenceIds?: string[] }[];
   appliedRules: string[];
   memoryRevision: number;
+  sequence?: { id: string; dose: Dose; round: number }[];
+  program?: ProgramSummary;
   reason: "ready" | "blocked" | "no-match" | "not-approved";
 };
 export type Session = {
   id: string;
   owner: string;
+  policyVersion?: string;
+  expiresAt?: number;
+  program?: ProgramSummary;
   kind: "member" | "guest";
   review: boolean;
   input: SessionInput;

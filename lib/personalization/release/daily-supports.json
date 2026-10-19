@@ -1,0 +1,107 @@
+{
+  "head": {
+    "chair": [
+      "chair"
+    ],
+    "standing": [],
+    "supine": []
+  },
+  "neck": {
+    "chair": [
+      "chair",
+      "chairBack",
+      "towel"
+    ],
+    "standing": [
+      "wall"
+    ],
+    "supine": []
+  },
+  "shoulder": {
+    "chair": [
+      "chair",
+      "chairBack",
+      "desk",
+      "towel"
+    ],
+    "standing": [
+      "wall"
+    ],
+    "supine": []
+  },
+  "back": {
+    "chair": [
+      "chair",
+      "chairBack",
+      "desk",
+      "towel"
+    ],
+    "standing": [
+      "wall"
+    ],
+    "supine": []
+  },
+  "lower": {
+    "chair": [
+      "chair"
+    ],
+    "standing": [
+      "balance",
+      "wall"
+    ],
+    "supine": [
+      "dryFloor"
+    ]
+  },
+  "thigh": {
+    "chair": [
+      "chair"
+    ],
+    "standing": [
+      "balance",
+      "wall"
+    ],
+    "supine": []
+  },
+  "hamstring": {
+    "chair": [
+      "chair"
+    ],
+    "standing": [],
+    "supine": [
+      "dryFloor"
+    ]
+  },
+  "knee": {
+    "chair": [
+      "chair",
+      "towel"
+    ],
+    "standing": [
+      "wall"
+    ],
+    "supine": [
+      "dryFloor"
+    ]
+  },
+  "calf": {
+    "chair": [
+      "chair",
+      "towel"
+    ],
+    "standing": [
+      "wall"
+    ],
+    "supine": []
+  },
+  "ankle": {
+    "chair": [
+      "chair",
+      "towel"
+    ],
+    "standing": [
+      "wall"
+    ],
+    "supine": []
+  }
+}
