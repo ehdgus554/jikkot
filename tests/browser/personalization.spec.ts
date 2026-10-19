@@ -150,6 +150,14 @@ test("lost recommendation/feedback responses restore fixed IDs without duplicate
   await page.getByRole("button", { name: "내 기록 보기", exact: true }).click();
   await expect(page.locator(".release-record")).toHaveCount(1);
   await page.locator(".release-record>summary").click();
+  let releaseSummary!: () => void;
+  const summaryGate = new Promise<void>((resolve) => {
+    releaseSummary = resolve;
+  });
+  await page.route("**/api/personalization/summary", async (route) => {
+    await summaryGate;
+    await route.continue();
+  });
   await page.getByText("당시 느낌 정정", { exact: true }).click();
   await page
     .getByRole("button", { name: "비슷해요로 정정", exact: true })
@@ -157,6 +165,16 @@ test("lost recommendation/feedback responses restore fixed IDs without duplicate
   await expect(page.locator(".release-record>summary")).toContainText(
     "비슷해요",
   );
+  try {
+    await expect(
+      page.getByRole("button", { name: "이 기록 삭제", exact: true }),
+    ).toBeDisabled();
+  } finally {
+    releaseSummary();
+  }
+  await expect(
+    page.getByRole("button", { name: "이 기록 삭제", exact: true }),
+  ).toBeEnabled();
   await page.getByRole("button", { name: "이 기록 삭제", exact: true }).click();
   await expect(page.locator(".release-record")).toHaveCount(0);
 });

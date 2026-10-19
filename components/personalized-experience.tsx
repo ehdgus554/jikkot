@@ -1713,7 +1713,10 @@ export function PersonalizedExperience({
                     : "오늘의 선택부터 차근차근 남겨보세요."}{" "}
                   오늘 자세와 최근 행동은 새로 골라주세요.
                 </p>
-                <PrimaryButton onClick={() => requireStart("daily")}>
+                <PrimaryButton
+                  disabled={busy}
+                  onClick={() => requireStart("daily")}
+                >
                   오늘 몸풀기
                 </PrimaryButton>
               </article>
@@ -1781,6 +1784,7 @@ export function PersonalizedExperience({
                 ))}
               </ol>
               <button
+                disabled={busy}
                 className="secondary"
                 onClick={() => {
                   setSession(r);
@@ -1814,6 +1818,7 @@ export function PersonalizedExperience({
                         : ["refreshed", "same", "worse"]) as Reaction[]
                   ).map((reaction) => (
                     <button
+                      disabled={busy}
                       className="secondary"
                       key={reaction}
                       onClick={() =>
@@ -1857,6 +1862,7 @@ export function PersonalizedExperience({
                     ] as const
                   ).map(([id, label]) => (
                     <button
+                      disabled={busy}
                       className="secondary"
                       key={id}
                       onClick={() =>
@@ -1882,6 +1888,7 @@ export function PersonalizedExperience({
               )}
               {memberName && (
                 <button
+                  disabled={busy}
                   className="text-button"
                   onClick={() =>
                     run(async () => {
@@ -1922,6 +1929,7 @@ export function PersonalizedExperience({
               </ol>
               <p>{r.snapshot.routine.dose}</p>
               <button
+                disabled={busy}
                 className="text-button"
                 onClick={() =>
                   run(async () => {
