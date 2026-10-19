@@ -451,6 +451,7 @@ export function PersonalizedExperience({
         onLogin(purpose);
         return;
       }
+      if (uid && context?.consent === undefined) return;
       if (!uid || !context?.consent) {
         onGuestConsent();
         return;
@@ -799,7 +800,7 @@ export function PersonalizedExperience({
               alt=""
             />
             <PrimaryButton
-              disabled={busy}
+              disabled={busy || (!!uid && !context)}
               onClick={() => requireStart("daily")}
             >
               불편한 곳 풀기
@@ -822,6 +823,7 @@ export function PersonalizedExperience({
             <button
               type="button"
               className="release-hub-card"
+              disabled={busy || (!!uid && !context)}
               key={p}
               onClick={() => requireStart(p)}
             >

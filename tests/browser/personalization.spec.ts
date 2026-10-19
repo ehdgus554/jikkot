@@ -167,3 +167,32 @@ test("daily first adverse reaction uses real stages and exhausts aliases instead
     page.getByText("지금 조건에 맞는 다른 동작이 없어요.", { exact: false }),
   ).toBeVisible();
 });
+
+test("starting immediately after login waits for the actual consent context", async ({
+  page,
+  request,
+}) => {
+  const u = await memberIdentity(request);
+  let release!: () => void;
+  const gate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route("**/api/personalization/context", async (route) => {
+    await gate;
+    await route.continue();
+  });
+  await login(page, u);
+  await expect(
+    page.getByRole("button", { name: "불편한 곳 풀기", exact: true }),
+  ).toBeDisabled();
+  release();
+  await expect(
+    page.getByRole("button", { name: "불편한 곳 풀기", exact: true }),
+  ).toBeEnabled();
+  await page
+    .getByRole("button", { name: "불편한 곳 풀기", exact: true })
+    .click();
+  await expect(
+    page.getByRole("heading", { name: "지금 어떤 상태인가요?" }),
+  ).toBeVisible();
+});

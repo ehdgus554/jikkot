@@ -25,3 +25,5 @@
 기존 GitHub main → Cloudflare Workers Builds 경로를 유지합니다. 로컬 업로드 세션 JWT의 시크릿 프록시 401을 토큰 재발급이나 새 인프라로 우회하지 않습니다. 검증 브랜치 빌드와 원격 미리보기 확인 후 main을 게시하고 활성 버전과 실제 서비스 흐름을 재검사합니다.
 
 직전 운영 버전은 `b8987572-0064-4f26-b695-76a939f2d23a`(코드 `581ddb367af3d11c6b86e6eee117aa407be4e833`)입니다. 긴급 시 기존 Worker 대시보드의 Deployments에서 이 버전으로 100% 되돌릴 수 있습니다. 이전 버전은 새 자정 정책을 구현하지 않으므로 되돌린 경우 새 건강 입력을 먼저 중단하고 삭제 일정·동의 정책을 함께 확인해야 합니다. 데이터 전체 삭제나 git reset으로 되돌리지 않습니다.
+
+검증 브랜치 `release/2026-10-19`의 기존 Workers Builds 트리거는 `npx wrangler versions upload --config dist/server/wrangler.json`을 사용합니다. 운영 Worker에 새 버전만 업로드해 기존 Secret binding을 재사용하며 운영 트래픽을 전환하지 않습니다. 별도 Previews 설정에 서버 Secret이 없는 상태에서 빌드 성공만을 기능 검증 성공으로 판단하지 않습니다. main의 배포 명령은 변경하지 않았습니다.

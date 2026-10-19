@@ -222,3 +222,36 @@ test("account deletion requires recent authentication and deletes Auth, health d
   );
   assert.ok(lookup.status !== 200);
 });
+test("existing one-character nickname is repaired before sensitive member actions", async () => {
+  const u = await member(),
+    call = client();
+  const ref = db.doc(`profiles/${u.localId}`);
+  await ref.set({ ...(await ref.get()).data(), nickname: "가" });
+  assert.equal((await call("/me", u.idToken)).body.member.needsNickname, true);
+  assert.equal(
+    (
+      await call("/personalization/sessions", u.idToken, {
+        sessionId: randomUUID(),
+        input: {
+          purpose: "daily",
+          area: "back",
+          habits: ["retract"],
+          current: ["upper_back", "reach_comfort"],
+          poses: ["chair"],
+          supports: ["chair"],
+          confirmedAt: Date.now(),
+        },
+      })
+    ).status,
+    403,
+  );
+  assert.equal(
+    (
+      await call("/account/nickname", u.idToken, {
+        nickname: "보완" + u.suffix,
+      })
+    ).status,
+    200,
+  );
+  assert.equal((await call("/me", u.idToken)).body.member.needsNickname, false);
+});

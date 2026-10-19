@@ -187,10 +187,13 @@ export function createSparkApi(
             uid: t.uid,
             username: p.username,
             nickname: p.nickname,
-            needsNickname: !p.nickname,
-            needsConsent:
-              p.consents?.version !== consentPolicy.version ||
-              !p.consents?.healthPersonalization,
+            needsNickname: !nicknameSchema.safeParse(p.nickname).success,
+            needsConsent: !validConsents.safeParse({
+              privacy: p.consents?.privacy,
+              healthPersonalization: p.consents?.healthPersonalization,
+              nonMedical: p.consents?.nonMedical,
+              version: p.consents?.version,
+            }).success,
           }
         : null,
       kind: p?.active

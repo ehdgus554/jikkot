@@ -155,7 +155,7 @@ export function registerAccount({
       const reserved = (await tx.get(index)).data();
       if (!p?.active || p.authProvider !== t.firebase.sign_in_provider)
         fail(403, "MEMBER_REQUIRED", "회원 계정을 확인해주세요.");
-      if (p!.nickname)
+      if (nicknameSchema.safeParse(p!.nickname).success)
         fail(409, "NICKNAME_ALREADY_SET", "이미 등록된 닉네임이 있어요.");
       if (reserved && reserved.uid !== t.uid)
         fail(409, "DUPLICATE", "이미 사용 중인 닉네임이에요.");
