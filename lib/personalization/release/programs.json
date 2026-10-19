@@ -5,11 +5,12 @@
     "name": "러닝 전 가볍게 몸풀기",
     "sport": "running",
     "requiredCapabilities": [
-      "balance",
       "dryFloor",
+      "knee",
+      "quadruped",
       "space",
       "standing",
-      "wall"
+      "wrist"
     ],
     "conditionalSupportChecks": [],
     "sportSpecificStart": {
@@ -21,43 +22,22 @@
     "items": [
       {
         "catalogId": "W11",
-        "round": 1,
-        "dose": {
-          "kind": "timed",
-          "activeSeconds": 180,
-          "durationPerSideSeconds": 180,
-          "repetitions": 0,
-          "sides": 1,
-          "rounds": 1,
-          "restSeconds": 0,
-          "holdSeconds": 0,
-          "tempoSeconds": 0,
-          "setupSeconds": 10,
-          "sideChangeSeconds": 0,
-          "plannedSeconds": 190,
-          "basis": "직꼿의 보수적인 첫 이용 진행값. 출처의 동작 설명을 참고해 편한 범위로 구성했으며 개인별 의료 처방이나 효능 검증값이 아님.",
-          "timerCompletesPerformance": false,
-          "label": "180초 동안 가볍게"
-        }
-      },
-      {
-        "catalogId": "W18",
-        "round": 1
-      },
-      {
-        "catalogId": "W03",
-        "round": 1
-      },
-      {
-        "catalogId": "W07",
         "round": 1
       },
       {
         "catalogId": "W12",
         "round": 1
+      },
+      {
+        "catalogId": "W05",
+        "round": 1
+      },
+      {
+        "catalogId": "W13",
+        "round": 1
       }
     ],
-    "plannedSeconds": 466
+    "plannedSeconds": 215
   },
   {
     "id": "warmup-football",
@@ -66,9 +46,11 @@
     "sport": "football",
     "requiredCapabilities": [
       "dryFloor",
+      "knee",
+      "quadruped",
       "space",
       "standing",
-      "wall"
+      "wrist"
     ],
     "conditionalSupportChecks": [],
     "sportSpecificStart": {
@@ -80,31 +62,10 @@
     "items": [
       {
         "catalogId": "W11",
-        "round": 1,
-        "dose": {
-          "kind": "timed",
-          "activeSeconds": 180,
-          "durationPerSideSeconds": 180,
-          "repetitions": 0,
-          "sides": 1,
-          "rounds": 1,
-          "restSeconds": 0,
-          "holdSeconds": 0,
-          "tempoSeconds": 0,
-          "setupSeconds": 10,
-          "sideChangeSeconds": 0,
-          "plannedSeconds": 190,
-          "basis": "직꼿의 보수적인 첫 이용 진행값. 출처의 동작 설명을 참고해 편한 범위로 구성했으며 개인별 의료 처방이나 효능 검증값이 아님.",
-          "timerCompletesPerformance": false,
-          "label": "180초 동안 가볍게"
-        }
-      },
-      {
-        "catalogId": "W03",
         "round": 1
       },
       {
-        "catalogId": "W01",
+        "catalogId": "W10",
         "round": 1
       },
       {
@@ -112,11 +73,15 @@
         "round": 1
       },
       {
-        "catalogId": "W10",
+        "catalogId": "W13",
+        "round": 1
+      },
+      {
+        "catalogId": "W15",
         "round": 1
       }
     ],
-    "plannedSeconds": 458
+    "plannedSeconds": 291
   },
   {
     "id": "warmup-hiking",
@@ -124,24 +89,14 @@
     "name": "등산 전 가볍게 몸풀기",
     "sport": "hiking",
     "requiredCapabilities": [
-      "balance",
       "dryFloor",
+      "knee",
+      "quadruped",
+      "space",
       "standing",
-      "wall"
+      "wrist"
     ],
-    "conditionalSupportChecks": [
-      {
-        "catalogId": "W06",
-        "anyOf": [
-          [
-            "wall"
-          ],
-          [
-            "chair"
-          ]
-        ]
-      }
-    ],
+    "conditionalSupportChecks": [],
     "sportSpecificStart": {
       "text": "출발 뒤 첫 5분은 완만한 곳을 천천히 걷고 보폭과 속도를 조금씩 늘려요.",
       "includedInDisplayedDuration": false,
@@ -151,31 +106,6 @@
     "items": [
       {
         "catalogId": "W11",
-        "round": 1,
-        "dose": {
-          "kind": "timed",
-          "activeSeconds": 180,
-          "durationPerSideSeconds": 180,
-          "repetitions": 0,
-          "sides": 1,
-          "rounds": 1,
-          "restSeconds": 0,
-          "holdSeconds": 0,
-          "tempoSeconds": 0,
-          "setupSeconds": 10,
-          "sideChangeSeconds": 0,
-          "plannedSeconds": 190,
-          "basis": "직꼿의 보수적인 첫 이용 진행값. 출처의 동작 설명을 참고해 편한 범위로 구성했으며 개인별 의료 처방이나 효능 검증값이 아님.",
-          "timerCompletesPerformance": false,
-          "label": "180초 동안 가볍게"
-        }
-      },
-      {
-        "catalogId": "W18",
-        "round": 1
-      },
-      {
-        "catalogId": "W06",
         "round": 1
       },
       {
@@ -183,11 +113,15 @@
         "round": 1
       },
       {
-        "catalogId": "W07",
+        "catalogId": "W12",
+        "round": 1
+      },
+      {
+        "catalogId": "W13",
         "round": 1
       }
     ],
-    "plannedSeconds": 439
+    "plannedSeconds": 215
   },
   {
     "id": "warmup-gym",
@@ -195,9 +129,11 @@
     "name": "헬스 전 가볍게 몸풀기",
     "sport": "gym",
     "requiredCapabilities": [
-      "balance",
       "dryFloor",
-      "standing"
+      "knee",
+      "quadruped",
+      "standing",
+      "wrist"
     ],
     "conditionalSupportChecks": [],
     "sportSpecificStart": {
@@ -209,31 +145,10 @@
     "items": [
       {
         "catalogId": "W11",
-        "round": 1,
-        "dose": {
-          "kind": "timed",
-          "activeSeconds": 180,
-          "durationPerSideSeconds": 180,
-          "repetitions": 0,
-          "sides": 1,
-          "rounds": 1,
-          "restSeconds": 0,
-          "holdSeconds": 0,
-          "tempoSeconds": 0,
-          "setupSeconds": 10,
-          "sideChangeSeconds": 0,
-          "plannedSeconds": 190,
-          "basis": "직꼿의 보수적인 첫 이용 진행값. 출처의 동작 설명을 참고해 편한 범위로 구성했으며 개인별 의료 처방이나 효능 검증값이 아님.",
-          "timerCompletesPerformance": false,
-          "label": "180초 동안 가볍게"
-        }
-      },
-      {
-        "catalogId": "W04",
         "round": 1
       },
       {
-        "catalogId": "W02",
+        "catalogId": "W04",
         "round": 1
       },
       {
@@ -241,11 +156,15 @@
         "round": 1
       },
       {
-        "catalogId": "W07",
+        "catalogId": "W14",
+        "round": 1
+      },
+      {
+        "catalogId": "W15",
         "round": 1
       }
     ],
-    "plannedSeconds": 440
+    "plannedSeconds": 277
   },
   {
     "id": "warmup-golf",
@@ -254,8 +173,10 @@
     "sport": "golf",
     "requiredCapabilities": [
       "dryFloor",
+      "knee",
+      "quadruped",
       "standing",
-      "wall"
+      "wrist"
     ],
     "conditionalSupportChecks": [],
     "sportSpecificStart": {
@@ -267,31 +188,10 @@
     "items": [
       {
         "catalogId": "W11",
-        "round": 1,
-        "dose": {
-          "kind": "timed",
-          "activeSeconds": 180,
-          "durationPerSideSeconds": 180,
-          "repetitions": 0,
-          "sides": 1,
-          "rounds": 1,
-          "restSeconds": 0,
-          "holdSeconds": 0,
-          "tempoSeconds": 0,
-          "setupSeconds": 10,
-          "sideChangeSeconds": 0,
-          "plannedSeconds": 190,
-          "basis": "직꼿의 보수적인 첫 이용 진행값. 출처의 동작 설명을 참고해 편한 범위로 구성했으며 개인별 의료 처방이나 효능 검증값이 아님.",
-          "timerCompletesPerformance": false,
-          "label": "180초 동안 가볍게"
-        }
-      },
-      {
-        "catalogId": "W04",
         "round": 1
       },
       {
-        "catalogId": "W02",
+        "catalogId": "W04",
         "round": 1
       },
       {
@@ -299,11 +199,11 @@
         "round": 1
       },
       {
-        "catalogId": "W18",
+        "catalogId": "W14",
         "round": 1
       }
     ],
-    "plannedSeconds": 440
+    "plannedSeconds": 214
   },
   {
     "id": "warmup-tennis",
@@ -312,8 +212,11 @@
     "sport": "tennis",
     "requiredCapabilities": [
       "dryFloor",
+      "knee",
+      "quadruped",
       "space",
-      "standing"
+      "standing",
+      "wrist"
     ],
     "conditionalSupportChecks": [],
     "sportSpecificStart": {
@@ -325,43 +228,22 @@
     "items": [
       {
         "catalogId": "W11",
-        "round": 1,
-        "dose": {
-          "kind": "timed",
-          "activeSeconds": 180,
-          "durationPerSideSeconds": 180,
-          "repetitions": 0,
-          "sides": 1,
-          "rounds": 1,
-          "restSeconds": 0,
-          "holdSeconds": 0,
-          "tempoSeconds": 0,
-          "setupSeconds": 10,
-          "sideChangeSeconds": 0,
-          "plannedSeconds": 190,
-          "basis": "직꼿의 보수적인 첫 이용 진행값. 출처의 동작 설명을 참고해 편한 범위로 구성했으며 개인별 의료 처방이나 효능 검증값이 아님.",
-          "timerCompletesPerformance": false,
-          "label": "180초 동안 가볍게"
-        }
+        "round": 1
+      },
+      {
+        "catalogId": "W10",
+        "round": 1
       },
       {
         "catalogId": "W04",
         "round": 1
       },
       {
-        "catalogId": "W02",
-        "round": 1
-      },
-      {
-        "catalogId": "W09",
-        "round": 1
-      },
-      {
-        "catalogId": "W10",
+        "catalogId": "W14",
         "round": 1
       }
     ],
-    "plannedSeconds": 430
+    "plannedSeconds": 212
   },
   {
     "id": "warmup-swimming",
@@ -370,8 +252,10 @@
     "sport": "swimming",
     "requiredCapabilities": [
       "dryFloor",
-      "space",
-      "standing"
+      "knee",
+      "quadruped",
+      "standing",
+      "wrist"
     ],
     "conditionalSupportChecks": [],
     "sportSpecificStart": {
@@ -383,43 +267,22 @@
     "items": [
       {
         "catalogId": "W11",
-        "round": 1,
-        "dose": {
-          "kind": "timed",
-          "activeSeconds": 180,
-          "durationPerSideSeconds": 180,
-          "repetitions": 0,
-          "sides": 1,
-          "rounds": 1,
-          "restSeconds": 0,
-          "holdSeconds": 0,
-          "tempoSeconds": 0,
-          "setupSeconds": 10,
-          "sideChangeSeconds": 0,
-          "plannedSeconds": 190,
-          "basis": "직꼿의 보수적인 첫 이용 진행값. 출처의 동작 설명을 참고해 편한 범위로 구성했으며 개인별 의료 처방이나 효능 검증값이 아님.",
-          "timerCompletesPerformance": false,
-          "label": "180초 동안 가볍게"
-        }
+        "round": 1
       },
       {
         "catalogId": "W04",
         "round": 1
       },
       {
-        "catalogId": "W02",
+        "catalogId": "W14",
         "round": 1
       },
       {
-        "catalogId": "W05",
-        "round": 1
-      },
-      {
-        "catalogId": "W10",
+        "catalogId": "W15",
         "round": 1
       }
     ],
-    "plannedSeconds": 417
+    "plannedSeconds": 235
   },
   {
     "id": "warmup-cycling",
@@ -428,22 +291,13 @@
     "sport": "cycling",
     "requiredCapabilities": [
       "dryFloor",
+      "knee",
+      "quadruped",
+      "space",
       "standing",
-      "wall"
+      "wrist"
     ],
-    "conditionalSupportChecks": [
-      {
-        "catalogId": "W06",
-        "anyOf": [
-          [
-            "wall"
-          ],
-          [
-            "chair"
-          ]
-        ]
-      }
-    ],
+    "conditionalSupportChecks": [],
     "sportSpecificStart": {
       "text": "자전거에 오른 뒤 첫 5~10분은 가벼운 저항으로 편하게 페달을 돌려요. 높은 강도의 라이딩은 그 뒤 시작해요.",
       "includedInDisplayedDuration": false,
@@ -453,31 +307,10 @@
     "items": [
       {
         "catalogId": "W11",
-        "round": 1,
-        "dose": {
-          "kind": "timed",
-          "activeSeconds": 180,
-          "durationPerSideSeconds": 180,
-          "repetitions": 0,
-          "sides": 1,
-          "rounds": 1,
-          "restSeconds": 0,
-          "holdSeconds": 0,
-          "tempoSeconds": 0,
-          "setupSeconds": 10,
-          "sideChangeSeconds": 0,
-          "plannedSeconds": 190,
-          "basis": "직꼿의 보수적인 첫 이용 진행값. 출처의 동작 설명을 참고해 편한 범위로 구성했으며 개인별 의료 처방이나 효능 검증값이 아님.",
-          "timerCompletesPerformance": false,
-          "label": "180초 동안 가볍게"
-        }
-      },
-      {
-        "catalogId": "W18",
         "round": 1
       },
       {
-        "catalogId": "W06",
+        "catalogId": "W12",
         "round": 1
       },
       {
@@ -485,11 +318,15 @@
         "round": 1
       },
       {
-        "catalogId": "W04",
+        "catalogId": "W13",
+        "round": 1
+      },
+      {
+        "catalogId": "W15",
         "round": 1
       }
     ],
-    "plannedSeconds": 423
+    "plannedSeconds": 278
   },
   {
     "id": "leisure-chair-5-all",

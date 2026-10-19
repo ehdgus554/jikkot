@@ -8,6 +8,7 @@ export function BodyRegionSelector({
   region,
   back,
   selected,
+  onSelect,
   onViewChange,
   reducedMotion = false,
 }: {
@@ -30,12 +31,19 @@ export function BodyRegionSelector({
   const camera = data.camera[region],
     height = 390 / (camera.yMax - camera.yMin),
     imageWidth = height * data.imageAspectRatio;
-  const active = data.regions.find((r) => r.id === selected);
+  const [hovered, setHovered] = useState<string | null>(null);
+  const visible = data.regions.filter(
+    (r) =>
+      r.section === region &&
+      (r.view === "either" || r.view === (back ? "back" : "front")) &&
+      (r.id !== "thigh" || !back) &&
+      (r.id !== "hamstring" || back),
+  );
   return (
     <div
       className="release-body"
       ref={ref}
-      role="img"
+      role="group"
       aria-label={`${region === "upper" ? "상체" : "하체"} ${back ? "뒤" : "앞"} 부위 그림`}
     >
       <div
@@ -64,16 +72,55 @@ export function BodyRegionSelector({
           style={{ opacity: back ? 1 : 0 }}
           draggable={false}
         />
-        {active && (
-          <span
-            className="body-point"
-            style={{
-              left: `${active.point[0] * 100}%`,
-              top: `${active.point[1] * 100}%`,
-            }}
-            aria-hidden="true"
-          />
-        )}
+        <svg
+          className="body-hit-map"
+          viewBox="0 0 1000 1000"
+          preserveAspectRatio="none"
+          role="radiogroup"
+          aria-label="불편 부위"
+        >
+          {visible.map((r) => (
+            <g
+              key={r.id}
+              role="radio"
+              tabIndex={0}
+              aria-label={r.label}
+              aria-checked={selected === r.id}
+              data-area={r.id}
+              onClick={() => onSelect?.(r.id as Area)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onSelect?.(r.id as Area);
+                }
+              }}
+              onMouseEnter={() => setHovered(r.id)}
+              onMouseLeave={() => setHovered(null)}
+              onFocus={() => setHovered(r.id)}
+              onBlur={() => setHovered(null)}
+            >
+              {r.polygons.map((polygon, n) => (
+                <polygon
+                  key={n}
+                  points={polygon
+                    .map(([x, y]) => `${x * 1000},${y * 1000}`)
+                    .join(" ")}
+                  className={selected === r.id ? "selected" : ""}
+                />
+              ))}
+              {hovered === r.id && (
+                <text
+                  x={r.point[0] * 1000}
+                  y={r.point[1] * 1000}
+                  textAnchor="middle"
+                  aria-hidden="true"
+                >
+                  {r.label}
+                </text>
+              )}
+            </g>
+          ))}
+        </svg>
       </div>
       <button
         type="button"

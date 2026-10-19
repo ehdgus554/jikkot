@@ -657,3 +657,15 @@ select:focus-visible {
     height: 390px;
   }
 }
+
+.body-hit-map { position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
+.body-hit-map g { cursor:pointer; outline:none; }
+.body-hit-map polygon { fill:transparent; stroke:transparent; stroke-width:3; transition:fill .15s; }
+.body-hit-map g:hover polygon,.body-hit-map g:focus-visible polygon { fill:#ef756433; stroke:#ef7564; }
+.body-hit-map polygon.selected { fill:#ef75644d; stroke:#ef7564; }
+.body-hit-map text { font-size:30px; font-weight:700; fill:#252a76; stroke:#fffaf6; stroke-width:5px; paint-order:stroke; pointer-events:none; }
+.body-selection-result { padding:16px; background:#fff; border-radius:16px; text-align:center; }
+.release-plan img { width:80px; height:80px; object-fit:contain; }
+.record-insights {display:grid; gap:12px; margin:16px 0 24px;}
+.record-insights article {padding:16px; background:#fff; border-radius:16px; border:1px solid #eee5dd;}
+.record-insights h2 {font-size:18px; margin:0 0 8px;}

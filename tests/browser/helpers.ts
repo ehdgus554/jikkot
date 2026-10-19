@@ -59,55 +59,34 @@ export async function guestHome(page: Page) {
     .getByRole("button", { name: "동의하고 시작", exact: true })
     .click();
   await expect(
-    page.getByRole("heading", { name: "지금 어떤 상태인가요?" }),
+    page.getByRole("heading", { name: "지금 어떤 자세로 할 수 있나요?" }),
   ).toBeVisible();
 }
 export async function daily(page: Page, expectResult = true) {
   await page.getByRole("radio", { name: "앉기 의자에 앉아서" }).click();
   await page.getByRole("button", { name: "다음", exact: true }).click();
+  await page.getByRole("button", { name: "뒤쪽 보기" }).click();
   await page.getByRole("radio", { name: "등", exact: true }).click();
   await page.getByRole("button", { name: "다음", exact: true }).click();
-  for (let i = 0; i < 12; i++) {
-    if (
-      await page
-        .getByRole("button", {
-          name: "날개뼈를 뒤로 모은 채 오래 버텨요",
-          exact: true,
-        })
-        .count()
-    )
-      await choose(page, "날개뼈를 뒤로 모은 채 오래 버텨요");
-    const b = page.getByRole("button", { name: /^(계속|다음)$/ });
-    const last = (await b.innerText()) === "다음";
-    await b.click();
-    if (last) {
-      await expect(
-        page.getByRole("heading", { name: "최근엔 어떤 느낌이었나요?" }),
-      ).toBeVisible();
-      break;
-    }
-  }
-  for (let i = 0; i < 12; i++) {
-    for (const label of [
-      "오늘 윗등이 굳거나 긴장된 느낌이에요",
-      "최근 가볍게 앞으로 뻗었을 때 편했어요",
-    ])
-      if (await page.getByRole("button", { name: label, exact: true }).count())
-        await choose(page, label);
-    await page.getByRole("button", { name: /^(계속|다음)$/ }).click();
-    if (
-      await page
-        .getByRole("heading", { name: "필요한 지지를 확인해요" })
-        .count()
-    )
-      break;
-  }
-  await choose(page, "안정된 의자");
-  await page.getByRole("button", { name: "동작 보기", exact: true }).click();
-  if (expectResult)
+  await choose(page, "날개뼈를 뒤로 모으고 버텨요");
+  await page.getByRole("button", { name: "다음", exact: true }).click();
+  await choose(page, "한 자세로 오래 일했어요");
+  await page.getByRole("button", { name: "추천 보기", exact: true }).click();
+  if (expectResult) {
+    await expect(
+      page.getByRole("heading", { name: "오늘의 추천 루틴" }),
+    ).toBeVisible();
+    await page
+      .getByRole("button", { name: "루틴 시작하기", exact: true })
+      .click();
     await expect(
       page.getByRole("heading", { name: "양손을 앞으로 뻗어 윗등 늘리기" }),
     ).toBeVisible();
+  }
+}
+export async function finishDaily(page: Page) {
+  for (let i = 0; i < 3; i++)
+    await page.getByRole("button", { name: "마쳤어요", exact: true }).click();
 }
 export async function checkSupports(page: Page) {
   for (let i = 0; i < 6; i++) {
@@ -143,6 +122,10 @@ export async function startBundle(
   if (purpose === "warmup") {
     await choose(page, choice);
     await page.getByRole("button", { name: "다음", exact: true }).click();
+    await expect(
+      page.getByRole("button", { name: "루틴 시작하기", exact: true }),
+    ).toBeVisible();
+    return;
   } else {
     await choose(page, choice);
     await page.getByRole("button", { name: "다음", exact: true }).click();
@@ -166,7 +149,7 @@ export async function startBundle(
   );
   await page.getByRole("button", { name: "순서 확인", exact: true }).click();
   await expect(
-    page.getByRole("button", { name: "몸풀기 시작", exact: true }),
+    page.getByRole("button", { name: "루틴 시작하기", exact: true }),
   ).toBeVisible();
 }
 export async function leavePlan(page: Page) {

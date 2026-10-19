@@ -4,6 +4,7 @@ import {
   choose,
   guestHome,
   daily,
+  finishDaily,
   memberIdentity,
   login,
 } from "./helpers";
@@ -25,7 +26,7 @@ test("home has one entry and four real tabs; guest health consent is separate an
   await page.getByRole("button", { name: "‹ 이전", exact: true }).click();
   await guestHome(page);
   await daily(page);
-  await page.getByRole("button", { name: "마쳤어요", exact: true }).click();
+  await finishDaily(page);
   await page.getByRole("button", { name: "개운해요", exact: true }).click();
   await page.getByRole("button", { name: "느낌 남기기", exact: true }).click();
   await page.getByRole("button", { name: "홈으로", exact: true }).click();
@@ -185,13 +186,8 @@ test("legacy member nickname repair preserves historical records and My habits r
   await page
     .getByRole("button", { name: "평소 습관 수정", exact: true })
     .click();
-  await choose(page, "날개뼈를 뒤로 모은 채 오래 버텨요");
-  for (let i = 0; i < 10; i++) {
-    const b = page.getByRole("button", { name: /^(계속|다음)$/ });
-    const last = (await b.innerText()) === "다음";
-    await b.click();
-    if (last) break;
-  }
+  await choose(page, "날개뼈를 뒤로 모으고 버텨요");
+  await page.getByRole("button", { name: "저장", exact: true }).click();
   await expect(page.getByRole("status")).toContainText("평소 습관을 저장");
   const pref = await request.get(`${base}/personalPreferences/${u.localId}`, {
     headers,

@@ -1,3 +1,5 @@
+import basics from "./release/daily-basic-pools.json";
+import { DAILY_FLOW, validateDaily } from "./daily-questions";
 import { catalog, type Content } from "./catalog";
 import releaseRules from "./release/connection-rules.json";
 import connections from "./release/publication-connections.json";
@@ -19,7 +21,9 @@ export { programs };
 const regionNames = Object.fromEntries(areas);
 const knownDirections = new Set(catalog.flatMap((c) => c.directions));
 export function normalizeInput(input: SessionInput): SessionInput {
-  validateQuestionInput(input);
+  if (input.purpose === "daily" && input.flowVersion === DAILY_FLOW)
+    validateDaily(input);
+  else if (input.purpose !== "warmup") validateQuestionInput(input);
   if (input.purpose === "daily" && !input.area)
     throw Error("불편 부위를 선택해주세요.");
   if (input.purpose === "warmup" && !input.sport)
@@ -47,15 +51,34 @@ function excluded(
   visited: string[],
 ): string | null {
   const caps = capabilities(input);
+  const basic = input.purpose === "daily" && input.flowVersion === DAILY_FLOW;
+  const sportDefault = input.purpose === "warmup";
   if (!approvedConnectionIds.includes(`${input.purpose}:${item.catalogId}`))
     return "purpose-not-published";
-  if (!input.poses.includes(item.pose)) return "posture-unavailable";
+  if (
+    sportDefault
+      ? !["standing", "quadruped", "halfKneel"].includes(item.pose)
+      : !input.poses.includes(item.pose)
+  )
+    return "posture-unavailable";
   const alternatives = item.supportAlternatives as string[][];
   if (
-    alternatives.length
+    !basic &&
+    !sportDefault &&
+    (alternatives.length
       ? !alternatives.some((xs) => xs.every((s) => caps.has(s)))
-      : item.supports.some((s) => !caps.has(s))
+      : item.supports.some((s) => !caps.has(s)))
   )
+    return "support-unavailable";
+  if (
+    sportDefault &&
+    (item.requiredExplicitCapabilities.length ||
+      item.supports.some((s) =>
+        ["wall", "desk", "towel", "balance", "chairBack"].includes(s),
+      ))
+  )
+    return "support-unavailable";
+  if (basic && item.supports.some((s) => !["chair", "dryFloor"].includes(s)))
     return "support-unavailable";
   if (item.requiredExplicitCapabilities.some((s) => !caps.has(s)))
     return "explicit-capability-missing";
@@ -132,7 +155,92 @@ export function decide(
     if (reason) result.excluded.push({ id: c.catalogId, reason });
     return !reason;
   });
-  if (input.purpose === "daily") {
+  if (input.purpose === "daily" && input.flowVersion === DAILY_FLOW) {
+    const pool =
+      basics.cells[input.poses[0] as keyof typeof basics.cells]?.[
+        input.area! as keyof typeof basics.cells.chair
+      ] ?? [];
+    const habit = input.habits[0];
+    const action = input.current[0];
+    result.patterns = [DAILY_FLOW, `habit:${habit}`, `action:${action}`];
+    const weights: Record<string, string[]> = {
+      screen: ["chin-retraction", "chin-nod", "upper-back-reach"],
+      clench: ["jaw-muscle-massage"],
+      chew: ["controlled-jaw-opening"],
+      shrug: ["upper-trap-side", "neck-turn"],
+      arm_front: ["chest-open", "cross-body-shoulder"],
+      retract: ["upper-back-reach"],
+      one_side: ["sidebend", "trunk-rotation"],
+      sitting: ["hip-flexor", "heel-slide", "ankle-pump"],
+      bending: ["hamstring-length", "hip-hinge"],
+      walking: ["ankle-circle", "double-heel-raise"],
+      standing: ["toe-lift", "adductor-open"],
+      stairs: ["heel-slide", "W12"],
+      recent_computer: ["upper-back-reach"],
+      recent_look_down: ["chin-retraction", "chin-nod"],
+      recent_lifting: ["cross-body-shoulder", "sidebend"],
+      recent_arms_up: ["cross-body-shoulder"],
+      recent_turning: ["trunk-rotation"],
+      recent_sitting: ["heel-slide", "hip-flexor"],
+      recent_walking: ["ankle-circle", "W12"],
+      recent_standing: ["toe-lift"],
+      recent_bending: ["hamstring-length"],
+      recent_stairs: ["W05"],
+      recent_clench: ["jaw-muscle-massage"],
+      recent_chew: ["controlled-jaw-opening"],
+    };
+    const score = (c: Content) => {
+      const individualSame = memory.experiences.filter(
+        (e) =>
+          e.purpose === "daily" &&
+          e.area === input.area &&
+          e.catalogId === c.catalogId &&
+          e.reaction === "same" &&
+          e.patterns.includes(DAILY_FLOW) &&
+          e.patterns.includes(`habit:${habit}`),
+      ).length;
+      const bundleSame = (memory.bundles ?? []).filter(
+        (b) =>
+          b.purpose === "daily" &&
+          b.reaction === "same" &&
+          b.catalogIds.includes(c.catalogId) &&
+          b.patterns.includes(`habit:${habit}`) &&
+          b.patterns.includes(DAILY_FLOW),
+      ).length;
+      const same = individualSame + bundleSame;
+      return (
+        ((weights[habit] ?? []).includes(c.family) ? -6 : 0) +
+        ((weights[action] ?? []).includes(c.family) ? -4 : 0) +
+        (same >= 2 ? 20 : 0) +
+        pool.indexOf(c.catalogId)
+      );
+    };
+    const candidates = usable
+      .filter((c) => pool.includes(c.catalogId))
+      .sort(
+        (a, b) => score(a) - score(b) || a.catalogId.localeCompare(b.catalogId),
+      );
+    const families = new Set<string>();
+    for (const c of candidates) {
+      if (families.has(c.family)) continue;
+      families.add(c.family);
+      result.selected.push(c.catalogId);
+      if (result.selected.length === 3) break;
+    }
+    result.program = {
+      id: `daily:${input.poses[0]}:${input.area}`,
+      name: `${regionNames[input.area!]} 가볍게 풀기`,
+      plannedSeconds: result.selected.reduce(
+        (n, id) =>
+          n + catalog.find((c) => c.catalogId === id)!.dose.plannedSeconds,
+        0,
+      ),
+      stepCount: result.selected.length,
+      distinctMovementCount: result.selected.length,
+      partial: false,
+    };
+    result.appliedRules = ["basic-cell", "habit-and-recent-priority"];
+  } else if (input.purpose === "daily") {
     const priority = rules.flatMap((r) => r.candidates);
     const candidates = usable.filter(
       (c) =>
@@ -164,6 +272,7 @@ export function decide(
     if (candidates[0]) result.selected = [candidates[0].catalogId];
   } else {
     if (
+      input.purpose !== "warmup" &&
       !input.current.includes("today_ok") &&
       !input.current.includes("prep_comfort") &&
       !input.current.includes("small_comfort")
@@ -191,8 +300,7 @@ export function decide(
             p.focus === input.preference),
     );
     if (!program) return result;
-    if (input.purpose === "warmup" && !input.current.includes("prep_comfort"))
-      return result;
+
     const selected: NonNullable<Decision["sequence"]> = [];
     const families = new Map<string, string>();
     let adjustments = 0;
@@ -238,7 +346,7 @@ export function decide(
         ).plannedSeconds,
       0,
     );
-    const transitionBudget=Math.max(0,program.plannedSeconds-originalTime);
+    const transitionBudget = Math.max(0, program.plannedSeconds - originalTime);
     result.program = {
       id: program.id,
       name: program.name,
@@ -259,12 +367,14 @@ export function decide(
   return result;
 }
 export function summarize(memory: Memory, now = Date.now()) {
-  const eligible = memory.experiences.filter(
-    (x) => x.performed && x.reaction !== null,
-  );
+  const eligible = memory.experiences.filter((x) => x.performed);
   const window = (days: number) => {
     const rows = [...eligible, ...(memory.bundles ?? [])].filter(
-      (x) => x.at >= now - days * 86400000,
+      (x) =>
+        x.at >=
+          Math.floor((now + 9 * 3600000) / 86400000) * 86400000 -
+            9 * 3600000 -
+            (days - 1) * 86400000 && x.at <= now,
     );
     return {
       sessions: new Set(rows.map((x) => x.sessionId)).size,

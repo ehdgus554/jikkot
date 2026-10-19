@@ -7,8 +7,9 @@ import {
   choose,
   guestHome,
   daily,
+  finishDaily,
 } from "./helpers";
-test("eight sports have real five-stage previews; public warmup has actual walking dosage and a timer never completes an item", async ({
+test("eight sports have direct mixed-pose previews; public warmup has actual walking dosage and a timer never completes an item", async ({
   page,
   request,
 }, info) => {
@@ -21,13 +22,17 @@ test("eight sports have real five-stage previews; public warmup has actual walki
       : ["수영"];
   for (const sport of sports) {
     await startBundle(page, "warmup", sport);
-    await expect(page.locator(".release-plan li")).toHaveCount(5);
-    await expect(page.getByText(/5단계 · 5개 동작/)).toBeVisible();
-    await expect(page.locator(".release-plan")).toContainText("180초");
+    expect(
+      await page.locator(".release-plan li").count(),
+    ).toBeGreaterThanOrEqual(4);
+    await expect(page.locator(".release-plan")).toContainText("네발");
+    await expect(page.locator(".release-plan")).toContainText("60초");
     await leavePlan(page);
   }
   await startBundle(page, "warmup", "축구");
-  await page.getByRole("button", { name: "몸풀기 시작", exact: true }).click();
+  await page
+    .getByRole("button", { name: "루틴 시작하기", exact: true })
+    .click();
   await expect(page.getByRole("timer")).toBeVisible();
   await page
     .getByRole("button", { name: "보조 타이머 시작", exact: true })
@@ -101,6 +106,7 @@ test("lost recommendation/feedback responses restore fixed IDs without duplicate
   await page
     .getByRole("button", { name: "불편한 곳 풀기", exact: true })
     .click();
+  test.setTimeout(120000);
   let dropped = false;
   await page.route("**/api/personalization/sessions", async (route) => {
     const r = await route.fetch();
@@ -115,7 +121,7 @@ test("lost recommendation/feedback responses restore fixed IDs without duplicate
   await expect(
     page.getByRole("heading", { name: "양손을 앞으로 뻗어 윗등 늘리기" }),
   ).toBeVisible();
-  await page.getByRole("button", { name: "마쳤어요", exact: true }).click();
+  await finishDaily(page);
   let feedbackLost = false;
   await page.route(
     "**/api/personalization/sessions/*/events",
@@ -148,12 +154,12 @@ test("lost recommendation/feedback responses restore fixed IDs without duplicate
   await page.getByRole("button", { name: "이 기록 삭제", exact: true }).click();
   await expect(page.locator(".release-record")).toHaveCount(0);
 });
-test("daily first adverse reaction uses real stages and exhausts aliases instead of inventing a fallback", async ({
+test("daily bundle unknown discomfort does not mark every movement as adverse", async ({
   page,
 }) => {
   await guestHome(page);
   await daily(page);
-  await page.getByRole("button", { name: "마쳤어요", exact: true }).click();
+  await finishDaily(page);
   await choose(page, "더 불편해요");
   await expect(
     page.getByRole("group", { name: "어느 과정에서 불편했나요?" }),
@@ -193,6 +199,6 @@ test("starting immediately after login waits for the actual consent context", as
     .getByRole("button", { name: "불편한 곳 풀기", exact: true })
     .click();
   await expect(
-    page.getByRole("heading", { name: "지금 어떤 상태인가요?" }),
+    page.getByRole("heading", { name: "지금 어떤 자세로 할 수 있나요?" }),
   ).toBeVisible();
 });

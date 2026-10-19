@@ -6,19 +6,16 @@
     "purpose": "warmup",
     "icon": "assets/icons/sport-footprints.svg",
     "requiredCapabilities": [
-      "balance",
       "dryFloor",
+      "knee",
+      "quadruped",
       "space",
       "standing",
-      "wall"
+      "wrist"
     ],
     "conditionalSupportChecks": [],
-    "supportOptions": [
-      "balance",
-      "dryFloor",
-      "space",
-      "wall"
-    ]
+    "supportOptions": [],
+    "plannedSeconds": 215
   },
   {
     "id": "warmup-football",
@@ -28,16 +25,15 @@
     "icon": "assets/icons/sport-football.svg",
     "requiredCapabilities": [
       "dryFloor",
+      "knee",
+      "quadruped",
       "space",
       "standing",
-      "wall"
+      "wrist"
     ],
     "conditionalSupportChecks": [],
-    "supportOptions": [
-      "dryFloor",
-      "space",
-      "wall"
-    ]
+    "supportOptions": [],
+    "plannedSeconds": 291
   },
   {
     "id": "warmup-hiking",
@@ -46,10 +42,12 @@
     "purpose": "warmup",
     "icon": "assets/icons/sport-mountain.svg",
     "requiredCapabilities": [
-      "balance",
       "dryFloor",
+      "knee",
+      "quadruped",
+      "space",
       "standing",
-      "wall"
+      "wrist"
     ],
     "conditionalSupportChecks": [
       {
@@ -64,12 +62,8 @@
         ]
       }
     ],
-    "supportOptions": [
-      "balance",
-      "chair",
-      "dryFloor",
-      "wall"
-    ]
+    "supportOptions": [],
+    "plannedSeconds": 215
   },
   {
     "id": "warmup-gym",
@@ -78,14 +72,15 @@
     "purpose": "warmup",
     "icon": "assets/icons/sport-dumbbell.svg",
     "requiredCapabilities": [
-      "balance",
       "dryFloor",
-      "standing"
+      "knee",
+      "quadruped",
+      "standing",
+      "wrist"
     ],
     "conditionalSupportChecks": [],
-    "supportOptions": [
-      "balance"
-    ]
+    "supportOptions": [],
+    "plannedSeconds": 277
   },
   {
     "id": "warmup-golf",
@@ -95,14 +90,14 @@
     "icon": "assets/icons/sport-golf.svg",
     "requiredCapabilities": [
       "dryFloor",
+      "knee",
+      "quadruped",
       "standing",
-      "wall"
+      "wrist"
     ],
     "conditionalSupportChecks": [],
-    "supportOptions": [
-      "dryFloor",
-      "wall"
-    ]
+    "supportOptions": [],
+    "plannedSeconds": 214
   },
   {
     "id": "warmup-tennis",
@@ -112,14 +107,15 @@
     "icon": "assets/icons/sport-racket.svg",
     "requiredCapabilities": [
       "dryFloor",
+      "knee",
+      "quadruped",
       "space",
-      "standing"
+      "standing",
+      "wrist"
     ],
     "conditionalSupportChecks": [],
-    "supportOptions": [
-      "dryFloor",
-      "space"
-    ]
+    "supportOptions": [],
+    "plannedSeconds": 212
   },
   {
     "id": "warmup-swimming",
@@ -129,14 +125,14 @@
     "icon": "assets/icons/sport-waves.svg",
     "requiredCapabilities": [
       "dryFloor",
-      "space",
-      "standing"
+      "knee",
+      "quadruped",
+      "standing",
+      "wrist"
     ],
     "conditionalSupportChecks": [],
-    "supportOptions": [
-      "dryFloor",
-      "space"
-    ]
+    "supportOptions": [],
+    "plannedSeconds": 235
   },
   {
     "id": "warmup-cycling",
@@ -146,8 +142,11 @@
     "icon": "assets/icons/sport-bike.svg",
     "requiredCapabilities": [
       "dryFloor",
+      "knee",
+      "quadruped",
+      "space",
       "standing",
-      "wall"
+      "wrist"
     ],
     "conditionalSupportChecks": [
       {
@@ -162,11 +161,8 @@
         ]
       }
     ],
-    "supportOptions": [
-      "chair",
-      "dryFloor",
-      "wall"
-    ]
+    "supportOptions": [],
+    "plannedSeconds": 278
   },
   {
     "id": "leisure-chair-5-all",

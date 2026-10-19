@@ -1,0 +1,336 @@
+{
+  "version": "daily-four-2026-10-19",
+  "cells": {
+    "chair": {
+      "head": [
+        "O10",
+        "D15",
+        "D16"
+      ],
+      "neck": [
+        "D01",
+        "D18",
+        "D19"
+      ],
+      "shoulder": [
+        "D21",
+        "O06",
+        "O02"
+      ],
+      "back": [
+        "O02",
+        "O07",
+        "D27"
+      ],
+      "lower": [
+        "D26",
+        "D06",
+        "D25"
+      ],
+      "thigh": [
+        "D04",
+        "D29",
+        "D06"
+      ],
+      "hamstring": [
+        "D05",
+        "N11"
+      ],
+      "knee": [
+        "D05",
+        "N11"
+      ],
+      "calf": [
+        "D33",
+        "D32"
+      ],
+      "ankle": [
+        "D33",
+        "D32"
+      ]
+    },
+    "standing": {
+      "head": [
+        "N01",
+        "N02",
+        "N03"
+      ],
+      "neck": [
+        "N03",
+        "N04"
+      ],
+      "shoulder": [
+        "W04",
+        "N05",
+        "N06"
+      ],
+      "back": [
+        "W02",
+        "N06",
+        "N05"
+      ],
+      "lower": [
+        "N07",
+        "W05",
+        "N08"
+      ],
+      "thigh": [
+        "W12",
+        "W05"
+      ],
+      "hamstring": [
+        "W12",
+        "N08"
+      ],
+      "knee": [
+        "W05",
+        "W12"
+      ],
+      "calf": [
+        "N09",
+        "N10"
+      ],
+      "ankle": [
+        "N09",
+        "N10"
+      ]
+    },
+    "supine": {
+      "head": [
+        "N12",
+        "N13",
+        "N14"
+      ],
+      "neck": [
+        "N14",
+        "N15"
+      ],
+      "shoulder": [
+        "N16",
+        "W17",
+        "Y10"
+      ],
+      "back": [
+        "Y10",
+        "N16",
+        "W17"
+      ],
+      "lower": [
+        "D12",
+        "Y09",
+        "Y10"
+      ],
+      "thigh": [
+        "Y09",
+        "N17",
+        "Y08"
+      ],
+      "hamstring": [
+        "D12",
+        "N17"
+      ],
+      "knee": [
+        "D12",
+        "N17"
+      ],
+      "calf": [
+        "N18",
+        "N19"
+      ],
+      "ankle": [
+        "N18",
+        "N19"
+      ]
+    }
+  },
+  "connectionNotes": {
+    "daily:N01": {
+      "basis": "standing 자세의 head 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "none"
+    },
+    "daily:N02": {
+      "basis": "standing 자세의 head 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "none"
+    },
+    "daily:N03": {
+      "basis": "standing 자세의 neck 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "none"
+    },
+    "daily:N04": {
+      "basis": "standing 자세의 neck 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "none"
+    },
+    "daily:N05": {
+      "basis": "standing 자세의 back 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "none"
+    },
+    "daily:N06": {
+      "basis": "standing 자세의 back 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "none"
+    },
+    "daily:N07": {
+      "basis": "standing 자세의 lower 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "none"
+    },
+    "daily:N08": {
+      "basis": "standing 자세의 hamstring 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "none"
+    },
+    "daily:N09": {
+      "basis": "standing 자세의 ankle 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "none"
+    },
+    "daily:N10": {
+      "basis": "standing 자세의 ankle 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "none"
+    },
+    "daily:N11": {
+      "basis": "chair 자세의 knee 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "chair"
+    },
+    "daily:N12": {
+      "basis": "supine 자세의 head 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "floor"
+    },
+    "daily:N13": {
+      "basis": "supine 자세의 head 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "floor"
+    },
+    "daily:N14": {
+      "basis": "supine 자세의 neck 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "floor"
+    },
+    "daily:N15": {
+      "basis": "supine 자세의 neck 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "floor"
+    },
+    "daily:N16": {
+      "basis": "supine 자세의 back 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "floor"
+    },
+    "daily:N17": {
+      "basis": "supine 자세의 knee 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "floor"
+    },
+    "daily:N18": {
+      "basis": "supine 자세의 ankle 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "floor"
+    },
+    "daily:N19": {
+      "basis": "supine 자세의 ankle 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "floor"
+    },
+    "daily:O10": {
+      "basis": "chair 자세의 head 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "chair"
+    },
+    "daily:D15": {
+      "basis": "chair 자세의 head 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "chair"
+    },
+    "daily:D16": {
+      "basis": "chair 자세의 head 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "chair"
+    },
+    "daily:D01": {
+      "basis": "chair 자세의 neck 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "chair"
+    },
+    "daily:D18": {
+      "basis": "chair 자세의 neck 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "chair"
+    },
+    "daily:D19": {
+      "basis": "chair 자세의 neck 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "chair"
+    },
+    "daily:D21": {
+      "basis": "chair 자세의 shoulder 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "chair"
+    },
+    "daily:O06": {
+      "basis": "chair 자세의 shoulder 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "chair"
+    },
+    "daily:O02": {
+      "basis": "chair 자세의 back 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "chair"
+    },
+    "daily:O07": {
+      "basis": "chair 자세의 back 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "chair"
+    },
+    "daily:D27": {
+      "basis": "chair 자세의 back 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "chair"
+    },
+    "daily:D26": {
+      "basis": "chair 자세의 lower 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "chair"
+    },
+    "daily:D06": {
+      "basis": "chair 자세의 thigh 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "chair"
+    },
+    "daily:D25": {
+      "basis": "chair 자세의 lower 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "chair"
+    },
+    "daily:D04": {
+      "basis": "chair 자세의 thigh 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "chair"
+    },
+    "daily:D29": {
+      "basis": "chair 자세의 thigh 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "chair"
+    },
+    "daily:D05": {
+      "basis": "chair 자세의 knee 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "chair"
+    },
+    "daily:D33": {
+      "basis": "chair 자세의 ankle 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "chair"
+    },
+    "daily:D32": {
+      "basis": "chair 자세의 ankle 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "chair"
+    },
+    "daily:W04": {
+      "basis": "standing 자세의 shoulder 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "none"
+    },
+    "daily:W02": {
+      "basis": "standing 자세의 back 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "none"
+    },
+    "daily:W05": {
+      "basis": "standing 자세의 knee 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "none"
+    },
+    "daily:W12": {
+      "basis": "standing 자세의 knee 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "none"
+    },
+    "daily:W17": {
+      "basis": "supine 자세의 back 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "floor"
+    },
+    "daily:Y10": {
+      "basis": "supine 자세의 lower 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "floor"
+    },
+    "daily:D12": {
+      "basis": "supine 자세의 knee 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "floor"
+    },
+    "daily:Y09": {
+      "basis": "supine 자세의 thigh 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "floor"
+    },
+    "daily:Y08": {
+      "basis": "supine 자세의 thigh 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "requiredTools": "floor"
+    }
+  }
+}

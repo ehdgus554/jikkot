@@ -54,8 +54,12 @@ export async function api<T = Record<string, unknown>>(
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
     ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+  }).catch(() => {
+    throw new Error("연결이 원활하지 않아요. 다시 시도해주세요");
   });
-  const result = await response.json();
+  const result = await response.json().catch(() => {
+    throw new Error("연결이 원활하지 않아요. 다시 시도해주세요");
+  });
   if (!response.ok) {
     const error = new Error(
       result.error ?? "요청을 완료하지 못했습니다.",

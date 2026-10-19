@@ -32,12 +32,12 @@ const input = (patch: Partial<SessionInput> = {}) =>
     confirmedAt: Date.now(),
     ...patch,
   });
-test("75 registrations and exact 125 purpose approvals exclude O09 from all new recommendations", () => {
-  assert.equal(catalog.length, 75);
-  assert.equal(approvedConnectionIds.length, 125);
+test("94 registrations and exact 149 purpose approvals exclude O09 from all new recommendations", () => {
+  assert.equal(catalog.length, 94);
+  assert.equal(approvedConnectionIds.length, 149);
   assert.equal(
     approvedConnectionIds.filter((s) => s.startsWith("daily:")).length,
-    43,
+    70,
   );
   assert.ok(!approvedConnectionIds.some((s) => s.endsWith(":O09")));
   assert.equal(catalog.find((c) => c.catalogId === "D31")!.pose, "chair");
@@ -155,26 +155,8 @@ test("normal lying never expands to floor/quadruped; mixed floor requires explic
     0,
   );
 });
-test("wall OR chair is accepted for W06 without inferring seated capability for D33", () => {
-  const a = input({
-    purpose: "warmup",
-    sport: "hiking",
-    area: undefined,
-    habits: [],
-    current: ["prep_comfort"],
-    poses: ["standing"],
-    supports: ["dryFloor", "balance", "chair"],
-  });
-  const d = decide(a, emptyMemory());
-  assert.ok(d.selected.includes("W06"));
-  assert.ok(!d.selected.includes("D33"));
-  const noChair = decide(
-    { ...a, supports: ["dryFloor", "balance"] },
-    emptyMemory(),
-  );
-  assert.ok(
-    !noChair.selected.includes("W06") && !noChair.selected.includes("D33"),
-  );
+test("warmup defaults have no chair/tool requirements and retain distinct floor movements",()=>{
+ const d=decide(input({purpose:"warmup",sport:"hiking",area:undefined,habits:[],current:[],poses:[],supports:[]}),emptyMemory());assert.ok(d.selected.includes("W13"));assert.ok(!d.selected.includes("D33"));assert.ok(d.selected.length>=4);
 });
 test("unavailable supports, towel and W16 head support stay mandatory", () => {
   const m = emptyMemory();
@@ -211,7 +193,7 @@ test("unavailable supports, towel and W16 head support stay mandatory", () => {
     }),
     m,
   );
-  assert.equal(warm.selected.length, 5);
+  assert.equal(warm.selected.length, 4);
 });
 test("all purposes stop on sudden deterioration, radiation or dizziness", () => {
   for (const purpose of ["daily", "warmup", "leisure"] as const)

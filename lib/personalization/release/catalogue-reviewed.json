@@ -3799,8 +3799,7 @@
       "doseLabel": "좌우 각각 5회 · 2세트",
       "eligiblePurposes": [
         "daily",
-        "leisure",
-        "warmup"
+        "leisure"
       ],
       "publicationDecision": "publish_conditionally",
       "requiredExplicitCapabilities": [],
@@ -4637,7 +4636,8 @@
       "doseLabel": "좌우 각각 6회",
       "eligiblePurposes": [
         "warmup",
-        "leisure"
+        "leisure",
+        "daily"
       ],
       "publicationDecision": "publish_conditionally",
       "requiredExplicitCapabilities": [],
@@ -4849,7 +4849,8 @@
       "doseLabel": "앞·뒤 방향 각각 8회",
       "eligiblePurposes": [
         "warmup",
-        "leisure"
+        "leisure",
+        "daily"
       ],
       "publicationDecision": "publish_conditionally",
       "requiredExplicitCapabilities": [],
@@ -4952,7 +4953,8 @@
       "doseLabel": "8회",
       "eligiblePurposes": [
         "warmup",
-        "leisure"
+        "leisure",
+        "daily"
       ],
       "publicationDecision": "publish_conditionally",
       "requiredExplicitCapabilities": [],
@@ -5686,7 +5688,8 @@
       },
       "doseLabel": "30초 동안 가볍게",
       "eligiblePurposes": [
-        "warmup"
+        "warmup",
+        "daily"
       ],
       "publicationDecision": "publish_conditionally",
       "requiredExplicitCapabilities": [],
@@ -6111,7 +6114,8 @@
       },
       "doseLabel": "20초씩 2회",
       "eligiblePurposes": [
-        "leisure"
+        "leisure",
+        "daily"
       ],
       "publicationDecision": "publish_conditionally",
       "requiredExplicitCapabilities": [],
@@ -6216,7 +6220,8 @@
       },
       "doseLabel": "20초씩 2회",
       "eligiblePurposes": [
-        "leisure"
+        "leisure",
+        "daily"
       ],
       "publicationDecision": "publish_conditionally",
       "requiredExplicitCapabilities": [],
@@ -6322,7 +6327,8 @@
       },
       "doseLabel": "좌우 각각 20초",
       "eligiblePurposes": [
-        "leisure"
+        "leisure",
+        "daily"
       ],
       "publicationDecision": "publish_conditionally",
       "requiredExplicitCapabilities": [],
@@ -6634,7 +6640,6 @@
       },
       "doseLabel": "좌우 각각 6회",
       "eligiblePurposes": [
-        "warmup",
         "leisure"
       ],
       "publicationDecision": "publish_conditionally",
@@ -6741,8 +6746,8 @@
       },
       "doseLabel": "좌우 각각 6회",
       "eligiblePurposes": [
-        "warmup",
-        "leisure"
+        "leisure",
+        "daily"
       ],
       "publicationDecision": "publish_conditionally",
       "requiredExplicitCapabilities": [],
@@ -7862,6 +7867,1633 @@
         "legacyId": null,
         "sourceDoseWasMissing": false,
         "imageRevised": false,
+        "userApproved20261016Correction": false
+      }
+    },
+    {
+      "catalogId": "N01",
+      "movementId": "patch-N01",
+      "contentVersion": "2026-10-19.2",
+      "name": "서서 관자 부드럽게 마사지",
+      "sourceName": "서서 관자 부드럽게 마사지",
+      "group": "patch-variant",
+      "pose": "standing",
+      "poseLabel": "서기",
+      "supports": [],
+      "requiresComfortForDaily": [],
+      "directions": [],
+      "family": "jaw-muscle-massage",
+      "movementType": "가벼운 가동 움직임",
+      "linkedRegions": [
+        "머리"
+      ],
+      "patternIds": [],
+      "targetInternalOnly": "부위별 작은 가동·이완",
+      "steps": [
+        "두 발을 골반 너비로 두고 편하게 서요.",
+        "손끝을 관자에 가볍게 대고 작은 원으로 움직여요.",
+        "이를 꽉 물지 않고 턱의 힘을 풀어요."
+      ],
+      "cue": "작고 편한 범위에서 천천히 해요.",
+      "cautions": [
+        "불편하면 멈추거나 이 동작을 건너뛰어요."
+      ],
+      "dose": {
+        "kind": "repetition",
+        "holdSeconds": 0,
+        "repetitions": 5,
+        "sides": 1,
+        "rounds": 1,
+        "restSeconds": 0,
+        "tempoSeconds": 6,
+        "activeSeconds": 30,
+        "setupSeconds": 10,
+        "sideChangeSeconds": 0,
+        "plannedSeconds": 40,
+        "basis": "이번 패치의 작은 범위 가동 안내. 개인별 처방이나 효과 보장 아님.",
+        "timerCompletesPerformance": false,
+        "label": "천천히 5회"
+      },
+      "doseLabel": "천천히 5회",
+      "eligiblePurposes": [
+        "daily"
+      ],
+      "publicationDecision": "publish_basic_daily",
+      "requiredExplicitCapabilities": [],
+      "supportAlternatives": [],
+      "includeInDefaultBundles": true,
+      "media": {
+        "type": "image",
+        "originalPath": "assets/movements/n01.svg",
+        "src": "assets/movements/n01.svg",
+        "sourceSha256": "6e8a1b93c510b46d6d8c97cf90ba8f2e4c41fdd8d23f1c50ad88dc283d48f8c0",
+        "alt": "서서 관자 부드럽게 마사지 자세 도식",
+        "fit": "contain",
+        "isVideo": false
+      },
+      "sourceReferences": [],
+      "internalConnectionNotes": {
+        "purpose": "daily",
+        "basis": "선택 자세에서 별도 기구 없이 해당 부위를 직접 작게 움직이는 기본 후보. 습관은 진단이 아닌 정렬 단서."
+      },
+      "review": {
+        "reviewedAt": "2026-10-19",
+        "reviewType": "code-authored pose and instruction consistency review",
+        "clinicalApprovalClaimed": false,
+        "visualCheck": "해당 자세의 벡터 도식과 강조 부위·움직임 안내 일치",
+        "doseDecision": "product_initial_guidance",
+        "sourceLimit": "출처는 동작 이해를 위한 근거이며 개인별 적합성·효능이나 이 서비스 조합을 임상 검증한 것으로 해석하지 않음.",
+        "exclusionReason": null
+      },
+      "provenance": {
+        "sourceImage": "assets/movements/n01.svg",
+        "sourceSha256": "6e8a1b93c510b46d6d8c97cf90ba8f2e4c41fdd8d23f1c50ad88dc283d48f8c0",
+        "legacyId": null,
+        "sourceDoseWasMissing": false,
+        "imageRevised": true,
+        "userApproved20261016Correction": false
+      }
+    },
+    {
+      "catalogId": "N02",
+      "movementId": "patch-N02",
+      "contentVersion": "2026-10-19.2",
+      "name": "서서 혀를 입천장에 두고 입 작게 열기",
+      "sourceName": "서서 혀를 입천장에 두고 입 작게 열기",
+      "group": "patch-variant",
+      "pose": "standing",
+      "poseLabel": "서기",
+      "supports": [],
+      "requiresComfortForDaily": [],
+      "directions": [],
+      "family": "controlled-jaw-opening",
+      "movementType": "가벼운 가동 움직임",
+      "linkedRegions": [
+        "머리"
+      ],
+      "patternIds": [],
+      "targetInternalOnly": "부위별 작은 가동·이완",
+      "steps": [
+        "두 발을 편하게 두고 서요.",
+        "혀끝을 윗니 뒤 입천장에 가볍게 대요.",
+        "혀끝을 댄 채 입을 작게 열었다 닫아요."
+      ],
+      "cue": "작고 편한 범위에서 천천히 해요.",
+      "cautions": [
+        "불편하면 멈추거나 이 동작을 건너뛰어요."
+      ],
+      "dose": {
+        "kind": "repetition",
+        "holdSeconds": 0,
+        "repetitions": 5,
+        "sides": 1,
+        "rounds": 1,
+        "restSeconds": 0,
+        "tempoSeconds": 6,
+        "activeSeconds": 30,
+        "setupSeconds": 10,
+        "sideChangeSeconds": 0,
+        "plannedSeconds": 40,
+        "basis": "이번 패치의 작은 범위 가동 안내. 개인별 처방이나 효과 보장 아님.",
+        "timerCompletesPerformance": false,
+        "label": "천천히 5회"
+      },
+      "doseLabel": "천천히 5회",
+      "eligiblePurposes": [
+        "daily"
+      ],
+      "publicationDecision": "publish_basic_daily",
+      "requiredExplicitCapabilities": [],
+      "supportAlternatives": [],
+      "includeInDefaultBundles": true,
+      "media": {
+        "type": "image",
+        "originalPath": "assets/movements/n02.svg",
+        "src": "assets/movements/n02.svg",
+        "sourceSha256": "56965bb8ec7b88cef484badf4e3b259c655e4f8de88d9c6fe97ff3fa9ff0c035",
+        "alt": "서서 혀를 입천장에 두고 입 작게 열기 자세 도식",
+        "fit": "contain",
+        "isVideo": false
+      },
+      "sourceReferences": [],
+      "internalConnectionNotes": {
+        "purpose": "daily",
+        "basis": "선택 자세에서 별도 기구 없이 해당 부위를 직접 작게 움직이는 기본 후보. 습관은 진단이 아닌 정렬 단서."
+      },
+      "review": {
+        "reviewedAt": "2026-10-19",
+        "reviewType": "code-authored pose and instruction consistency review",
+        "clinicalApprovalClaimed": false,
+        "visualCheck": "해당 자세의 벡터 도식과 강조 부위·움직임 안내 일치",
+        "doseDecision": "product_initial_guidance",
+        "sourceLimit": "출처는 동작 이해를 위한 근거이며 개인별 적합성·효능이나 이 서비스 조합을 임상 검증한 것으로 해석하지 않음.",
+        "exclusionReason": null
+      },
+      "provenance": {
+        "sourceImage": "assets/movements/n02.svg",
+        "sourceSha256": "56965bb8ec7b88cef484badf4e3b259c655e4f8de88d9c6fe97ff3fa9ff0c035",
+        "legacyId": null,
+        "sourceDoseWasMissing": false,
+        "imageRevised": true,
+        "userApproved20261016Correction": false
+      }
+    },
+    {
+      "catalogId": "N03",
+      "movementId": "patch-N03",
+      "contentVersion": "2026-10-19.2",
+      "name": "서서 턱을 뒤로 작게 당기기",
+      "sourceName": "서서 턱을 뒤로 작게 당기기",
+      "group": "patch-variant",
+      "pose": "standing",
+      "poseLabel": "서기",
+      "supports": [],
+      "requiresComfortForDaily": [],
+      "directions": [],
+      "family": "chin-retraction",
+      "movementType": "가벼운 가동 움직임",
+      "linkedRegions": [
+        "목",
+        "머리"
+      ],
+      "patternIds": [],
+      "targetInternalOnly": "부위별 작은 가동·이완",
+      "steps": [
+        "무릎을 잠그지 않고 편하게 서요.",
+        "눈높이를 유지하며 턱을 수평으로 작게 뒤로 당겨요.",
+        "고개를 숙이거나 젖히지 말고 제자리로 돌아와요."
+      ],
+      "cue": "작고 편한 범위에서 천천히 해요.",
+      "cautions": [
+        "불편하면 멈추거나 이 동작을 건너뛰어요."
+      ],
+      "dose": {
+        "kind": "repetition",
+        "holdSeconds": 0,
+        "repetitions": 5,
+        "sides": 1,
+        "rounds": 1,
+        "restSeconds": 0,
+        "tempoSeconds": 6,
+        "activeSeconds": 30,
+        "setupSeconds": 10,
+        "sideChangeSeconds": 0,
+        "plannedSeconds": 40,
+        "basis": "이번 패치의 작은 범위 가동 안내. 개인별 처방이나 효과 보장 아님.",
+        "timerCompletesPerformance": false,
+        "label": "천천히 5회"
+      },
+      "doseLabel": "천천히 5회",
+      "eligiblePurposes": [
+        "daily"
+      ],
+      "publicationDecision": "publish_basic_daily",
+      "requiredExplicitCapabilities": [],
+      "supportAlternatives": [],
+      "includeInDefaultBundles": true,
+      "media": {
+        "type": "image",
+        "originalPath": "assets/movements/n03.svg",
+        "src": "assets/movements/n03.svg",
+        "sourceSha256": "9afa0672dfb47ee35cf28e69f9a7bff57c5bf4141b9b66c19e37407732aff70d",
+        "alt": "서서 턱을 뒤로 작게 당기기 자세 도식",
+        "fit": "contain",
+        "isVideo": false
+      },
+      "sourceReferences": [],
+      "internalConnectionNotes": {
+        "purpose": "daily",
+        "basis": "선택 자세에서 별도 기구 없이 해당 부위를 직접 작게 움직이는 기본 후보. 습관은 진단이 아닌 정렬 단서."
+      },
+      "review": {
+        "reviewedAt": "2026-10-19",
+        "reviewType": "code-authored pose and instruction consistency review",
+        "clinicalApprovalClaimed": false,
+        "visualCheck": "해당 자세의 벡터 도식과 강조 부위·움직임 안내 일치",
+        "doseDecision": "product_initial_guidance",
+        "sourceLimit": "출처는 동작 이해를 위한 근거이며 개인별 적합성·효능이나 이 서비스 조합을 임상 검증한 것으로 해석하지 않음.",
+        "exclusionReason": null
+      },
+      "provenance": {
+        "sourceImage": "assets/movements/n03.svg",
+        "sourceSha256": "9afa0672dfb47ee35cf28e69f9a7bff57c5bf4141b9b66c19e37407732aff70d",
+        "legacyId": null,
+        "sourceDoseWasMissing": false,
+        "imageRevised": true,
+        "userApproved20261016Correction": false
+      }
+    },
+    {
+      "catalogId": "N04",
+      "movementId": "patch-N04",
+      "contentVersion": "2026-10-19.2",
+      "name": "서서 고개 좌우 천천히 돌리기",
+      "sourceName": "서서 고개 좌우 천천히 돌리기",
+      "group": "patch-variant",
+      "pose": "standing",
+      "poseLabel": "서기",
+      "supports": [],
+      "requiresComfortForDaily": [],
+      "directions": [],
+      "family": "neck-turn",
+      "movementType": "가벼운 가동 움직임",
+      "linkedRegions": [
+        "목"
+      ],
+      "patternIds": [],
+      "targetInternalOnly": "부위별 작은 가동·이완",
+      "steps": [
+        "두 발로 편하게 서고 어깨 힘을 풀어요.",
+        "고개를 한쪽으로 편한 만큼만 천천히 돌려요.",
+        "가운데로 돌아와 반대쪽도 반복해요."
+      ],
+      "cue": "작고 편한 범위에서 천천히 해요.",
+      "cautions": [
+        "불편하면 멈추거나 이 동작을 건너뛰어요."
+      ],
+      "dose": {
+        "kind": "repetition",
+        "holdSeconds": 0,
+        "repetitions": 5,
+        "sides": 1,
+        "rounds": 1,
+        "restSeconds": 0,
+        "tempoSeconds": 6,
+        "activeSeconds": 30,
+        "setupSeconds": 10,
+        "sideChangeSeconds": 0,
+        "plannedSeconds": 40,
+        "basis": "이번 패치의 작은 범위 가동 안내. 개인별 처방이나 효과 보장 아님.",
+        "timerCompletesPerformance": false,
+        "label": "천천히 5회"
+      },
+      "doseLabel": "천천히 5회",
+      "eligiblePurposes": [
+        "daily"
+      ],
+      "publicationDecision": "publish_basic_daily",
+      "requiredExplicitCapabilities": [],
+      "supportAlternatives": [],
+      "includeInDefaultBundles": true,
+      "media": {
+        "type": "image",
+        "originalPath": "assets/movements/n04.svg",
+        "src": "assets/movements/n04.svg",
+        "sourceSha256": "16579f9ef925564cbd8a9acf4dab481474f71d1a6641f8d5da3b5ead375a3ffc",
+        "alt": "서서 고개 좌우 천천히 돌리기 자세 도식",
+        "fit": "contain",
+        "isVideo": false
+      },
+      "sourceReferences": [],
+      "internalConnectionNotes": {
+        "purpose": "daily",
+        "basis": "선택 자세에서 별도 기구 없이 해당 부위를 직접 작게 움직이는 기본 후보. 습관은 진단이 아닌 정렬 단서."
+      },
+      "review": {
+        "reviewedAt": "2026-10-19",
+        "reviewType": "code-authored pose and instruction consistency review",
+        "clinicalApprovalClaimed": false,
+        "visualCheck": "해당 자세의 벡터 도식과 강조 부위·움직임 안내 일치",
+        "doseDecision": "product_initial_guidance",
+        "sourceLimit": "출처는 동작 이해를 위한 근거이며 개인별 적합성·효능이나 이 서비스 조합을 임상 검증한 것으로 해석하지 않음.",
+        "exclusionReason": null
+      },
+      "provenance": {
+        "sourceImage": "assets/movements/n04.svg",
+        "sourceSha256": "16579f9ef925564cbd8a9acf4dab481474f71d1a6641f8d5da3b5ead375a3ffc",
+        "legacyId": null,
+        "sourceDoseWasMissing": false,
+        "imageRevised": true,
+        "userApproved20261016Correction": false
+      }
+    },
+    {
+      "catalogId": "N05",
+      "movementId": "patch-N05",
+      "contentVersion": "2026-10-19.2",
+      "name": "서서 팔을 가슴 앞으로 당기기",
+      "sourceName": "서서 팔을 가슴 앞으로 당기기",
+      "group": "patch-variant",
+      "pose": "standing",
+      "poseLabel": "서기",
+      "supports": [],
+      "requiresComfortForDaily": [],
+      "directions": [],
+      "family": "cross-body-shoulder",
+      "movementType": "가벼운 가동 움직임",
+      "linkedRegions": [
+        "어깨",
+        "등"
+      ],
+      "patternIds": [],
+      "targetInternalOnly": "부위별 작은 가동·이완",
+      "steps": [
+        "두 발을 벌려 편하게 서요.",
+        "한 팔을 가슴 앞쪽으로 가져와 반대 손으로 위팔을 받쳐요.",
+        "어깨가 올라가지 않도록 가볍게 당기고 반대쪽도 해요."
+      ],
+      "cue": "작고 편한 범위에서 천천히 해요.",
+      "cautions": [
+        "불편하면 멈추거나 이 동작을 건너뛰어요."
+      ],
+      "dose": {
+        "kind": "repetition",
+        "holdSeconds": 0,
+        "repetitions": 5,
+        "sides": 1,
+        "rounds": 1,
+        "restSeconds": 0,
+        "tempoSeconds": 6,
+        "activeSeconds": 30,
+        "setupSeconds": 10,
+        "sideChangeSeconds": 0,
+        "plannedSeconds": 40,
+        "basis": "이번 패치의 작은 범위 가동 안내. 개인별 처방이나 효과 보장 아님.",
+        "timerCompletesPerformance": false,
+        "label": "천천히 5회"
+      },
+      "doseLabel": "천천히 5회",
+      "eligiblePurposes": [
+        "daily"
+      ],
+      "publicationDecision": "publish_basic_daily",
+      "requiredExplicitCapabilities": [],
+      "supportAlternatives": [],
+      "includeInDefaultBundles": true,
+      "media": {
+        "type": "image",
+        "originalPath": "assets/movements/n05.svg",
+        "src": "assets/movements/n05.svg",
+        "sourceSha256": "d7fa78d36efc9e094d22c5c5373407f98d9892897569c1d4de207a7e8f42ad54",
+        "alt": "서서 팔을 가슴 앞으로 당기기 자세 도식",
+        "fit": "contain",
+        "isVideo": false
+      },
+      "sourceReferences": [],
+      "internalConnectionNotes": {
+        "purpose": "daily",
+        "basis": "선택 자세에서 별도 기구 없이 해당 부위를 직접 작게 움직이는 기본 후보. 습관은 진단이 아닌 정렬 단서."
+      },
+      "review": {
+        "reviewedAt": "2026-10-19",
+        "reviewType": "code-authored pose and instruction consistency review",
+        "clinicalApprovalClaimed": false,
+        "visualCheck": "해당 자세의 벡터 도식과 강조 부위·움직임 안내 일치",
+        "doseDecision": "product_initial_guidance",
+        "sourceLimit": "출처는 동작 이해를 위한 근거이며 개인별 적합성·효능이나 이 서비스 조합을 임상 검증한 것으로 해석하지 않음.",
+        "exclusionReason": null
+      },
+      "provenance": {
+        "sourceImage": "assets/movements/n05.svg",
+        "sourceSha256": "d7fa78d36efc9e094d22c5c5373407f98d9892897569c1d4de207a7e8f42ad54",
+        "legacyId": null,
+        "sourceDoseWasMissing": false,
+        "imageRevised": true,
+        "userApproved20261016Correction": false
+      }
+    },
+    {
+      "catalogId": "N06",
+      "movementId": "patch-N06",
+      "contentVersion": "2026-10-19.2",
+      "name": "서서 양손 앞으로 뻗어 윗등 늘리기",
+      "sourceName": "서서 양손 앞으로 뻗어 윗등 늘리기",
+      "group": "patch-variant",
+      "pose": "standing",
+      "poseLabel": "서기",
+      "supports": [],
+      "requiresComfortForDaily": [],
+      "directions": [],
+      "family": "upper-back-reach",
+      "movementType": "가벼운 가동 움직임",
+      "linkedRegions": [
+        "등",
+        "어깨"
+      ],
+      "patternIds": [],
+      "targetInternalOnly": "부위별 작은 가동·이완",
+      "steps": [
+        "두 발로 편하게 서요.",
+        "가슴 높이에서 양손을 모아 앞으로 천천히 뻗어요.",
+        "허리를 깊게 숙이지 않고 양쪽 날개뼈 사이를 넓혀요."
+      ],
+      "cue": "작고 편한 범위에서 천천히 해요.",
+      "cautions": [
+        "불편하면 멈추거나 이 동작을 건너뛰어요."
+      ],
+      "dose": {
+        "kind": "repetition",
+        "holdSeconds": 0,
+        "repetitions": 5,
+        "sides": 1,
+        "rounds": 1,
+        "restSeconds": 0,
+        "tempoSeconds": 6,
+        "activeSeconds": 30,
+        "setupSeconds": 10,
+        "sideChangeSeconds": 0,
+        "plannedSeconds": 40,
+        "basis": "이번 패치의 작은 범위 가동 안내. 개인별 처방이나 효과 보장 아님.",
+        "timerCompletesPerformance": false,
+        "label": "천천히 5회"
+      },
+      "doseLabel": "천천히 5회",
+      "eligiblePurposes": [
+        "daily"
+      ],
+      "publicationDecision": "publish_basic_daily",
+      "requiredExplicitCapabilities": [],
+      "supportAlternatives": [],
+      "includeInDefaultBundles": true,
+      "media": {
+        "type": "image",
+        "originalPath": "assets/movements/n06.svg",
+        "src": "assets/movements/n06.svg",
+        "sourceSha256": "d6c7bed77d165f98a5c01c384ca26c106ddec23a87d7f256a02904ac9cca158c",
+        "alt": "서서 양손 앞으로 뻗어 윗등 늘리기 자세 도식",
+        "fit": "contain",
+        "isVideo": false
+      },
+      "sourceReferences": [],
+      "internalConnectionNotes": {
+        "purpose": "daily",
+        "basis": "선택 자세에서 별도 기구 없이 해당 부위를 직접 작게 움직이는 기본 후보. 습관은 진단이 아닌 정렬 단서."
+      },
+      "review": {
+        "reviewedAt": "2026-10-19",
+        "reviewType": "code-authored pose and instruction consistency review",
+        "clinicalApprovalClaimed": false,
+        "visualCheck": "해당 자세의 벡터 도식과 강조 부위·움직임 안내 일치",
+        "doseDecision": "product_initial_guidance",
+        "sourceLimit": "출처는 동작 이해를 위한 근거이며 개인별 적합성·효능이나 이 서비스 조합을 임상 검증한 것으로 해석하지 않음.",
+        "exclusionReason": null
+      },
+      "provenance": {
+        "sourceImage": "assets/movements/n06.svg",
+        "sourceSha256": "d6c7bed77d165f98a5c01c384ca26c106ddec23a87d7f256a02904ac9cca158c",
+        "legacyId": null,
+        "sourceDoseWasMissing": false,
+        "imageRevised": true,
+        "userApproved20261016Correction": false
+      }
+    },
+    {
+      "catalogId": "N07",
+      "movementId": "patch-N07",
+      "contentVersion": "2026-10-19.2",
+      "name": "서서 골반 앞뒤로 작게 움직이기",
+      "sourceName": "서서 골반 앞뒤로 작게 움직이기",
+      "group": "patch-variant",
+      "pose": "standing",
+      "poseLabel": "서기",
+      "supports": [],
+      "requiresComfortForDaily": [],
+      "directions": [],
+      "family": "standing-pelvic-tilt",
+      "movementType": "가벼운 가동 움직임",
+      "linkedRegions": [
+        "허리"
+      ],
+      "patternIds": [],
+      "targetInternalOnly": "부위별 작은 가동·이완",
+      "steps": [
+        "두 발을 골반 너비로 벌리고 무릎을 살짝 풀어요.",
+        "손을 골반에 두고 골반을 앞뒤로 아주 작게 움직여요.",
+        "몸통을 크게 젖히거나 무릎을 깊게 굽히지 않아요."
+      ],
+      "cue": "작고 편한 범위에서 천천히 해요.",
+      "cautions": [
+        "불편하면 멈추거나 이 동작을 건너뛰어요."
+      ],
+      "dose": {
+        "kind": "repetition",
+        "holdSeconds": 0,
+        "repetitions": 5,
+        "sides": 1,
+        "rounds": 1,
+        "restSeconds": 0,
+        "tempoSeconds": 6,
+        "activeSeconds": 30,
+        "setupSeconds": 10,
+        "sideChangeSeconds": 0,
+        "plannedSeconds": 40,
+        "basis": "이번 패치의 작은 범위 가동 안내. 개인별 처방이나 효과 보장 아님.",
+        "timerCompletesPerformance": false,
+        "label": "천천히 5회"
+      },
+      "doseLabel": "천천히 5회",
+      "eligiblePurposes": [
+        "daily"
+      ],
+      "publicationDecision": "publish_basic_daily",
+      "requiredExplicitCapabilities": [],
+      "supportAlternatives": [],
+      "includeInDefaultBundles": true,
+      "media": {
+        "type": "image",
+        "originalPath": "assets/movements/n07.svg",
+        "src": "assets/movements/n07.svg",
+        "sourceSha256": "80196583eb329b52d13e251f2773aea3f96e067da36b5eaa5b7e00ce8c32650f",
+        "alt": "서서 골반 앞뒤로 작게 움직이기 자세 도식",
+        "fit": "contain",
+        "isVideo": false
+      },
+      "sourceReferences": [],
+      "internalConnectionNotes": {
+        "purpose": "daily",
+        "basis": "선택 자세에서 별도 기구 없이 해당 부위를 직접 작게 움직이는 기본 후보. 습관은 진단이 아닌 정렬 단서."
+      },
+      "review": {
+        "reviewedAt": "2026-10-19",
+        "reviewType": "code-authored pose and instruction consistency review",
+        "clinicalApprovalClaimed": false,
+        "visualCheck": "해당 자세의 벡터 도식과 강조 부위·움직임 안내 일치",
+        "doseDecision": "product_initial_guidance",
+        "sourceLimit": "출처는 동작 이해를 위한 근거이며 개인별 적합성·효능이나 이 서비스 조합을 임상 검증한 것으로 해석하지 않음.",
+        "exclusionReason": null
+      },
+      "provenance": {
+        "sourceImage": "assets/movements/n07.svg",
+        "sourceSha256": "80196583eb329b52d13e251f2773aea3f96e067da36b5eaa5b7e00ce8c32650f",
+        "legacyId": null,
+        "sourceDoseWasMissing": false,
+        "imageRevised": true,
+        "userApproved20261016Correction": false
+      }
+    },
+    {
+      "catalogId": "N08",
+      "movementId": "patch-N08",
+      "contentVersion": "2026-10-19.2",
+      "name": "두 발로 서서 고관절 작게 접기",
+      "sourceName": "두 발로 서서 고관절 작게 접기",
+      "group": "patch-variant",
+      "pose": "standing",
+      "poseLabel": "서기",
+      "supports": [],
+      "requiresComfortForDaily": [],
+      "directions": [],
+      "family": "hip-hinge",
+      "movementType": "가벼운 가동 움직임",
+      "linkedRegions": [
+        "햄스트링",
+        "허리"
+      ],
+      "patternIds": [],
+      "targetInternalOnly": "부위별 작은 가동·이완",
+      "steps": [
+        "두 발을 골반 너비로 두고 무릎을 살짝 굽혀요.",
+        "손을 골반에 두고 엉덩이를 뒤로 보내며 상체를 조금만 기울여요.",
+        "등을 둥글게 말지 않고 두 발로 서서 돌아와요."
+      ],
+      "cue": "작고 편한 범위에서 천천히 해요.",
+      "cautions": [
+        "불편하면 멈추거나 이 동작을 건너뛰어요."
+      ],
+      "dose": {
+        "kind": "repetition",
+        "holdSeconds": 0,
+        "repetitions": 5,
+        "sides": 1,
+        "rounds": 1,
+        "restSeconds": 0,
+        "tempoSeconds": 6,
+        "activeSeconds": 30,
+        "setupSeconds": 10,
+        "sideChangeSeconds": 0,
+        "plannedSeconds": 40,
+        "basis": "이번 패치의 작은 범위 가동 안내. 개인별 처방이나 효과 보장 아님.",
+        "timerCompletesPerformance": false,
+        "label": "천천히 5회"
+      },
+      "doseLabel": "천천히 5회",
+      "eligiblePurposes": [
+        "daily"
+      ],
+      "publicationDecision": "publish_basic_daily",
+      "requiredExplicitCapabilities": [],
+      "supportAlternatives": [],
+      "includeInDefaultBundles": true,
+      "media": {
+        "type": "image",
+        "originalPath": "assets/movements/n08.svg",
+        "src": "assets/movements/n08.svg",
+        "sourceSha256": "d82319e107bda0da0dd12f8e7f8dee3f7b9fa789a08b1a6122ea001c0f7e484e",
+        "alt": "두 발로 서서 고관절 작게 접기 자세 도식",
+        "fit": "contain",
+        "isVideo": false
+      },
+      "sourceReferences": [],
+      "internalConnectionNotes": {
+        "purpose": "daily",
+        "basis": "선택 자세에서 별도 기구 없이 해당 부위를 직접 작게 움직이는 기본 후보. 습관은 진단이 아닌 정렬 단서."
+      },
+      "review": {
+        "reviewedAt": "2026-10-19",
+        "reviewType": "code-authored pose and instruction consistency review",
+        "clinicalApprovalClaimed": false,
+        "visualCheck": "해당 자세의 벡터 도식과 강조 부위·움직임 안내 일치",
+        "doseDecision": "product_initial_guidance",
+        "sourceLimit": "출처는 동작 이해를 위한 근거이며 개인별 적합성·효능이나 이 서비스 조합을 임상 검증한 것으로 해석하지 않음.",
+        "exclusionReason": null
+      },
+      "provenance": {
+        "sourceImage": "assets/movements/n08.svg",
+        "sourceSha256": "d82319e107bda0da0dd12f8e7f8dee3f7b9fa789a08b1a6122ea001c0f7e484e",
+        "legacyId": null,
+        "sourceDoseWasMissing": false,
+        "imageRevised": true,
+        "userApproved20261016Correction": false
+      }
+    },
+    {
+      "catalogId": "N09",
+      "movementId": "patch-N09",
+      "contentVersion": "2026-10-19.2",
+      "name": "두 발로 서서 뒤꿈치 작게 들기",
+      "sourceName": "두 발로 서서 뒤꿈치 작게 들기",
+      "group": "patch-variant",
+      "pose": "standing",
+      "poseLabel": "서기",
+      "supports": [],
+      "requiresComfortForDaily": [],
+      "directions": [],
+      "family": "double-heel-raise",
+      "movementType": "가벼운 가동 움직임",
+      "linkedRegions": [
+        "종아리",
+        "발목"
+      ],
+      "patternIds": [],
+      "targetInternalOnly": "부위별 작은 가동·이완",
+      "steps": [
+        "두 발을 골반 너비로 벌려 서요.",
+        "두 발의 앞부분을 바닥에 둔 채 뒤꿈치를 조금만 들어요.",
+        "두 발로 균형을 유지하며 천천히 내려요. 흔들리면 건너뛰어요."
+      ],
+      "cue": "작고 편한 범위에서 천천히 해요.",
+      "cautions": [
+        "불편하면 멈추거나 이 동작을 건너뛰어요."
+      ],
+      "dose": {
+        "kind": "repetition",
+        "holdSeconds": 0,
+        "repetitions": 5,
+        "sides": 1,
+        "rounds": 1,
+        "restSeconds": 0,
+        "tempoSeconds": 6,
+        "activeSeconds": 30,
+        "setupSeconds": 10,
+        "sideChangeSeconds": 0,
+        "plannedSeconds": 40,
+        "basis": "이번 패치의 작은 범위 가동 안내. 개인별 처방이나 효과 보장 아님.",
+        "timerCompletesPerformance": false,
+        "label": "천천히 5회"
+      },
+      "doseLabel": "천천히 5회",
+      "eligiblePurposes": [
+        "daily"
+      ],
+      "publicationDecision": "publish_basic_daily",
+      "requiredExplicitCapabilities": [],
+      "supportAlternatives": [],
+      "includeInDefaultBundles": true,
+      "media": {
+        "type": "image",
+        "originalPath": "assets/movements/n09.svg",
+        "src": "assets/movements/n09.svg",
+        "sourceSha256": "91edf408f003864042a52f01df16507d1343ac7cab40081b6c5a77dbf94a3580",
+        "alt": "두 발로 서서 뒤꿈치 작게 들기 자세 도식",
+        "fit": "contain",
+        "isVideo": false
+      },
+      "sourceReferences": [],
+      "internalConnectionNotes": {
+        "purpose": "daily",
+        "basis": "선택 자세에서 별도 기구 없이 해당 부위를 직접 작게 움직이는 기본 후보. 습관은 진단이 아닌 정렬 단서."
+      },
+      "review": {
+        "reviewedAt": "2026-10-19",
+        "reviewType": "code-authored pose and instruction consistency review",
+        "clinicalApprovalClaimed": false,
+        "visualCheck": "해당 자세의 벡터 도식과 강조 부위·움직임 안내 일치",
+        "doseDecision": "product_initial_guidance",
+        "sourceLimit": "출처는 동작 이해를 위한 근거이며 개인별 적합성·효능이나 이 서비스 조합을 임상 검증한 것으로 해석하지 않음.",
+        "exclusionReason": null
+      },
+      "provenance": {
+        "sourceImage": "assets/movements/n09.svg",
+        "sourceSha256": "91edf408f003864042a52f01df16507d1343ac7cab40081b6c5a77dbf94a3580",
+        "legacyId": null,
+        "sourceDoseWasMissing": false,
+        "imageRevised": true,
+        "userApproved20261016Correction": false
+      }
+    },
+    {
+      "catalogId": "N10",
+      "movementId": "patch-N10",
+      "contentVersion": "2026-10-19.2",
+      "name": "서서 발끝 번갈아 작게 들기",
+      "sourceName": "서서 발끝 번갈아 작게 들기",
+      "group": "patch-variant",
+      "pose": "standing",
+      "poseLabel": "서기",
+      "supports": [],
+      "requiresComfortForDaily": [],
+      "directions": [],
+      "family": "toe-lift",
+      "movementType": "가벼운 가동 움직임",
+      "linkedRegions": [
+        "종아리",
+        "발목"
+      ],
+      "patternIds": [],
+      "targetInternalOnly": "부위별 작은 가동·이완",
+      "steps": [
+        "두 발로 서서 뒤꿈치를 바닥에 둬요.",
+        "한쪽 발끝을 작게 들었다 내려요.",
+        "몸이 뒤로 기울지 않게 하고 반대쪽도 반복해요."
+      ],
+      "cue": "작고 편한 범위에서 천천히 해요.",
+      "cautions": [
+        "불편하면 멈추거나 이 동작을 건너뛰어요."
+      ],
+      "dose": {
+        "kind": "repetition",
+        "holdSeconds": 0,
+        "repetitions": 5,
+        "sides": 1,
+        "rounds": 1,
+        "restSeconds": 0,
+        "tempoSeconds": 6,
+        "activeSeconds": 30,
+        "setupSeconds": 10,
+        "sideChangeSeconds": 0,
+        "plannedSeconds": 40,
+        "basis": "이번 패치의 작은 범위 가동 안내. 개인별 처방이나 효과 보장 아님.",
+        "timerCompletesPerformance": false,
+        "label": "천천히 5회"
+      },
+      "doseLabel": "천천히 5회",
+      "eligiblePurposes": [
+        "daily"
+      ],
+      "publicationDecision": "publish_basic_daily",
+      "requiredExplicitCapabilities": [],
+      "supportAlternatives": [],
+      "includeInDefaultBundles": true,
+      "media": {
+        "type": "image",
+        "originalPath": "assets/movements/n10.svg",
+        "src": "assets/movements/n10.svg",
+        "sourceSha256": "e17a3052caefc2b66938bab83fcfa2367b3d2290dfff0f1187cb85de21db136f",
+        "alt": "서서 발끝 번갈아 작게 들기 자세 도식",
+        "fit": "contain",
+        "isVideo": false
+      },
+      "sourceReferences": [],
+      "internalConnectionNotes": {
+        "purpose": "daily",
+        "basis": "선택 자세에서 별도 기구 없이 해당 부위를 직접 작게 움직이는 기본 후보. 습관은 진단이 아닌 정렬 단서."
+      },
+      "review": {
+        "reviewedAt": "2026-10-19",
+        "reviewType": "code-authored pose and instruction consistency review",
+        "clinicalApprovalClaimed": false,
+        "visualCheck": "해당 자세의 벡터 도식과 강조 부위·움직임 안내 일치",
+        "doseDecision": "product_initial_guidance",
+        "sourceLimit": "출처는 동작 이해를 위한 근거이며 개인별 적합성·효능이나 이 서비스 조합을 임상 검증한 것으로 해석하지 않음.",
+        "exclusionReason": null
+      },
+      "provenance": {
+        "sourceImage": "assets/movements/n10.svg",
+        "sourceSha256": "e17a3052caefc2b66938bab83fcfa2367b3d2290dfff0f1187cb85de21db136f",
+        "legacyId": null,
+        "sourceDoseWasMissing": false,
+        "imageRevised": true,
+        "userApproved20261016Correction": false
+      }
+    },
+    {
+      "catalogId": "N11",
+      "movementId": "patch-N11",
+      "contentVersion": "2026-10-19.2",
+      "name": "앉아서 뒤꿈치 앞으로 미끄러뜨리기",
+      "sourceName": "앉아서 뒤꿈치 앞으로 미끄러뜨리기",
+      "group": "patch-variant",
+      "pose": "chair",
+      "poseLabel": "의자 앉기",
+      "supports": [
+        "chair"
+      ],
+      "requiresComfortForDaily": [],
+      "directions": [],
+      "family": "heel-slide",
+      "movementType": "가벼운 가동 움직임",
+      "linkedRegions": [
+        "햄스트링",
+        "무릎"
+      ],
+      "patternIds": [],
+      "targetInternalOnly": "부위별 작은 가동·이완",
+      "steps": [
+        "안정된 의자에 앉아 두 발을 바닥에 둬요.",
+        "한쪽 뒤꿈치를 바닥에 둔 채 앞으로 조금 미끄러뜨려 무릎을 펴요.",
+        "발을 당겨 제자리로 돌아오고 반대쪽도 해요."
+      ],
+      "cue": "작고 편한 범위에서 천천히 해요.",
+      "cautions": [
+        "불편하면 멈추거나 이 동작을 건너뛰어요."
+      ],
+      "dose": {
+        "kind": "repetition",
+        "holdSeconds": 0,
+        "repetitions": 5,
+        "sides": 1,
+        "rounds": 1,
+        "restSeconds": 0,
+        "tempoSeconds": 6,
+        "activeSeconds": 30,
+        "setupSeconds": 10,
+        "sideChangeSeconds": 0,
+        "plannedSeconds": 40,
+        "basis": "이번 패치의 작은 범위 가동 안내. 개인별 처방이나 효과 보장 아님.",
+        "timerCompletesPerformance": false,
+        "label": "천천히 5회"
+      },
+      "doseLabel": "천천히 5회",
+      "eligiblePurposes": [
+        "daily"
+      ],
+      "publicationDecision": "publish_basic_daily",
+      "requiredExplicitCapabilities": [],
+      "supportAlternatives": [],
+      "includeInDefaultBundles": true,
+      "media": {
+        "type": "image",
+        "originalPath": "assets/movements/n11.svg",
+        "src": "assets/movements/n11.svg",
+        "sourceSha256": "9d7c82ad14535ff394ed83dfc575bcf3c3e8c2b3f2742a3490c1ef08c081ea79",
+        "alt": "앉아서 뒤꿈치 앞으로 미끄러뜨리기 자세 도식",
+        "fit": "contain",
+        "isVideo": false
+      },
+      "sourceReferences": [],
+      "internalConnectionNotes": {
+        "purpose": "daily",
+        "basis": "선택 자세에서 별도 기구 없이 해당 부위를 직접 작게 움직이는 기본 후보. 습관은 진단이 아닌 정렬 단서."
+      },
+      "review": {
+        "reviewedAt": "2026-10-19",
+        "reviewType": "code-authored pose and instruction consistency review",
+        "clinicalApprovalClaimed": false,
+        "visualCheck": "해당 자세의 벡터 도식과 강조 부위·움직임 안내 일치",
+        "doseDecision": "product_initial_guidance",
+        "sourceLimit": "출처는 동작 이해를 위한 근거이며 개인별 적합성·효능이나 이 서비스 조합을 임상 검증한 것으로 해석하지 않음.",
+        "exclusionReason": null
+      },
+      "provenance": {
+        "sourceImage": "assets/movements/n11.svg",
+        "sourceSha256": "9d7c82ad14535ff394ed83dfc575bcf3c3e8c2b3f2742a3490c1ef08c081ea79",
+        "legacyId": null,
+        "sourceDoseWasMissing": false,
+        "imageRevised": true,
+        "userApproved20261016Correction": false
+      }
+    },
+    {
+      "catalogId": "N12",
+      "movementId": "patch-N12",
+      "contentVersion": "2026-10-19.2",
+      "name": "누워 관자 부드럽게 마사지",
+      "sourceName": "누워 관자 부드럽게 마사지",
+      "group": "patch-variant",
+      "pose": "supine",
+      "poseLabel": "바로 눕기",
+      "supports": [
+        "dryFloor"
+      ],
+      "requiresComfortForDaily": [],
+      "directions": [],
+      "family": "jaw-muscle-massage",
+      "movementType": "가벼운 가동 움직임",
+      "linkedRegions": [
+        "머리"
+      ],
+      "patternIds": [],
+      "targetInternalOnly": "부위별 작은 가동·이완",
+      "steps": [
+        "바닥에 바로 누워 무릎을 편하게 세워요.",
+        "손끝을 관자에 가볍게 대고 작은 원으로 움직여요.",
+        "이를 꽉 물지 않고 턱과 어깨의 힘을 풀어요."
+      ],
+      "cue": "작고 편한 범위에서 천천히 해요.",
+      "cautions": [
+        "불편하면 멈추거나 이 동작을 건너뛰어요."
+      ],
+      "dose": {
+        "kind": "repetition",
+        "holdSeconds": 0,
+        "repetitions": 5,
+        "sides": 1,
+        "rounds": 1,
+        "restSeconds": 0,
+        "tempoSeconds": 6,
+        "activeSeconds": 30,
+        "setupSeconds": 10,
+        "sideChangeSeconds": 0,
+        "plannedSeconds": 40,
+        "basis": "이번 패치의 작은 범위 가동 안내. 개인별 처방이나 효과 보장 아님.",
+        "timerCompletesPerformance": false,
+        "label": "천천히 5회"
+      },
+      "doseLabel": "천천히 5회",
+      "eligiblePurposes": [
+        "daily"
+      ],
+      "publicationDecision": "publish_basic_daily",
+      "requiredExplicitCapabilities": [],
+      "supportAlternatives": [],
+      "includeInDefaultBundles": true,
+      "media": {
+        "type": "image",
+        "originalPath": "assets/movements/n12.svg",
+        "src": "assets/movements/n12.svg",
+        "sourceSha256": "330b4b34b0e549084b154520bc1c27fcc3730147e1a20596dc973a56b0984425",
+        "alt": "누워 관자 부드럽게 마사지 자세 도식",
+        "fit": "contain",
+        "isVideo": false
+      },
+      "sourceReferences": [],
+      "internalConnectionNotes": {
+        "purpose": "daily",
+        "basis": "선택 자세에서 별도 기구 없이 해당 부위를 직접 작게 움직이는 기본 후보. 습관은 진단이 아닌 정렬 단서."
+      },
+      "review": {
+        "reviewedAt": "2026-10-19",
+        "reviewType": "code-authored pose and instruction consistency review",
+        "clinicalApprovalClaimed": false,
+        "visualCheck": "해당 자세의 벡터 도식과 강조 부위·움직임 안내 일치",
+        "doseDecision": "product_initial_guidance",
+        "sourceLimit": "출처는 동작 이해를 위한 근거이며 개인별 적합성·효능이나 이 서비스 조합을 임상 검증한 것으로 해석하지 않음.",
+        "exclusionReason": null
+      },
+      "provenance": {
+        "sourceImage": "assets/movements/n12.svg",
+        "sourceSha256": "330b4b34b0e549084b154520bc1c27fcc3730147e1a20596dc973a56b0984425",
+        "legacyId": null,
+        "sourceDoseWasMissing": false,
+        "imageRevised": true,
+        "userApproved20261016Correction": false
+      }
+    },
+    {
+      "catalogId": "N13",
+      "movementId": "patch-N13",
+      "contentVersion": "2026-10-19.2",
+      "name": "누워 혀를 입천장에 두고 입 작게 열기",
+      "sourceName": "누워 혀를 입천장에 두고 입 작게 열기",
+      "group": "patch-variant",
+      "pose": "supine",
+      "poseLabel": "바로 눕기",
+      "supports": [
+        "dryFloor"
+      ],
+      "requiresComfortForDaily": [],
+      "directions": [],
+      "family": "controlled-jaw-opening",
+      "movementType": "가벼운 가동 움직임",
+      "linkedRegions": [
+        "머리"
+      ],
+      "patternIds": [],
+      "targetInternalOnly": "부위별 작은 가동·이완",
+      "steps": [
+        "바로 누워 무릎을 편하게 세워요.",
+        "혀끝을 윗니 뒤 입천장에 가볍게 대요.",
+        "혀끝을 댄 채 입을 작게 열었다 닫아요."
+      ],
+      "cue": "작고 편한 범위에서 천천히 해요.",
+      "cautions": [
+        "불편하면 멈추거나 이 동작을 건너뛰어요."
+      ],
+      "dose": {
+        "kind": "repetition",
+        "holdSeconds": 0,
+        "repetitions": 5,
+        "sides": 1,
+        "rounds": 1,
+        "restSeconds": 0,
+        "tempoSeconds": 6,
+        "activeSeconds": 30,
+        "setupSeconds": 10,
+        "sideChangeSeconds": 0,
+        "plannedSeconds": 40,
+        "basis": "이번 패치의 작은 범위 가동 안내. 개인별 처방이나 효과 보장 아님.",
+        "timerCompletesPerformance": false,
+        "label": "천천히 5회"
+      },
+      "doseLabel": "천천히 5회",
+      "eligiblePurposes": [
+        "daily"
+      ],
+      "publicationDecision": "publish_basic_daily",
+      "requiredExplicitCapabilities": [],
+      "supportAlternatives": [],
+      "includeInDefaultBundles": true,
+      "media": {
+        "type": "image",
+        "originalPath": "assets/movements/n13.svg",
+        "src": "assets/movements/n13.svg",
+        "sourceSha256": "49fa9dd8825fa66cba2f99dd4c7c25f541ff395c1b3912906a177a3077f51056",
+        "alt": "누워 혀를 입천장에 두고 입 작게 열기 자세 도식",
+        "fit": "contain",
+        "isVideo": false
+      },
+      "sourceReferences": [],
+      "internalConnectionNotes": {
+        "purpose": "daily",
+        "basis": "선택 자세에서 별도 기구 없이 해당 부위를 직접 작게 움직이는 기본 후보. 습관은 진단이 아닌 정렬 단서."
+      },
+      "review": {
+        "reviewedAt": "2026-10-19",
+        "reviewType": "code-authored pose and instruction consistency review",
+        "clinicalApprovalClaimed": false,
+        "visualCheck": "해당 자세의 벡터 도식과 강조 부위·움직임 안내 일치",
+        "doseDecision": "product_initial_guidance",
+        "sourceLimit": "출처는 동작 이해를 위한 근거이며 개인별 적합성·효능이나 이 서비스 조합을 임상 검증한 것으로 해석하지 않음.",
+        "exclusionReason": null
+      },
+      "provenance": {
+        "sourceImage": "assets/movements/n13.svg",
+        "sourceSha256": "49fa9dd8825fa66cba2f99dd4c7c25f541ff395c1b3912906a177a3077f51056",
+        "legacyId": null,
+        "sourceDoseWasMissing": false,
+        "imageRevised": true,
+        "userApproved20261016Correction": false
+      }
+    },
+    {
+      "catalogId": "N14",
+      "movementId": "patch-N14",
+      "contentVersion": "2026-10-19.2",
+      "name": "누워 턱 작게 끄덕이기",
+      "sourceName": "누워 턱 작게 끄덕이기",
+      "group": "patch-variant",
+      "pose": "supine",
+      "poseLabel": "바로 눕기",
+      "supports": [
+        "dryFloor"
+      ],
+      "requiresComfortForDaily": [],
+      "directions": [],
+      "family": "chin-nod",
+      "movementType": "가벼운 가동 움직임",
+      "linkedRegions": [
+        "목",
+        "머리"
+      ],
+      "patternIds": [],
+      "targetInternalOnly": "부위별 작은 가동·이완",
+      "steps": [
+        "바로 누워 무릎을 편하게 세워요.",
+        "머리를 바닥에서 들지 않고 턱으로 아주 작은 끄덕임을 해요.",
+        "목 뒤를 강하게 누르지 말고 힘을 풀어요."
+      ],
+      "cue": "작고 편한 범위에서 천천히 해요.",
+      "cautions": [
+        "불편하면 멈추거나 이 동작을 건너뛰어요."
+      ],
+      "dose": {
+        "kind": "repetition",
+        "holdSeconds": 0,
+        "repetitions": 5,
+        "sides": 1,
+        "rounds": 1,
+        "restSeconds": 0,
+        "tempoSeconds": 6,
+        "activeSeconds": 30,
+        "setupSeconds": 10,
+        "sideChangeSeconds": 0,
+        "plannedSeconds": 40,
+        "basis": "이번 패치의 작은 범위 가동 안내. 개인별 처방이나 효과 보장 아님.",
+        "timerCompletesPerformance": false,
+        "label": "천천히 5회"
+      },
+      "doseLabel": "천천히 5회",
+      "eligiblePurposes": [
+        "daily"
+      ],
+      "publicationDecision": "publish_basic_daily",
+      "requiredExplicitCapabilities": [],
+      "supportAlternatives": [],
+      "includeInDefaultBundles": true,
+      "media": {
+        "type": "image",
+        "originalPath": "assets/movements/n14.svg",
+        "src": "assets/movements/n14.svg",
+        "sourceSha256": "62ce2349baea36b0a27fb55e083522354ad0545482caa0cdb64476775800c335",
+        "alt": "누워 턱 작게 끄덕이기 자세 도식",
+        "fit": "contain",
+        "isVideo": false
+      },
+      "sourceReferences": [],
+      "internalConnectionNotes": {
+        "purpose": "daily",
+        "basis": "선택 자세에서 별도 기구 없이 해당 부위를 직접 작게 움직이는 기본 후보. 습관은 진단이 아닌 정렬 단서."
+      },
+      "review": {
+        "reviewedAt": "2026-10-19",
+        "reviewType": "code-authored pose and instruction consistency review",
+        "clinicalApprovalClaimed": false,
+        "visualCheck": "해당 자세의 벡터 도식과 강조 부위·움직임 안내 일치",
+        "doseDecision": "product_initial_guidance",
+        "sourceLimit": "출처는 동작 이해를 위한 근거이며 개인별 적합성·효능이나 이 서비스 조합을 임상 검증한 것으로 해석하지 않음.",
+        "exclusionReason": null
+      },
+      "provenance": {
+        "sourceImage": "assets/movements/n14.svg",
+        "sourceSha256": "62ce2349baea36b0a27fb55e083522354ad0545482caa0cdb64476775800c335",
+        "legacyId": null,
+        "sourceDoseWasMissing": false,
+        "imageRevised": true,
+        "userApproved20261016Correction": false
+      }
+    },
+    {
+      "catalogId": "N15",
+      "movementId": "patch-N15",
+      "contentVersion": "2026-10-19.2",
+      "name": "누워 고개 좌우 작게 돌리기",
+      "sourceName": "누워 고개 좌우 작게 돌리기",
+      "group": "patch-variant",
+      "pose": "supine",
+      "poseLabel": "바로 눕기",
+      "supports": [
+        "dryFloor"
+      ],
+      "requiresComfortForDaily": [],
+      "directions": [],
+      "family": "neck-turn",
+      "movementType": "가벼운 가동 움직임",
+      "linkedRegions": [
+        "목"
+      ],
+      "patternIds": [],
+      "targetInternalOnly": "부위별 작은 가동·이완",
+      "steps": [
+        "바로 누워 무릎을 편하게 세워요.",
+        "머리를 들지 않고 한쪽으로 조금만 돌려요.",
+        "가운데로 돌아온 뒤 반대쪽도 편한 범위에서 해요."
+      ],
+      "cue": "작고 편한 범위에서 천천히 해요.",
+      "cautions": [
+        "불편하면 멈추거나 이 동작을 건너뛰어요."
+      ],
+      "dose": {
+        "kind": "repetition",
+        "holdSeconds": 0,
+        "repetitions": 5,
+        "sides": 1,
+        "rounds": 1,
+        "restSeconds": 0,
+        "tempoSeconds": 6,
+        "activeSeconds": 30,
+        "setupSeconds": 10,
+        "sideChangeSeconds": 0,
+        "plannedSeconds": 40,
+        "basis": "이번 패치의 작은 범위 가동 안내. 개인별 처방이나 효과 보장 아님.",
+        "timerCompletesPerformance": false,
+        "label": "천천히 5회"
+      },
+      "doseLabel": "천천히 5회",
+      "eligiblePurposes": [
+        "daily"
+      ],
+      "publicationDecision": "publish_basic_daily",
+      "requiredExplicitCapabilities": [],
+      "supportAlternatives": [],
+      "includeInDefaultBundles": true,
+      "media": {
+        "type": "image",
+        "originalPath": "assets/movements/n15.svg",
+        "src": "assets/movements/n15.svg",
+        "sourceSha256": "b16966b083697f3eee0756d70a3b0978193470b9d88bbb593ebcbd9f6fd5bd9f",
+        "alt": "누워 고개 좌우 작게 돌리기 자세 도식",
+        "fit": "contain",
+        "isVideo": false
+      },
+      "sourceReferences": [],
+      "internalConnectionNotes": {
+        "purpose": "daily",
+        "basis": "선택 자세에서 별도 기구 없이 해당 부위를 직접 작게 움직이는 기본 후보. 습관은 진단이 아닌 정렬 단서."
+      },
+      "review": {
+        "reviewedAt": "2026-10-19",
+        "reviewType": "code-authored pose and instruction consistency review",
+        "clinicalApprovalClaimed": false,
+        "visualCheck": "해당 자세의 벡터 도식과 강조 부위·움직임 안내 일치",
+        "doseDecision": "product_initial_guidance",
+        "sourceLimit": "출처는 동작 이해를 위한 근거이며 개인별 적합성·효능이나 이 서비스 조합을 임상 검증한 것으로 해석하지 않음.",
+        "exclusionReason": null
+      },
+      "provenance": {
+        "sourceImage": "assets/movements/n15.svg",
+        "sourceSha256": "b16966b083697f3eee0756d70a3b0978193470b9d88bbb593ebcbd9f6fd5bd9f",
+        "legacyId": null,
+        "sourceDoseWasMissing": false,
+        "imageRevised": true,
+        "userApproved20261016Correction": false
+      }
+    },
+    {
+      "catalogId": "N16",
+      "movementId": "patch-N16",
+      "contentVersion": "2026-10-19.2",
+      "name": "누워 양팔 천장으로 뻗기",
+      "sourceName": "누워 양팔 천장으로 뻗기",
+      "group": "patch-variant",
+      "pose": "supine",
+      "poseLabel": "바로 눕기",
+      "supports": [
+        "dryFloor"
+      ],
+      "requiresComfortForDaily": [],
+      "directions": [],
+      "family": "supine-arm-reach",
+      "movementType": "가벼운 가동 움직임",
+      "linkedRegions": [
+        "어깨",
+        "등"
+      ],
+      "patternIds": [],
+      "targetInternalOnly": "부위별 작은 가동·이완",
+      "steps": [
+        "바로 누워 무릎을 편하게 세워요.",
+        "두 팔을 천장 쪽으로 들어 손바닥이 마주 보게 해요.",
+        "양손을 천장 쪽으로 조금 뻗었다가 어깨를 바닥으로 편하게 내려요."
+      ],
+      "cue": "작고 편한 범위에서 천천히 해요.",
+      "cautions": [
+        "불편하면 멈추거나 이 동작을 건너뛰어요."
+      ],
+      "dose": {
+        "kind": "repetition",
+        "holdSeconds": 0,
+        "repetitions": 5,
+        "sides": 1,
+        "rounds": 1,
+        "restSeconds": 0,
+        "tempoSeconds": 6,
+        "activeSeconds": 30,
+        "setupSeconds": 10,
+        "sideChangeSeconds": 0,
+        "plannedSeconds": 40,
+        "basis": "이번 패치의 작은 범위 가동 안내. 개인별 처방이나 효과 보장 아님.",
+        "timerCompletesPerformance": false,
+        "label": "천천히 5회"
+      },
+      "doseLabel": "천천히 5회",
+      "eligiblePurposes": [
+        "daily"
+      ],
+      "publicationDecision": "publish_basic_daily",
+      "requiredExplicitCapabilities": [],
+      "supportAlternatives": [],
+      "includeInDefaultBundles": true,
+      "media": {
+        "type": "image",
+        "originalPath": "assets/movements/n16.svg",
+        "src": "assets/movements/n16.svg",
+        "sourceSha256": "73bdc7e41a6cbe44827956487fc8cbfc1cc4fca4d7a1cb53cbed22940d27cb97",
+        "alt": "누워 양팔 천장으로 뻗기 자세 도식",
+        "fit": "contain",
+        "isVideo": false
+      },
+      "sourceReferences": [],
+      "internalConnectionNotes": {
+        "purpose": "daily",
+        "basis": "선택 자세에서 별도 기구 없이 해당 부위를 직접 작게 움직이는 기본 후보. 습관은 진단이 아닌 정렬 단서."
+      },
+      "review": {
+        "reviewedAt": "2026-10-19",
+        "reviewType": "code-authored pose and instruction consistency review",
+        "clinicalApprovalClaimed": false,
+        "visualCheck": "해당 자세의 벡터 도식과 강조 부위·움직임 안내 일치",
+        "doseDecision": "product_initial_guidance",
+        "sourceLimit": "출처는 동작 이해를 위한 근거이며 개인별 적합성·효능이나 이 서비스 조합을 임상 검증한 것으로 해석하지 않음.",
+        "exclusionReason": null
+      },
+      "provenance": {
+        "sourceImage": "assets/movements/n16.svg",
+        "sourceSha256": "73bdc7e41a6cbe44827956487fc8cbfc1cc4fca4d7a1cb53cbed22940d27cb97",
+        "legacyId": null,
+        "sourceDoseWasMissing": false,
+        "imageRevised": true,
+        "userApproved20261016Correction": false
+      }
+    },
+    {
+      "catalogId": "N17",
+      "movementId": "patch-N17",
+      "contentVersion": "2026-10-19.2",
+      "name": "누워 뒤꿈치 미끄러뜨려 무릎 펴기",
+      "sourceName": "누워 뒤꿈치 미끄러뜨려 무릎 펴기",
+      "group": "patch-variant",
+      "pose": "supine",
+      "poseLabel": "바로 눕기",
+      "supports": [
+        "dryFloor"
+      ],
+      "requiresComfortForDaily": [],
+      "directions": [],
+      "family": "heel-slide",
+      "movementType": "가벼운 가동 움직임",
+      "linkedRegions": [
+        "허벅지",
+        "햄스트링",
+        "무릎"
+      ],
+      "patternIds": [],
+      "targetInternalOnly": "부위별 작은 가동·이완",
+      "steps": [
+        "바로 누워 두 무릎을 세우고 발바닥을 바닥에 둬요.",
+        "한쪽 뒤꿈치를 바닥에 둔 채 앞으로 미끄러뜨려 다리를 펴요.",
+        "다시 무릎을 세우고 반대쪽도 반복해요."
+      ],
+      "cue": "작고 편한 범위에서 천천히 해요.",
+      "cautions": [
+        "불편하면 멈추거나 이 동작을 건너뛰어요."
+      ],
+      "dose": {
+        "kind": "repetition",
+        "holdSeconds": 0,
+        "repetitions": 5,
+        "sides": 1,
+        "rounds": 1,
+        "restSeconds": 0,
+        "tempoSeconds": 6,
+        "activeSeconds": 30,
+        "setupSeconds": 10,
+        "sideChangeSeconds": 0,
+        "plannedSeconds": 40,
+        "basis": "이번 패치의 작은 범위 가동 안내. 개인별 처방이나 효과 보장 아님.",
+        "timerCompletesPerformance": false,
+        "label": "천천히 5회"
+      },
+      "doseLabel": "천천히 5회",
+      "eligiblePurposes": [
+        "daily"
+      ],
+      "publicationDecision": "publish_basic_daily",
+      "requiredExplicitCapabilities": [],
+      "supportAlternatives": [],
+      "includeInDefaultBundles": true,
+      "media": {
+        "type": "image",
+        "originalPath": "assets/movements/n17.svg",
+        "src": "assets/movements/n17.svg",
+        "sourceSha256": "94481377db15ec28d681dcd72c451815a7ad08089495edb9270ca9d7a1c45a7e",
+        "alt": "누워 뒤꿈치 미끄러뜨려 무릎 펴기 자세 도식",
+        "fit": "contain",
+        "isVideo": false
+      },
+      "sourceReferences": [],
+      "internalConnectionNotes": {
+        "purpose": "daily",
+        "basis": "선택 자세에서 별도 기구 없이 해당 부위를 직접 작게 움직이는 기본 후보. 습관은 진단이 아닌 정렬 단서."
+      },
+      "review": {
+        "reviewedAt": "2026-10-19",
+        "reviewType": "code-authored pose and instruction consistency review",
+        "clinicalApprovalClaimed": false,
+        "visualCheck": "해당 자세의 벡터 도식과 강조 부위·움직임 안내 일치",
+        "doseDecision": "product_initial_guidance",
+        "sourceLimit": "출처는 동작 이해를 위한 근거이며 개인별 적합성·효능이나 이 서비스 조합을 임상 검증한 것으로 해석하지 않음.",
+        "exclusionReason": null
+      },
+      "provenance": {
+        "sourceImage": "assets/movements/n17.svg",
+        "sourceSha256": "94481377db15ec28d681dcd72c451815a7ad08089495edb9270ca9d7a1c45a7e",
+        "legacyId": null,
+        "sourceDoseWasMissing": false,
+        "imageRevised": true,
+        "userApproved20261016Correction": false
+      }
+    },
+    {
+      "catalogId": "N18",
+      "movementId": "patch-N18",
+      "contentVersion": "2026-10-19.2",
+      "name": "누워 발목 위아래 움직이기",
+      "sourceName": "누워 발목 위아래 움직이기",
+      "group": "patch-variant",
+      "pose": "supine",
+      "poseLabel": "바로 눕기",
+      "supports": [
+        "dryFloor"
+      ],
+      "requiresComfortForDaily": [],
+      "directions": [],
+      "family": "ankle-pump",
+      "movementType": "가벼운 가동 움직임",
+      "linkedRegions": [
+        "종아리",
+        "발목"
+      ],
+      "patternIds": [],
+      "targetInternalOnly": "부위별 작은 가동·이완",
+      "steps": [
+        "바로 누워 다리를 편하게 펴요.",
+        "발끝을 몸 쪽으로 당겼다가 멀리 보내요.",
+        "무릎과 골반은 편하게 두고 발목만 천천히 움직여요."
+      ],
+      "cue": "작고 편한 범위에서 천천히 해요.",
+      "cautions": [
+        "불편하면 멈추거나 이 동작을 건너뛰어요."
+      ],
+      "dose": {
+        "kind": "repetition",
+        "holdSeconds": 0,
+        "repetitions": 5,
+        "sides": 1,
+        "rounds": 1,
+        "restSeconds": 0,
+        "tempoSeconds": 6,
+        "activeSeconds": 30,
+        "setupSeconds": 10,
+        "sideChangeSeconds": 0,
+        "plannedSeconds": 40,
+        "basis": "이번 패치의 작은 범위 가동 안내. 개인별 처방이나 효과 보장 아님.",
+        "timerCompletesPerformance": false,
+        "label": "천천히 5회"
+      },
+      "doseLabel": "천천히 5회",
+      "eligiblePurposes": [
+        "daily"
+      ],
+      "publicationDecision": "publish_basic_daily",
+      "requiredExplicitCapabilities": [],
+      "supportAlternatives": [],
+      "includeInDefaultBundles": true,
+      "media": {
+        "type": "image",
+        "originalPath": "assets/movements/n18.svg",
+        "src": "assets/movements/n18.svg",
+        "sourceSha256": "a6ae567513a8d944e71b62eba68cb38ab7dabea641c1f9d67a468c26557fcac6",
+        "alt": "누워 발목 위아래 움직이기 자세 도식",
+        "fit": "contain",
+        "isVideo": false
+      },
+      "sourceReferences": [],
+      "internalConnectionNotes": {
+        "purpose": "daily",
+        "basis": "선택 자세에서 별도 기구 없이 해당 부위를 직접 작게 움직이는 기본 후보. 습관은 진단이 아닌 정렬 단서."
+      },
+      "review": {
+        "reviewedAt": "2026-10-19",
+        "reviewType": "code-authored pose and instruction consistency review",
+        "clinicalApprovalClaimed": false,
+        "visualCheck": "해당 자세의 벡터 도식과 강조 부위·움직임 안내 일치",
+        "doseDecision": "product_initial_guidance",
+        "sourceLimit": "출처는 동작 이해를 위한 근거이며 개인별 적합성·효능이나 이 서비스 조합을 임상 검증한 것으로 해석하지 않음.",
+        "exclusionReason": null
+      },
+      "provenance": {
+        "sourceImage": "assets/movements/n18.svg",
+        "sourceSha256": "a6ae567513a8d944e71b62eba68cb38ab7dabea641c1f9d67a468c26557fcac6",
+        "legacyId": null,
+        "sourceDoseWasMissing": false,
+        "imageRevised": true,
+        "userApproved20261016Correction": false
+      }
+    },
+    {
+      "catalogId": "N19",
+      "movementId": "patch-N19",
+      "contentVersion": "2026-10-19.2",
+      "name": "누워 발목 작은 원 그리기",
+      "sourceName": "누워 발목 작은 원 그리기",
+      "group": "patch-variant",
+      "pose": "supine",
+      "poseLabel": "바로 눕기",
+      "supports": [
+        "dryFloor"
+      ],
+      "requiresComfortForDaily": [],
+      "directions": [],
+      "family": "ankle-circle",
+      "movementType": "가벼운 가동 움직임",
+      "linkedRegions": [
+        "종아리",
+        "발목"
+      ],
+      "patternIds": [],
+      "targetInternalOnly": "부위별 작은 가동·이완",
+      "steps": [
+        "바로 누워 다리를 편하게 펴요.",
+        "발끝으로 작은 원을 천천히 그려요.",
+        "방향을 바꾸고 반대쪽 발목도 반복해요."
+      ],
+      "cue": "작고 편한 범위에서 천천히 해요.",
+      "cautions": [
+        "불편하면 멈추거나 이 동작을 건너뛰어요."
+      ],
+      "dose": {
+        "kind": "repetition",
+        "holdSeconds": 0,
+        "repetitions": 5,
+        "sides": 1,
+        "rounds": 1,
+        "restSeconds": 0,
+        "tempoSeconds": 6,
+        "activeSeconds": 30,
+        "setupSeconds": 10,
+        "sideChangeSeconds": 0,
+        "plannedSeconds": 40,
+        "basis": "이번 패치의 작은 범위 가동 안내. 개인별 처방이나 효과 보장 아님.",
+        "timerCompletesPerformance": false,
+        "label": "천천히 5회"
+      },
+      "doseLabel": "천천히 5회",
+      "eligiblePurposes": [
+        "daily"
+      ],
+      "publicationDecision": "publish_basic_daily",
+      "requiredExplicitCapabilities": [],
+      "supportAlternatives": [],
+      "includeInDefaultBundles": true,
+      "media": {
+        "type": "image",
+        "originalPath": "assets/movements/n19.svg",
+        "src": "assets/movements/n19.svg",
+        "sourceSha256": "c4b2a45b3c68b2689c0798c1e838f37a79b486256ad06e99121bfac2f4ead2b5",
+        "alt": "누워 발목 작은 원 그리기 자세 도식",
+        "fit": "contain",
+        "isVideo": false
+      },
+      "sourceReferences": [],
+      "internalConnectionNotes": {
+        "purpose": "daily",
+        "basis": "선택 자세에서 별도 기구 없이 해당 부위를 직접 작게 움직이는 기본 후보. 습관은 진단이 아닌 정렬 단서."
+      },
+      "review": {
+        "reviewedAt": "2026-10-19",
+        "reviewType": "code-authored pose and instruction consistency review",
+        "clinicalApprovalClaimed": false,
+        "visualCheck": "해당 자세의 벡터 도식과 강조 부위·움직임 안내 일치",
+        "doseDecision": "product_initial_guidance",
+        "sourceLimit": "출처는 동작 이해를 위한 근거이며 개인별 적합성·효능이나 이 서비스 조합을 임상 검증한 것으로 해석하지 않음.",
+        "exclusionReason": null
+      },
+      "provenance": {
+        "sourceImage": "assets/movements/n19.svg",
+        "sourceSha256": "c4b2a45b3c68b2689c0798c1e838f37a79b486256ad06e99121bfac2f4ead2b5",
+        "legacyId": null,
+        "sourceDoseWasMissing": false,
+        "imageRevised": true,
         "userApproved20261016Correction": false
       }
     }

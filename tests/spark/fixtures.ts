@@ -102,11 +102,15 @@ export async function member() {
 export const daily = (patch: Partial<SessionInput> = {}) =>
   inputSchema.parse({
     purpose: "daily",
+    flowVersion:
+      patch.purpose && patch.purpose !== "daily"
+        ? undefined
+        : "daily-four-2026-10-19",
     area: "back",
     habits: ["retract"],
-    current: ["upper_back", "reach_comfort"],
+    current: ["recent_immobile"],
     poses: ["chair"],
-    supports: ["chair"],
+    supports: [],
     confirmedAt: Date.now(),
     ...patch,
   });

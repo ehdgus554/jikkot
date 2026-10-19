@@ -73,7 +73,6 @@
     "leisure:D32",
     "daily:D33",
     "leisure:D33",
-    "warmup:D33",
     "leisure:Y05",
     "leisure:Y07",
     "daily:D07",
@@ -111,9 +110,7 @@
     "leisure:Y10",
     "leisure:Y11",
     "leisure:Y12",
-    "warmup:W16",
     "leisure:W16",
-    "warmup:W17",
     "leisure:W17",
     "leisure:Y01",
     "leisure:Y02",
@@ -125,7 +122,34 @@
     "warmup:W14",
     "warmup:W15",
     "warmup:W18",
-    "leisure:W18"
+    "leisure:W18",
+    "daily:N01",
+    "daily:N02",
+    "daily:N03",
+    "daily:N04",
+    "daily:N05",
+    "daily:N06",
+    "daily:N07",
+    "daily:N08",
+    "daily:N09",
+    "daily:N10",
+    "daily:N11",
+    "daily:N12",
+    "daily:N13",
+    "daily:N14",
+    "daily:N15",
+    "daily:N16",
+    "daily:N17",
+    "daily:N18",
+    "daily:N19",
+    "daily:W04",
+    "daily:W02",
+    "daily:W05",
+    "daily:W12",
+    "daily:W17",
+    "daily:Y10",
+    "daily:Y09",
+    "daily:Y08"
   ],
   "connections": [
     {
@@ -152,8 +176,9 @@
       "purpose": "daily",
       "contentVersion": "2026-10-17.1",
       "reviewedAt": "2026-10-17",
-      "basis": "출처·그림·공개 편집 및 조건 대조",
-      "clinicalApprovalClaimed": false
+      "basis": "chair 자세의 back 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "clinicalApprovalClaimed": false,
+      "eligibility": "explicit-basic-cell"
     },
     {
       "connectionId": "leisure:O02",
@@ -224,8 +249,9 @@
       "purpose": "daily",
       "contentVersion": "2026-10-17.1",
       "reviewedAt": "2026-10-17",
-      "basis": "출처·그림·공개 편집 및 조건 대조",
-      "clinicalApprovalClaimed": false
+      "basis": "chair 자세의 shoulder 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "clinicalApprovalClaimed": false,
+      "eligibility": "explicit-basic-cell"
     },
     {
       "connectionId": "leisure:O06",
@@ -242,8 +268,9 @@
       "purpose": "daily",
       "contentVersion": "2026-10-17.1",
       "reviewedAt": "2026-10-17",
-      "basis": "출처·그림·공개 편집 및 조건 대조",
-      "clinicalApprovalClaimed": false
+      "basis": "chair 자세의 back 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "clinicalApprovalClaimed": false,
+      "eligibility": "explicit-basic-cell"
     },
     {
       "connectionId": "leisure:O07",
@@ -278,8 +305,9 @@
       "purpose": "daily",
       "contentVersion": "2026-10-17.1",
       "reviewedAt": "2026-10-17",
-      "basis": "출처·그림·공개 편집 및 조건 대조",
-      "clinicalApprovalClaimed": false
+      "basis": "chair 자세의 head 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "clinicalApprovalClaimed": false,
+      "eligibility": "explicit-basic-cell"
     },
     {
       "connectionId": "leisure:O10",
@@ -314,8 +342,9 @@
       "purpose": "daily",
       "contentVersion": "2026-10-17.1",
       "reviewedAt": "2026-10-17",
-      "basis": "출처·그림·공개 편집 및 조건 대조",
-      "clinicalApprovalClaimed": false
+      "basis": "chair 자세의 neck 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "clinicalApprovalClaimed": false,
+      "eligibility": "explicit-basic-cell"
     },
     {
       "connectionId": "leisure:D01",
@@ -368,8 +397,9 @@
       "purpose": "daily",
       "contentVersion": "2026-10-17.1",
       "reviewedAt": "2026-10-17",
-      "basis": "출처·그림·공개 편집 및 조건 대조",
-      "clinicalApprovalClaimed": false
+      "basis": "chair 자세의 thigh 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "clinicalApprovalClaimed": false,
+      "eligibility": "explicit-basic-cell"
     },
     {
       "connectionId": "leisure:D04",
@@ -386,8 +416,9 @@
       "purpose": "daily",
       "contentVersion": "2026-10-17.1",
       "reviewedAt": "2026-10-17",
-      "basis": "출처·그림·공개 편집 및 조건 대조",
-      "clinicalApprovalClaimed": false
+      "basis": "chair 자세의 knee 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "clinicalApprovalClaimed": false,
+      "eligibility": "explicit-basic-cell"
     },
     {
       "connectionId": "leisure:D05",
@@ -404,8 +435,9 @@
       "purpose": "daily",
       "contentVersion": "2026-10-17.1",
       "reviewedAt": "2026-10-17",
-      "basis": "출처·그림·공개 편집 및 조건 대조",
-      "clinicalApprovalClaimed": false
+      "basis": "chair 자세의 thigh 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "clinicalApprovalClaimed": false,
+      "eligibility": "explicit-basic-cell"
     },
     {
       "connectionId": "leisure:D06",
@@ -440,8 +472,9 @@
       "purpose": "daily",
       "contentVersion": "2026-10-17.1",
       "reviewedAt": "2026-10-17",
-      "basis": "출처·그림·공개 편집 및 조건 대조",
-      "clinicalApprovalClaimed": false
+      "basis": "chair 자세의 head 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "clinicalApprovalClaimed": false,
+      "eligibility": "explicit-basic-cell"
     },
     {
       "connectionId": "leisure:D15",
@@ -458,8 +491,9 @@
       "purpose": "daily",
       "contentVersion": "2026-10-17.1",
       "reviewedAt": "2026-10-17",
-      "basis": "출처·그림·공개 편집 및 조건 대조",
-      "clinicalApprovalClaimed": false
+      "basis": "chair 자세의 head 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "clinicalApprovalClaimed": false,
+      "eligibility": "explicit-basic-cell"
     },
     {
       "connectionId": "leisure:D16",
@@ -494,8 +528,9 @@
       "purpose": "daily",
       "contentVersion": "2026-10-17.1",
       "reviewedAt": "2026-10-17",
-      "basis": "출처·그림·공개 편집 및 조건 대조",
-      "clinicalApprovalClaimed": false
+      "basis": "chair 자세의 neck 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "clinicalApprovalClaimed": false,
+      "eligibility": "explicit-basic-cell"
     },
     {
       "connectionId": "leisure:D18",
@@ -512,8 +547,9 @@
       "purpose": "daily",
       "contentVersion": "2026-10-17.1",
       "reviewedAt": "2026-10-17",
-      "basis": "출처·그림·공개 편집 및 조건 대조",
-      "clinicalApprovalClaimed": false
+      "basis": "chair 자세의 neck 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "clinicalApprovalClaimed": false,
+      "eligibility": "explicit-basic-cell"
     },
     {
       "connectionId": "leisure:D19",
@@ -548,8 +584,9 @@
       "purpose": "daily",
       "contentVersion": "2026-10-17.1",
       "reviewedAt": "2026-10-17",
-      "basis": "출처·그림·공개 편집 및 조건 대조",
-      "clinicalApprovalClaimed": false
+      "basis": "chair 자세의 shoulder 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "clinicalApprovalClaimed": false,
+      "eligibility": "explicit-basic-cell"
     },
     {
       "connectionId": "leisure:D21",
@@ -620,8 +657,9 @@
       "purpose": "daily",
       "contentVersion": "2026-10-17.1",
       "reviewedAt": "2026-10-17",
-      "basis": "출처·그림·공개 편집 및 조건 대조",
-      "clinicalApprovalClaimed": false
+      "basis": "chair 자세의 lower 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "clinicalApprovalClaimed": false,
+      "eligibility": "explicit-basic-cell"
     },
     {
       "connectionId": "leisure:D25",
@@ -638,8 +676,9 @@
       "purpose": "daily",
       "contentVersion": "2026-10-17.1",
       "reviewedAt": "2026-10-17",
-      "basis": "출처·그림·공개 편집 및 조건 대조",
-      "clinicalApprovalClaimed": false
+      "basis": "chair 자세의 lower 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "clinicalApprovalClaimed": false,
+      "eligibility": "explicit-basic-cell"
     },
     {
       "connectionId": "leisure:D26",
@@ -656,8 +695,9 @@
       "purpose": "daily",
       "contentVersion": "2026-10-17.1",
       "reviewedAt": "2026-10-17",
-      "basis": "출처·그림·공개 편집 및 조건 대조",
-      "clinicalApprovalClaimed": false
+      "basis": "chair 자세의 back 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "clinicalApprovalClaimed": false,
+      "eligibility": "explicit-basic-cell"
     },
     {
       "connectionId": "leisure:D27",
@@ -692,8 +732,9 @@
       "purpose": "daily",
       "contentVersion": "2026-10-17.1",
       "reviewedAt": "2026-10-17",
-      "basis": "출처·그림·공개 편집 및 조건 대조",
-      "clinicalApprovalClaimed": false
+      "basis": "chair 자세의 thigh 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "clinicalApprovalClaimed": false,
+      "eligibility": "explicit-basic-cell"
     },
     {
       "connectionId": "leisure:D29",
@@ -746,8 +787,9 @@
       "purpose": "daily",
       "contentVersion": "2026-10-17.1",
       "reviewedAt": "2026-10-17",
-      "basis": "출처·그림·공개 편집 및 조건 대조",
-      "clinicalApprovalClaimed": false
+      "basis": "chair 자세의 ankle 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "clinicalApprovalClaimed": false,
+      "eligibility": "explicit-basic-cell"
     },
     {
       "connectionId": "leisure:D32",
@@ -764,22 +806,14 @@
       "purpose": "daily",
       "contentVersion": "2026-10-17.1",
       "reviewedAt": "2026-10-17",
-      "basis": "출처·그림·공개 편집 및 조건 대조",
-      "clinicalApprovalClaimed": false
+      "basis": "chair 자세의 ankle 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "clinicalApprovalClaimed": false,
+      "eligibility": "explicit-basic-cell"
     },
     {
       "connectionId": "leisure:D33",
       "catalogId": "D33",
       "purpose": "leisure",
-      "contentVersion": "2026-10-17.1",
-      "reviewedAt": "2026-10-17",
-      "basis": "출처·그림·공개 편집 및 조건 대조",
-      "clinicalApprovalClaimed": false
-    },
-    {
-      "connectionId": "warmup:D33",
-      "catalogId": "D33",
-      "purpose": "warmup",
       "contentVersion": "2026-10-17.1",
       "reviewedAt": "2026-10-17",
       "basis": "출처·그림·공개 편집 및 조건 대조",
@@ -1043,8 +1077,9 @@
       "purpose": "daily",
       "contentVersion": "2026-10-17.1",
       "reviewedAt": "2026-10-17",
-      "basis": "출처·그림·공개 편집 및 조건 대조",
-      "clinicalApprovalClaimed": false
+      "basis": "supine 자세의 knee 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "clinicalApprovalClaimed": false,
+      "eligibility": "explicit-basic-cell"
     },
     {
       "connectionId": "leisure:D12",
@@ -1119,27 +1154,9 @@
       "clinicalApprovalClaimed": false
     },
     {
-      "connectionId": "warmup:W16",
-      "catalogId": "W16",
-      "purpose": "warmup",
-      "contentVersion": "2026-10-17.1",
-      "reviewedAt": "2026-10-17",
-      "basis": "출처·그림·공개 편집 및 조건 대조",
-      "clinicalApprovalClaimed": false
-    },
-    {
       "connectionId": "leisure:W16",
       "catalogId": "W16",
       "purpose": "leisure",
-      "contentVersion": "2026-10-17.1",
-      "reviewedAt": "2026-10-17",
-      "basis": "출처·그림·공개 편집 및 조건 대조",
-      "clinicalApprovalClaimed": false
-    },
-    {
-      "connectionId": "warmup:W17",
-      "catalogId": "W17",
-      "purpose": "warmup",
       "contentVersion": "2026-10-17.1",
       "reviewedAt": "2026-10-17",
       "basis": "출처·그림·공개 편집 및 조건 대조",
@@ -1252,6 +1269,276 @@
       "reviewedAt": "2026-10-17",
       "basis": "출처·그림·공개 편집 및 조건 대조",
       "clinicalApprovalClaimed": false
+    },
+    {
+      "connectionId": "daily:N01",
+      "catalogId": "N01",
+      "purpose": "daily",
+      "contentVersion": "2026-10-19.2",
+      "reviewedAt": "2026-10-19",
+      "clinicalApprovalClaimed": false,
+      "basis": "standing 자세의 head 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "eligibility": "explicit-basic-cell"
+    },
+    {
+      "connectionId": "daily:N02",
+      "catalogId": "N02",
+      "purpose": "daily",
+      "contentVersion": "2026-10-19.2",
+      "reviewedAt": "2026-10-19",
+      "clinicalApprovalClaimed": false,
+      "basis": "standing 자세의 head 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "eligibility": "explicit-basic-cell"
+    },
+    {
+      "connectionId": "daily:N03",
+      "catalogId": "N03",
+      "purpose": "daily",
+      "contentVersion": "2026-10-19.2",
+      "reviewedAt": "2026-10-19",
+      "clinicalApprovalClaimed": false,
+      "basis": "standing 자세의 neck 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "eligibility": "explicit-basic-cell"
+    },
+    {
+      "connectionId": "daily:N04",
+      "catalogId": "N04",
+      "purpose": "daily",
+      "contentVersion": "2026-10-19.2",
+      "reviewedAt": "2026-10-19",
+      "clinicalApprovalClaimed": false,
+      "basis": "standing 자세의 neck 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "eligibility": "explicit-basic-cell"
+    },
+    {
+      "connectionId": "daily:N05",
+      "catalogId": "N05",
+      "purpose": "daily",
+      "contentVersion": "2026-10-19.2",
+      "reviewedAt": "2026-10-19",
+      "clinicalApprovalClaimed": false,
+      "basis": "standing 자세의 back 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "eligibility": "explicit-basic-cell"
+    },
+    {
+      "connectionId": "daily:N06",
+      "catalogId": "N06",
+      "purpose": "daily",
+      "contentVersion": "2026-10-19.2",
+      "reviewedAt": "2026-10-19",
+      "clinicalApprovalClaimed": false,
+      "basis": "standing 자세의 back 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "eligibility": "explicit-basic-cell"
+    },
+    {
+      "connectionId": "daily:N07",
+      "catalogId": "N07",
+      "purpose": "daily",
+      "contentVersion": "2026-10-19.2",
+      "reviewedAt": "2026-10-19",
+      "clinicalApprovalClaimed": false,
+      "basis": "standing 자세의 lower 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "eligibility": "explicit-basic-cell"
+    },
+    {
+      "connectionId": "daily:N08",
+      "catalogId": "N08",
+      "purpose": "daily",
+      "contentVersion": "2026-10-19.2",
+      "reviewedAt": "2026-10-19",
+      "clinicalApprovalClaimed": false,
+      "basis": "standing 자세의 hamstring 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "eligibility": "explicit-basic-cell"
+    },
+    {
+      "connectionId": "daily:N09",
+      "catalogId": "N09",
+      "purpose": "daily",
+      "contentVersion": "2026-10-19.2",
+      "reviewedAt": "2026-10-19",
+      "clinicalApprovalClaimed": false,
+      "basis": "standing 자세의 ankle 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "eligibility": "explicit-basic-cell"
+    },
+    {
+      "connectionId": "daily:N10",
+      "catalogId": "N10",
+      "purpose": "daily",
+      "contentVersion": "2026-10-19.2",
+      "reviewedAt": "2026-10-19",
+      "clinicalApprovalClaimed": false,
+      "basis": "standing 자세의 ankle 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "eligibility": "explicit-basic-cell"
+    },
+    {
+      "connectionId": "daily:N11",
+      "catalogId": "N11",
+      "purpose": "daily",
+      "contentVersion": "2026-10-19.2",
+      "reviewedAt": "2026-10-19",
+      "clinicalApprovalClaimed": false,
+      "basis": "chair 자세의 knee 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "eligibility": "explicit-basic-cell"
+    },
+    {
+      "connectionId": "daily:N12",
+      "catalogId": "N12",
+      "purpose": "daily",
+      "contentVersion": "2026-10-19.2",
+      "reviewedAt": "2026-10-19",
+      "clinicalApprovalClaimed": false,
+      "basis": "supine 자세의 head 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "eligibility": "explicit-basic-cell"
+    },
+    {
+      "connectionId": "daily:N13",
+      "catalogId": "N13",
+      "purpose": "daily",
+      "contentVersion": "2026-10-19.2",
+      "reviewedAt": "2026-10-19",
+      "clinicalApprovalClaimed": false,
+      "basis": "supine 자세의 head 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "eligibility": "explicit-basic-cell"
+    },
+    {
+      "connectionId": "daily:N14",
+      "catalogId": "N14",
+      "purpose": "daily",
+      "contentVersion": "2026-10-19.2",
+      "reviewedAt": "2026-10-19",
+      "clinicalApprovalClaimed": false,
+      "basis": "supine 자세의 neck 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "eligibility": "explicit-basic-cell"
+    },
+    {
+      "connectionId": "daily:N15",
+      "catalogId": "N15",
+      "purpose": "daily",
+      "contentVersion": "2026-10-19.2",
+      "reviewedAt": "2026-10-19",
+      "clinicalApprovalClaimed": false,
+      "basis": "supine 자세의 neck 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "eligibility": "explicit-basic-cell"
+    },
+    {
+      "connectionId": "daily:N16",
+      "catalogId": "N16",
+      "purpose": "daily",
+      "contentVersion": "2026-10-19.2",
+      "reviewedAt": "2026-10-19",
+      "clinicalApprovalClaimed": false,
+      "basis": "supine 자세의 back 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "eligibility": "explicit-basic-cell"
+    },
+    {
+      "connectionId": "daily:N17",
+      "catalogId": "N17",
+      "purpose": "daily",
+      "contentVersion": "2026-10-19.2",
+      "reviewedAt": "2026-10-19",
+      "clinicalApprovalClaimed": false,
+      "basis": "supine 자세의 knee 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "eligibility": "explicit-basic-cell"
+    },
+    {
+      "connectionId": "daily:N18",
+      "catalogId": "N18",
+      "purpose": "daily",
+      "contentVersion": "2026-10-19.2",
+      "reviewedAt": "2026-10-19",
+      "clinicalApprovalClaimed": false,
+      "basis": "supine 자세의 ankle 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "eligibility": "explicit-basic-cell"
+    },
+    {
+      "connectionId": "daily:N19",
+      "catalogId": "N19",
+      "purpose": "daily",
+      "contentVersion": "2026-10-19.2",
+      "reviewedAt": "2026-10-19",
+      "clinicalApprovalClaimed": false,
+      "basis": "supine 자세의 ankle 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "eligibility": "explicit-basic-cell"
+    },
+    {
+      "connectionId": "daily:W04",
+      "catalogId": "W04",
+      "purpose": "daily",
+      "contentVersion": "2026-10-19.2",
+      "reviewedAt": "2026-10-19",
+      "clinicalApprovalClaimed": false,
+      "basis": "standing 자세의 shoulder 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "eligibility": "explicit-basic-cell"
+    },
+    {
+      "connectionId": "daily:W02",
+      "catalogId": "W02",
+      "purpose": "daily",
+      "contentVersion": "2026-10-19.2",
+      "reviewedAt": "2026-10-19",
+      "clinicalApprovalClaimed": false,
+      "basis": "standing 자세의 back 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "eligibility": "explicit-basic-cell"
+    },
+    {
+      "connectionId": "daily:W05",
+      "catalogId": "W05",
+      "purpose": "daily",
+      "contentVersion": "2026-10-19.2",
+      "reviewedAt": "2026-10-19",
+      "clinicalApprovalClaimed": false,
+      "basis": "standing 자세의 knee 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "eligibility": "explicit-basic-cell"
+    },
+    {
+      "connectionId": "daily:W12",
+      "catalogId": "W12",
+      "purpose": "daily",
+      "contentVersion": "2026-10-19.2",
+      "reviewedAt": "2026-10-19",
+      "clinicalApprovalClaimed": false,
+      "basis": "standing 자세의 knee 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "eligibility": "explicit-basic-cell"
+    },
+    {
+      "connectionId": "daily:W17",
+      "catalogId": "W17",
+      "purpose": "daily",
+      "contentVersion": "2026-10-19.2",
+      "reviewedAt": "2026-10-19",
+      "clinicalApprovalClaimed": false,
+      "basis": "supine 자세의 back 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "eligibility": "explicit-basic-cell"
+    },
+    {
+      "connectionId": "daily:Y10",
+      "catalogId": "Y10",
+      "purpose": "daily",
+      "contentVersion": "2026-10-19.2",
+      "reviewedAt": "2026-10-19",
+      "clinicalApprovalClaimed": false,
+      "basis": "supine 자세의 lower 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "eligibility": "explicit-basic-cell"
+    },
+    {
+      "connectionId": "daily:Y09",
+      "catalogId": "Y09",
+      "purpose": "daily",
+      "contentVersion": "2026-10-19.2",
+      "reviewedAt": "2026-10-19",
+      "clinicalApprovalClaimed": false,
+      "basis": "supine 자세의 thigh 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "eligibility": "explicit-basic-cell"
+    },
+    {
+      "connectionId": "daily:Y08",
+      "catalogId": "Y08",
+      "purpose": "daily",
+      "contentVersion": "2026-10-19.2",
+      "reviewedAt": "2026-10-19",
+      "clinicalApprovalClaimed": false,
+      "basis": "supine 자세의 thigh 기본 가동 후보. 실제 설명과 이미지 유지. 관련 영역 가동을 연결하며 원인·효과를 단정하지 않음.",
+      "eligibility": "explicit-basic-cell"
     }
   ],
   "retiredForNewSessions": [

@@ -1,6 +1,6 @@
 {
   "version": "2026-10-17.1",
-  "movementCount": 75,
+  "movementCount": 94,
   "runtimeImages": [
     {
       "path": "assets/movements/o01.webp",
@@ -914,6 +914,215 @@
         960
       ],
       "conversion": "lossless WebP with original dimensions and decoded RGBA pixels verified identical"
+    },
+    {
+      "path": "assets/movements/n01.svg",
+      "source": "assets/movements/n01.svg",
+      "sha256": "6e8a1b93c510b46d6d8c97cf90ba8f2e4c41fdd8d23f1c50ad88dc283d48f8c0",
+      "bytes": 761,
+      "dimensions": [
+        640,
+        640
+      ],
+      "conversion": "new pose-specific SVG schematic; original assets unchanged"
+    },
+    {
+      "path": "assets/movements/n02.svg",
+      "source": "assets/movements/n02.svg",
+      "sha256": "56965bb8ec7b88cef484badf4e3b259c655e4f8de88d9c6fe97ff3fa9ff0c035",
+      "bytes": 834,
+      "dimensions": [
+        640,
+        640
+      ],
+      "conversion": "new pose-specific SVG schematic; original assets unchanged"
+    },
+    {
+      "path": "assets/movements/n03.svg",
+      "source": "assets/movements/n03.svg",
+      "sha256": "9afa0672dfb47ee35cf28e69f9a7bff57c5bf4141b9b66c19e37407732aff70d",
+      "bytes": 920,
+      "dimensions": [
+        640,
+        640
+      ],
+      "conversion": "new pose-specific SVG schematic; original assets unchanged"
+    },
+    {
+      "path": "assets/movements/n04.svg",
+      "source": "assets/movements/n04.svg",
+      "sha256": "16579f9ef925564cbd8a9acf4dab481474f71d1a6641f8d5da3b5ead375a3ffc",
+      "bytes": 929,
+      "dimensions": [
+        640,
+        640
+      ],
+      "conversion": "new pose-specific SVG schematic; original assets unchanged"
+    },
+    {
+      "path": "assets/movements/n05.svg",
+      "source": "assets/movements/n05.svg",
+      "sha256": "d7fa78d36efc9e094d22c5c5373407f98d9892897569c1d4de207a7e8f42ad54",
+      "bytes": 764,
+      "dimensions": [
+        640,
+        640
+      ],
+      "conversion": "new pose-specific SVG schematic; original assets unchanged"
+    },
+    {
+      "path": "assets/movements/n06.svg",
+      "source": "assets/movements/n06.svg",
+      "sha256": "d6c7bed77d165f98a5c01c384ca26c106ddec23a87d7f256a02904ac9cca158c",
+      "bytes": 763,
+      "dimensions": [
+        640,
+        640
+      ],
+      "conversion": "new pose-specific SVG schematic; original assets unchanged"
+    },
+    {
+      "path": "assets/movements/n07.svg",
+      "source": "assets/movements/n07.svg",
+      "sha256": "80196583eb329b52d13e251f2773aea3f96e067da36b5eaa5b7e00ce8c32650f",
+      "bytes": 753,
+      "dimensions": [
+        640,
+        640
+      ],
+      "conversion": "new pose-specific SVG schematic; original assets unchanged"
+    },
+    {
+      "path": "assets/movements/n08.svg",
+      "source": "assets/movements/n08.svg",
+      "sha256": "d82319e107bda0da0dd12f8e7f8dee3f7b9fa789a08b1a6122ea001c0f7e484e",
+      "bytes": 733,
+      "dimensions": [
+        640,
+        640
+      ],
+      "conversion": "new pose-specific SVG schematic; original assets unchanged"
+    },
+    {
+      "path": "assets/movements/n09.svg",
+      "source": "assets/movements/n09.svg",
+      "sha256": "91edf408f003864042a52f01df16507d1343ac7cab40081b6c5a77dbf94a3580",
+      "bytes": 770,
+      "dimensions": [
+        640,
+        640
+      ],
+      "conversion": "new pose-specific SVG schematic; original assets unchanged"
+    },
+    {
+      "path": "assets/movements/n10.svg",
+      "source": "assets/movements/n10.svg",
+      "sha256": "e17a3052caefc2b66938bab83fcfa2367b3d2290dfff0f1187cb85de21db136f",
+      "bytes": 770,
+      "dimensions": [
+        640,
+        640
+      ],
+      "conversion": "new pose-specific SVG schematic; original assets unchanged"
+    },
+    {
+      "path": "assets/movements/n11.svg",
+      "source": "assets/movements/n11.svg",
+      "sha256": "9d7c82ad14535ff394ed83dfc575bcf3c3e8c2b3f2742a3490c1ef08c081ea79",
+      "bytes": 838,
+      "dimensions": [
+        640,
+        640
+      ],
+      "conversion": "new pose-specific SVG schematic; original assets unchanged"
+    },
+    {
+      "path": "assets/movements/n12.svg",
+      "source": "assets/movements/n12.svg",
+      "sha256": "330b4b34b0e549084b154520bc1c27fcc3730147e1a20596dc973a56b0984425",
+      "bytes": 770,
+      "dimensions": [
+        640,
+        640
+      ],
+      "conversion": "new pose-specific SVG schematic; original assets unchanged"
+    },
+    {
+      "path": "assets/movements/n13.svg",
+      "source": "assets/movements/n13.svg",
+      "sha256": "49fa9dd8825fa66cba2f99dd4c7c25f541ff395c1b3912906a177a3077f51056",
+      "bytes": 904,
+      "dimensions": [
+        640,
+        640
+      ],
+      "conversion": "new pose-specific SVG schematic; original assets unchanged"
+    },
+    {
+      "path": "assets/movements/n14.svg",
+      "source": "assets/movements/n14.svg",
+      "sha256": "62ce2349baea36b0a27fb55e083522354ad0545482caa0cdb64476775800c335",
+      "bytes": 940,
+      "dimensions": [
+        640,
+        640
+      ],
+      "conversion": "new pose-specific SVG schematic; original assets unchanged"
+    },
+    {
+      "path": "assets/movements/n15.svg",
+      "source": "assets/movements/n15.svg",
+      "sha256": "b16966b083697f3eee0756d70a3b0978193470b9d88bbb593ebcbd9f6fd5bd9f",
+      "bytes": 919,
+      "dimensions": [
+        640,
+        640
+      ],
+      "conversion": "new pose-specific SVG schematic; original assets unchanged"
+    },
+    {
+      "path": "assets/movements/n16.svg",
+      "source": "assets/movements/n16.svg",
+      "sha256": "73bdc7e41a6cbe44827956487fc8cbfc1cc4fca4d7a1cb53cbed22940d27cb97",
+      "bytes": 755,
+      "dimensions": [
+        640,
+        640
+      ],
+      "conversion": "new pose-specific SVG schematic; original assets unchanged"
+    },
+    {
+      "path": "assets/movements/n17.svg",
+      "source": "assets/movements/n17.svg",
+      "sha256": "94481377db15ec28d681dcd72c451815a7ad08089495edb9270ca9d7a1c45a7e",
+      "bytes": 730,
+      "dimensions": [
+        640,
+        640
+      ],
+      "conversion": "new pose-specific SVG schematic; original assets unchanged"
+    },
+    {
+      "path": "assets/movements/n18.svg",
+      "source": "assets/movements/n18.svg",
+      "sha256": "a6ae567513a8d944e71b62eba68cb38ab7dabea641c1f9d67a468c26557fcac6",
+      "bytes": 739,
+      "dimensions": [
+        640,
+        640
+      ],
+      "conversion": "new pose-specific SVG schematic; original assets unchanged"
+    },
+    {
+      "path": "assets/movements/n19.svg",
+      "source": "assets/movements/n19.svg",
+      "sha256": "c4b2a45b3c68b2689c0798c1e838f37a79b486256ad06e99121bfac2f4ead2b5",
+      "bytes": 751,
+      "dimensions": [
+        640,
+        640
+      ],
+      "conversion": "new pose-specific SVG schematic; original assets unchanged"
     }
   ],
   "generatedFinal": [

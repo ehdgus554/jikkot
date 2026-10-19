@@ -10,6 +10,9 @@ export const catalog = source.items.map((item) => {
   return {
     ...item,
     pose: item.pose as Pose,
+    directions: item.directions as string[],
+    supports: item.supports as string[],
+    requiredExplicitCapabilities: item.requiredExplicitCapabilities as string[],
     comfort: item.requiresComfortForDaily,
     old: routines.find((r) => r.id === item.provenance.legacyId),
     media: {

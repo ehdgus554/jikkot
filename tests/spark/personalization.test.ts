@@ -23,7 +23,7 @@ test("published daily and member programmes work while review metadata stays UID
   assert.equal((await call("/review/catalog", u.idToken)).status, 403);
   assert.equal(
     (await client(u.localId)("/review/catalog", u.idToken)).body.items.length,
-    75,
+    94,
   );
   const other = await member();
   assert.equal(
@@ -48,6 +48,12 @@ test("parallel creation/event retries keep one session and one adverse fact; del
     action: "complete",
     itemId: item.itemId,
   });
+  for (const i of s.items.slice(1))
+    await call(`/personalization/sessions/${id}/events`, u.idToken, {
+      eventId: randomUUID(),
+      action: "complete",
+      itemId: i.itemId,
+    });
   const event = {
     eventId: randomUUID(),
     action: "feedback",
@@ -62,15 +68,13 @@ test("parallel creation/event retries keep one session and one adverse fact; del
   assert.ok(r.every((x) => x.status === 200));
   const m = (await db.doc(`personalMemory/${u.localId}`).get()).data()!;
   assert.equal(m.constraints.length, 1);
-  assert.equal(m.experiences.length, 1);
-  assert.equal(
-    (
-      await call("/personalization/sessions", u.idToken, {
-        sessionId: randomUUID(),
-        input: daily(),
-      })
-    ).status,
-    422,
+  assert.equal(m.experiences.length, s.items.length);
+  const next = await create(call, u);
+  assert.ok(
+    next.items.every(
+      (i: { movement: { catalogId: string } }) =>
+        i.movement.catalogId !== item.movement.catalogId,
+    ),
   );
   assert.equal(
     (await call(`/personalization/sessions/${id}/delete`, u.idToken, {}))
@@ -98,8 +102,13 @@ test("correcting a feedback removes the old adverse constraint without creating 
     call = client(),
     s = await create(call, u),
     item = s.items[0];
+  for (const i of s.items)
+    await call(`/personalization/sessions/${s.id}/events`, u.idToken, {
+      eventId: randomUUID(),
+      action: "complete",
+      itemId: i.itemId,
+    });
   for (const b of [
-    { action: "complete", itemId: item.itemId },
     { action: "feedback", itemId: item.itemId, reaction: "worse", steps: [] },
     { action: "correct", itemId: item.itemId, reaction: "better", steps: [] },
   ])
@@ -114,8 +123,11 @@ test("correcting a feedback removes the old adverse constraint without creating 
     );
   const m = (await db.doc(`personalMemory/${u.localId}`).get()).data()!;
   assert.equal(m.constraints.length, 0);
-  assert.equal(m.experiences.length, 1);
-  assert.equal(m.experiences[0].reaction, "better");
+  assert.equal(m.experiences.length, s.items.length);
+  assert.ok(
+    m.experiences.every((e: { reaction: unknown }) => e.reaction === null),
+  );
+  assert.equal(m.bundles[0].reaction, "better");
 });
 test("guest consent is separate and successful recommendation alone consumes the day; retry/revoke never resets its usage", async () => {
   const u = await identity("guest"),
@@ -143,10 +155,10 @@ test("guest consent is separate and successful recommendation alone consumes the
     (
       await call("/personalization/sessions", u.idToken, {
         sessionId: randomUUID(),
-        input: daily({ habits: ["unknown"], current: ["unknown"] }),
+        input: daily({ habits: ["injected"], current: ["unknown"] }),
       })
     ).status,
-    422,
+    400,
   );
   const id = randomUUID(),
     body = { sessionId: id, input: daily() };
@@ -320,7 +332,7 @@ test("healthy warmup/leisure preserve actual completion, skip reasons, pause/res
         supports: purpose === "warmup" ? ["dryFloor", "space"] : ["chair"],
       }),
     );
-    assert.equal(s.items.length, 5);
+    assert.equal(s.items.length, purpose === "warmup" ? 4 : 5);
     const event = async (b: object) =>
       call(`/personalization/sessions/${s.id}/events`, u.idToken, {
         eventId: randomUUID(),
@@ -561,4 +573,176 @@ test("withdrawn consent never returns saved habits while deletion is retrying", 
     db.request = request;
     await call("/account/health/revoke", u.idToken, {});
   }
+});
+test("new daily API has only four answers, stores all items and bundle feeling, and owner summary includes 21+ unresponded performances", async () => {
+  const u = await member(),
+    other = await member(),
+    call = client();
+  const empty = await call("/personalization/summary", u.idToken);
+  assert.equal(empty.body.thirtyDays.sessions, 0);
+  const s = await create(
+    call,
+    u,
+    daily({ habits: ["unknown"], current: ["unknown"] }),
+  );
+  assert.equal(s.items.length, 3);
+  const snapshots = structuredClone(
+    s.items.map((i: { movement: unknown }) => i.movement),
+  );
+  for (const item of s.items) {
+    const e = {
+      eventId: randomUUID(),
+      action: "complete",
+      itemId: item.itemId,
+    };
+    assert.equal(
+      (await call(`/personalization/sessions/${s.id}/events`, u.idToken, e))
+        .status,
+      200,
+    );
+    assert.equal(
+      (await call(`/personalization/sessions/${s.id}/events`, u.idToken, e))
+        .status,
+      200,
+    );
+  }
+  assert.equal(
+    (await call("/personalization/summary", u.idToken)).body.thirtyDays
+      .sessions,
+    1,
+  );
+  const feeling = await call(
+    `/personalization/sessions/${s.id}/events`,
+    u.idToken,
+    { eventId: randomUUID(), action: "feedback", reaction: "better" },
+  );
+  assert.equal(feeling.status, 200);
+  assert.ok(
+    feeling.body.items.every((i: { reaction: unknown }) => i.reaction === null),
+  );
+  assert.deepEqual(
+    feeling.body.items.map((i: { movement: unknown }) => i.movement),
+    snapshots,
+  );
+  const stored = (
+    await db.doc(`profiles/${u.localId}/sessions/${s.id}`).get()
+  ).data()!;
+  for (let n = 0; n < 22; n++) {
+    const id = randomUUID();
+    await db.doc(`profiles/${u.localId}/sessions/${id}`).set({
+      ...stored,
+      id,
+      feedback: null,
+      feedbackSubmitted: false,
+      createdAt: Date.now() - n,
+      updatedAt: Date.now() - 1000,
+      completedAt: Date.now() - 1000,
+    });
+  }
+  let result = await call("/personalization/summary", u.idToken);
+  assert.equal(result.body.thirtyDays.sessions, 23);
+  assert.equal(result.body.routines[0].better, 1);
+  assert.equal(result.body.routines[0].unanswered, 22);
+  assert.equal(
+    (await call("/personalization/summary", other.idToken)).body.thirtyDays
+      .sessions,
+    0,
+  );
+  await call(`/personalization/sessions/${s.id}/events`, u.idToken, {
+    eventId: randomUUID(),
+    action: "correct",
+    reaction: "same",
+  });
+  result = await call("/personalization/summary", u.idToken);
+  assert.equal(result.body.routines[0].better, 0);
+  assert.equal(result.body.routines[0].same, 1);
+  await call(`/personalization/sessions/${s.id}/delete`, u.idToken, {});
+  assert.equal(
+    (await call("/personalization/summary", u.idToken)).body.thirtyDays
+      .sessions,
+    22,
+  );
+  await call("/account/health/revoke", u.idToken, {});
+  assert.equal((await call("/personalization/summary", u.idToken)).status, 403);
+});
+test("compatible old leisure progress retains snapshots while old daily creation requests require the four-answer contract", async () => {
+  const u = await member(),
+    call = client();
+  const s = await create(
+    call,
+    u,
+    daily({
+      purpose: "leisure",
+      area: undefined,
+      habits: [],
+      current: ["today_ok"],
+      minutes: 5,
+      profile: "chair",
+      poses: ["chair"],
+      supports: ["chair"],
+    }),
+  );
+  const ref = db.doc(`profiles/${u.localId}/sessions/${s.id}`);
+  const stored = (await ref.get()).data()!;
+  await ref.set({
+    ...stored,
+    decision: { ...stored.decision, version: "2026-10-17.1" },
+  });
+  const restored = await call(`/personalization/sessions/${s.id}`, u.idToken);
+  assert.equal(restored.status, 200);
+  assert.deepEqual(restored.body.items, s.items);
+  assert.equal(
+    (
+      await call(`/personalization/sessions/${s.id}/events`, u.idToken, {
+        eventId: randomUUID(),
+        action: "complete",
+        itemId: s.items[0].itemId,
+      })
+    ).status,
+    200,
+  );
+  const old = daily({
+    current: ["upper_back", "reach_comfort"],
+    supports: ["chair"],
+  });
+  delete old.flowVersion;
+  assert.equal(
+    (
+      await call("/personalization/sessions", u.idToken, {
+        sessionId: randomUUID(),
+        input: old,
+      })
+    ).status,
+    409,
+  );
+});
+test("retry identity is independent of Firestore map key order and changed answers cannot reuse the same ID", async () => {
+  const u = await member(),
+    call = client(),
+    input = daily(),
+    s = await create(call, u, input),
+    ref = db.doc(`profiles/${u.localId}/sessions/${s.id}`),
+    stored = (await ref.get()).data()!;
+  await ref.set({
+    ...stored,
+    input: Object.fromEntries(Object.entries(stored.input).reverse()),
+  });
+  assert.equal(
+    (
+      await call("/personalization/sessions", u.idToken, {
+        sessionId: s.id,
+        input,
+      })
+    ).status,
+    200,
+  );
+  assert.equal(
+    (
+      await call("/personalization/sessions", u.idToken, {
+        sessionId: s.id,
+        input: { ...input, habits: ["unknown"] },
+      })
+    ).status,
+    409,
+  );
 });

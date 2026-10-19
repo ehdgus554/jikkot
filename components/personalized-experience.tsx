@@ -1,4 +1,8 @@
 "use client";
+import {
+  DAILY_FLOW,
+  dailyQuestions,
+} from "../lib/personalization/daily-questions";
 /* eslint-disable @next/next/no-img-element -- Versioned, supplied static illustrations. */
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
@@ -18,15 +22,8 @@ import {
   type Purpose,
   type Reaction,
 } from "../lib/personalization/types";
-import {
-  questions,
-  toggleChoice,
-  habitChoices,
-  currentChoices,
-  type Question,
-} from "../lib/personalization/questions";
+import { toggleChoice, currentChoices } from "../lib/personalization/questions";
 import programOptions from "../lib/personalization/release/program-options.json";
-import dailySupports from "../lib/personalization/release/daily-supports.json";
 import { guestRetentionCopy } from "../lib/service/policy";
 import { Logo, PrimaryButton } from "./jikkot-ui";
 import { BodyRegionSelector } from "./body-region-selector";
@@ -48,6 +45,7 @@ type View =
   | "posture"
   | "area"
   | "habits"
+  | "recentAction"
   | "current"
   | "support"
   | "plan"
@@ -69,6 +67,7 @@ type Legacy = {
 const asset = "/assets/jikkot-release/2026-10-17/";
 const initial = (purpose: Purpose): SessionInput => ({
   purpose,
+  flowVersion: purpose === "daily" ? DAILY_FLOW : undefined,
   habits: [],
   current: [],
   poses: [],
@@ -213,6 +212,9 @@ export function PersonalizedExperience({
     [painItem, setPainItem] = useState(""),
     [painSteps, setPainSteps] = useState<number[]>([]),
     [unknownSteps, setUnknownSteps] = useState(false);
+  const [insights, setInsights] = useState<
+    import("../lib/personalization/record-summary").RecordSummary | null
+  >(null);
   const [records, setRecords] = useState<PublicSession[]>([]),
     [legacy, setLegacy] = useState<Legacy[]>([]),
     [cursor, setCursor] = useState<{ createdAt: number; id: string } | null>(
@@ -289,7 +291,11 @@ export function PersonalizedExperience({
         );
       } else
         setError(
-          e instanceof Error ? e.message : "연결을 확인하고 다시 시도해주세요.",
+          e instanceof TypeError
+            ? "연결이 원활하지 않아요. 다시 시도해주세요"
+            : e instanceof Error
+              ? e.message
+              : "연결이 원활하지 않아요. 다시 시도해주세요",
         );
     } finally {
       inFlight.current = false;
@@ -337,7 +343,17 @@ export function PersonalizedExperience({
         if (!raw) return;
         try {
           const saved = JSON.parse(raw);
-          if (saved.uid !== uid || saved.version !== VERSION) return;
+          if (
+            saved.uid !== uid ||
+            (saved.version !== VERSION &&
+              !(
+                saved.version === "2026-10-17.1" &&
+                saved.input?.purpose === "leisure"
+              ))
+          ) {
+            sessionStorage.removeItem(key);
+            return;
+          }
           pendingCreate.current = saved.request ?? null;
           pendingEvent.current = saved.event ?? null;
           if (saved.input) {
@@ -482,10 +498,16 @@ export function PersonalizedExperience({
     }
   }, [initialPurpose, context?.consent, requireStart, onIntentConsumed]);
   const choosePose = (p: "chair" | "standing" | "lying") => {
+    if (posture === p) return;
+    pendingCreate.current = null;
+    setSession(null);
     setPosture(p);
     setInput((old) => ({
       ...old,
       profile: p,
+      ...(old.purpose === "daily"
+        ? { area: undefined, habits: [], current: [] }
+        : {}),
       poses: [p === "lying" ? "supine" : p],
       supports: [],
     }));
@@ -499,21 +521,10 @@ export function PersonalizedExperience({
           p.minutesChoice === input.minutes &&
           p.focus === input.preference),
   );
-  const capabilityKeys =
-    input.purpose === "daily"
-      ? ((dailySupports[input.area ?? "back"] as Record<string, string[]>)[
-          input.poses[0]
-        ] ?? [])
-      : [
-          ...new Set([
-            ...(selectedProgram?.requiredCapabilities ?? []),
-            ...(selectedProgram?.supportOptions ?? []),
-          ]),
-        ];
   const caps = [
     ...new Set([
-      ...capabilityKeys,
-      ...(input.purpose === "warmup" ? ["chair", "chairPose"] : []),
+      ...(selectedProgram?.requiredCapabilities ?? []),
+      ...(selectedProgram?.supportOptions ?? []),
     ]),
   ];
   const hasCap = (id: string) =>
@@ -545,30 +556,32 @@ export function PersonalizedExperience({
           : [...old.supports, id as never],
       };
     });
-  const selectedPatterns = habitChoices
-    .filter((q) => input.habits.includes(q.id))
-    .flatMap((q) => q.patterns);
-  const questionList: Question[] =
-    view === "habits"
-      ? questions("habits", input.area)
-      : questions("current", input.area, input.habits).filter(
-          (q) =>
-            q.exclusive ||
-            ["sudden_worse", "radiating", "dizzy"].includes(q.id) ||
-            q.patterns.some((p) => selectedPatterns.includes(p)),
-        );
-  const visibleQuestions = questionList.slice(page * 6, page * 6 + 6);
-  const updateAnswer = (kind: "habits" | "current", id: string) =>
+  const questionList = dailyQuestions(
+    view === "habits" ? "habits" : "current",
+    input.area,
+    input.habits,
+  );
+  const updateAnswer = (kind: "habits" | "current", id: string) => {
+    if (input[kind][0] === id) return;
+    pendingCreate.current = null;
+    setSession(null);
     setInput((old) => ({
       ...old,
-      [kind]: toggleChoice(old[kind], id),
+      [kind]: [id],
       ...(kind === "habits" ? { current: [] } : {}),
     }));
-  const create = () =>
+  };
+  const create = (answers: SessionInput = input) =>
     run(async () => {
+      if (
+        pendingCreate.current &&
+        JSON.stringify({ ...pendingCreate.current.input, confirmedAt: 0 }) !==
+          JSON.stringify({ ...answers, confirmedAt: 0 })
+      )
+        pendingCreate.current = null;
       pendingCreate.current ??= {
         sessionId: crypto.randomUUID(),
-        input: { ...input, confirmedAt: Date.now() },
+        input: { ...answers, confirmedAt: Date.now() },
       };
       const s = await api<PublicSession>(
         "/personalization/sessions",
@@ -578,7 +591,7 @@ export function PersonalizedExperience({
       setInput(s.input);
       setIndex(0);
       pendingCreate.current = null;
-      go(s.input.purpose === "daily" ? "perform" : "plan");
+      go("plan");
     });
   const event = async (
     action: string,
@@ -601,7 +614,7 @@ export function PersonalizedExperience({
       setReaction(null);
       setPainSteps([]);
       setUnknownSteps(false);
-      setPainItem(s.input.purpose === "daily" ? s.items.at(-1)!.itemId : "");
+      setPainItem("");
       go(s.feedbackSubmitted ? "complete" : "feedback");
     } else {
       setIndex(
@@ -620,6 +633,7 @@ export function PersonalizedExperience({
     }
     const suffix =
       more && cursor ? `?after=${cursor.createdAt}&afterId=${cursor.id}` : "";
+    if (memberName) setInsights(await api("/personalization/summary"));
     const fresh = await api<{
       records: PublicSession[];
       reviewRecords: PublicSession[];
@@ -715,14 +729,15 @@ export function PersonalizedExperience({
       posture: input.purpose === "daily" ? "home" : "time",
       area: "posture",
       habits: "area",
-      current: input.purpose === "daily" ? "habits" : "support",
-      support:
+      recentAction: "habits",
+      current: "support",
+      support: "posture",
+      plan:
         input.purpose === "daily"
-          ? "current"
+          ? "recentAction"
           : input.purpose === "warmup"
             ? "sport"
-            : "posture",
-      plan: input.purpose === "daily" ? "support" : "current",
+            : "current",
     };
     go(routes[view] ?? "home");
   };
@@ -913,7 +928,15 @@ export function PersonalizedExperience({
           )}
           <PrimaryButton
             disabled={!input.sport || busy}
-            onClick={() => go("support")}
+            onClick={() =>
+              create({
+                ...input,
+                poses: [],
+                supports: [],
+                current: [],
+                habits: [],
+              })
+            }
           >
             다음
           </PrimaryButton>
@@ -942,7 +965,8 @@ export function PersonalizedExperience({
       )}
       {view === "posture" && (
         <>
-          <h1>지금 어떤 상태인가요?</h1>
+          <h1>지금 어떤 자세로 할 수 있나요?</h1>
+          {input.purpose === "daily" && <p className="note">1/4</p>}
           <p>지금 할 수 있는 자세를 골라주세요.</p>
           <div
             className="posture-cards"
@@ -1006,6 +1030,7 @@ export function PersonalizedExperience({
       {view === "area" && (
         <>
           <h1>어디가 불편하세요?</h1>
+          <p className="note">2/4</p>
           <div className="release-segments">
             {(["upper", "lower"] as const).map((x) => (
               <button
@@ -1025,55 +1050,38 @@ export function PersonalizedExperience({
             reducedMotion={reduced}
             onViewChange={setBodyBack}
             onSelect={(area) => {
-              setBodyBack(
-                ["back", "lower", "hamstring", "calf"].includes(area),
+              if (area === input.area) return;
+              pendingCreate.current = null;
+              setSession(null);
+              const saved = context?.preferences.habits?.[area] ?? [];
+              const known = dailyQuestions("habits", area).find((q) =>
+                saved.includes(q.id),
               );
               setInput((old) => ({
                 ...old,
                 area,
-                habits: context?.preferences.habits?.[area] ?? [],
+                habits: known ? [known.id] : [],
                 current: [],
               }));
             }}
           />
-          <div className="body-chips" role="radiogroup" aria-label="불편 부위">
-            {areas
-              .filter((_, i) => (bodySection === "upper" ? i < 5 : i >= 5))
-              .map(([id, label]) => (
-                <button
-                  type="button"
-                  role="radio"
-                  key={id}
-                  aria-checked={input.area === id}
-                  onClick={() => {
-                    setBodyBack(
-                      ["back", "lower", "hamstring", "calf"].includes(id),
-                    );
-                    setInput((old) => ({
-                      ...old,
-                      area: id,
-                      habits: context?.preferences.habits?.[id] ?? [],
-                      current: [],
-                    }));
-                  }}
-                >
-                  {input.area === id && <span aria-hidden="true">✓ </span>}
-                  {label}
-                </button>
-              ))}
-          </div>
+          <p className="body-selection-result" aria-live="polite">
+            {input.area
+              ? `선택한 부위: ${Object.fromEntries(areas)[input.area]}`
+              : "그림에서 부위를 선택해주세요"}
+          </p>
           <PrimaryButton disabled={!input.area} onClick={() => go("habits")}>
             다음
           </PrimaryButton>
         </>
       )}
       {(view === "habits" ||
-        (view === "current" && input.purpose === "daily")) && (
+        (view === "recentAction" && input.purpose === "daily")) && (
         <>
           <h1>
             {view === "habits"
               ? "평소엔 어떤 시간이 많나요?"
-              : "최근엔 어떤 느낌이었나요?"}
+              : "최근에 어떤 일이 있었나요?"}
           </h1>
           {view === "habits" && editingHabits && (
             <label>
@@ -1100,12 +1108,14 @@ export function PersonalizedExperience({
             </label>
           )}
           <p className="note">
-            {view === "habits"
-              ? "여러 개 골라도 괜찮아요. 지난 답변을 바꿀 수 있어요."
-              : "이미 기억나는 편한 움직임만 골라주세요. 불편한 움직임을 시험하지 마세요."}
+            {editingHabits
+              ? "저장할 습관을 하나 선택해주세요."
+              : view === "habits"
+                ? "3/4 · 가장 가까운 습관 하나를 골라주세요."
+                : "4/4 · 가장 가까운 최근 행동 하나를 골라주세요."}
           </p>
           <div className="release-choices">
-            {visibleQuestions.map((q) => (
+            {questionList.map((q) => (
               <Choice
                 key={q.id}
                 label={q.label}
@@ -1118,75 +1128,65 @@ export function PersonalizedExperience({
               />
             ))}
           </div>
-          <p className="note">
-            {page + 1} / {Math.ceil(questionList.length / 6)}
-          </p>
           <PrimaryButton
             disabled={
               !input[view === "habits" ? "habits" : "current"].length || busy
             }
             onClick={() => {
-              if ((page + 1) * 6 < questionList.length) {
-                setPage((p) => p + 1);
-                window.scrollTo(0, 0);
-              } else if (view === "habits") {
-                if (memberName)
-                  void run(async () => {
-                    await api("/personalization/preferences", {
-                      habits: {
-                        ...context?.preferences.habits,
-                        [input.area!]: input.habits,
-                      },
-                      review: false,
-                    });
-                    setContext((c) =>
-                      c
-                        ? {
-                            ...c,
-                            preferences: {
-                              ...c.preferences,
-                              habits: {
-                                ...c.preferences.habits,
-                                [input.area!]: input.habits,
-                              },
-                            },
-                          }
-                        : c,
-                    );
-                    if (editingHabits) {
-                      setEditingHabits(false);
-                      setNotice("평소 습관을 저장했어요.");
-                      go("settings");
-                    } else go("current");
-                  });
-                else go("current");
-              } else go("support");
+              if (view !== "habits") {
+                create();
+                return;
+              }
+              if (!editingHabits) {
+                go("recentAction");
+                return;
+              }
+              void run(async () => {
+                await api("/personalization/preferences", {
+                  habits: {
+                    ...context?.preferences.habits,
+                    [input.area!]: input.habits,
+                  },
+                  review: false,
+                });
+                setContext((c) =>
+                  c
+                    ? {
+                        ...c,
+                        preferences: {
+                          ...c.preferences,
+                          habits: {
+                            ...c.preferences.habits,
+                            [input.area!]: input.habits,
+                          },
+                        },
+                      }
+                    : c,
+                );
+                setEditingHabits(false);
+                setNotice("평소 습관을 저장했어요.");
+                go("settings");
+              });
             }}
           >
-            {(page + 1) * 6 < questionList.length ? "계속" : "다음"}
+            {view === "habits"
+              ? editingHabits
+                ? "저장"
+                : "다음"
+              : "추천 보기"}
           </PrimaryButton>
         </>
       )}
-      {view === "support" && (
+      {view === "support" && input.purpose === "leisure" && (
         <>
-          <h1>
-            {input.purpose === "warmup"
-              ? "편하게 준비할 수 있나요?"
-              : "필요한 지지를 확인해요"}
-          </h1>
+          <h1>{"필요한 지지를 확인해요"}</h1>
           <p className="note">
             실제로 가능한 조건만 선택해주세요. 없거나 모르면 선택하지 않아도
             돼요.
           </p>
           <div className="release-choices">
             {caps
-              .filter(
-                (c) =>
-                  !(
-                    ["standing", "supine"].includes(c) &&
-                    input.purpose !== "warmup"
-                  ),
-              )
+              .filter((c) => !(["standing", "supine"].includes(c) && true))
               .slice(page * 6, page * 6 + 6)
               .map((c) => (
                 <Choice
@@ -1197,62 +1197,36 @@ export function PersonalizedExperience({
                 />
               ))}
           </div>
-          {!caps.filter(
-            (c) =>
-              !(
-                ["standing", "supine"].includes(c) && input.purpose !== "warmup"
-              ),
-          ).length && <p>추가 지지 도구가 필요하지 않아요.</p>}
+          {!caps.filter((c) => !(["standing", "supine"].includes(c) && true))
+            .length && <p>추가 지지 도구가 필요하지 않아요.</p>}
           <PrimaryButton
             disabled={busy}
             onClick={() => {
               if (
                 (page + 1) * 6 <
                 caps.filter(
-                  (c) =>
-                    !(
-                      ["standing", "supine"].includes(c) &&
-                      input.purpose !== "warmup"
-                    ),
+                  (c) => !(["standing", "supine"].includes(c) && true),
                 ).length
               )
                 setPage((p) => p + 1);
-              else if (input.purpose === "daily") create();
               else go("current");
             }}
           >
             {(page + 1) * 6 <
-            caps.filter(
-              (c) =>
-                !(
-                  ["standing", "supine"].includes(c) &&
-                  input.purpose !== "warmup"
-                ),
-            ).length
+            caps.filter((c) => !(["standing", "supine"].includes(c) && true))
+              .length
               ? "계속"
-              : input.purpose === "daily"
-                ? "동작 보기"
-                : "다음"}
+              : "다음"}
           </PrimaryButton>
         </>
       )}
-      {view === "current" && input.purpose !== "daily" && (
+      {view === "current" && input.purpose === "leisure" && (
         <>
-          <h1>
-            {input.purpose === "warmup"
-              ? "오늘은 편하게 움직일 수 있나요?"
-              : "편한 범위만 알려주세요"}
-          </h1>
+          <h1>{"편한 범위만 알려주세요"}</h1>
           <p>아픈 곳이나 불편한 습관을 만들 필요는 없어요.</p>
           <Choice
-            label={
-              input.purpose === "warmup"
-                ? "준비 움직임을 편한 범위에서 할 수 있어요"
-                : "오늘 특별한 불편이 없고 작은 움직임은 편해요"
-            }
-            selected={input.current.includes(
-              input.purpose === "warmup" ? "prep_comfort" : "today_ok",
-            )}
+            label={"오늘 특별한 불편이 없고 작은 움직임은 편해요"}
+            selected={input.current.includes("today_ok")}
             onClick={() =>
               setInput((old) => ({
                 ...old,
@@ -1330,7 +1304,7 @@ export function PersonalizedExperience({
           )}
           <PrimaryButton
             disabled={!input.current.length || busy}
-            onClick={create}
+            onClick={() => create()}
           >
             순서 확인
           </PrimaryButton>
@@ -1341,7 +1315,9 @@ export function PersonalizedExperience({
           <h1>
             {session.input.purpose === "warmup"
               ? "운동 전에 가볍게"
-              : "내 여유에 맞는 몸풀기"}
+              : session.input.purpose === "daily"
+                ? "오늘의 추천 루틴"
+                : "내 여유에 맞는 몸풀기"}
           </h1>
           <p>
             {session.program?.name} · 약{" "}
@@ -1352,6 +1328,12 @@ export function PersonalizedExperience({
             {new Set(session.items.map((i) => i.movement.catalogId)).size}개
             동작. 진행량과 자세 전환을 더한 예상 시간이에요.
           </p>
+          {session.input.purpose === "warmup" && (
+            <p className="note">
+              기구 없이 움직일 공간과 마르고 미끄럽지 않은 바닥에서 해요.
+              무릎·손목 지지가 불편하면 해당 동작은 넘겨요.
+            </p>
+          )}
           {session.program?.partial && (
             <p className="note">
               지금 조건에 맞춰 일부 단계를 바꿨거나 제외했어요. 종목의 모든
@@ -1362,6 +1344,12 @@ export function PersonalizedExperience({
             {session.items.map((i, n) => (
               <li key={i.itemId}>
                 <span>{n + 1}</span>
+                <img
+                  src={i.movement.media.src}
+                  alt={i.movement.name}
+                  width={80}
+                  height={80}
+                />
                 <div>
                   <strong>
                     {i.movement.name}
@@ -1381,7 +1369,7 @@ export function PersonalizedExperience({
             </p>
           )}
           <PrimaryButton onClick={() => go("perform")}>
-            몸풀기 시작
+            루틴 시작하기
           </PrimaryButton>
         </>
       )}
@@ -1516,7 +1504,7 @@ export function PersonalizedExperience({
               <h1>하고 나니 어떤가요?</h1>
               <p className="note">
                 {input.purpose === "daily"
-                  ? "실제로 수행한 동작의 느낌이에요."
+                  ? "루틴 전체의 느낌을 한 번만 남겨요."
                   : "묶음 전체의 느낌을 한 번만 남겨요."}
               </p>
               <div className="release-choices">
@@ -1538,7 +1526,7 @@ export function PersonalizedExperience({
               {reaction === "worse" && (
                 <fieldset>
                   <legend>어느 과정에서 불편했나요?</legend>
-                  {input.purpose !== "daily" && (
+                  {
                     <label>
                       불편했던 동작
                       <select
@@ -1560,7 +1548,7 @@ export function PersonalizedExperience({
                           ))}
                       </select>
                     </label>
-                  )}
+                  }
                   {session.items
                     .find((i) => i.itemId === painItem)
                     ?.movement.steps.map((s, n) => (
@@ -1594,11 +1582,11 @@ export function PersonalizedExperience({
               >
                 느낌 남기기
               </PrimaryButton>
-              {input.purpose !== "daily" && (
+              {
                 <button className="text-button" onClick={() => go("complete")}>
                   느낌은 다음에 남길게요
                 </button>
-              )}
+              }
             </>
           ) : (
             <>
@@ -1627,6 +1615,7 @@ export function PersonalizedExperience({
           </h1>
           {session.feedback && <p>{feelings[session.feedback]}</p>}
           {input.purpose === "daily" &&
+            input.flowVersion === DAILY_FLOW &&
             ["same", "worse"].includes(session.feedback ?? "") &&
             session.nextState !== "none" && (
               <button
@@ -1663,6 +1652,90 @@ export function PersonalizedExperience({
       {view === "records" && (
         <>
           <h1>내 기록</h1>
+          {memberName && (
+            <section className="record-insights" aria-label="내 몸 기록 요약">
+              <article>
+                <h2>최근 몸풀기 요약</h2>
+                <p>
+                  최근 7일 {insights?.sevenDays.sessions ?? 0}회 ·{" "}
+                  {insights?.sevenDays.days ?? 0}일
+                </p>
+                <p>
+                  최근 30일 {insights?.thirtyDays.sessions ?? 0}회 ·{" "}
+                  {insights?.thirtyDays.days ?? 0}일
+                </p>
+                {insights && (
+                  <small>
+                    {insights.fromDate} ~ {insights.toDate} · 한국 시간{" "}
+                    {new Date(insights.updatedAt).toLocaleString("ko-KR", {
+                      timeZone: "Asia/Seoul",
+                    })}{" "}
+                    갱신
+                  </small>
+                )}
+              </article>
+              <article>
+                <h2>자주 선택한 부위</h2>
+                {insights?.areas.length ? (
+                  insights.areas.map((a) => (
+                    <p key={a.id}>
+                      최근 30일에는 {a.label}을 {a.count}번 선택했어요.
+                    </p>
+                  ))
+                ) : (
+                  <p>
+                    수행한 일상 루틴이 생기면 직접 선택한 부위를 보여드려요.
+                  </p>
+                )}
+                {insights?.thirtyDays.sessions === 1 && (
+                  <p>첫 기록이 생겼어요.</p>
+                )}
+              </article>
+              <article>
+                <h2>함께 기록된 습관·최근 행동</h2>
+                {insights?.choices.length ? (
+                  insights.choices.map((c) => (
+                    <p key={c.key}>
+                      {c.areaLabel}을 고른 기록 중 ‘{c.label}’ 답변이 {c.count}
+                      번 있었어요.
+                    </p>
+                  ))
+                ) : (
+                  <p>그날 직접 고른 답변을 함께 모아 보여드려요.</p>
+                )}
+              </article>
+              <article>
+                <h2>많이 한 루틴과 수행 후 반응</h2>
+                {insights?.routines.length ? (
+                  insights.routines.map((r) => (
+                    <div key={r.id}>
+                      <strong>{r.name}</strong>
+                      <p>
+                        수행 {r.count}회 · 개운함 {r.better} · 비슷함 {r.same} ·
+                        준비됨 {r.ready} · 조금 부족함 {r.insufficient} · 불편함{" "}
+                        {r.worse} · 느낌 미응답 {r.unanswered}
+                      </p>
+                    </div>
+                  ))
+                ) : (
+                  <p>루틴 수행 횟수와 전체 반응을 구분해서 보여드려요.</p>
+                )}
+              </article>
+              <article>
+                <h2>기록을 반영한 다음 몸풀기</h2>
+                <p>
+                  {insights?.areas.length
+                    ? `최근에는 ${insights.areas[0].label}을 선택했어요. 다음 추천에는 직접 남긴 불편 반응을 반영해요.`
+                    : "오늘의 선택부터 차근차근 남겨보세요."}{" "}
+                  오늘 자세와 최근 행동은 새로 골라주세요.
+                </p>
+                <PrimaryButton onClick={() => requireStart("daily")}>
+                  오늘 몸풀기
+                </PrimaryButton>
+              </article>
+            </section>
+          )}
+          <h2>지난 이용 기록</h2>
           {!records.length && !legacy.length && (
             <>
               <img
@@ -1767,7 +1840,8 @@ export function PersonalizedExperience({
                               eventId: crypto.randomUUID(),
                               action: "correct",
                               reaction,
-                              ...(r.input.purpose === "daily"
+                              ...(r.input.purpose === "daily" &&
+                              r.input.flowVersion !== DAILY_FLOW
                                 ? { itemId: r.items.at(-1)!.itemId }
                                 : {}),
                               steps: [],
@@ -1778,6 +1852,7 @@ export function PersonalizedExperience({
                             xs.map((x) => (x.id === r.id ? updated : x)),
                           );
                           if (session?.id === r.id) setSession(updated);
+                          setInsights(await api("/personalization/summary"));
                         })
                       }
                     >
@@ -1828,6 +1903,7 @@ export function PersonalizedExperience({
                     run(async () => {
                       await api(`/personalization/sessions/${r.id}/delete`, {});
                       setRecords((xs) => xs.filter((x) => x.id !== r.id));
+                      setInsights(await api("/personalization/summary"));
                       if (session?.id === r.id) {
                         setSession(null);
                         sessionStorage.removeItem(key);
@@ -1867,6 +1943,7 @@ export function PersonalizedExperience({
                   run(async () => {
                     await api(`/records/${r.id}/delete`, {});
                     setLegacy((xs) => xs.filter((x) => x.id !== r.id));
+                    setInsights(await api("/personalization/summary"));
                   })
                 }
               >

@@ -1,3 +1,8 @@
+import {
+  DAILY_FLOW,
+  dailyQuestions,
+} from "../lib/personalization/daily-questions";
+import { recordSummary } from "../lib/personalization/record-summary";
 import { createHash } from "node:crypto";
 import { z } from "zod";
 import { catalog, movement } from "../lib/personalization/catalog";
@@ -169,7 +174,8 @@ function remember(memory: Memory, session: Session) {
     (b) => b.sessionId !== session.id,
   );
   if (
-    session.input.purpose !== "daily" &&
+    (session.input.flowVersion === DAILY_FLOW ||
+      session.input.purpose !== "daily") &&
     session.feedbackSubmitted &&
     session.feedback
   )
@@ -187,6 +193,7 @@ function remember(memory: Memory, session: Session) {
     });
   if (
     session.input.purpose === "daily" &&
+    session.input.flowVersion !== DAILY_FLOW &&
     session.followup?.value === "uncomfortable"
   ) {
     const last = session.items.at(-1)!;
@@ -399,7 +406,27 @@ export function registerPersonalization({
       ) ||
       Object.values(b.habits)
         .flat()
-        .some((id) => !habitChoices.some((q) => q.id === id))
+        .some(
+          (id) =>
+            !habitChoices.some((q) => q.id === id) &&
+            ![
+              "head",
+              "neck",
+              "shoulder",
+              "back",
+              "lower",
+              "thigh",
+              "hamstring",
+              "knee",
+              "calf",
+              "ankle",
+            ].some((area) =>
+              dailyQuestions(
+                "habits",
+                area as import("../lib/personalization/types").Area,
+              ).some((q) => q.id === id),
+            ),
+        )
     )
       fail(400, "INVALID_INPUT", "습관 선택을 확인해주세요.");
     await db.runTransaction(async (tx) => {
@@ -444,6 +471,8 @@ export function registerPersonalization({
       fail(403, "MEMBER_REQUIRED", "이 콘텐츠는 로그인 후 이용할 수 있어요.");
     if (!(await currentHealthConsent(db, a.uid, a.kind)))
       fail(403, "CONSENT_REQUIRED", "건강 관련 입력 처리 안내에 동의해주세요.");
+    if (input.purpose === "daily" && input.flowVersion !== DAILY_FLOW)
+      fail(409, "UPDATE_REQUIRED", "새 네 단계로 다시 시작해주세요.");
     const initial = await loadMemory(a, input.review);
     const ref = sessionRef(a, b.sessionId);
     const memoryDoc = memoryRef(a, input.review);
@@ -459,22 +488,21 @@ export function registerPersonalization({
           fail(410, "SESSION_EXPIRED", "이전 날짜의 이용이 만료됐어요.");
         if (existing.owner !== a.uid || existing.kind !== a.kind)
           fail(403, "OWNER_MISMATCH", "본인의 세션만 이용할 수 있어요.");
-        if (JSON.stringify(existing.input) !== JSON.stringify(input))
+        if (
+          JSON.stringify(inputSchema.parse(existing.input)) !==
+          JSON.stringify(input)
+        )
           fail(409, "ID_REUSE", "새 이용을 시작해주세요.");
         return existing;
       }
       const decision = decide(input, stored ?? initial);
       if (decision.reason === "blocked")
-        fail(
-          422,
-          "AUTOMATIC_EXCLUDED",
-          "현재 상태에는 자동 동작 안내를 제공하기 어려워요. 적절한 전문가에게 상태를 확인해주세요.",
-        );
+        fail(422, "AUTOMATIC_EXCLUDED", "오늘은 이 루틴을 쉬어가요");
       if (!decision.selected.length)
         fail(
           422,
           "NO_MATCH",
-          "지금 확인된 조건에 맞는 동작이 없어요. 답변·가능한 자세를 확인하거나 다음에 다시 이용해주세요.",
+          "지금 이어갈 수 있는 다른 동작이 없어요. 오늘은 이 루틴을 쉬어가요",
         );
       if (usage)
         fail(
@@ -548,6 +576,9 @@ export function registerPersonalization({
       fail(403, "CONSENT_REQUIRED", "이용 동의를 확인해주세요.");
     if (
       s.decision.version !== VERSION &&
+      !(
+        s.input.purpose === "leisure" && s.decision.version === "2026-10-17.1"
+      ) &&
       ["active", "paused"].includes(s.status)
     )
       fail(409, "UPDATE_REQUIRED", "새 버전에서 다시 시작해주세요.");
@@ -577,7 +608,11 @@ export function registerPersonalization({
       fail(403, "CONSENT_REQUIRED", "이용 동의를 확인해주세요.");
     if (
       ["active", "paused"].includes(base.status) &&
-      base.decision.version !== VERSION
+      base.decision.version !== VERSION &&
+      !(
+        base.input.purpose === "leisure" &&
+        base.decision.version === "2026-10-17.1"
+      )
     )
       fail(409, "UPDATE_REQUIRED", "새 안내로 다시 시작해주세요.");
     if (base.review) await requireReview(a);
@@ -687,12 +722,16 @@ export function registerPersonalization({
           fail(403, "MEMBER_REQUIRED", "회원 기록만 정정할 수 있어요.");
         if (
           session.input.purpose === "daily" &&
+          session.input.flowVersion !== DAILY_FLOW &&
           b.itemId &&
           item !== session.items.at(-1)
         )
           fail(400, "INVALID_ITEM", "현재 수행한 동작에서 선택해주세요.");
         const feedbackItem =
-          session.input.purpose === "daily" ? session.items.at(-1) : item;
+          session.input.purpose === "daily" &&
+          session.input.flowVersion !== DAILY_FLOW
+            ? session.items.at(-1)
+            : item;
         if (
           b.steps.length &&
           (!feedbackItem ||
@@ -705,10 +744,21 @@ export function registerPersonalization({
           !["completed", "stopped"].includes(item.state)
         )
           fail(400, "NOT_PERFORMED", "실제 시도한 동작에서 선택해주세요.");
+        if (b.action === "correct" && session.input.flowVersion === DAILY_FLOW)
+          for (const i of session.items) {
+            if (i.feedbackAt) {
+              i.reaction = null;
+              i.steps = [];
+              i.directions = [];
+            }
+          }
         session.feedback = b.reaction;
         session.feedbackSubmitted = true;
         session.feedbackAt = Date.now();
-        if (session.input.purpose === "daily") {
+        if (
+          session.input.purpose === "daily" &&
+          session.input.flowVersion !== DAILY_FLOW
+        ) {
           const target = session.items.at(-1)!;
           target.reaction = b.reaction;
           target.steps = b.steps;
@@ -729,6 +779,8 @@ export function registerPersonalization({
         }
         // Bundle positives are intentionally never copied onto individual movements.
       } else if (b.action === "next") {
+        if (session.input.flowVersion !== DAILY_FLOW)
+          fail(409, "UPDATE_REQUIRED", "새 네 단계로 다시 시작해주세요.");
         if (
           session.input.purpose !== "daily" ||
           !session.feedbackSubmitted ||
@@ -810,6 +862,40 @@ export function registerPersonalization({
       return session;
     });
     res.json(publicSession(result));
+  });
+  route("get", "/personalization/summary", async (req, res) => {
+    const a = await actor(req, true);
+    if (!(await currentHealthConsent(db, a.uid, a.kind)))
+      fail(403, "CONSENT_REQUIRED", "이용 동의를 확인해주세요.");
+    async function all(path: string) {
+      const rows: Record<string, unknown>[] = [];
+      let cursor: { at: number; id: string } | null = null;
+      for (;;) {
+        let q = db
+          .collection(path)
+          .orderBy("createdAt", "desc")
+          .orderBy("__name__", "desc");
+        if (cursor) q = q.startAfter(cursor.at, cursor.id);
+        const page = await q.limit(100).get();
+        for (const d of page.docs) rows.push({ ...d.data(), id: d.id });
+        if (page.docs.length < 100) break;
+        const last = page.docs[page.docs.length - 1];
+        cursor = { at: last.data()!.createdAt, id: last.id };
+      }
+      return rows;
+    }
+    const [sessions, legacy] = await Promise.all([
+      all(`profiles/${a.uid}/sessions`),
+      all(`profiles/${a.uid}/records`),
+    ]);
+    if (!(await currentHealthConsent(db, a.uid, a.kind)))
+      fail(403, "CONSENT_REQUIRED", "이용 동의를 확인해주세요.");
+    res.json(
+      recordSummary(
+        sessions as unknown as Session[],
+        legacy as Parameters<typeof recordSummary>[1],
+      ),
+    );
   });
   route("get", "/personalization/records", async (req, res) => {
     const a = await actor(req);

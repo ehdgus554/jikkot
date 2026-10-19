@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { guestHome, daily } from "./helpers";
-test("three illustrated posture cards, continuous 450ms body camera, accessible chips and reduced motion work across sizes", async ({
+test("three illustrated posture cards, continuous 450ms body camera, actual body polygons and reduced motion work across sizes", async ({
   page,
 }, info) => {
   const errors: string[] = [];
@@ -19,10 +19,15 @@ test("three illustrated posture cards, continuous 450ms body camera, accessible 
   const camera = page.locator(".body-camera");
   const upperTop = await camera.evaluate((e) => e.getBoundingClientRect().top);
   await page.getByRole("button", { name: "하체", exact: true }).click();
+  await page.getByRole("button", { name: "뒤쪽 보기" }).click();
   await expect(
     page.getByRole("radio", { name: "허벅지 뒤쪽", exact: true }),
   ).toBeVisible();
-  await page.getByRole("radio", { name: "허벅지 뒤쪽", exact: true }).click();
+  await page
+    .getByRole("radio", { name: "허벅지 뒤쪽", exact: true })
+    .locator("polygon")
+    .first()
+    .click();
   await expect(
     page.getByRole("radio", { name: "허벅지 뒤쪽", exact: true }),
   ).toHaveAttribute("aria-checked", "true");

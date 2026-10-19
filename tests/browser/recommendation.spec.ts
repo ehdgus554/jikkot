@@ -23,5 +23,7 @@ test("unauthenticated clients cannot reach personal records or protected review 
   request,
 }) => {
   for (const path of ["/api/personalization/records", "/api/review/catalog"])
-    expect((await request.get("http://127.0.0.1:5002" + path)).status()).toBe(401);
+    expect((await request.get("http://127.0.0.1:5002" + path)).status()).toBe(
+      401,
+    );
 });

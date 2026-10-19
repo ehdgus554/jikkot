@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const VERSION = "2026-10-17.1";
+export const VERSION = "2026-10-19.2";
 export const areas = [
   ["head", "머리"],
   ["neck", "목"],
@@ -57,18 +57,20 @@ const unique = (xs: string[]) => new Set(xs).size === xs.length;
 export const inputSchema = z
   .object({
     purpose: z.enum(["daily", "warmup", "leisure"]),
+    flowVersion: z.literal("daily-four-2026-10-19").optional(),
     area: z.enum(areas.map((x) => x[0]) as [Area, ...Area[]]).optional(),
     habits: z.array(z.string().max(64)).max(30).refine(unique).default([]),
     current: z.array(z.string().max(64)).max(45).refine(unique).default([]),
     poses: z
       .array(z.enum(poses.map((x) => x[0]) as [Pose, ...Pose[]]))
-      .min(1)
       .max(9)
+      .default([])
       .refine(unique),
     supports: z
       .array(z.enum(supports.map((x) => x[0]) as [Support, ...Support[]]))
       .max(13)
-      .refine(unique),
+      .refine(unique)
+      .default([]),
     sport: z
       .enum(
         sports.map((x) => x[0]) as [
@@ -91,19 +93,18 @@ export const inputSchema = z
       .max(20)
       .refine(unique)
       .default([]),
-    confirmedAt: z.number().int().min(0),
+    confirmedAt: z
+      .number()
+      .int()
+      .min(0)
+      .default(() => Date.now()),
     review: z.boolean().default(false),
     growth: z.boolean().default(false),
   })
   .strict();
 export type SessionInput = z.infer<typeof inputSchema>;
 export type Reaction =
-  | "better"
-  | "same"
-  | "worse"
-  | "ready"
-  | "insufficient"
-  | "refreshed";
+  "better" | "same" | "worse" | "ready" | "insufficient" | "refreshed";
 export type Experience = {
   sessionId: string;
   catalogId: string;
