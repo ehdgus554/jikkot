@@ -16,7 +16,7 @@ export async function profileForIdentity(db: FirestoreRest, identity: Identity) 
   return db.runTransaction(async (tx) => {
     const latest = (await tx.get(ref)).data();
     if (!recoverable(latest)) return latest;
-    const recovered = { ...latest, authProvider: provider };
+    const recovered: NonNullable<typeof profile> = { ...latest, authProvider: provider };
     tx.set(ref, recovered);
     return recovered;
   });
