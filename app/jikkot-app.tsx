@@ -5,7 +5,7 @@ import {
   signInAnonymously,
   signOut,
   GoogleAuthProvider,
-  signInWithPopup,
+  signInWithRedirect,
   getRedirectResult,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -148,32 +148,36 @@ function ConnectedApp() {
   useEffect(() => {
     if (!configured) return;
     let active = true;
-    let first = true;
     const auth = firebaseAuth();
-    const unsubscribe = onAuthStateChanged(auth, () => {
-      if (authAction.current || !active) return;
-      void (async () => {
-        try {
-          if (first) {
-            first = false;
-            await getRedirectResult(auth);
-          }
-          if (active) await refresh();
-        } catch (e) {
-          if (active)
-            setError(
-              e instanceof Error ? e.message : "인증을 확인하지 못했어요.",
-            );
-        } finally {
-          if (active) setLoading(false);
-        }
-      })();
-    });
+    let unsubscribe = () => {};
+    // Consume the redirect before observing restored auth state. Otherwise an
+    // old session can race the new Google result and overwrite the login view.
+    void (async () => {
+      try {
+        const result = await getRedirectResult(auth);
+        if (result) clearLocal();
+      } catch (e) {
+        if (active)
+          setError(e instanceof Error ? e.message : "인증을 확인하지 못했어요.");
+      }
+      if (!active) return;
+      unsubscribe = onAuthStateChanged(auth, () => {
+        if (authAction.current || !active) return;
+        void refresh()
+          .catch((e) => {
+            if (active)
+              setError(e instanceof Error ? e.message : "인증을 확인하지 못했어요.");
+          })
+          .finally(() => {
+            if (active) setLoading(false);
+          });
+      });
+    })();
     return () => {
       active = false;
       unsubscribe();
     };
-  }, [refresh]);
+  }, [refresh, clearLocal]);
   useEffect(() => {
     void Promise.all([
       document.fonts.load('400 16px "LINE Seed KR"', "직꼿"),
@@ -402,15 +406,18 @@ function ConnectedApp() {
                   className="secondary"
                   disabled={busy}
                   onClick={() =>
-                    run(() =>
-                      authenticate(() => {
-                        const provider = new GoogleAuthProvider();
-                        provider.setCustomParameters({ prompt: "select_account" });
-                        // Open within the click handler, including on mobile.
-                        // Cross-origin redirect storage can lose the login result.
-                        return signInWithPopup(firebaseAuth(), provider);
-                      }),
-                    )
+                    run(async () => {
+                      const provider = new GoogleAuthProvider();
+                      provider.setCustomParameters({ prompt: "select_account" });
+                      // authDomain uses our same-origin /__/auth/ reverse proxy.
+                      // Redirect also works in browsers that cannot open popups.
+                      authAction.current = true;
+                      try {
+                        await signInWithRedirect(firebaseAuth(), provider);
+                      } finally {
+                        authAction.current = false;
+                      }
+                    })
                   }
                 >
                   Google로 계속하기
