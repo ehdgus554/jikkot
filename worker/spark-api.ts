@@ -1,3 +1,4 @@
+import { profileForIdentity, loginMethodMessage } from "./profile-auth";
 import { createHash } from "node:crypto";
 import { VERSION } from "../lib/personalization/types";
 import { createRemoteJWKSet, jwtVerify } from "jose";
@@ -155,12 +156,12 @@ export function createSparkApi(
   );
   async function actor(req: ApiRequest, memberOnly = false) {
     const t = await token(req);
-    const p = (await db.doc(`profiles/${t.uid}`).get()).data();
+    const p = await profileForIdentity(db, t);
     if (p?.active && p.authProvider !== t.firebase.sign_in_provider)
       fail(
         403,
         "LOGIN_METHOD_MISMATCH",
-        "처음 가입한 로그인 방법으로 접속해주세요.",
+        loginMethodMessage(p.authProvider),
       );
     if (p?.active)
       return { uid: t.uid, kind: "member" as const, profile: p, token: t };
@@ -174,12 +175,12 @@ export function createSparkApi(
   }
   route("get", "/me", async (req, res) => {
     const t = await token(req);
-    const p = (await db.doc(`profiles/${t.uid}`).get()).data();
+    const p = await profileForIdentity(db, t);
     if (p?.active && p.authProvider !== t.firebase.sign_in_provider)
       fail(
         403,
         "LOGIN_METHOD_MISMATCH",
-        "처음 가입한 로그인 방법으로 접속해주세요.",
+        loginMethodMessage(p.authProvider),
       );
     res.json({
       member: p?.active
