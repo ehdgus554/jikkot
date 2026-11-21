@@ -6,7 +6,6 @@ import {
   signOut,
   GoogleAuthProvider,
   signInWithPopup,
-  signInWithRedirect,
   getRedirectResult,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -16,6 +15,7 @@ import {
   reauthenticateWithPopup,
 } from "firebase/auth";
 import { api, configured, firebaseAuth } from "../lib/firebase-client";
+import { activationPath, canResumeEmailSignup } from "../lib/service/auth-session";
 import { consentPolicy, guestRetentionCopy } from "../lib/service/policy";
 import { PersonalizedExperience } from "../components/personalized-experience";
 import { ServicePolicy } from "../components/service-policy";
@@ -70,11 +70,11 @@ function ConnectedApp() {
   const policyReturn = useRef<Entry>(null);
   const guard = useRef(false),
     authAction = useRef(false);
-  const clearLocal = () => {
+  const clearLocal = useCallback(() => {
     for (const key of Object.keys(sessionStorage))
       if (key.startsWith("jikkot.")) sessionStorage.removeItem(key);
     localStorage.removeItem("jikkot.progress.v1");
-  };
+  }, []);
   const refresh = useCallback(async () => {
     const user = firebaseAuth().currentUser;
     setUid(user?.uid ?? "");
@@ -83,7 +83,26 @@ function ConnectedApp() {
       setEntry(null);
       return;
     }
-    const me = await api<Me>("/me");
+    let me: Me;
+    try {
+      me = await api<Me>("/me");
+    } catch (e) {
+      if ((e as { code?: string }).code === "LOGIN_METHOD_MISMATCH") {
+        // A rejected session must not keep mounting member/guest requests.
+        const previousAction = authAction.current;
+        authAction.current = true;
+        try {
+          await signOut(firebaseAuth());
+        } finally {
+          authAction.current = previousAction;
+          clearLocal();
+          setUid("");
+          setMember(null);
+          setEntry("login");
+        }
+      }
+      throw e;
+    }
     setMember(me.member);
     if (me.kind === "pending") {
       setEmail(user.email ?? "");
@@ -91,7 +110,7 @@ function ConnectedApp() {
     } else if (me.member?.needsNickname) setEntry("profile");
     else if (me.member?.needsConsent) setEntry("consent");
     else setEntry(null);
-  }, []);
+  }, [clearLocal]);
   const run = async (fn: () => Promise<void>) => {
     if (guard.current) return;
     guard.current = true;
@@ -102,6 +121,8 @@ function ConnectedApp() {
     } catch (e) {
       const code = (e as { code?: string }).code ?? "";
       const messages: Record<string, string> = {
+        "auth/popup-blocked": "구글 로그인 창이 차단됐어요. 브라우저에서 팝업을 허용한 후 다시 눌러주세요.",
+        "auth/account-exists-with-different-credential": "이미 다른 방법으로 가입한 이메일이에요. 처음 가입한 방법으로 로그인해주세요.",
         "auth/popup-closed-by-user": "로그인이 취소됐어요.",
         "auth/cancelled-popup-request": "로그인이 취소됐어요.",
         "auth/invalid-credential": "이메일 또는 비밀번호를 확인해주세요.",
@@ -201,9 +222,7 @@ function ConnectedApp() {
       const user = firebaseAuth().currentUser;
       if (!user || user.isAnonymous) throw Error("인증을 먼저 완료해주세요.");
       await api(
-        user.providerData.some((p) => p.providerId === "google.com")
-          ? "/social/activate"
-          : "/signup",
+        await activationPath(user),
         {
           nickname: name,
           consents: { ...consents, version: consentPolicy.version },
@@ -381,24 +400,17 @@ function ConnectedApp() {
                 </form>
                 <button
                   className="secondary"
+                  disabled={busy}
                   onClick={() =>
-                    run(async () => {
-                      authAction.current = true;
-                      try {
-                        const auth = firebaseAuth(),
-                          provider = new GoogleAuthProvider();
-                        if (
-                          matchMedia("(pointer: coarse)").matches &&
-                          !import.meta.env.DEV
-                        )
-                          await signInWithRedirect(auth, provider);
-                        else await signInWithPopup(auth, provider);
-                        clearLocal();
-                        await refresh();
-                      } finally {
-                        authAction.current = false;
-                      }
-                    })
+                    run(() =>
+                      authenticate(() => {
+                        const provider = new GoogleAuthProvider();
+                        provider.setCustomParameters({ prompt: "select_account" });
+                        // Open within the click handler, including on mobile.
+                        // Cross-origin redirect storage can lose the login result.
+                        return signInWithPopup(firebaseAuth(), provider);
+                      }),
+                    )
                   }
                 >
                   Google로 계속하기
@@ -429,9 +441,7 @@ function ConnectedApp() {
                       try {
                         const auth = firebaseAuth();
                         if (
-                          !auth.currentUser ||
-                          auth.currentUser.isAnonymous ||
-                          auth.currentUser.email !== email
+                          !(await canResumeEmailSignup(auth.currentUser, email))
                         ) {
                           if (auth.currentUser) await signOut(auth);
                           await createUserWithEmailAndPassword(
